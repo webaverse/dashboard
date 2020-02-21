@@ -693,25 +693,39 @@ const pointerMesh = (() => {
   // const numDotsPositions = dotsGeometry.attributes.position.array.length;
   const geometry = THREE.BufferGeometryUtils.mergeBufferGeometries([sidesGeometry, dotsGeometry]);
   const targetVsh = `
+    uniform vec3 targetPos;
     attribute vec3 color;
-    uniform vec3 worldPos;
     varying vec2 vUv;
     varying vec3 vColor;
+    varying float highlightColor;
+    float scale = 0.1;
     void main() {
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position + worldPos, 1.);
+      vec4 p = modelMatrix * vec4(position, 1.);
+      gl_Position = projectionMatrix * viewMatrix * p;
       vColor = color;
+      if (p.x >= targetPos.x && p.y >= targetPos.y && p.z >= targetPos.z &&
+          p.x < (targetPos.x + scale) && p.y < (targetPos.y + scale) && p.z < (targetPos.z + scale)) {
+        highlightColor = 1.0;
+      } else {
+        highlightColor = 0.0;
+      }
     }
   `;
   const targetFsh = `
     // uniform float uTime;
     varying vec3 vColor;
+    varying float highlightColor;
     void main() {
-      gl_FragColor = vec4(vColor, 1.0);
+      if (highlightColor > 0.0) {
+        gl_FragColor = vec4(highlightColor, 0.0, 0.0, 1.0);
+      } else {
+        gl_FragColor = vec4(vColor, 1.0);
+      }
     }
   `;
   const material = new THREE.ShaderMaterial({
     uniforms: {
-      worldPos: {
+      targetPos: {
         type: 'v3',
         value: new THREE.Vector3(),
       },
@@ -730,6 +744,20 @@ const pointerMesh = (() => {
   return mesh;
 })();
 scene.add(pointerMesh);
+
+const localRaycaster = new THREE.Raycaster();
+window.addEventListener('mousemove', e => {
+  const mouse = new THREE.Vector2(( ( event.clientX ) / window.innerWidth ) * 2 - 1, - ( ( event.clientY ) / window.innerHeight ) * 2 + 1);
+  localRaycaster.setFromCamera(mouse, camera);
+  const targetPosition = localRaycaster.ray.origin.clone()
+    .add(new THREE.Vector3(0, 0, -1).applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), localRaycaster.ray.direction)));
+  pointerMesh.material.uniforms.targetPos.value.set(
+    Math.floor(targetPosition.x*10)/10,
+    Math.floor(targetPosition.y*10)/10,
+    Math.floor(targetPosition.z*10)/10
+  );
+  // console.log('target position', pointerMesh.material.uniforms.targetPos.value.toArray());
+});
 
 const worker = (() => {
   let cbs = [];

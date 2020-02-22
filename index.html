@@ -952,12 +952,12 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     pos.x < shift[0] + size &&
     pos.y < shift[1] + size &&
     pos.z < shift[2] + size;
-  mesh.getPotential = pos => {
+  /* mesh.getPotential = pos => {
     const x = pos.x - shift[0];
     const y = pos.y - shift[1];
     const z = pos.z - shift[2];
     return potential[x + y*size*size + z*size];
-  };
+  }; */
   mesh.paint = (x, y, z) => {
     // const x = Math.floor(pos.x - shift[0]);
     // const y = Math.floor(pos.y - shift[1]);

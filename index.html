@@ -712,7 +712,7 @@ renderer.physicallyCorrectLights = true;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xEEEEEE);
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 2;
+camera.position.set(0.5, 0.5, 2);
 renderer.render(scene, camera);
 
 const ambientLight = new THREE.AmbientLight(0xFFFFFF);
@@ -727,7 +727,7 @@ directionalLight2.position.set(-0.5, -0.1, 0.5);
 scene.add(directionalLight2);
 
 const orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
-// orbitControls.target.copy(camera.position).add(new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion));
+orbitControls.target.copy(camera.position).add(new THREE.Vector3(0, 0, -1.5));
 orbitControls.screenSpacePanning = true;
 // orbitControls.enabled = !!loginToken;
 orbitControls.enableMiddleZoom = false;
@@ -771,7 +771,7 @@ const pointerMesh = (() => {
     targetGeometry.clone()
       .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(-1, 1, 0).normalize(), new THREE.Vector3(1, -1, 0).normalize())))
       .applyMatrix(new THREE.Matrix4().makeTranslation(0.5, -0.5, 0.5)),
-  ]);
+  ]).applyMatrix(new THREE.Matrix4().makeTranslation(0.5, 0.5, 0.5));
   const sidesColors = new Float32Array(sidesGeometry.attributes.position.array.length);
   // sidesColors.fill(0);
   sidesGeometry.setAttribute('color', new THREE.BufferAttribute(sidesColors, 3));
@@ -782,7 +782,7 @@ const pointerMesh = (() => {
     for (let y = 0; y < 10; y++) {
       for (let z = 0; z < 10; z++) {
         const newDotGeometry = dotGeometry.clone()
-          .applyMatrix(new THREE.Matrix4().makeTranslation(x*0.1 - 0.5, y*0.1 - 0.5, z*0.1 - 0.5));
+          .applyMatrix(new THREE.Matrix4().makeTranslation(x*0.1, y*0.1, z*0.1));
         dotsGeometries.push(newDotGeometry);
       }
     }
@@ -808,7 +808,7 @@ const pointerMesh = (() => {
       gl_Position = projectionMatrix * p2;
       vColor = color;
       vec3 tp = targetPos.xyz + 1.0;
-      vec3 cp = (p.xyz + 0.5)/scale;
+      vec3 cp = p.xyz/scale;
       float dx = tp.x - cp.x;
       float dy = tp.y - cp.y;
       float dz = tp.z - cp.z;
@@ -887,7 +887,7 @@ const worker = (() => {
   });
   return worker;
 })();
-const _makeMiningMesh = (x, z/*, token*/) => {
+const _makeMiningMesh = (x, y, z) => {
   const terrainVsh = `
     attribute vec3 color;
     varying vec3 vColor;
@@ -974,10 +974,11 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     }
   } */
   const brush = new Uint8Array(size*size*size*3);
-  const shift = Float32Array.from([(x-0.5)*PARCEL_SIZE, (x-0.5)*PARCEL_SIZE, (z-0.5)*PARCEL_SIZE]);
+  const shift = new Float32Array(3); // Float32Array.from([(x-0.5)*PARCEL_SIZE, (y-0.5)*PARCEL_SIZE, (z-0.5)*PARCEL_SIZE]);
   const scale = Float32Array.from([0.1, 0.1, 0.1]);
 
   mesh.x = x;
+  mesh.y = y;
   mesh.z = z;
   mesh.potential = potential;
   mesh.brush = brush;
@@ -1142,7 +1143,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
   mesh.collide = async () => {
     const result = await worker.request({
       method: 'collide',
-      positions: miningMesh.geometry.attributes.position.array,
+      positions: geometry.attributes.position.array,
       origin: localRaycaster.ray.origin.toArray(new Float32Array(3)),
       direction: localRaycaster.ray.direction.toArray(new Float32Array(3))
     });
@@ -1150,7 +1151,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
       collisionMesh.position.fromArray(result.collision);
       collisionMesh.visible = true;
 
-      const oldColorAttribute = miningMesh.geometry.attributes.color.old || miningMesh.geometry.attributes.color;
+      const oldColorAttribute = geometry.attributes.color.old || geometry.attributes.color;
       const oldColors = oldColorAttribute.array;
       const newColors = Float32Array.from(oldColors);
       for (let i = 0; i < 3; i++) {
@@ -1158,14 +1159,14 @@ const _makeMiningMesh = (x, z/*, token*/) => {
         newColors[result.collisionIndex + i*3 + 1] = currentColor.g;
         newColors[result.collisionIndex + i*3 + 2] = currentColor.b;
       }
-      miningMesh.geometry.setAttribute('color', new THREE.BufferAttribute(newColors, 3));
-      miningMesh.geometry.attributes.color.old = oldColorAttribute;
+      geometry.setAttribute('color', new THREE.BufferAttribute(newColors, 3));
+      geometry.attributes.color.old = oldColorAttribute;
     } else {
       collisionMesh.visible = false;
 
-      const oldColorAttribute = miningMesh.geometry.attributes.color.old;
+      const oldColorAttribute = geometry.attributes.color.old;
       if (oldColorAttribute) {
-        miningMesh.geometry.setAttribute('color', oldColorAttribute);
+        geometry.setAttribute('color', oldColorAttribute);
       }
     }
   };
@@ -1229,8 +1230,49 @@ const _makeMiningMesh = (x, z/*, token*/) => {
 
   return mesh;
 };
-const miningMesh = _makeMiningMesh(0, 0);
-scene.add(miningMesh);
+let miningMeshes = [];
+const _findMiningMeshByIndex = (x, y, z) => miningMeshes.find(miningMesh => miningMesh.x === x && miningMesh.y === y && miningMesh.z === z);
+const _findMiningMeshByContainCoord = (x, y, z) => _findMiningMeshByIndex(Math.floor(x), Math.floor(y), Math.floor(z));
+const _resizeMiningMeshes = (x, y, z) => {
+  const requiredMap = new Map();
+  for (let ay = 0; ay < y; ay++) {
+    for (let ax = 0; ax < x; ax++) {
+      for (let az = 0; az < z; az++) {
+        let miningMesh = _findMiningMeshByIndex(ax, ay, az);
+        if (!miningMesh) {
+          miningMesh = _makeMiningMesh(ax, ay, az);
+          scene.add(miningMesh);
+          miningMeshes.push(miningMesh);
+        }
+        requiredMap[miningMesh] = true;
+      }
+    }
+  }
+  miningMeshes = miningMeshes.filter(miningMesh => {
+    if (requiredMap[miningMesh]) {
+      return true;
+    } else {
+      scene.remove(miningMesh);
+      miningMesh.destroy();
+      return false;
+    }
+  });
+};
+_resizeMiningMeshes(1, 1, 1);
+const _paintMiningMeshes = (x, y, z) => {
+  const miningMesh = _findMiningMeshByContainCoord(x/10, y/10, z/10);
+  miningMesh && miningMesh.paint(x, y, z);
+};
+const _eraseMiningMeshes = (x, y, z) => {
+  const miningMesh = _findMiningMeshByContainCoord(x/10, y/10, z/10);
+  miningMesh && miningMesh.erase(x, y, z);
+};
+const _collideMiningMeshes = () => {
+  // const miningMesh = _findMiningMeshByContainCoord(x/10, y/10, z/10);
+  for (let i = 0; i < miningMeshes.length; i++) {
+    miningMeshes[i].collide();
+  }
+};
 
 const collisionMesh = (() => {
   const geometry = new THREE.BoxBufferGeometry(0.01, 0.01, 0.01);
@@ -1274,30 +1316,30 @@ window.addEventListener('mousemove', e => {
     const targetPosition = localRaycaster.ray.origin.clone()
       .add(new THREE.Vector3(0, 0, -1).applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), localRaycaster.ray.direction)));
     pointerMesh.material.uniforms.targetPos.value.set(
-      Math.floor((0.5+targetPosition.x)*10),
-      Math.floor((0.5+targetPosition.y)*10),
-      Math.floor((0.5+targetPosition.z)*10)
+      Math.floor(targetPosition.x*10),
+      Math.floor(targetPosition.y*10),
+      Math.floor(targetPosition.z*10)
     );
     // console.log('move paint', mouseDown);
     if (mouseDown) {
       const v = pointerMesh.material.uniforms.targetPos.value;
       if (selectedTool === 'brush') {
-        miningMesh.paint(v.x+1, v.y+1, v.z+1);
+        _paintMiningMeshes(v.x+1, v.y+1, v.z+1);
       } else if (selectedTool === 'erase') {
-        miningMesh.erase(v.x+1, v.y+1, v.z+1);
+        _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
       }
     }
   } else if (selectedTool === 'paint') {
     _updateLocalRaycaster(e);
-    miningMesh.collide();
+    _collideMiningMeshes();
   }
 });
 window.addEventListener('mousedown', e => {
   const v = pointerMesh.material.uniforms.targetPos.value;
   if (selectedTool === 'brush') {
-    miningMesh.paint(v.x+1, v.y+1, v.z+1);
+    _paintMiningMeshes(v.x+1, v.y+1, v.z+1);
   } else if (selectedTool === 'erase') {
-    miningMesh.erase(v.x+1, v.y+1, v.z+1);
+    _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
   }
   mouseDown = true;
 });
@@ -1337,6 +1379,15 @@ let brushSize = brushSizeEl.value;
 brushSizeEl.addEventListener('input', e => {
   brushSize = e.target.value;
   document.getElementById('brush-size-text').innerHTML = brushSize;
+});
+
+const objectSizeX = document.getElementById('object-size-x');
+const objectSizeY = document.getElementById('object-size-y');
+const objectSizeZ = document.getElementById('object-size-z');
+[objectSizeX, objectSizeY, objectSizeZ].forEach(el => {
+  el.addEventListener('input', e => {
+    _resizeMiningMeshes(objectSizeX.value, objectSizeY.value, objectSizeZ.value);
+  });
 });
 
 function animate() {

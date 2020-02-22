@@ -697,6 +697,13 @@ const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerH
 camera.position.z = 3;
 renderer.render(scene, camera);
 
+const ambientLight = new THREE.AmbientLight(0x808080);
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+directionalLight.position.set(0.5, 1, 0.5);
+scene.add(directionalLight);
+
 const orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
 // orbitControls.target.copy(camera.position).add(new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion));
 orbitControls.screenSpacePanning = true;

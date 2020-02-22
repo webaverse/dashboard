@@ -1061,6 +1061,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     }, [arrayBuffer]).then(res => {
       geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
       geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
+      // geometry.setAttribute('highlight', new THREE.BufferAttribute(new Float32Array(res.positions.array.length), 3));
       geometry.deleteAttribute('normal');
       geometry.computeVertexNormals();
       // geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
@@ -1140,8 +1141,42 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     if (!isNaN(result.collision[0])) {
       collisionMesh.position.fromArray(result.collision);
       collisionMesh.visible = true;
+
+      const oldColorAttribute = miningMesh.geometry.attributes.color.old || miningMesh.geometry.attributes.color;
+      const oldColors = oldColorAttribute.array;
+      const newColors = Float32Array.from(oldColors);
+      for (let i = 0; i < result.rangeIndexFlags.length; i += 9) {
+        if (result.rangeIndexFlags[i] > 0) {
+          newColors[i] = 0;
+          newColors[i+1] = 0;
+          newColors[i+2] = 1;
+          newColors[i+3] = 0;
+          newColors[i+4] = 0;
+          newColors[i+5] = 1;
+          newColors[i+6] = 0;
+          newColors[i+7] = 0;
+          newColors[i+8] = 1;
+        } else {
+          newColors[i] = oldColors[i];
+          newColors[i+1] = oldColors[i+1];
+          newColors[i+2] = oldColors[i+2];
+          newColors[i+3] = oldColors[i+3];
+          newColors[i+4] = oldColors[i+4];
+          newColors[i+5] = oldColors[i+5];
+          newColors[i+6] = oldColors[i+6];
+          newColors[i+7] = oldColors[i+7];
+          newColors[i+8] = oldColors[i+8];
+        }
+      }
+      miningMesh.geometry.setAttribute('color', new THREE.BufferAttribute(newColors, 3));
+      miningMesh.geometry.attributes.color.old = oldColorAttribute;
     } else {
       collisionMesh.visible = false;
+
+      const oldColorAttribute = miningMesh.geometry.attributes.color.old;
+      if (oldColorAttribute) {
+        miningMesh.geometry.setAttribute('color', oldColorAttribute);
+      }
     }
   };
   /* mesh.update = () => {

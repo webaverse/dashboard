@@ -779,7 +779,7 @@ const pointerMesh = (() => {
   }
   const dotsGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries(dotsGeometries);
   const dotsColors = new Float32Array(dotsGeometry.attributes.position.array.length);
-  dotsColors.fill(0.8);
+  dotsColors.fill(0.7);
   dotsGeometry.setAttribute('color', new THREE.BufferAttribute(dotsColors, 3));
   // const numDotsPositions = dotsGeometry.attributes.position.array.length;
   const geometry = THREE.BufferGeometryUtils.mergeBufferGeometries([sidesGeometry, dotsGeometry]);
@@ -789,7 +789,7 @@ const pointerMesh = (() => {
     varying float vZ;
     // varying vec2 vUv;
     varying vec3 vColor;
-    varying float highlightColor;
+    varying float highlightDistance;
     float scale = 0.1;
     void main() {
       vec4 p = modelMatrix * vec4(position, 1.);
@@ -797,27 +797,31 @@ const pointerMesh = (() => {
       vZ = -p2.z;
       gl_Position = projectionMatrix * p2;
       vColor = color;
-      vec3 tp = targetPos.xyz*scale - 0.5;
-      if (p.x-0.1/2.0 >= tp.x && p.y-0.1/2.0 >= tp.y && p.z-0.1/2.0 >= tp.z &&
-          p.x-0.1/2.0 < (tp.x + scale) && p.y-0.1/2.0 < (tp.y + scale) && p.z-0.1/2.0 < (tp.z + scale)) {
-        highlightColor = 1.0;
-      } else {
-        highlightColor = 0.0;
-      }
+      vec3 tp = targetPos.xyz + 1.0;
+      vec3 cp = (p.xyz + 0.5)/scale;
+      float dx = tp.x - cp.x;
+      float dy = tp.y - cp.y;
+      float dz = tp.z - cp.z;
+      highlightDistance = pow(sqrt(dx*dx + dy*dy + dz*dz), 0.5);
     }
   `;
   const targetFsh = `
     // uniform float uTime;
     varying vec3 vColor;
     varying float vZ;
-    varying float highlightColor;
+    varying float highlightDistance;
+    float dRange = 1.3;
+    float dLimit = 0.1;
     void main() {
-      if (highlightColor > 0.0) {
-        gl_FragColor = vec4(highlightColor, 0.0, 0.0, 1.0);
-      } else {
+      if (vColor.r == 0.0 && vColor.g == 0.0 && vColor.b == 0.0) {
         gl_FragColor = vec4(vColor, 1.0);
-        if (vColor.r != 0.0 || vColor.g != 0.0 || vColor.b != 0.0) {
-          gl_FragColor.a = 2.0 - vZ*2.0;
+      } else {
+        // gl_FragColor = vec4(highlightDistance, 0, 0, 1.0);
+        float d = max(dRange - highlightDistance, dLimit);
+        if (d > dLimit) {
+          gl_FragColor = vec4(1.0, 0.0, 0.0, d);
+        } else {
+          gl_FragColor = vec4(vec3(vColor), d);
         }
       }
     }

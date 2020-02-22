@@ -951,7 +951,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
   const size = PARCEL_SIZE;
   const dims = Float32Array.from([size, size, size]);
   const potential = new Float32Array(size*size*size);
-  potential.fill(1);
+  potential.fill(10);
   /* for (let x = 0; x < size; x++) {
     for (let y = 0; y < size; y++) {
       for (let z = 0; z < size; z++) {

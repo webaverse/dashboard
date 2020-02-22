@@ -1196,7 +1196,7 @@ window.addEventListener('mousemove', e => {
       Math.floor((0.5+targetPosition.y)*10),
       Math.floor((0.5+targetPosition.z)*10)
     );
-    console.log('move paint', mouseDown);
+    // console.log('move paint', mouseDown);
     if (mouseDown) {
       const v = pointerMesh.material.uniforms.targetPos.value;
       if (selectedTool === 'brush') {

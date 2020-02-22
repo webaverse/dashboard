@@ -655,6 +655,7 @@ table tr {
       <nav class=tool tool="brush"><i class="fal fa-brush"></i></nav>
       <nav class="tool" tool="select"><i class="fal fa-mouse-pointer"></i></nav>
       <nav class="tool" tool="erase"><i class="fal fa-eraser"></i></nav>
+      <nav class="tool" tool="paint"><i class="fal fa-paint-roller"></i></nav>
       <label>
         <span>Brush size</span>
         <input type="range" id="brush-size" value="0.5" min="0.1" max="2" step="0.1">
@@ -1127,12 +1128,23 @@ const _makeMiningMesh = (x, z/*, token*/) => {
   };
   mesh.paint = mesh.set.bind(mesh, 1);
   mesh.erase = mesh.set.bind(mesh, -1);
-  mesh.destroy = () => {
-    geometry.dispose();
-    material.dispose();
+  // let colliding = false;
+  mesh.collide = async () => {
+    const result = await worker.request({
+      method: 'collide',
+      positions: miningMesh.geometry.attributes.position.array,
+      origin: localRaycaster.ray.origin.toArray(new Float32Array(3)),
+      direction: localRaycaster.ray.direction.toArray(new Float32Array(3)),
+      range: 1
+    });
+    if (!isNaN(result.collision[0])) {
+      collisionMesh.position.fromArray(result.collision);
+      collisionMesh.visible = true;
+    } else {
+      collisionMesh.visible = false;
+    }
   };
-  let colliding = false;
-  mesh.update = () => {
+  /* mesh.update = () => {
     if (!colliding && geometry.attributes.position) {
       colliding = true;
 
@@ -1168,7 +1180,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     } else {
       return null;
     }
-  };
+  }; */
 
   /* const arrayBuffer = new ArrayBuffer(300*1024);
   worker.request({
@@ -1185,11 +1197,27 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     // geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
     mesh.visible = true;
   }); */
+  mesh.destroy = () => {
+    geometry.dispose();
+    material.dispose();
+  };
 
   return mesh;
 };
 const miningMesh = _makeMiningMesh(0, 0);
 scene.add(miningMesh);
+
+const collisionMesh = (() => {
+  const geometry = new THREE.BoxBufferGeometry(0.01, 0.01, 0.01);
+  const material = new THREE.MeshPhongMaterial({
+    color: 0x0000FF,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.visible = false;
+  mesh.frustumCulled = false;
+  return mesh;
+})();
+scene.add(collisionMesh);
 
 window.addEventListener('resize', e => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -1201,6 +1229,7 @@ window.addEventListener('keydown', e => {
     case 50:
     case 51:
     case 52:
+    case 53:
     {
       tools[e.which - 49].click();
       break;
@@ -1209,10 +1238,13 @@ window.addEventListener('keydown', e => {
 });
 const localRaycaster = new THREE.Raycaster();
 let mouseDown = false;
+const _updateLocalRaycaster = e => {
+  const mouse = new THREE.Vector2(( ( e.clientX ) / window.innerWidth ) * 2 - 1, - ( ( e.clientY ) / window.innerHeight ) * 2 + 1);
+  localRaycaster.setFromCamera(mouse, camera);
+};
 window.addEventListener('mousemove', e => {
   if (selectedTool === 'brush' || selectedTool === 'erase') {
-    const mouse = new THREE.Vector2(( ( event.clientX ) / window.innerWidth ) * 2 - 1, - ( ( event.clientY ) / window.innerHeight ) * 2 + 1);
-    localRaycaster.setFromCamera(mouse, camera);
+    _updateLocalRaycaster(e);
     const targetPosition = localRaycaster.ray.origin.clone()
       .add(new THREE.Vector3(0, 0, -1).applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), localRaycaster.ray.direction)));
     pointerMesh.material.uniforms.targetPos.value.set(
@@ -1229,6 +1261,9 @@ window.addEventListener('mousemove', e => {
         miningMesh.erase(v.x+1, v.y+1, v.z+1);
       }
     }
+  } else if (selectedTool === 'paint') {
+    _updateLocalRaycaster(e);
+    miningMesh.collide();
   }
 });
 window.addEventListener('mousedown', e => {

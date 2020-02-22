@@ -382,16 +382,14 @@ const _handleMessage = data => {
       allocator.freeAll();
 
       break;
-    }
-    /* case 'collide': {
+    } */
+    case 'collide': {
       const allocator = new Allocator();
 
-      const {positions: positionsData, indices: indicesData, origin: originData, direction: directionData} = data;
+      const {positions: positionsData, origin: originData, direction: directionData, range} = data;
 
       const positions = allocator.alloc(Float32Array, positionsData.length);
       positions.set(positionsData);
-      const indices = allocator.alloc(Uint32Array, indicesData.length);
-      indices.set(indicesData);
       const origin = allocator.alloc(Float32Array, 3);
       origin[0] = originData[0];
       origin[1] = originData[1];
@@ -400,25 +398,31 @@ const _handleMessage = data => {
       direction[0] = directionData[0];
       direction[1] = directionData[1];
       direction[2] = directionData[2];
-      const result = allocator.alloc(Float32Array, 3);
+      const collision = allocator.alloc(Float32Array, 3);
+      const rangePositions = allocator.alloc(Float32Array, 100*1024);
+      const rangePositionsIndex = allocator.alloc(Uint32Array, 1);
 
-      self.LocalModule._doCollide(
+      self.Module._doCollide(
         positions.offset,
-        indices.offset,
         positions.length,
-        indices.length,
         origin.offset,
         direction.offset,
-        result.offset
+        range,
+        collision.offset,
+        rangePositions.offset,
+        rangePositionsIndex.offset
       );
 
       self.postMessage({
-        result: Float32Array.from([result[0], result[1], result[2]]),
+        result: {
+          collision: Float32Array.from([collision[0], collision[1], collision[2]]),
+          rangePositions: rangePositions.slice(0, rangePositionsIndex),
+        },
       });
 
       allocator.freeAll();
       break;
-    } */
+    }
     default: {
       console.warn('unknown method', data.method);
       break;

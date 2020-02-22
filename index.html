@@ -1261,12 +1261,12 @@ const _resizeMiningMeshes = (x, y, z) => {
           scene.add(miningMesh);
           miningMeshes.push(miningMesh);
         }
-        requiredMap[miningMesh] = true;
+        requiredMap.set(miningMesh, true);
       }
     }
   }
   miningMeshes = miningMeshes.filter(miningMesh => {
-    if (requiredMap[miningMesh]) {
+    if (requiredMap.get(miningMesh)) {
       return true;
     } else {
       scene.remove(miningMesh);

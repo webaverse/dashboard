@@ -1191,7 +1191,10 @@ const _makeMiningMesh = (x, z/*, token*/) => {
 const miningMesh = _makeMiningMesh(0, 0);
 scene.add(miningMesh);
 
-
+window.addEventListener('resize', e => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
 window.addEventListener('keydown', e => {
   switch (e.which) {
     case 49:

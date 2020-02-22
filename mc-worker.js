@@ -215,13 +215,15 @@ const _handleMessage = data => {
     case 'march': {
       const allocator = new Allocator();
 
-      const {dims: dimsData, potential: potentialData, shift: shiftData, scale: scaleData, arrayBuffer} = data;
+      const {dims: dimsData, potential: potentialData, brush: brushData, shift: shiftData, scale: scaleData, arrayBuffer} = data;
       const dims = allocator.alloc(Int32Array, 3);
       dims[0] = dimsData[0];
       dims[1] = dimsData[1];
       dims[2] = dimsData[2];
       const potential = allocator.alloc(Float32Array, potentialData.length);
       potential.set(potentialData);
+      const brush = allocator.alloc(Uint8Array, brushData.length);
+      brush.set(brushData);
       const shift = allocator.alloc(Float32Array, 3);
       shift[0] = shiftData[0];
       shift[1] = shiftData[1];
@@ -231,17 +233,22 @@ const _handleMessage = data => {
       scale[1] = scaleData[1];
       scale[2] = scaleData[2];
       const positions = allocator.alloc(Float32Array, 1024*1024/Float32Array.BYTES_PER_ELEMENT);
+      const colors = allocator.alloc(Float32Array, 1024*1024/Uint8Array.BYTES_PER_ELEMENT);
       const barycentrics = allocator.alloc(Float32Array, 1024*1024/Float32Array.BYTES_PER_ELEMENT);
       const positionIndex = allocator.alloc(Uint32Array, 1);
+      const colorIndex = allocator.alloc(Uint32Array, 1);
       const barycentricIndex = allocator.alloc(Uint32Array, 1);
       self.Module._doMarchingCubes(
         dims.offset,
         potential.offset,
+        brush.offset,
         shift.offset,
         scale.offset,
         positions.offset,
+        colors.offset,
         barycentrics.offset,
         positionIndex.offset,
+        colorIndex.offset,
         barycentricIndex.offset
       );
 
@@ -250,6 +257,9 @@ const _handleMessage = data => {
       const outPositions = new Float32Array(arrayBuffer, index, positionIndex[0]);
       outPositions.set(positions.slice(0, positionIndex[0]));
       index += positionIndex[0]*Float32Array.BYTES_PER_ELEMENT;
+      const outColors = new Float32Array(arrayBuffer, index, colorIndex[0]);
+      outColors.set(colors.slice(0, colorIndex[0]));
+      index += colorIndex[0]*Float32Array.BYTES_PER_ELEMENT;
       const outBarycentrics = new Float32Array(arrayBuffer, index, barycentricIndex[0]);
       outBarycentrics.set(barycentrics.slice(0, barycentricIndex[0]));
       // index += barycentricIndex[0]*Float32Array.BYTES_PER_ELEMENT;
@@ -257,6 +267,7 @@ const _handleMessage = data => {
       self.postMessage({
         result: {
           positions: outPositions,
+          colors: outColors,
           barycentrics: outBarycentrics,
           arrayBuffer,
         },

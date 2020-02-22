@@ -807,6 +807,7 @@ const pointerMesh = (() => {
   `;
   const targetFsh = `
     // uniform float uTime;
+    uniform vec3 uBrushColor;
     varying vec3 vColor;
     varying float vZ;
     varying float highlightDistance;
@@ -819,7 +820,7 @@ const pointerMesh = (() => {
         // gl_FragColor = vec4(highlightDistance, 0, 0, 1.0);
         float d = max(dRange - highlightDistance, dLimit);
         if (d > dLimit) {
-          gl_FragColor = vec4(1.0, 0.0, 0.0, d);
+          gl_FragColor = vec4(uBrushColor, d);
         } else {
           gl_FragColor = vec4(vec3(vColor), d);
         }
@@ -829,6 +830,10 @@ const pointerMesh = (() => {
   const material = new THREE.ShaderMaterial({
     uniforms: {
       targetPos: {
+        type: 'v3',
+        value: new THREE.Vector3(),
+      },
+      uBrushColor: {
         type: 'v3',
         value: new THREE.Vector3(),
       },
@@ -1257,11 +1262,12 @@ Array.from(colors).forEach(color => {
       color.classList.remove('selected');
     });
     currentColor = new THREE.Color().setStyle(inner.style.backgroundColor);
-    // console.log('color', currentColor, inner.style.backgroundColor);
+    pointerMesh.material.uniforms.uBrushColor.value.set(currentColor.r, currentColor.g, currentColor.b);
     color.classList.add('selected');
   });
 });
 let currentColor = new THREE.Color().setStyle(colors[0].querySelector('.inner').style.backgroundColor);
+pointerMesh.material.uniforms.uBrushColor.value.set(currentColor.r, currentColor.g, currentColor.b);
 const brushSizeEl = document.getElementById('brush-size');
 let brushSize = brushSizeEl.value;
 brushSizeEl.addEventListener('input', e => {

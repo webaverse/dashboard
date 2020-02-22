@@ -14,6 +14,7 @@
     <meta property="og:image" content="https://browser.exokit.org/logo.svg">
     <meta http-equiv="origin-trial" content="AspvaSU7F1Gbpa8q9JRNRNXFF+0+77C1xkxf1hkzJCrBI7Mmt/eG25QXLBn7lfzPsgrN5next8ZtIiCeGs6R4w8AAABleyJvcmlnaW4iOiJodHRwczovL2V4b2tpdC5vcmc6NDQzIiwiZmVhdHVyZSI6IldlYlhSRGV2aWNlTTc2IiwiZXhwaXJ5IjoxNTcxMTEyNjU0LCJpc1N1YmRvbWFpbiI6dHJ1ZX0=">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/0735724151.js" crossorigin="anonymous"></script>
     <script src="three.js"></script>
     <script src="OrbitControls.js"></script>
     <script src="BufferGeometryUtils.js"></script>
@@ -100,6 +101,56 @@ header > .login-form.phase-2 > .phaseless-content,
 header > .login-form.phase-3 > .phaseless-content
 {
   display: none;
+}
+.tools, .colors {
+  display: flex;
+  position: absolute;
+  z-index: 1;
+}
+.tools {
+  top: 60px;
+  left: 10px;
+}
+.tools > .tool, .colors > .color {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  /* color: #000; */
+  cursor: pointer;
+}
+.tools > .tool {
+  background-color: #EEE;
+}
+.tools > .tool:hover {
+  background-color: #42a5f5;
+  color: #FFF;
+}
+.tools > .tool:active, .tools > .tool.selected {
+  background-color: #1e88e5;
+  color: #FFF;
+}
+.colors {
+  bottom: 10px;
+  left: 10px;
+}
+.colors > .color {
+  position: relative;
+}
+.colors > .color > .inner {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+}
+.colors > .color:hover {
+  background-color: #333;
+}
+.colors > .color:active, .colors > .color.selected {
+  background-color: #000;
 }
 .button {
   display: inline-block;
@@ -599,12 +650,17 @@ table tr {
       </div> -->
     </header>
 
-    <canvas id=canvas></canvas>
-
     <div class=tools>
       <nav class="tool selected"><i class="fal fa-mouse-pointer"></i></nav>
       <nav class=tool><i class="fal fa-brush"></i></nav>
     </div>
+    <div class=colors>
+      <nav class="color selected"><div class=inner style="background-color: red;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: green;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: blue;"></div></nav>
+    </div>
+
+    <canvas id=canvas></canvas>
 
     <!-- <script src="https://kit.fontawesome.com/0735724151.js"></script> -->
 <script>

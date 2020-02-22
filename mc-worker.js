@@ -386,7 +386,7 @@ const _handleMessage = data => {
     case 'collide': {
       const allocator = new Allocator();
 
-      const {positions: positionsData, origin: originData, direction: directionData, range} = data;
+      const {positions: positionsData, origin: originData, direction: directionData} = data;
 
       const positions = allocator.alloc(Float32Array, positionsData.length);
       positions.set(positionsData);
@@ -399,24 +399,21 @@ const _handleMessage = data => {
       direction[1] = directionData[1];
       direction[2] = directionData[2];
       const collision = allocator.alloc(Float32Array, 3);
-      const rangeIndexFlags = allocator.alloc(Float32Array, 100*1024);
-      const rangePositionsIndex = allocator.alloc(Uint32Array, 1);
+      const collisionIndex = allocator.alloc(Uint32Array, 1);
 
       self.Module._doCollide(
         positions.offset,
         positions.length,
         origin.offset,
         direction.offset,
-        range,
         collision.offset,
-        rangeIndexFlags.offset,
-        rangePositionsIndex.offset
+        collisionIndex.offset
       );
 
       self.postMessage({
         result: {
           collision: Float32Array.from([collision[0], collision[1], collision[2]]),
-          rangeIndexFlags: rangeIndexFlags.slice(0, rangePositionsIndex),
+          collisionIndex: collisionIndex[0],
         },
       });
 

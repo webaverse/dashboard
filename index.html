@@ -653,6 +653,11 @@ table tr {
     <div class=tools>
       <nav class="tool selected"><i class="fal fa-mouse-pointer"></i></nav>
       <nav class=tool><i class="fal fa-brush"></i></nav>
+      <label>
+        <span>Brush size</span>
+        <input type="range" id="brush-size" value=1 min="0.5" max="3" step="0.1">
+        <span id=brush-size-text>1</span>
+      </label>
     </div>
     <div class=colors>
       <nav class="color selected"><div class=inner style="background-color: #ef5350;"></div></nav>
@@ -1029,7 +1034,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     }, [arrayBuffer]).then(res => {
       geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
       geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
-      geometry.removeAttribute('normal');
+      geometry.deleteAttribute('normal');
       geometry.computeVertexNormals();
       // geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
 
@@ -1185,11 +1190,17 @@ Array.from(colors).forEach(color => {
       color.classList.remove('selected');
     });
     currentColor = new THREE.Color().setStyle(inner.style.backgroundColor);
-    console.log('color', currentColor, inner.style.backgroundColor);
+    // console.log('color', currentColor, inner.style.backgroundColor);
     color.classList.add('selected');
   });
 });
 let currentColor = new THREE.Color().setStyle(colors[0].querySelector('.inner').style.backgroundColor);
+const brushSizeEl = document.getElementById('brush-size');
+let brushSize = brushSizeEl.value;
+brushSizeEl.addEventListener('input', e => {
+  brushSize = e.target.value;
+  document.getElementById('brush-size-text').innerHTML = brushSize;
+});
 
 function animate() {
   orbitControls.update();

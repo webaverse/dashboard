@@ -897,7 +897,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
   `;
 
   const geometry = new THREE.BufferGeometry();
-  const material = new THREE.ShaderMaterial({
+  /* const material = new THREE.ShaderMaterial({
     uniforms: {
       uSelect: {
         type: 'v3',
@@ -909,6 +909,10 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     extensions: {
       derivatives: true,
     },
+  }); */
+  const material = new THREE.MeshPhongMaterial({
+    color: 0xFFFFFF,
+    vertexColors: THREE.VertexColors,
   });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.frustumCulled = false;

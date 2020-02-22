@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/avaer/blobber/issues"
   },
-  "homepage": "https://github.com/avaer/blobber#readme"
+  "homepage": "https://github.com/avaer/blobber#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }

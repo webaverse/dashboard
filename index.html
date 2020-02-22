@@ -935,12 +935,14 @@ const _makeMiningMesh = (x, z/*, token*/) => {
       }
     }
   } */
+  const brush = new Uint8Array(size*size*size*3);
   const shift = Float32Array.from([(x-0.5)*PARCEL_SIZE, (x-0.5)*PARCEL_SIZE, (z-0.5)*PARCEL_SIZE]);
   const scale = Float32Array.from([0.1, 0.1, 0.1]);
 
   mesh.x = x;
   mesh.z = z;
   mesh.potential = potential;
+  mesh.brush = brush;
   mesh.shift = shift;
   mesh.scale = scale;
   mesh.contains = pos =>
@@ -960,9 +962,8 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     // const x = Math.floor(pos.x - shift[0]);
     // const y = Math.floor(pos.y - shift[1]);
     // const z = Math.floor(pos.z - shift[2]);
-    console.log('try paint', x, y, z);
+    console.log('paint', x, y, z, currentColor);
     if (x >= 0 && x < PARCEL_SIZE && y >= 0 && y < PARCEL_SIZE && z >= 0 && z < PARCEL_SIZE) {
-      console.log('paint', x, y, z);
       const index = x + y*size*size + z*size;
       potential[index] = -1;
       /* const factor = 1;
@@ -988,17 +989,48 @@ const _makeMiningMesh = (x, z/*, token*/) => {
           }
         }
       } */
+      // if (brush[index*3] === 0 && brush[index*3+1] === 0 && brush[index*3+2] === 0) {
+        const factor = 1;
+        for (let dx = -factor; dx <= factor; dx++) {
+          for (let dz = -factor; dz <= factor; dz++) {
+            for (let dy = -factor; dy <= factor; dy++) {
+              const ax = x + dx;
+              const ay = y + dy;
+              const az = z + dz;
+              if (ax >= 0 && ax < PARCEL_SIZE && ay >= 0 && ay < PARCEL_SIZE && az >= 0 && az < PARCEL_SIZE) {
+                const index2 = ax + ay*size*size + az*size;
+                const xi = index2*3;
+                const yi = index2*3+1;
+                const zi = index2*3+2;
+                // if (brush[xi] === 0 && brush[yi] === 0 && brush[zi] === 0) {
+                  brush[xi] = currentColor.r*255;
+                  brush[yi] = currentColor.g*255;
+                  brush[zi] = currentColor.b*255;
+                // }
+              }
+            }
+          }
+        }
+      /* } else {
+        brush[index*3] = currentColor.r*255;
+        brush[index*3+1] = currentColor.g*255;
+        brush[index*3+2] = currentColor.b*255;
+      } */
     }
     const arrayBuffer = new ArrayBuffer(300*1024);
     worker.request({
       method: 'march',
       dims,
       potential,
+      brush,
       shift,
       scale,
       arrayBuffer
     }, [arrayBuffer]).then(res => {
       geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
+      geometry.removeAttribute('normal');
+      geometry.computeVertexNormals();
       // geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
 
       /* if (potential.every(n => n <= 0)) {
@@ -1059,6 +1091,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
             lastSceneCoords[1] = NaN;
           });
       } */
+      mesh.visible = true;
     });
   };
   mesh.destroy = () => {

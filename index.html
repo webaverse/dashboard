@@ -1137,19 +1137,21 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     }
   };
 
-  const arrayBuffer = new ArrayBuffer(300*1024);
+  /* const arrayBuffer = new ArrayBuffer(300*1024);
   worker.request({
     method: 'march',
     dims,
     potential,
+    brush,
     shift,
     scale,
     arrayBuffer
   }).then(res => {
     geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
     // geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
     mesh.visible = true;
-  });
+  }); */
 
   return mesh;
 };

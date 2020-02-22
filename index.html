@@ -655,7 +655,7 @@ table tr {
       <nav class=tool><i class="fal fa-brush"></i></nav>
       <label>
         <span>Brush size</span>
-        <input type="range" id="brush-size" value=1 min="0.5" max="3" step="0.1">
+        <input type="range" id="brush-size" value=1 min="0.6" max="2" step="0.1">
         <span id=brush-size-text>1</span>
       </label>
     </div>
@@ -969,13 +969,14 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     // const z = Math.floor(pos.z - shift[2]);
     console.log('paint', x, y, z, currentColor);
     if (x >= 0 && x < PARCEL_SIZE && y >= 0 && y < PARCEL_SIZE && z >= 0 && z < PARCEL_SIZE) {
-      const index = x + y*size*size + z*size;
-      potential[index] = -1;
-      /* const factor = 1;
+      /* const index = x + y*size*size + z*size;
+      potential[index] = -1; */
+      const factor = brushSize-0.5;
+      const factor2 = Math.ceil(brushSize)+1;
       const max = Math.sqrt(factor*factor*3);
-      for (let dx = -factor; dx <= factor; dx++) {
-        for (let dz = -factor; dz <= factor; dz++) {
-          for (let dy = -factor; dy <= factor; dy++) {
+      for (let dx = -factor2; dx <= factor2; dx++) {
+        for (let dz = -factor2; dz <= factor2; dz++) {
+          for (let dy = -factor2; dy <= factor2; dy++) {
             const ax = x + dx;
             const ay = y + dy;
             const az = z + dz;
@@ -983,22 +984,22 @@ const _makeMiningMesh = (x, z/*, token*/) => {
               ax >= 0 &&
               ay >= 0 &&
               az >= 0 &&
-              ax < size &&
-              ay < size &&
-              az < size
+              ax < PARCEL_SIZE &&
+              ay < PARCEL_SIZE &&
+              az < PARCEL_SIZE
             ) {
               const index = ax + ay*size*size + az*size;
-              const d = (max - Math.sqrt(dx*dx + dy*dy + dz*dz)) / max * 2;
-              potential[index] = Math.max(potential[index] - d, 0);
+              const d = (max - Math.sqrt(dx*dx + dy*dy + dz*dz)) / max;
+              potential[index] = Math.min(potential[index], -d);
             }
           }
         }
-      } */
+      }
+      const factor3 = Math.ceil(brushSize)+1;
       // if (brush[index*3] === 0 && brush[index*3+1] === 0 && brush[index*3+2] === 0) {
-        const factor = 1;
-        for (let dx = -factor; dx <= factor; dx++) {
-          for (let dz = -factor; dz <= factor; dz++) {
-            for (let dy = -factor; dy <= factor; dy++) {
+        for (let dx = -factor3; dx <= factor3; dx++) {
+          for (let dz = -factor3; dz <= factor3; dz++) {
+            for (let dy = -factor3; dy <= factor3; dy++) {
               const ax = x + dx;
               const ay = y + dy;
               const az = z + dz;

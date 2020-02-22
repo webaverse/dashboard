@@ -654,10 +654,11 @@ table tr {
       <nav class="tool selected" tool="camera"><i class="fal fa-camera"></i></nav>
       <nav class=tool tool="brush"><i class="fal fa-brush"></i></nav>
       <nav class="tool" tool="select"><i class="fal fa-mouse-pointer"></i></nav>
+      <nav class="tool" tool="erase"><i class="fal fa-eraser"></i></nav>
       <label>
         <span>Brush size</span>
-        <input type="range" id="brush-size" value=1 min="0.6" max="2" step="0.1">
-        <span id=brush-size-text>1</span>
+        <input type="range" id="brush-size" value="0.5" min="0.1" max="2" step="0.1">
+        <span id=brush-size-text>0.5</span>
       </label>
     </div>
     <div class=colors>
@@ -964,17 +965,19 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     const z = pos.z - shift[2];
     return potential[x + y*size*size + z*size];
   }; */
-  mesh.paint = (x, y, z) => {
+  mesh.set = (value, x, y, z) => {
     // const x = Math.floor(pos.x - shift[0]);
     // const y = Math.floor(pos.y - shift[1]);
     // const z = Math.floor(pos.z - shift[2]);
-    console.log('paint', x, y, z, currentColor);
+    // console.log('paint', x, y, z, currentColor);
     if (x >= 0 && x < PARCEL_SIZE && y >= 0 && y < PARCEL_SIZE && z >= 0 && z < PARCEL_SIZE) {
       /* const index = x + y*size*size + z*size;
       potential[index] = -1; */
-      const factor = brushSize-0.5;
+
+      const factor = brushSize;
       const factor2 = Math.ceil(brushSize)+1;
-      const max = Math.sqrt(factor*factor*3);
+      // console.log('factor', brushSize, factor2);
+      const max = Math.max(Math.sqrt(factor*factor*3), 0.1);
       for (let dx = -factor2; dx <= factor2; dx++) {
         for (let dz = -factor2; dz <= factor2; dz++) {
           for (let dy = -factor2; dy <= factor2; dy++) {
@@ -991,7 +994,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
             ) {
               const index = ax + ay*size*size + az*size;
               const d = (max - Math.sqrt(dx*dx + dy*dy + dz*dz)) / max;
-              potential[index] = Math.min(potential[index], -d);
+              potential[index] = value > 0 ? Math.min(potential[index], -d) : Math.max(potential[index], d);
             }
           }
         }
@@ -1101,6 +1104,8 @@ const _makeMiningMesh = (x, z/*, token*/) => {
       mesh.visible = true;
     });
   };
+  mesh.paint = mesh.set.bind(mesh, 1);
+  mesh.erase = mesh.set.bind(mesh, -1);
   mesh.destroy = () => {
     geometry.dispose();
     material.dispose();
@@ -1171,6 +1176,7 @@ window.addEventListener('keydown', e => {
     case 49:
     case 50:
     case 51:
+    case 52:
     {
       tools[e.which - 49].click();
       break;
@@ -1180,7 +1186,7 @@ window.addEventListener('keydown', e => {
 const localRaycaster = new THREE.Raycaster();
 let mouseDown = false;
 window.addEventListener('mousemove', e => {
-  if (selectedTool === 'brush') {
+  if (selectedTool === 'brush' || selectedTool === 'erase') {
     const mouse = new THREE.Vector2(( ( event.clientX ) / window.innerWidth ) * 2 - 1, - ( ( event.clientY ) / window.innerHeight ) * 2 + 1);
     localRaycaster.setFromCamera(mouse, camera);
     const targetPosition = localRaycaster.ray.origin.clone()
@@ -1193,14 +1199,20 @@ window.addEventListener('mousemove', e => {
     console.log('move paint', mouseDown);
     if (mouseDown) {
       const v = pointerMesh.material.uniforms.targetPos.value;
-      miningMesh.paint(v.x+1, v.y+1, v.z+1);
+      if (selectedTool === 'brush') {
+        miningMesh.paint(v.x+1, v.y+1, v.z+1);
+      } else if (selectedTool === 'erase') {
+        miningMesh.erase(v.x+1, v.y+1, v.z+1);
+      }
     }
   }
 });
 window.addEventListener('mousedown', e => {
+  const v = pointerMesh.material.uniforms.targetPos.value;
   if (selectedTool === 'brush') {
-    const v = pointerMesh.material.uniforms.targetPos.value;
     miningMesh.paint(v.x+1, v.y+1, v.z+1);
+  } else if (selectedTool === 'erase') {
+    miningMesh.erase(v.x+1, v.y+1, v.z+1);
   }
   mouseDown = true;
 });

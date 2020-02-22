@@ -608,7 +608,7 @@ table tr {
 
     <!-- <script src="https://kit.fontawesome.com/0735724151.js"></script> -->
 <script>
-const PARCEL_SIZE = 8;
+const PARCEL_SIZE = 10;
 
 const canvas = document.getElementById('canvas');
 canvas.width = window.innerWidth;
@@ -681,7 +681,7 @@ const pointerMesh = (() => {
     for (let y = 0; y < 10; y++) {
       for (let z = 0; z < 10; z++) {
         const newDotGeometry = dotGeometry.clone()
-          .applyMatrix(new THREE.Matrix4().makeTranslation(x*0.1 - 0.5 + 0.1/2, y*0.1 - 0.5 + 0.1/2, z*0.1 - 0.5 + 0.1/2));
+          .applyMatrix(new THREE.Matrix4().makeTranslation(x*0.1 - 0.5, y*0.1 - 0.5, z*0.1 - 0.5));
         dotsGeometries.push(newDotGeometry);
       }
     }
@@ -703,8 +703,9 @@ const pointerMesh = (() => {
       vec4 p = modelMatrix * vec4(position, 1.);
       gl_Position = projectionMatrix * viewMatrix * p;
       vColor = color;
-      if (p.x >= targetPos.x && p.y >= targetPos.y && p.z >= targetPos.z &&
-          p.x < (targetPos.x + scale) && p.y < (targetPos.y + scale) && p.z < (targetPos.z + scale)) {
+      vec3 tp = targetPos.xyz*scale - 0.5;
+      if (p.x-0.1/2.0 >= tp.x && p.y-0.1/2.0 >= tp.y && p.z-0.1/2.0 >= tp.z &&
+          p.x-0.1/2.0 < (tp.x + scale) && p.y-0.1/2.0 < (tp.y + scale) && p.z-0.1/2.0 < (tp.z + scale)) {
         highlightColor = 1.0;
       } else {
         highlightColor = 0.0;
@@ -744,20 +745,6 @@ const pointerMesh = (() => {
   return mesh;
 })();
 scene.add(pointerMesh);
-
-const localRaycaster = new THREE.Raycaster();
-window.addEventListener('mousemove', e => {
-  const mouse = new THREE.Vector2(( ( event.clientX ) / window.innerWidth ) * 2 - 1, - ( ( event.clientY ) / window.innerHeight ) * 2 + 1);
-  localRaycaster.setFromCamera(mouse, camera);
-  const targetPosition = localRaycaster.ray.origin.clone()
-    .add(new THREE.Vector3(0, 0, -1).applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), localRaycaster.ray.direction)));
-  pointerMesh.material.uniforms.targetPos.value.set(
-    Math.floor(targetPosition.x*10)/10,
-    Math.floor(targetPosition.y*10)/10,
-    Math.floor(targetPosition.z*10)/10
-  );
-  // console.log('target position', pointerMesh.material.uniforms.targetPos.value.toArray());
-});
 
 const worker = (() => {
   let cbs = [];
@@ -815,11 +802,11 @@ const _makeMiningMesh = (x, z/*, token*/) => {
       // float range = 2.01;
       vec3 minPos = uSelect - range;
       vec3 maxPos = minPos + (range*2.);
-      if (inRange(vViewPosition, minPos, maxPos)) {
+      /* if (inRange(vViewPosition, minPos, maxPos)) {
         gl_FragColor = color2;
-      } else {
+      } else { */
         gl_FragColor = color;
-      }
+      // }
       gl_FragColor.rgb += dotNL * 0.5;
     }
   `;
@@ -859,12 +846,14 @@ const _makeMiningMesh = (x, z/*, token*/) => {
       }
     }
   } */
-  const shift = Float32Array.from([(x-0.5)*size, 0, (z-0.5)*size]);
+  const shift = Float32Array.from([(x-0.5)*PARCEL_SIZE, (x-0.5)*PARCEL_SIZE, (z-0.5)*PARCEL_SIZE]);
+  const scale = Float32Array.from([0.1, 0.1, 0.1]);
 
   mesh.x = x;
   mesh.z = z;
   mesh.potential = potential;
   mesh.shift = shift;
+  mesh.scale = scale;
   mesh.contains = pos =>
     pos.x >= shift[0] &&
     pos.y >= shift[1] &&
@@ -878,32 +867,38 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     const z = pos.z - shift[2];
     return potential[x + y*size*size + z*size];
   };
-  mesh.mine = pos => {
-    const x = Math.floor(pos.x - shift[0]);
-    const y = Math.floor(pos.y - shift[1]);
-    const z = Math.floor(pos.z - shift[2]);
-    const factor = 2;
-    const max = Math.sqrt(factor*factor*3);
-    for (let dx = -factor; dx <= factor; dx++) {
-      for (let dz = -factor; dz <= factor; dz++) {
-        for (let dy = -factor; dy <= factor; dy++) {
-          const ax = x + dx;
-          const ay = y + dy;
-          const az = z + dz;
-          if (
-            ax >= 0 &&
-            ay >= 0 &&
-            az >= 0 &&
-            ax < size &&
-            ay < size &&
-            az < size
-          ) {
-            const index = ax + ay*size*size + az*size;
-            const d = (max - Math.sqrt(dx*dx + dy*dy + dz*dz)) / max * 2;
-            potential[index] = Math.max(potential[index] - d, 0);
+  mesh.paint = (x, y, z) => {
+    // const x = Math.floor(pos.x - shift[0]);
+    // const y = Math.floor(pos.y - shift[1]);
+    // const z = Math.floor(pos.z - shift[2]);
+    console.log('try paint', x, y, z);
+    if (x >= 0 && x < PARCEL_SIZE && y >= 0 && y < PARCEL_SIZE && z >= 0 && z < PARCEL_SIZE) {
+      console.log('paint', x, y, z);
+      const index = x + y*size*size + z*size;
+      potential[index] = -1;
+      /* const factor = 1;
+      const max = Math.sqrt(factor*factor*3);
+      for (let dx = -factor; dx <= factor; dx++) {
+        for (let dz = -factor; dz <= factor; dz++) {
+          for (let dy = -factor; dy <= factor; dy++) {
+            const ax = x + dx;
+            const ay = y + dy;
+            const az = z + dz;
+            if (
+              ax >= 0 &&
+              ay >= 0 &&
+              az >= 0 &&
+              ax < size &&
+              ay < size &&
+              az < size
+            ) {
+              const index = ax + ay*size*size + az*size;
+              const d = (max - Math.sqrt(dx*dx + dy*dy + dz*dz)) / max * 2;
+              potential[index] = Math.max(potential[index] - d, 0);
+            }
           }
         }
-      }
+      } */
     }
     const arrayBuffer = new ArrayBuffer(300*1024);
     worker.request({
@@ -911,12 +906,13 @@ const _makeMiningMesh = (x, z/*, token*/) => {
       dims,
       potential,
       shift,
+      scale,
       arrayBuffer
     }, [arrayBuffer]).then(res => {
       geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
-      geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
+      // geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
 
-      if (potential.every(n => n <= 0)) {
+      /* if (potential.every(n => n <= 0)) {
         const {x, z} = mesh;
         fetch('https://djj7y2i5p8.execute-api.us-west-1.amazonaws.com/default/Webaverse', {
           method: 'POST',
@@ -973,7 +969,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
             lastSceneCoords[0] = NaN;
             lastSceneCoords[1] = NaN;
           });
-      }
+      } */
     });
   };
   mesh.destroy = () => {
@@ -1025,6 +1021,7 @@ const _makeMiningMesh = (x, z/*, token*/) => {
     dims,
     potential,
     shift,
+    scale,
     arrayBuffer
   }).then(res => {
     geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
@@ -1036,6 +1033,26 @@ const _makeMiningMesh = (x, z/*, token*/) => {
 };
 const miningMesh = _makeMiningMesh(0, 0);
 scene.add(miningMesh);
+
+const localRaycaster = new THREE.Raycaster();
+window.addEventListener('mousemove', e => {
+  const mouse = new THREE.Vector2(( ( event.clientX ) / window.innerWidth ) * 2 - 1, - ( ( event.clientY ) / window.innerHeight ) * 2 + 1);
+  localRaycaster.setFromCamera(mouse, camera);
+  const targetPosition = localRaycaster.ray.origin.clone()
+    .add(new THREE.Vector3(0, 0, -1).applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), localRaycaster.ray.direction)));
+  pointerMesh.material.uniforms.targetPos.value.set(
+    Math.floor((0.5+targetPosition.x)*10),
+    Math.floor((0.5+targetPosition.y)*10),
+    Math.floor((0.5+targetPosition.z)*10)
+  );
+});
+window.addEventListener('mousedown', e => {
+  const v = pointerMesh.material.uniforms.targetPos.value;
+  const x = v.x+1;
+  const y = v.y+1;
+  const z = v.z+1;
+  miningMesh.paint(x, y, z);
+});
 
 function animate() {
   orbitControls.update();

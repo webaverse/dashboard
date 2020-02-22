@@ -652,10 +652,11 @@ table tr {
 
     <div class=tools>
       <nav class="tool selected" tool="camera"><i class="fal fa-camera"></i></nav>
-      <nav class=tool tool="brush"><i class="fal fa-brush"></i></nav>
+      <nav class=tool tool="brush"><i class="fal fa-dice-d8"></i></nav>
       <nav class="tool" tool="select"><i class="fal fa-mouse-pointer"></i></nav>
       <nav class="tool" tool="erase"><i class="fal fa-eraser"></i></nav>
-      <nav class="tool" tool="paint"><i class="fal fa-paint-roller"></i></nav>
+      <nav class="tool" tool="paint"><i class="fal fa-paint-brush"></i></nav>
+      <nav class="tool" tool="fill"><i class="fal fa-fill-drip"></i></nav>
       <label>
         <span>Brush size</span>
         <input type="range" id="brush-size" value="0.5" min="0.1" max="2" step="0.1">
@@ -1269,6 +1270,7 @@ window.addEventListener('keydown', e => {
     case 51:
     case 52:
     case 53:
+    case 54:
     {
       tools[e.which - 49].click();
       break;

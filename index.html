@@ -792,7 +792,8 @@ const pointerMesh = (() => {
   dotsColors.fill(0.7);
   dotsGeometry.setAttribute('color', new THREE.BufferAttribute(dotsColors, 3));
   // const numDotsPositions = dotsGeometry.attributes.position.array.length;
-  const geometry = THREE.BufferGeometryUtils.mergeBufferGeometries([sidesGeometry, dotsGeometry]);
+  const blockGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries([sidesGeometry, dotsGeometry]);
+  let geometry;
   const targetVsh = `
     uniform vec3 targetPos;
     attribute vec3 color;
@@ -858,7 +859,20 @@ const pointerMesh = (() => {
   });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.frustumCulled = false;
-  // mesh.visible = false;
+  mesh.resize = (x, y, z) => {
+    const geometries = [];
+    for (let ay = 0; ay < y; ay++) {
+      for (let ax = 0; ax < x; ax++) {
+        for (let az = 0; az < z; az++) {
+          const newBlockGeometry = blockGeometry.clone()
+            .applyMatrix(new THREE.Matrix4().makeTranslation(ax, ay, az));
+          geometries.push(newBlockGeometry);
+        }
+      }
+    }
+    mesh.geometry = THREE.BufferGeometryUtils.mergeBufferGeometries(geometries);
+  };
+  mesh.resize(1, 1, 1);
   return mesh;
 })();
 scene.add(pointerMesh);
@@ -974,7 +988,7 @@ const _makeMiningMesh = (x, y, z) => {
     }
   } */
   const brush = new Uint8Array(size*size*size*3);
-  const shift = new Float32Array(3); // Float32Array.from([(x-0.5)*PARCEL_SIZE, (y-0.5)*PARCEL_SIZE, (z-0.5)*PARCEL_SIZE]);
+  const shift = Float32Array.from([x*PARCEL_SIZE, y*PARCEL_SIZE, z*PARCEL_SIZE]);
   const scale = Float32Array.from([0.1, 0.1, 0.1]);
 
   mesh.x = x;
@@ -1002,6 +1016,9 @@ const _makeMiningMesh = (x, y, z) => {
     // const y = Math.floor(pos.y - shift[1]);
     // const z = Math.floor(pos.z - shift[2]);
     // console.log('paint', x, y, z, currentColor);
+    x -= mesh.x * PARCEL_SIZE;
+    y -= mesh.y * PARCEL_SIZE;
+    z -= mesh.z * PARCEL_SIZE;
     if (x >= 0 && x < PARCEL_SIZE && y >= 0 && y < PARCEL_SIZE && z >= 0 && z < PARCEL_SIZE) {
       /* const index = x + y*size*size + z*size;
       potential[index] = -1; */
@@ -1386,7 +1403,11 @@ const objectSizeY = document.getElementById('object-size-y');
 const objectSizeZ = document.getElementById('object-size-z');
 [objectSizeX, objectSizeY, objectSizeZ].forEach(el => {
   el.addEventListener('input', e => {
-    _resizeMiningMeshes(objectSizeX.value, objectSizeY.value, objectSizeZ.value);
+    const x = objectSizeX.value;
+    const y = objectSizeY.value;
+    const z = objectSizeZ.value;
+    _resizeMiningMeshes(x, y, z);
+    pointerMesh.resize(x, y, z);
   });
 });
 

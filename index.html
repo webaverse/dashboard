@@ -1177,6 +1177,19 @@ window.addEventListener('mousedown', e => {
   const z = v.z+1;
   miningMesh.paint(x, y, z);
 });
+const colors = document.querySelectorAll('.colors > .color');
+Array.from(colors).forEach(color => {
+  const inner = color.querySelector('.inner');
+  color.addEventListener('click', e => {
+    Array.from(colors).forEach(color => {
+      color.classList.remove('selected');
+    });
+    currentColor = new THREE.Color().setStyle(inner.style.backgroundColor);
+    console.log('color', currentColor, inner.style.backgroundColor);
+    color.classList.add('selected');
+  });
+});
+let currentColor = new THREE.Color().setStyle(colors[0].querySelector('.inner').style.backgroundColor);
 
 function animate() {
   orbitControls.update();

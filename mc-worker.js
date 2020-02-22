@@ -215,7 +215,7 @@ const _handleMessage = data => {
     case 'march': {
       const allocator = new Allocator();
 
-      const {dims: dimsData, potential: potentialData, shift: shiftData, arrayBuffer} = data;
+      const {dims: dimsData, potential: potentialData, shift: shiftData, scale: scaleData, arrayBuffer} = data;
       const dims = allocator.alloc(Int32Array, 3);
       dims[0] = dimsData[0];
       dims[1] = dimsData[1];
@@ -226,6 +226,10 @@ const _handleMessage = data => {
       shift[0] = shiftData[0];
       shift[1] = shiftData[1];
       shift[2] = shiftData[2];
+      const scale = allocator.alloc(Float32Array, 3);
+      scale[0] = scaleData[0];
+      scale[1] = scaleData[1];
+      scale[2] = scaleData[2];
       const positions = allocator.alloc(Float32Array, 1024*1024/Float32Array.BYTES_PER_ELEMENT);
       const barycentrics = allocator.alloc(Float32Array, 1024*1024/Float32Array.BYTES_PER_ELEMENT);
       const positionIndex = allocator.alloc(Uint32Array, 1);
@@ -234,6 +238,7 @@ const _handleMessage = data => {
         dims.offset,
         potential.offset,
         shift.offset,
+        scale.offset,
         positions.offset,
         barycentrics.offset,
         positionIndex.offset,

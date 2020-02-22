@@ -1150,29 +1150,6 @@ const _makeMiningMesh = (x, z/*, token*/) => {
         newColors[result.collisionIndex + i*3 + 1] = currentColor.g;
         newColors[result.collisionIndex + i*3 + 2] = currentColor.b;
       }
-      /* for (let i = 0; i < newColors.length; i += 9) {
-        if (result.rangeIndexFlags[i] > 0) {
-          newColors[i] = 0;
-          newColors[i+1] = 0;
-          newColors[i+2] = 1;
-          newColors[i+3] = 0;
-          newColors[i+4] = 0;
-          newColors[i+5] = 1;
-          newColors[i+6] = 0;
-          newColors[i+7] = 0;
-          newColors[i+8] = 1;
-        } else {
-          newColors[i] = oldColors[i];
-          newColors[i+1] = oldColors[i+1];
-          newColors[i+2] = oldColors[i+2];
-          newColors[i+3] = oldColors[i+3];
-          newColors[i+4] = oldColors[i+4];
-          newColors[i+5] = oldColors[i+5];
-          newColors[i+6] = oldColors[i+6];
-          newColors[i+7] = oldColors[i+7];
-          newColors[i+8] = oldColors[i+8];
-        }
-      } */
       miningMesh.geometry.setAttribute('color', new THREE.BufferAttribute(newColors, 3));
       miningMesh.geometry.attributes.color.old = oldColorAttribute;
     } else {

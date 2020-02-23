@@ -2,7 +2,19 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-THREE.BufferGeometryUtils = {
+import {
+	BufferAttribute,
+	BufferGeometry,
+	InterleavedBuffer,
+	InterleavedBufferAttribute,
+	TriangleFanDrawMode,
+	TriangleStripDrawMode,
+	TrianglesDrawMode,
+	Vector2,
+	Vector3
+} from "./three.module.js";
+
+var BufferGeometryUtils = {
 
 	computeTangents: function ( geometry ) {
 
@@ -31,7 +43,7 @@ THREE.BufferGeometryUtils = {
 
 		if ( attributes.tangent === undefined ) {
 
-			geometry.setAttribute( 'tangent', new THREE.BufferAttribute( new Float32Array( 4 * nVertices ), 4 ) );
+			geometry.setAttribute( 'tangent', new BufferAttribute( new Float32Array( 4 * nVertices ), 4 ) );
 
 		}
 
@@ -41,21 +53,21 @@ THREE.BufferGeometryUtils = {
 
 		for ( var i = 0; i < nVertices; i ++ ) {
 
-			tan1[ i ] = new THREE.Vector3();
-			tan2[ i ] = new THREE.Vector3();
+			tan1[ i ] = new Vector3();
+			tan2[ i ] = new Vector3();
 
 		}
 
-		var vA = new THREE.Vector3(),
-			vB = new THREE.Vector3(),
-			vC = new THREE.Vector3(),
+		var vA = new Vector3(),
+			vB = new Vector3(),
+			vC = new Vector3(),
 
-			uvA = new THREE.Vector2(),
-			uvB = new THREE.Vector2(),
-			uvC = new THREE.Vector2(),
+			uvA = new Vector2(),
+			uvB = new Vector2(),
+			uvC = new Vector2(),
 
-			sdir = new THREE.Vector3(),
-			tdir = new THREE.Vector3();
+			sdir = new Vector3(),
+			tdir = new Vector3();
 
 		function handleTriangle( a, b, c ) {
 
@@ -67,34 +79,20 @@ THREE.BufferGeometryUtils = {
 			uvB.fromArray( uvs, b * 2 );
 			uvC.fromArray( uvs, c * 2 );
 
-			var x1 = vB.x - vA.x;
-			var x2 = vC.x - vA.x;
+			vB.sub( vA );
+			vC.sub( vA );
 
-			var y1 = vB.y - vA.y;
-			var y2 = vC.y - vA.y;
+			uvB.sub( uvA );
+			uvC.sub( uvA );
 
-			var z1 = vB.z - vA.z;
-			var z2 = vC.z - vA.z;
+			var r = 1.0 / ( uvB.x * uvC.y - uvC.x * uvB.y );
 
-			var s1 = uvB.x - uvA.x;
-			var s2 = uvC.x - uvA.x;
+			// silently ignore degenerate uv triangles having coincident or colinear vertices
 
-			var t1 = uvB.y - uvA.y;
-			var t2 = uvC.y - uvA.y;
+			if ( ! isFinite( r ) ) return;
 
-			var r = 1.0 / ( s1 * t2 - s2 * t1 );
-
-			sdir.set(
-				( t2 * x1 - t1 * x2 ) * r,
-				( t2 * y1 - t1 * y2 ) * r,
-				( t2 * z1 - t1 * z2 ) * r
-			);
-
-			tdir.set(
-				( s1 * x2 - s2 * x1 ) * r,
-				( s1 * y2 - s2 * y1 ) * r,
-				( s1 * z2 - s2 * z1 ) * r
-			);
+			sdir.copy( vB ).multiplyScalar( uvC.y ).addScaledVector( vC, - uvB.y ).multiplyScalar( r );
+			tdir.copy( vC ).multiplyScalar( uvB.x ).addScaledVector( vB, - uvC.x ).multiplyScalar( r );
 
 			tan1[ a ].add( sdir );
 			tan1[ b ].add( sdir );
@@ -136,8 +134,8 @@ THREE.BufferGeometryUtils = {
 
 		}
 
-		var tmp = new THREE.Vector3(), tmp2 = new THREE.Vector3();
-		var n = new THREE.Vector3(), n2 = new THREE.Vector3();
+		var tmp = new Vector3(), tmp2 = new Vector3();
+		var n = new Vector3(), n2 = new Vector3();
 		var w, t, test;
 
 		function handleVertex( v ) {
@@ -185,9 +183,9 @@ THREE.BufferGeometryUtils = {
 	},
 
 	/**
-	 * @param  {Array<THREE.BufferGeometry>} geometries
+	 * @param  {Array<BufferGeometry>} geometries
 	 * @param  {Boolean} useGroups
-	 * @return {THREE.BufferGeometry}
+	 * @return {BufferGeometry}
 	 */
 	mergeBufferGeometries: function ( geometries, useGroups ) {
 
@@ -199,7 +197,9 @@ THREE.BufferGeometryUtils = {
 		var attributes = {};
 		var morphAttributes = {};
 
-		var mergedGeometry = new THREE.BufferGeometry();
+		var morphTargetsRelative = geometries[ 0 ].morphTargetsRelative;
+
+		var mergedGeometry = new BufferGeometry();
 
 		var offset = 0;
 
@@ -224,6 +224,8 @@ THREE.BufferGeometryUtils = {
 			}
 
 			// gather morph attributes, exit early if they're different
+
+			if ( morphTargetsRelative !== geometry.morphTargetsRelative ) return null;
 
 			for ( var name in geometry.morphAttributes ) {
 
@@ -339,8 +341,8 @@ THREE.BufferGeometryUtils = {
 	},
 
 	/**
-	 * @param {Array<THREE.BufferAttribute>} attributes
-	 * @return {THREE.BufferAttribute}
+	 * @param {Array<BufferAttribute>} attributes
+	 * @return {BufferAttribute}
 	 */
 	mergeBufferAttributes: function ( attributes ) {
 
@@ -379,13 +381,13 @@ THREE.BufferGeometryUtils = {
 
 		}
 
-		return new THREE.BufferAttribute( array, itemSize, normalized );
+		return new BufferAttribute( array, itemSize, normalized );
 
 	},
 
 	/**
-	 * @param {Array<THREE.BufferAttribute>} attributes
-	 * @return {Array<THREE.InterleavedBufferAttribute>}
+	 * @param {Array<BufferAttribute>} attributes
+	 * @return {Array<InterleavedBufferAttribute>}
 	 */
 	interleaveAttributes: function ( attributes ) {
 
@@ -414,7 +416,7 @@ THREE.BufferGeometryUtils = {
 		}
 
 		// Create the set of buffer attributes
-		var interleavedBuffer = new THREE.InterleavedBuffer( new TypedArray( arrayLength ), stride );
+		var interleavedBuffer = new InterleavedBuffer( new TypedArray( arrayLength ), stride );
 		var offset = 0;
 		var res = [];
 		var getters = [ 'getX', 'getY', 'getZ', 'getW' ];
@@ -425,7 +427,7 @@ THREE.BufferGeometryUtils = {
 			var attribute = attributes[ j ];
 			var itemSize = attribute.itemSize;
 			var count = attribute.count;
-			var iba = new THREE.InterleavedBufferAttribute( interleavedBuffer, itemSize, offset, attribute.normalized );
+			var iba = new InterleavedBufferAttribute( interleavedBuffer, itemSize, offset, attribute.normalized );
 			res.push( iba );
 
 			offset += itemSize;
@@ -449,7 +451,7 @@ THREE.BufferGeometryUtils = {
 	},
 
 	/**
-	 * @param {Array<THREE.BufferGeometry>} geometry
+	 * @param {Array<BufferGeometry>} geometry
 	 * @return {number}
 	 */
 	estimateBytesUsed: function ( geometry ) {
@@ -472,9 +474,9 @@ THREE.BufferGeometryUtils = {
 	},
 
 	/**
-	 * @param {THREE.BufferGeometry} geometry
+	 * @param {BufferGeometry} geometry
 	 * @param {number} tolerance
-	 * @return {THREE.BufferGeometry>}
+	 * @return {BufferGeometry>}
 	 */
 	mergeVertices: function ( geometry, tolerance = 1e-4 ) {
 
@@ -591,7 +593,7 @@ THREE.BufferGeometryUtils = {
 			var oldAttribute = geometry.getAttribute( name );
 
 			var buffer = new oldAttribute.array.constructor( attrArrays[ name ] );
-			var attribute = new THREE.BufferAttribute( buffer, oldAttribute.itemSize, oldAttribute.normalized );
+			var attribute = new BufferAttribute( buffer, oldAttribute.itemSize, oldAttribute.normalized );
 
 			result.setAttribute( name, attribute );
 
@@ -603,7 +605,7 @@ THREE.BufferGeometryUtils = {
 					var oldMorphAttribute = geometry.morphAttributes[ name ][ j ];
 
 					var buffer = new oldMorphAttribute.array.constructor( morphAttrsArrays[ name ][ j ] );
-					var morphAttribute = new THREE.BufferAttribute( buffer, oldMorphAttribute.itemSize, oldMorphAttribute.normalized );
+					var morphAttribute = new BufferAttribute( buffer, oldMorphAttribute.itemSize, oldMorphAttribute.normalized );
 					result.morphAttributes[ name ][ j ] = morphAttribute;
 
 				}
@@ -618,6 +620,119 @@ THREE.BufferGeometryUtils = {
 
 		return result;
 
+	},
+
+	/**
+	 * @param {BufferGeometry} geometry
+	 * @param {number} drawMode
+	 * @return {BufferGeometry>}
+	 */
+	toTrianglesDrawMode: function ( geometry, drawMode ) {
+
+		if ( drawMode === TrianglesDrawMode ) {
+
+			console.warn( 'THREE.BufferGeometryUtils.toTrianglesDrawMode(): Geometry already defined as triangles.' );
+			return geometry;
+
+		}
+
+		if ( drawMode === TriangleFanDrawMode || drawMode === TriangleStripDrawMode ) {
+
+			var index = geometry.getIndex();
+
+			// generate index if not present
+
+			if ( index === null ) {
+
+				var indices = [];
+
+				var position = geometry.getAttribute( 'position' );
+
+				if ( position !== undefined ) {
+
+					for ( var i = 0; i < position.count; i ++ ) {
+
+						indices.push( i );
+
+					}
+
+					geometry.setIndex( indices );
+					index = geometry.getIndex();
+
+				} else {
+
+					console.error( 'THREE.BufferGeometryUtils.toTrianglesDrawMode(): Undefined position attribute. Processing not possible.' );
+					return geometry;
+
+				}
+
+			}
+
+			//
+
+			var numberOfTriangles = index.count - 2;
+			var newIndices = [];
+
+			if ( drawMode === TriangleFanDrawMode ) {
+
+				// gl.TRIANGLE_FAN
+
+				for ( var i = 1; i <= numberOfTriangles; i ++ ) {
+
+					newIndices.push( index.getX( 0 ) );
+					newIndices.push( index.getX( i ) );
+					newIndices.push( index.getX( i + 1 ) );
+
+				}
+
+			} else {
+
+				// gl.TRIANGLE_STRIP
+
+				for ( var i = 0; i < numberOfTriangles; i ++ ) {
+
+					if ( i % 2 === 0 ) {
+
+						newIndices.push( index.getX( i ) );
+						newIndices.push( index.getX( i + 1 ) );
+						newIndices.push( index.getX( i + 2 ) );
+
+
+					} else {
+
+						newIndices.push( index.getX( i + 2 ) );
+						newIndices.push( index.getX( i + 1 ) );
+						newIndices.push( index.getX( i ) );
+
+					}
+
+				}
+
+			}
+
+			if ( ( newIndices.length / 3 ) !== numberOfTriangles ) {
+
+				console.error( 'THREE.BufferGeometryUtils.toTrianglesDrawMode(): Unable to generate correct amount of triangles.' );
+
+			}
+
+			// build final geometry
+
+			var newGeometry = geometry.clone();
+			newGeometry.setIndex( newIndices );
+			newGeometry.clearGroups();
+
+			return newGeometry;
+
+		} else {
+
+			console.error( 'THREE.BufferGeometryUtils.toTrianglesDrawMode(): Unknown draw mode:', drawMode );
+			return geometry;
+
+		}
+
 	}
 
 };
+
+export { BufferGeometryUtils };

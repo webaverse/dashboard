@@ -15,10 +15,6 @@
     <link href="index.css" rel=stylesheet>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/0735724151.js" crossorigin="anonymous"></script>
-    <script src="three.js"></script>
-    <script src="OrbitControls.js"></script>
-    <script src="BufferGeometryUtils.js"></script>
-    <script src="gif.js"></script>
   </head>
   <body >
     <header>
@@ -89,6 +85,11 @@
 
     <!-- <script src="https://kit.fontawesome.com/0735724151.js"></script> -->
 <script type=module>
+import * as THREE from './three.module.js';
+window.THREE = THREE;
+import {OrbitControls} from './OrbitControls.js';
+import {BufferGeometryUtils} from './BufferGeometryUtils.js';
+import './gif.js';
 import {makePromise} from './util.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
@@ -135,7 +136,7 @@ const directionalLight2 = new THREE.DirectionalLight(0xFFFFFF, 3);
 directionalLight2.position.set(-0.5, -0.1, 0.5);
 scene.add(directionalLight2);
 
-const orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
+const orbitControls = new OrbitControls(camera, renderer.domElement);
 orbitControls.target.copy(camera.position).add(new THREE.Vector3(0, 0, -1.5));
 orbitControls.screenSpacePanning = true;
 // orbitControls.enabled = !!loginToken;
@@ -143,44 +144,44 @@ orbitControls.enableMiddleZoom = false;
 orbitControls.update();
 
 const pointerMesh = (() => {
-  const targetGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries([
+  const targetGeometry = BufferGeometryUtils.mergeBufferGeometries([
     new THREE.BoxBufferGeometry(0.03, 0.2, 0.03)
-      .applyMatrix(new THREE.Matrix4().makeTranslation(0, -0.1, 0)),
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(0, -0.1, 0)),
     new THREE.BoxBufferGeometry(0.03, 0.2, 0.03)
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, 0, 1))))
-      .applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 0.1)),
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, 0, 1))))
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.1)),
     new THREE.BoxBufferGeometry(0.03, 0.2, 0.03)
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, -1, 0), new THREE.Vector3(1, 0, 0))))
-      .applyMatrix(new THREE.Matrix4().makeTranslation(0.1, 0, 0)),
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, -1, 0), new THREE.Vector3(1, 0, 0))))
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(0.1, 0, 0)),
   ]);
-  const sidesGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries([
+  const sidesGeometry = BufferGeometryUtils.mergeBufferGeometries([
     targetGeometry.clone()
-      .applyMatrix(new THREE.Matrix4().makeTranslation(-0.5, 0.5, -0.5)),
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(-0.5, 0.5, -0.5)),
     targetGeometry.clone()
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), new THREE.Vector3(0, -1, 0))))
-      .applyMatrix(new THREE.Matrix4().makeTranslation(-0.5, -0.5, -0.5)),
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), new THREE.Vector3(0, -1, 0))))
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(-0.5, -0.5, -0.5)),
     targetGeometry.clone()
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1))))
-      .applyMatrix(new THREE.Matrix4().makeTranslation(-0.5, 0.5, 0.5)),
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1))))
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(-0.5, 0.5, 0.5)),
     targetGeometry.clone()
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(1, 0, 0))))
-      .applyMatrix(new THREE.Matrix4().makeTranslation(0.5, 0.5, -0.5)),
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(1, 0, 0))))
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(0.5, 0.5, -0.5)),
     targetGeometry.clone()
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(1, 0, 0))))
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1))))
-      .applyMatrix(new THREE.Matrix4().makeTranslation(0.5, 0.5, 0.5)),
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(1, 0, 0))))
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1))))
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(0.5, 0.5, 0.5)),
     targetGeometry.clone()
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1))))
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(-1, 0, 0), new THREE.Vector3(0, -1, 0))))
-      .applyMatrix(new THREE.Matrix4().makeTranslation(-0.5, -0.5, 0.5)),
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1))))
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(-1, 0, 0), new THREE.Vector3(0, -1, 0))))
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(-0.5, -0.5, 0.5)),
     targetGeometry.clone()
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(1, 0, 0))))
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, -1, 0))))
-      .applyMatrix(new THREE.Matrix4().makeTranslation(0.5, -0.5, -0.5)),
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(1, 0, 0))))
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, -1, 0))))
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(0.5, -0.5, -0.5)),
     targetGeometry.clone()
-      .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(-1, 1, 0).normalize(), new THREE.Vector3(1, -1, 0).normalize())))
-      .applyMatrix(new THREE.Matrix4().makeTranslation(0.5, -0.5, 0.5)),
-  ]).applyMatrix(new THREE.Matrix4().makeTranslation(0.5, 0.5, 0.5));
+      .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(-1, 1, 0).normalize(), new THREE.Vector3(1, -1, 0).normalize())))
+      .applyMatrix4(new THREE.Matrix4().makeTranslation(0.5, -0.5, 0.5)),
+  ]).applyMatrix4(new THREE.Matrix4().makeTranslation(0.5, 0.5, 0.5));
   const sidesColors = new Float32Array(sidesGeometry.attributes.position.array.length);
   // sidesColors.fill(0);
   sidesGeometry.setAttribute('color', new THREE.BufferAttribute(sidesColors, 3));
@@ -191,17 +192,17 @@ const pointerMesh = (() => {
     for (let y = 0; y <= PARCEL_SIZE; y++) {
       for (let z = 0; z <= PARCEL_SIZE; z++) {
         const newDotGeometry = dotGeometry.clone()
-          .applyMatrix(new THREE.Matrix4().makeTranslation(x*0.1, y*0.1, z*0.1));
+          .applyMatrix4(new THREE.Matrix4().makeTranslation(x*0.1, y*0.1, z*0.1));
         dotsGeometries.push(newDotGeometry);
       }
     }
   }
-  const dotsGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries(dotsGeometries);
+  const dotsGeometry = BufferGeometryUtils.mergeBufferGeometries(dotsGeometries);
   const dotsColors = new Float32Array(dotsGeometry.attributes.position.array.length);
   dotsColors.fill(0.7);
   dotsGeometry.setAttribute('color', new THREE.BufferAttribute(dotsColors, 3));
   // const numDotsPositions = dotsGeometry.attributes.position.array.length;
-  const blockGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries([sidesGeometry, dotsGeometry]);
+  const blockGeometry = BufferGeometryUtils.mergeBufferGeometries([sidesGeometry, dotsGeometry]);
   let geometry;
   const targetVsh = `
     uniform vec3 targetPos;
@@ -274,12 +275,12 @@ const pointerMesh = (() => {
       for (let ax = 0; ax < x; ax++) {
         for (let az = 0; az < z; az++) {
           const newBlockGeometry = blockGeometry.clone()
-            .applyMatrix(new THREE.Matrix4().makeTranslation(ax, ay, az));
+            .applyMatrix4(new THREE.Matrix4().makeTranslation(ax, ay, az));
           geometries.push(newBlockGeometry);
         }
       }
     }
-    mesh.geometry = THREE.BufferGeometryUtils.mergeBufferGeometries(geometries);
+    mesh.geometry = BufferGeometryUtils.mergeBufferGeometries(geometries);
   };
   mesh.resize(1, 1, 1);
   return mesh;

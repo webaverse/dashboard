@@ -90,6 +90,16 @@ import screenshot from './screenshot.js';
 
 contract.init();
 
+function parseQuery(queryString) {
+  var query = {};
+  var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
+  for (var i = 0; i < pairs.length; i++) {
+    var pair = pairs[i].split('=');
+    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+  }
+  return query;
+}
+
 const PARCEL_SIZE = 10;
 const size = PARCEL_SIZE + 1;
 
@@ -1006,15 +1016,6 @@ function animate() {
 }
 renderer.setAnimationLoop(animate);
 
-function parseQuery(queryString) {
-  var query = {};
-  var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
-  for (var i = 0; i < pairs.length; i++) {
-    var pair = pairs[i].split('=');
-    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
-  }
-  return query;
-}
 (async () => {
   const q = parseQuery(window.location.search);
   const {o} = q;

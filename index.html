@@ -1190,11 +1190,11 @@ const _findMiningMeshesByContainCoord = (x, y, z) => {
   miningMesh && result.push(miningMesh);
   const factor = 1;
   for (let dx = -factor; dx <= factor; dx++) {
-    const ax = Math.floor(x + dx*0.1);
+    const ax = Math.floor(x + dx*0.5);
     for (let dz = -factor; dz <= factor; dz++) {
-      const az = Math.floor(z + dz*0.1);
+      const az = Math.floor(z + dz*0.5);
       for (let dy = -factor; dy <= factor; dy++) {
-        const ay = Math.floor(y + dy*0.1);
+        const ay = Math.floor(y + dy*0.5);
         const miningMesh = _findMiningMeshByIndex(ax, ay, az);
         miningMesh && !result.includes(miningMesh) && result.push(miningMesh);
       }

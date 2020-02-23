@@ -778,9 +778,9 @@ const pointerMesh = (() => {
   // const numSidesPositions = sidesGeometry.attributes.position.array.length;
   const dotsGeometries = [];
   const dotGeometry = new THREE.BoxBufferGeometry(0.01, 0.01, 0.01);
-  for (let x = 0; x < 10; x++) {
-    for (let y = 0; y < 10; y++) {
-      for (let z = 0; z < 10; z++) {
+  for (let x = 0; x <= PARCEL_SIZE; x++) {
+    for (let y = 0; y <= PARCEL_SIZE; y++) {
+      for (let z = 0; z <= PARCEL_SIZE; z++) {
         const newDotGeometry = dotGeometry.clone()
           .applyMatrix(new THREE.Matrix4().makeTranslation(x*0.1, y*0.1, z*0.1));
         dotsGeometries.push(newDotGeometry);
@@ -971,7 +971,7 @@ const _makeMiningMesh = (x, y, z) => {
   mesh.visible = false;
   // mesh.token = token;
 
-  const size = PARCEL_SIZE;
+  const size = PARCEL_SIZE + 1;
   const dims = Float32Array.from([size, size, size]);
   const potential = new Float32Array(size*size*size);
   potential.fill(10);
@@ -1019,7 +1019,7 @@ const _makeMiningMesh = (x, y, z) => {
     x -= mesh.x * PARCEL_SIZE;
     y -= mesh.y * PARCEL_SIZE;
     z -= mesh.z * PARCEL_SIZE;
-    if (x >= 0 && x < PARCEL_SIZE && y >= 0 && y < PARCEL_SIZE && z >= 0 && z < PARCEL_SIZE) {
+    if (x >= 0 && x <= PARCEL_SIZE && y >= 0 && y <= PARCEL_SIZE && z >= 0 && z <= PARCEL_SIZE) {
       /* const index = x + y*size*size + z*size;
       potential[index] = -1; */
 
@@ -1037,9 +1037,9 @@ const _makeMiningMesh = (x, y, z) => {
               ax >= 0 &&
               ay >= 0 &&
               az >= 0 &&
-              ax < PARCEL_SIZE &&
-              ay < PARCEL_SIZE &&
-              az < PARCEL_SIZE
+              ax <= PARCEL_SIZE &&
+              ay <= PARCEL_SIZE &&
+              az <= PARCEL_SIZE
             ) {
               const index = ax + ay*size*size + az*size;
               const d = (max - Math.sqrt(dx*dx + dy*dy + dz*dz)) / max;
@@ -1056,7 +1056,7 @@ const _makeMiningMesh = (x, y, z) => {
               const ax = x + dx;
               const ay = y + dy;
               const az = z + dz;
-              if (ax >= 0 && ax < PARCEL_SIZE && ay >= 0 && ay < PARCEL_SIZE && az >= 0 && az < PARCEL_SIZE) {
+              if (ax >= 0 && ax <= PARCEL_SIZE && ay >= 0 && ay <= PARCEL_SIZE && az >= 0 && az <= PARCEL_SIZE) {
                 const index2 = ax + ay*size*size + az*size;
                 const xi = index2*3;
                 const yi = index2*3+1;
@@ -1249,7 +1249,24 @@ const _makeMiningMesh = (x, y, z) => {
 };
 let miningMeshes = [];
 const _findMiningMeshByIndex = (x, y, z) => miningMeshes.find(miningMesh => miningMesh.x === x && miningMesh.y === y && miningMesh.z === z);
-const _findMiningMeshByContainCoord = (x, y, z) => _findMiningMeshByIndex(Math.floor(x), Math.floor(y), Math.floor(z));
+const _findMiningMeshesByContainCoord = (x, y, z) => {
+  const result = [];
+  const miningMesh = _findMiningMeshByIndex(x, y, z);
+  miningMesh && result.push(miningMesh);
+  const factor = 1;
+  for (let dx = -factor; dx <= factor; dx++) {
+    const ax = Math.floor(x + dx*0.1);
+    for (let dz = -factor; dz <= factor; dz++) {
+      const az = Math.floor(z + dz*0.1);
+      for (let dy = -factor; dy <= factor; dy++) {
+        const ay = Math.floor(y + dy*0.1);
+        const miningMesh = _findMiningMeshByIndex(ax, ay, az);
+        miningMesh && !result.includes(miningMesh) && result.push(miningMesh);
+      }
+    }
+  }
+  return result;
+};
 const _resizeMiningMeshes = (x, y, z) => {
   const requiredMap = new Map();
   for (let ay = 0; ay < y; ay++) {
@@ -1277,15 +1294,19 @@ const _resizeMiningMeshes = (x, y, z) => {
 };
 _resizeMiningMeshes(1, 1, 1);
 const _paintMiningMeshes = (x, y, z) => {
-  const miningMesh = _findMiningMeshByContainCoord(x/10, y/10, z/10);
-  miningMesh && miningMesh.paint(x, y, z);
+  const miningMeshes = _findMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
+  // console.log('found', miningMeshes.length);
+  miningMeshes.forEach(miningMesh => {
+    miningMesh.paint(x, y, z);
+  });
 };
 const _eraseMiningMeshes = (x, y, z) => {
-  const miningMesh = _findMiningMeshByContainCoord(x/10, y/10, z/10);
-  miningMesh && miningMesh.erase(x, y, z);
+  const miningMesh = _findMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
+  miningMeshes.forEach(miningMesh => {
+    miningMesh.erase(x, y, z);
+  });
 };
 const _collideMiningMeshes = () => {
-  // const miningMesh = _findMiningMeshByContainCoord(x/10, y/10, z/10);
   for (let i = 0; i < miningMeshes.length; i++) {
     miningMeshes[i].collide();
   }

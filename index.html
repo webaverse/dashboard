@@ -737,7 +737,11 @@ table tr {
     <canvas id=canvas></canvas>
 
     <!-- <script src="https://kit.fontawesome.com/0735724151.js"></script> -->
-<script>
+<script type=module>
+import {makePromise} from './util.js';
+import contract from './contract.js';
+contract.init();
+
 const PARCEL_SIZE = 10;
 const size = PARCEL_SIZE + 1;
 
@@ -1038,8 +1042,8 @@ const _makeMiningMesh = (x, y, z) => {
   mesh.z = z;
   mesh.potential = potential;
   mesh.brush = brush;
-  mesh.shift = shift;
-  mesh.scale = scale;
+  // mesh.shift = shift;
+  // mesh.scale = scale;
   mesh.contains = pos =>
     pos.x >= shift[0] &&
     pos.y >= shift[1] &&
@@ -1503,8 +1507,37 @@ const opsForm = document.getElementById('ops-form');
 const objectNameEl = document.getElementById('object-name');
 opsForm.addEventListener('submit', async e => {
   e.preventDefault();
-  const arrayBuffer = _saveMiningMeshes();
-  for (let i = 0; i < miningMeshes.length; i++) {
+  const dataArrayBuffer = _saveMiningMeshes();
+
+  const dataHash = await fetch(`https://cryptopolys.webaverse.workers.dev/data/`, {
+    method: 'PUT',
+    body: dataArrayBuffer,
+  })
+    .then(res => res.json())
+    .then(j => j.hash);
+
+  const metadataHash = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata/`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      objectName: objectNameEl.value,
+      dataHash: dataHash,
+    }),
+  })
+    .then(res => res.json())
+    .then(j => j.hash);
+
+  const p = makePromise();
+  const instance = await contract.getInstance();
+  instance.mintWithMetadata(0, '0x0000000000000000000000000000000000000000', 1, 'hash', metadataHash, (err, value) => {
+    if (!err) {
+      p.accept(value);
+    } else {
+      p.reject(err);
+    }
+  });
+  await p;
+
+  /* for (let i = 0; i < miningMeshes.length; i++) {
     const miningMesh = miningMeshes[i];
     scene.remove(miningMesh);
     miningMesh.destroy();
@@ -1513,7 +1546,7 @@ opsForm.addEventListener('submit', async e => {
   for (let i = 0; i < miningMeshes.length; i++) {
     scene.add(miningMeshes[i]);
   }
-  _refreshMiningMeshes();
+  _refreshMiningMeshes(); */
 });
 document.getElementById('new-op').addEventListener('click', e => {
   _newMiningMeshes();

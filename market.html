@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel=icon type="image/png" href="favicon.png">
+    <link href="index.css" rel=stylesheet>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/0735724151.js" crossorigin="anonymous"></script>
+  </head>
+  <body >
+    <header>
+      <a href="https://browser.exokit.org">
+        <img class=icon src="logo.svg"/>
+      </a>
+      <a href="/" class="nav" id="explore-dropdown">Polys</a>
+      <a href="/" class="nav" id="explore-dropdown">World</a>
+      <a href="/" class="nav" id="explore-dropdown">Create</a>
+      <a href="/" class="nav open" id="explore-dropdown">Market</a>
+    </header>
+
+    <section class=grid id=grid></section>
+
+    <!-- <script src="https://kit.fontawesome.com/0735724151.js"></script> -->
+<script type=module>
+import {makePromise} from './util.js';
+import contract from './contract.js';
+import screenshot from './screenshot.js';
+
+contract.init();
+
+const gridEl = document.getElementById('grid');
+(async () => {
+  const instance = await contract.getInstance();
+  const noncePromise = makePromise();
+  instance.getNonce((err, nonce) => {
+    if (!err) {
+      noncePromise.accept(nonce);
+    } else {
+      noncePromise.reject(err);
+    }
+  });
+  let nonce = await noncePromise;
+  nonce = nonce.toNumber();
+
+  console.log('got nonce', nonce);
+
+  for (let i = 1; i <= nonce; i++) {
+    const p = makePromise();
+    instance.getMetadata(i, 'hash', (err, metadataHash) => {
+      if (!err) {
+        p.accept(metadataHash);
+      } else {
+        p.reject(err);
+      }
+    });
+    const metadataHash = await p;
+    const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${metadataHash}`)
+      .then(res => res.json());
+    const {dataHash, screenshotHash} = metadata;
+    /* const [
+      data,
+      screenshotImg,
+    ] = await Promise.all([
+      fetch(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`)
+        .then(res => res.arrayBuffer()),
+      new Promise((accept, reject) => {
+        const img = new Image();
+        img.src = `https://cryptopolys.webaverse.workers.dev/data${screenshotHash}`;
+        img.onload = () => {
+          accept(img);
+        };
+        img.onerror = reject;
+      }),
+    ]); */
+    console.log('got meta', metadata);
+    gridEl.innerHTML += `<div class="object">
+      <img src="https://cryptopolys.webaverse.workers.dev/data${screenshotHash}">
+      <div class=name>${metadata.objectName}</div>
+    </div>`;
+  }
+})();
+</script>
+  </body>
+</html>

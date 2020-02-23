@@ -539,7 +539,7 @@ canvas {
   height: 100vh;
   background-color: #000;
 }
-table {
+/* table {
   width: 100%;
 }
 table colgroup col:nth-child(1) {
@@ -550,4 +550,28 @@ table colgroup col:nth-child(3) {
 }
 table tr {
   background-color: #f2f3f5;
+} */
+.grid {
+  display: flex;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+.grid > .object {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  margin: 15px;
+  border: 1px solid #EEE;
+  border-radius: 7px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.grid > .object > img {
+  /* margin-bottom: 10px; */
+}
+.grid > .object > .name {
+  padding: 15px;
+}
+.grid > .object:hover {
+  border-color: #CCC;
 }

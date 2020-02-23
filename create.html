@@ -55,7 +55,7 @@
       <nav class="op" id=save-op><i class="fal fa-save"></i><input type=submit></nav>
     </form>
     <div class=enters>
-      <nav class=enter>
+      <nav class=enter id=enter-xr-button>
         <i class="fa fa-head-vr"></i>
       </ops>
     </div>
@@ -89,6 +89,7 @@ import * as THREE from './three.module.js';
 window.THREE = THREE;
 import {OrbitControls} from './OrbitControls.js';
 import {BufferGeometryUtils} from './BufferGeometryUtils.js';
+import {XRControllerModelFactory} from './XRControllerModelFactory.js';
 import './gif.js';
 import {makePromise} from './util.js';
 import contract from './contract.js';
@@ -1014,6 +1015,59 @@ const objectSizeZ = document.getElementById('object-size-z');
     pointerMesh.resize(x, y, z);
   });
 });
+
+{
+  let currentSession = null;
+
+  function onSessionStarted( session ) {
+
+    session.addEventListener( 'end', onSessionEnded );
+
+    renderer.xr.setSession( session );
+    // button.textContent = 'EXIT VR';
+
+    currentSession = session;
+
+    const controllerModelFactory = new XRControllerModelFactory();
+    controllerGrip1 = renderer.xr.getControllerGrip( 0 );
+    controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
+    scene.add( controllerGrip1 );
+    controllerGrip2 = renderer.xr.getControllerGrip( 1 );
+    controllerGrip2.add( controllerModelFactory.createControllerModel( controllerGrip2 ) );
+    scene.add( controllerGrip2 );
+
+  }
+
+  function onSessionEnded( /*event*/ ) {
+
+    currentSession.removeEventListener( 'end', onSessionEnded );
+
+    // button.textContent = 'ENTER VR';
+
+    currentSession = null;
+
+  }
+
+  document.getElementById('enter-xr-button').addEventListener('click', e => {
+    if ( currentSession === null ) {
+
+      // WebXR's requestReferenceSpace only works if the corresponding feature
+      // was requested at session creation time. For simplicity, just ask for
+      // the interesting ones as optional features, but be aware that the
+      // requestReferenceSpace call will fail if it turns out to be unavailable.
+      // ('local' is always available for immersive sessions and doesn't need to
+      // be requested separately.)
+
+      var sessionInit = { optionalFeatures: [ 'local-floor', 'bounded-floor' ] };
+      navigator.xr.requestSession( 'immersive-vr', sessionInit ).then( onSessionStarted );
+
+    } else {
+
+      currentSession.end();
+
+    }
+  });
+}
 
 function animate() {
   orbitControls.update();

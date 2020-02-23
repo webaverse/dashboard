@@ -1480,7 +1480,11 @@ const objectNameEl = document.getElementById('object-name');
 opsForm.addEventListener('submit', async e => {
   e.preventDefault();
   const arrayBuffer = _saveMiningMeshes();
-  _newMiningMeshes();
+  for (let i = 0; i < miningMeshes.length; i++) {
+    const miningMesh = miningMeshes[i];
+    scene.remove(miningMesh);
+    miningMesh.destroy();
+  }
   miningMeshes = _loadMiningMeshes(arrayBuffer);
   for (let i = 0; i < miningMeshes.length; i++) {
     scene.add(miningMeshes[i]);

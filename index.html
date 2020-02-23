@@ -1108,35 +1108,39 @@ const _makeMiningMesh = (x, y, z) => {
     }
   };
   mesh.collide = () => {
-    return worker.request({
-      method: 'collide',
-      positions: geometry.attributes.position.array,
-      origin: localRaycaster.ray.origin.toArray(new Float32Array(3)),
-      direction: localRaycaster.ray.direction.toArray(new Float32Array(3))
-    }).then(result => () => {
-      if (!isNaN(result.collision[0])) {
-        collisionMesh.position.fromArray(result.collision);
-        collisionMesh.visible = true;
+    if (mesh.visible) {
+      return worker.request({
+        method: 'collide',
+        positions: geometry.attributes.position.array,
+        origin: localRaycaster.ray.origin.toArray(new Float32Array(3)),
+        direction: localRaycaster.ray.direction.toArray(new Float32Array(3))
+      }).then(result => () => {
+        if (!isNaN(result.collision[0])) {
+          collisionMesh.position.fromArray(result.collision);
+          collisionMesh.visible = true;
 
-        const oldColorAttribute = geometry.attributes.color.old || geometry.attributes.color;
-        const oldColors = oldColorAttribute.array;
-        const newColors = Float32Array.from(oldColors);
-        for (let i = 0; i < 3; i++) {
-          newColors[result.collisionIndex + i*3] = currentColor.r;
-          newColors[result.collisionIndex + i*3 + 1] = currentColor.g;
-          newColors[result.collisionIndex + i*3 + 2] = currentColor.b;
-        }
-        geometry.setAttribute('color', new THREE.BufferAttribute(newColors, 3));
-        geometry.attributes.color.old = oldColorAttribute;
-      } else {
-        collisionMesh.visible = false;
+          const oldColorAttribute = geometry.attributes.color.old || geometry.attributes.color;
+          const oldColors = oldColorAttribute.array;
+          const newColors = Float32Array.from(oldColors);
+          for (let i = 0; i < 3; i++) {
+            newColors[result.collisionIndex + i*3] = currentColor.r;
+            newColors[result.collisionIndex + i*3 + 1] = currentColor.g;
+            newColors[result.collisionIndex + i*3 + 2] = currentColor.b;
+          }
+          geometry.setAttribute('color', new THREE.BufferAttribute(newColors, 3));
+          geometry.attributes.color.old = oldColorAttribute;
+        } else {
+          collisionMesh.visible = false;
 
-        const oldColorAttribute = geometry.attributes.color.old;
-        if (oldColorAttribute) {
-          geometry.setAttribute('color', oldColorAttribute);
+          const oldColorAttribute = geometry.attributes.color.old;
+          if (oldColorAttribute) {
+            geometry.setAttribute('color', oldColorAttribute);
+          }
         }
-      }
-    });
+      });
+    } else {
+      return Promise.resolve(() => {});
+    }
   };
   /* mesh.update = () => {
     if (!colliding && geometry.attributes.position) {

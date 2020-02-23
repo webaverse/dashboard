@@ -1253,7 +1253,6 @@ const _refreshMiningMeshes = async () => {
     refreshing = true;
 
     const fns = await Promise.all(miningMeshes.map(miningMesh => miningMesh.refresh()));
-    // console.log('got fns', fns);
     for (let i = 0; i < fns.length; i++) {
       fns[i]();
     }

@@ -708,6 +708,7 @@ table tr {
     </div>
     <form class=ops id=ops-form>
       <input type="text" required id="object-name" placeholder="Object name">
+      <nav class="op" id=new-op><i class="fal fa-sparkles"></i></nav>
       <nav class="op" id=load-op><i class="fal fa-folder-open"></i></nav>
       <nav class="op" id=save-op><i class="fal fa-save"></i><input type=submit></nav>
     </form>
@@ -738,6 +739,7 @@ table tr {
     <!-- <script src="https://kit.fontawesome.com/0735724151.js"></script> -->
 <script>
 const PARCEL_SIZE = 10;
+const size = PARCEL_SIZE + 1;
 
 const canvas = document.getElementById('canvas');
 canvas.width = window.innerWidth;
@@ -1011,10 +1013,10 @@ const _makeMiningMesh = (x, y, z) => {
   mesh.visible = false;
   // mesh.token = token;
 
-  const size = PARCEL_SIZE + 1;
   const dims = Float32Array.from([size, size, size]);
   const potential = new Float32Array(size*size*size);
-  potential.fill(10);
+  const potentialFillValue = 10;
+  potential.fill(potentialFillValue);
   /* for (let x = 0; x < size; x++) {
     for (let y = 0; y < size; y++) {
       for (let z = 0; z < size; z++) {
@@ -1136,12 +1138,16 @@ const _makeMiningMesh = (x, y, z) => {
         scale,
         arrayBuffer
       }, [arrayBuffer]).then(res => () => {
-        geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
-        // geometry.setAttribute('highlight', new THREE.BufferAttribute(new Float32Array(res.positions.array.length), 3));
-        geometry.deleteAttribute('normal');
-        geometry.computeVertexNormals();
-        mesh.visible = true;
+        if (res.positions.length > 0) {
+          geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
+          geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
+          // geometry.setAttribute('highlight', new THREE.BufferAttribute(new Float32Array(res.positions.array.length), 3));
+          geometry.deleteAttribute('normal');
+          geometry.computeVertexNormals();
+          mesh.visible = true;
+        } else {
+          mesh.visible = false;
+        }
       });
     } else {
       return Promise.resolve(() => {});
@@ -1220,6 +1226,11 @@ const _makeMiningMesh = (x, y, z) => {
       return null;
     }
   }; */
+  mesh.reset = () => {
+    potential.fill(potentialFillValue);
+    brush.fill(0);
+    dirty = true;
+  };
   mesh.destroy = () => {
     geometry.dispose();
     material.dispose();
@@ -1273,6 +1284,51 @@ const _resizeMiningMeshes = (x, y, z) => {
   });
 };
 _resizeMiningMeshes(1, 1, 1);
+const _newMiningMeshes = () => {
+  for (let i = 0; i < miningMeshes.length; i++) {
+    miningMeshes[i].reset();
+  }
+  _refreshMiningMeshes();
+};
+const _saveMiningMeshes = () => {
+  const arrayBuffer = new ArrayBuffer(300*1024);
+  let index = 0;
+
+  const numMiningMeshes = miningMesh.length;
+  new Uint32Array(arrayBuffer, index, 1)[0] = numMiningMeshes;
+  index += Uint32Array.BYTES_PER_ELEMENT;
+  for (let i = 0; i < numMiningMeshes; i++) {
+    const miningMesh = miningMeshes[i];
+    const {x, y, z} = miningMesh;
+    new Uint32Array(arrayBuffer, index, 3).set(Uint32Array.from([x, y, z]));
+    index += 3*Uint32Array.BYTES_PER_ELEMENT;
+    new Float32Array(arrayBuffer, index, size*size*size).set(miningMesh.potential);
+    index += miningMesh.potential.length*Float32Array.BYTES_PER_ELEMENT;
+    new Float32Array(arrayBuffer, index, size*size*size).set(miningMesh.brush);
+    index += miningMesh.brush.length*Float32Array.BYTES_PER_ELEMENT;
+  }
+
+  return new Uint8Array(arrayBuffer, 0, index);
+};
+const _loadMiningMeshes = uint8Array => {
+  const arrayBuffer = uint8Array.buffer;
+  let index = uint8Array.byteOffset;
+
+  const miningMeshes = [];
+  const numMiningMeshes = new Uint32Array(arrayBuffer, index);
+  index += Uint32Array.BYTES_PER_ELEMENT;
+  for (let i = 0; i < numMiningMeshes; i++) {
+    const [x, y, z] = new Uint32Array(arrayBuffer, index, 3);
+    index += 3*Uint32Array.BYTES_PER_ELEMENT;
+    const miningMesh = _makeMiningMesh(x, y, z);
+    miningMesh.potential.set(new Float32Array(arrayBuffer, index, size*size*size));
+    index += miningMesh.potential.length*Float32Array.BYTES_PER_ELEMENT;
+    miningMesh.brush.set(new Float32Array(arrayBuffer, index, size*size*size));
+    index += miningMesh.brush.length*Float32Array.BYTES_PER_ELEMENT;
+    miningMeshes.push(miningMesh);
+  }
+  return miningMeshes;
+};
 const _paintMiningMeshes = (x, y, z) => {
   const miningMeshes = _findMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
   // console.log('found', miningMeshes.length);
@@ -1420,6 +1476,9 @@ const objectNameEl = document.getElementById('object-name');
 opsForm.addEventListener('submit', e => {
   e.preventDefault();
   console.log('submit', objectNameEl.value);
+});
+document.getElementById('new-op').addEventListener('click', e => {
+  _newMiningMeshes();
 });
 document.getElementById('load-op').addEventListener('click', e => {
   console.log('load');

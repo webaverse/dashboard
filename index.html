@@ -18,8 +18,7 @@
     <script src="three.js"></script>
     <script src="OrbitControls.js"></script>
     <script src="BufferGeometryUtils.js"></script>
-    <script src="UPNG.js"></script>
-    <script src="pako_deflate.min.js"></script>
+    <script src="gif.js"></script>
     <style>
 * {
   box-sizing: border-box;
@@ -1353,25 +1352,28 @@ const _screenshotMiningMeshes = async () => {
 
   const width = 256;
   const height = width;
-  const imgs = [];
   const center = new THREE.Vector3(0.5, 0.5, 0.5);
+  const gif = new GIF({
+    workers: 2,
+    quality: 10,
+  });
   for (let i = 0; i < Math.PI*2; i += Math.PI*0.05) {
     const position = new THREE.Vector3(0.5, 1, 0.5).add(new THREE.Vector3(Math.cos(i + Math.PI/2), 0, Math.sin(i + Math.PI/2)));
-    const img = screenshot(newScene, position, center, {
+    const canvas = screenshot(newScene, position, center, {
       width,
       height,
     });
-    imgs.push(img);
+    gif.addFrame(canvas, {delay: 50});
   }
+  gif.render();
+
   for (let i = 0; i < miningMeshes.length; i++) {
     scene.add(miningMeshes[i]);
   }
   scene.add(pointerMesh);
 
-  // const blobs = await Promise.all(blobPromises);
-  const arrayBuffer = UPNG.encode(imgs, width, height, 0, 500);
-  const blob = new Blob([arrayBuffer], {
-    type: 'image/png',
+  const blob = await new Promise((accept, reject) => {
+    gif.on('finished', accept);
   });
   return blob;
 };

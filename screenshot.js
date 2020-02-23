@@ -34,8 +34,15 @@ const screenshot = (scene, cameraPosition, cameraTarget, options = {}) => {
   // renderer.clear(true, true, true);
   renderer.render(scene, camera);
 
-  const gl = renderer.getContext();
-  const pixels = new Uint8Array(width*height*4);
+  // const gl = renderer.getContext();
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(renderer.domElement, 0, 0);
+  return canvas;
+  // return gl;
+  /* const pixels = new Uint8Array(width*height*4);
   gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
   const pixels2 = new Uint8Array(width*height*4);
   for (let i = 0; i < height; i++) {
@@ -45,7 +52,7 @@ const screenshot = (scene, cameraPosition, cameraTarget, options = {}) => {
       i * width*4
     );
   }
-  return pixels2;
+  return pixels2; */
   /* const blob = await new Promise((accept, reject) => {
     renderer.domElement.toBlob(accept, 'image/png');
   });

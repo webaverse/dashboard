@@ -1356,8 +1356,7 @@ const _screenshotMiningMeshes = async () => {
   const imgs = [];
   const center = new THREE.Vector3(0.5, 0.5, 0.5);
   for (let i = 0; i < Math.PI*2; i += Math.PI*0.05) {
-    console.log('got i', i);
-    const position = new THREE.Vector3(0.5, 1, 0.5).add(new THREE.Vector3(Math.cos(i), 0, Math.sin(i)));
+    const position = new THREE.Vector3(0.5, 1, 0.5).add(new THREE.Vector3(Math.cos(i + Math.PI/2), 0, Math.sin(i + Math.PI/2)));
     const img = screenshot(newScene, position, center, {
       width,
       height,

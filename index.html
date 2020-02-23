@@ -1471,7 +1471,7 @@ window.addEventListener('mousemove', e => {
       }
       _refreshMiningMeshes();
     }
-  } else if (selectedTool === 'paint') {
+  } else if (selectedTool === 'paint' || selectedTool === 'fill') {
     _updateLocalRaycaster(e);
     _collideMiningMeshes();
   }

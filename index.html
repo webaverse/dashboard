@@ -1020,7 +1020,7 @@ const _makeMiningMesh = (x, y, z) => {
     x -= mesh.x * PARCEL_SIZE;
     y -= mesh.y * PARCEL_SIZE;
     z -= mesh.z * PARCEL_SIZE;
-    if (x >= 0 && x <= PARCEL_SIZE && y >= 0 && y <= PARCEL_SIZE && z >= 0 && z <= PARCEL_SIZE) {
+    // if (x >= 0 && x <= PARCEL_SIZE && y >= 0 && y <= PARCEL_SIZE && z >= 0 && z <= PARCEL_SIZE) {
       /* const index = x + y*size*size + z*size;
       potential[index] = -1; */
 
@@ -1078,7 +1078,7 @@ const _makeMiningMesh = (x, y, z) => {
         brush[index*3+1] = currentColor.g*255;
         brush[index*3+2] = currentColor.b*255;
       } */
-    }
+    // }
   };
   mesh.paint = mesh.set.bind(mesh, 1);
   mesh.erase = mesh.set.bind(mesh, -1);

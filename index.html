@@ -910,7 +910,7 @@ opsForm.addEventListener('submit', async e => {
   const [
     dataHash,
     screenshotHash,
-  ] = await Promise.all([,
+  ] = await Promise.all([
     fetch(`https://cryptopolys.webaverse.workers.dev/data/`, {
       method: 'PUT',
       body: dataArrayBuffer,

@@ -1011,6 +1011,7 @@ const _makeMiningMesh = (x, y, z) => {
     const z = pos.z - shift[2];
     return potential[x + y*size*size + z*size];
   }; */
+  let dirty = false;
   mesh.set = (value, x, y, z) => {
     // const x = Math.floor(pos.x - shift[0]);
     // const y = Math.floor(pos.y - shift[1]);
@@ -1044,6 +1045,7 @@ const _makeMiningMesh = (x, y, z) => {
               const index = ax + ay*size*size + az*size;
               const d = (max - Math.sqrt(dx*dx + dy*dy + dz*dz)) / max;
               potential[index] = value > 0 ? Math.min(potential[index], -d) : Math.max(potential[index], d);
+              dirty = true;
             }
           }
         }
@@ -1065,6 +1067,7 @@ const _makeMiningMesh = (x, y, z) => {
                   brush[xi] = currentColor.r*255;
                   brush[yi] = currentColor.g*255;
                   brush[zi] = currentColor.b*255;
+                  dirty = true;
                 }
               }
             }
@@ -1076,116 +1079,64 @@ const _makeMiningMesh = (x, y, z) => {
         brush[index*3+2] = currentColor.b*255;
       } */
     }
-    const arrayBuffer = new ArrayBuffer(300*1024);
-    worker.request({
-      method: 'march',
-      dims,
-      potential,
-      brush,
-      shift,
-      scale,
-      arrayBuffer
-    }, [arrayBuffer]).then(res => {
-      geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
-      geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
-      // geometry.setAttribute('highlight', new THREE.BufferAttribute(new Float32Array(res.positions.array.length), 3));
-      geometry.deleteAttribute('normal');
-      geometry.computeVertexNormals();
-      // geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
-
-      /* if (potential.every(n => n <= 0)) {
-        const {x, z} = mesh;
-        fetch('https://djj7y2i5p8.execute-api.us-west-1.amazonaws.com/default/Webaverse', {
-          method: 'POST',
-          body: JSON.stringify({
-            addr: window.web3.eth.defaultAccount,
-            x,
-            y: z,
-          }),
-        })
-          .then(res => res.json())
-          .then(o => {
-            const {v, r, s} = o;
-            const addr = window.web3.eth.defaultAccount;
-            console.log('mintTokenFromSignature', {addr, x, z, v, r, s});
-            return user.execute({
-              method: 'mintTokenFromSignature',
-              data: {
-                addr,
-                x,
-                y: z,
-                v,
-                r,
-                s,
-              },
-            });
-          })
-          .then(() => {
-            console.log('mined', {x, z});
-
-            for (;;) {
-              const index = sceneMeshes.findIndex(sceneMesh => sceneMesh.token.coords.some(coord => coord[0] === x && coord[1] === z));
-              if (index !== -1) {
-                const sceneMesh = sceneMeshes[index];
-                sceneMesh.destroy();
-                scene.remove(sceneMesh);
-                sceneMeshes.splice(index, 1);
-              } else {
-                break;
-              }
-            }
-
-            const sceneMesh = _makeSceneObjectMesh();
-            sceneMesh.token = {
-              id: 0,
-              coords: [[x, z]],
-              apps: [],
-              owner: _getUserAddress(),
-            };
-            scene.add(sceneMesh);
-            sceneMeshes.push(sceneMesh);
-
-            selectedSceneToken = null;
-
-            lastSceneCoords[0] = NaN;
-            lastSceneCoords[1] = NaN;
-          });
-      } */
-      mesh.visible = true;
-    });
   };
   mesh.paint = mesh.set.bind(mesh, 1);
   mesh.erase = mesh.set.bind(mesh, -1);
-  // let colliding = false;
-  mesh.collide = async () => {
-    const result = await worker.request({
+  mesh.refresh = () => {
+    if (dirty) {
+      dirty = false;
+
+      const arrayBuffer = new ArrayBuffer(300*1024);
+      return worker.request({
+        method: 'march',
+        dims,
+        potential,
+        brush,
+        shift,
+        scale,
+        arrayBuffer
+      }, [arrayBuffer]).then(res => () => {
+        geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
+        // geometry.setAttribute('highlight', new THREE.BufferAttribute(new Float32Array(res.positions.array.length), 3));
+        geometry.deleteAttribute('normal');
+        geometry.computeVertexNormals();
+        mesh.visible = true;
+      });
+    } else {
+      return Promise.resolve(() => {});
+    }
+  };
+  mesh.collide = () => {
+    return worker.request({
       method: 'collide',
       positions: geometry.attributes.position.array,
       origin: localRaycaster.ray.origin.toArray(new Float32Array(3)),
       direction: localRaycaster.ray.direction.toArray(new Float32Array(3))
+    }).then(result => () => {
+      if (!isNaN(result.collision[0])) {
+        collisionMesh.position.fromArray(result.collision);
+        collisionMesh.visible = true;
+
+        const oldColorAttribute = geometry.attributes.color.old || geometry.attributes.color;
+        const oldColors = oldColorAttribute.array;
+        const newColors = Float32Array.from(oldColors);
+        for (let i = 0; i < 3; i++) {
+          newColors[result.collisionIndex + i*3] = currentColor.r;
+          newColors[result.collisionIndex + i*3 + 1] = currentColor.g;
+          newColors[result.collisionIndex + i*3 + 2] = currentColor.b;
+        }
+        geometry.setAttribute('color', new THREE.BufferAttribute(newColors, 3));
+        geometry.attributes.color.old = oldColorAttribute;
+      } else {
+        collisionMesh.visible = false;
+
+        const oldColorAttribute = geometry.attributes.color.old;
+        if (oldColorAttribute) {
+          geometry.setAttribute('color', oldColorAttribute);
+        }
+      }
     });
-    if (!isNaN(result.collision[0])) {
-      collisionMesh.position.fromArray(result.collision);
-      collisionMesh.visible = true;
-
-      const oldColorAttribute = geometry.attributes.color.old || geometry.attributes.color;
-      const oldColors = oldColorAttribute.array;
-      const newColors = Float32Array.from(oldColors);
-      for (let i = 0; i < 3; i++) {
-        newColors[result.collisionIndex + i*3] = currentColor.r;
-        newColors[result.collisionIndex + i*3 + 1] = currentColor.g;
-        newColors[result.collisionIndex + i*3 + 2] = currentColor.b;
-      }
-      geometry.setAttribute('color', new THREE.BufferAttribute(newColors, 3));
-      geometry.attributes.color.old = oldColorAttribute;
-    } else {
-      collisionMesh.visible = false;
-
-      const oldColorAttribute = geometry.attributes.color.old;
-      if (oldColorAttribute) {
-        geometry.setAttribute('color', oldColorAttribute);
-      }
-    }
   };
   /* mesh.update = () => {
     if (!colliding && geometry.attributes.position) {
@@ -1224,22 +1175,6 @@ const _makeMiningMesh = (x, y, z) => {
       return null;
     }
   }; */
-
-  /* const arrayBuffer = new ArrayBuffer(300*1024);
-  worker.request({
-    method: 'march',
-    dims,
-    potential,
-    brush,
-    shift,
-    scale,
-    arrayBuffer
-  }).then(res => {
-    geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
-    // geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
-    mesh.visible = true;
-  }); */
   mesh.destroy = () => {
     geometry.dispose();
     material.dispose();
@@ -1311,6 +1246,27 @@ const _collideMiningMeshes = () => {
     miningMeshes[i].collide();
   }
 };
+let refreshing = false;
+let refreshQueued = false;
+const _refreshMiningMeshes = async () => {
+  if (!refreshing) {
+    refreshing = true;
+
+    const fns = await Promise.all(miningMeshes.map(miningMesh => miningMesh.refresh()));
+    // console.log('got fns', fns);
+    for (let i = 0; i < fns.length; i++) {
+      fns[i]();
+    }
+
+    refreshing = false;
+    if (refreshQueued) {
+      refreshQueued = false;
+      _refreshMiningMeshes();
+    }
+  } else {
+    refreshQueued = true;
+  }
+};
 
 const collisionMesh = (() => {
   const geometry = new THREE.BoxBufferGeometry(0.01, 0.01, 0.01);
@@ -1366,6 +1322,7 @@ window.addEventListener('mousemove', e => {
       } else if (selectedTool === 'erase') {
         _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
       }
+      _refreshMiningMeshes();
     }
   } else if (selectedTool === 'paint') {
     _updateLocalRaycaster(e);
@@ -1379,6 +1336,7 @@ window.addEventListener('mousedown', e => {
   } else if (selectedTool === 'erase') {
     _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
   }
+  _refreshMiningMeshes();
   mouseDown = true;
 });
 window.addEventListener('mouseup', e => {

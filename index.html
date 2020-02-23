@@ -18,6 +18,8 @@
     <script src="three.js"></script>
     <script src="OrbitControls.js"></script>
     <script src="BufferGeometryUtils.js"></script>
+    <script src="UPNG.js"></script>
+    <script src="pako_deflate.min.js"></script>
     <style>
 * {
   box-sizing: border-box;
@@ -1337,22 +1339,41 @@ const _saveMiningMeshes = () => {
 };
 const _screenshotMiningMeshes = async () => {
   const newScene = new THREE.Scene();
+  {
+    const ambientLight = new THREE.AmbientLight(0x808080);
+    newScene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+    directionalLight.position.set(0.5, 1, 0.5);
+    newScene.add(directionalLight);
+  }
   for (let i = 0; i < miningMeshes.length; i++) {
     newScene.add(miningMeshes[i]);
   }
   newScene.add(pointerMesh);
 
-  const blobPromise = screenshot(newScene, new THREE.Vector3(0, 0, 3), new THREE.Quaternion(), {
-    width: 512,
-    height: 512,
-  });
-
+  const width = 256;
+  const height = width;
+  const imgs = [];
+  const center = new THREE.Vector3(0.5, 0.5, 0.5);
+  for (let i = 0; i < Math.PI*2; i += Math.PI*0.05) {
+    console.log('got i', i);
+    const position = new THREE.Vector3(0.5, 1, 0.5).add(new THREE.Vector3(Math.cos(i), 0, Math.sin(i)));
+    const img = screenshot(newScene, position, center, {
+      width,
+      height,
+    });
+    imgs.push(img);
+  }
   for (let i = 0; i < miningMeshes.length; i++) {
     scene.add(miningMeshes[i]);
   }
   scene.add(pointerMesh);
 
-  const blob = await blobPromise;
+  // const blobs = await Promise.all(blobPromises);
+  const arrayBuffer = UPNG.encode(imgs, width, height, 0, 500);
+  const blob = new Blob([arrayBuffer], {
+    type: 'image/png',
+  });
   return blob;
 };
 const _loadMiningMeshes = uint8Array => {

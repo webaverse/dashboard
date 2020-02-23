@@ -1553,30 +1553,41 @@ opsForm.addEventListener('submit', async e => {
   e.preventDefault();
   const dataArrayBuffer = _saveMiningMeshes();
 
-  const blob = await _screenshotMiningMeshes();
-  console.log('got screenshot', blob);
-  const img = new Image();
-  img.src = URL.createObjectURL(blob);
+  const screenshotBlob = await _screenshotMiningMeshes();
+
+  /* const img = new Image();
+  img.src = URL.createObjectURL(screenshotBlob);
   img.style.position = 'relative';
   img.style.zIndex = 100;
-  document.body.appendChild(img);
+  document.body.appendChild(img); */
 
-  /* const dataHash = await fetch(`https://cryptopolys.webaverse.workers.dev/data/`, {
-    method: 'PUT',
-    body: dataArrayBuffer,
-  })
-    .then(res => res.json())
-    .then(j => j.hash);
-
+  const [
+    dataHash,
+    screenshotHash,
+  ] = await Promise.all([,
+    fetch(`https://cryptopolys.webaverse.workers.dev/data/`, {
+      method: 'PUT',
+      body: dataArrayBuffer,
+    })
+      .then(res => res.json())
+      .then(j => j.hash),
+    fetch(`https://cryptopolys.webaverse.workers.dev/data/`, {
+      method: 'PUT',
+      body: screenshotBlob,
+    })
+      .then(res => res.json())
+      .then(j => j.hash),
+  ]);
   const metadataHash = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata/`, {
-    method: 'PUT',
-    body: JSON.stringify({
-      objectName: objectNameEl.value,
-      dataHash: dataHash,
-    }),
-  })
-    .then(res => res.json())
-    .then(j => j.hash);
+      method: 'PUT',
+      body: JSON.stringify({
+        objectName: objectNameEl.value,
+        dataHash,
+        screenshotHash,
+      }),
+    })
+      .then(res => res.json())
+      .then(j => j.hash);
 
   const p = makePromise();
   const instance = await contract.getInstance();
@@ -1587,7 +1598,7 @@ opsForm.addEventListener('submit', async e => {
       p.reject(err);
     }
   });
-  await p; */
+  await p;
 
   /* for (let i = 0; i < miningMeshes.length; i++) {
     const miningMesh = miningMeshes[i];

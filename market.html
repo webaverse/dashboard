@@ -72,10 +72,10 @@ const gridEl = document.getElementById('grid');
       }),
     ]); */
     console.log('got meta', metadata);
-    gridEl.innerHTML += `<div class="object">
+    gridEl.innerHTML += `<a href="/create.html?o=${encodeURIComponent(metadataHash)}" class="object">
       <img src="https://cryptopolys.webaverse.workers.dev/data${screenshotHash}">
       <div class=name>${metadata.objectName}</div>
-    </div>`;
+    </a>`;
   }
 })();
 </script>

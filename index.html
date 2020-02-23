@@ -1297,18 +1297,34 @@ const _saveMiningMeshes = () => {
   const arrayBuffer = new ArrayBuffer(300*1024);
   let index = 0;
 
+  let maxX = -1;
+  let maxY = -1;
+  let maxZ = -1;
   const numMiningMeshes = miningMeshes.length;
-  new Uint32Array(arrayBuffer, index, 1)[0] = numMiningMeshes;
-  index += Uint32Array.BYTES_PER_ELEMENT;
   for (let i = 0; i < numMiningMeshes; i++) {
     const miningMesh = miningMeshes[i];
-    const {x, y, z} = miningMesh;
-    new Uint32Array(arrayBuffer, index, 3).set(Uint32Array.from([x, y, z]));
-    index += 3*Uint32Array.BYTES_PER_ELEMENT;
-    new Float32Array(arrayBuffer, index, size*size*size).set(miningMesh.potential);
-    index += size*size*size*Float32Array.BYTES_PER_ELEMENT;
-    new Uint8Array(arrayBuffer, index, size*size*size*3).set(miningMesh.brush);
-    index += size*size*size*3*Float32Array.BYTES_PER_ELEMENT;
+    maxX = Math.max(maxX, miningMesh.x);
+    maxY = Math.max(maxY, miningMesh.y);
+    maxZ = Math.max(maxZ, miningMesh.z);
+  }
+  maxX++;
+  maxY++;
+  maxZ++;
+  new Uint32Array(arrayBuffer, index, 3).set(Uint32Array.from([maxX, maxY, maxZ]));
+  index += 3*Uint32Array.BYTES_PER_ELEMENT;
+  for (let y = 0; y < maxY; y++) {
+    for (let x = 0; x < maxX; x++) {
+      for (let z = 0; z < maxZ; z++) {
+        const miningMesh = _findMiningMeshByIndex(x, y, z);
+        new Float32Array(arrayBuffer, index, size*size*size).set(miningMesh.potential);
+        index += size*size*size*Float32Array.BYTES_PER_ELEMENT;
+        new Uint8Array(arrayBuffer, index, size*size*size*3).set(miningMesh.brush);
+        index += size*size*size*3*Uint8Array.BYTES_PER_ELEMENT;
+        if (index % Float32Array.BYTES_PER_ELEMENT !== 0) {
+          index += Float32Array.BYTES_PER_ELEMENT - index % Float32Array.BYTES_PER_ELEMENT;
+        }
+      }
+    }
   }
 
   return new Uint8Array(arrayBuffer, 0, index);
@@ -1318,19 +1334,27 @@ const _loadMiningMeshes = uint8Array => {
   let index = uint8Array.byteOffset;
 
   const miningMeshes = [];
-  const numMiningMeshes = new Uint32Array(arrayBuffer, index)[0];
-  index += Uint32Array.BYTES_PER_ELEMENT;
-  for (let i = 0; i < numMiningMeshes; i++) {
-    const [x, y, z] = new Uint32Array(arrayBuffer, index, 3);
-    index += 3*Uint32Array.BYTES_PER_ELEMENT;
-    const miningMesh = _makeMiningMesh(x, y, z);
-    miningMesh.potential.set(new Float32Array(arrayBuffer, index, size*size*size));
-    index += size*size*size*Float32Array.BYTES_PER_ELEMENT;
-    miningMesh.brush.set(new Uint8Array(arrayBuffer, index, size*size*size*3));
-    index += size*size*size*3*Uint8Array.BYTES_PER_ELEMENT;
-    miningMesh.setDirty();
-    miningMeshes.push(miningMesh);
+  const [maxX, maxY, maxZ] = new Uint32Array(arrayBuffer, index, 3);
+  index += 3*Uint32Array.BYTES_PER_ELEMENT;
+  for (let y = 0; y < maxY; y++) {
+    for (let x = 0; x < maxX; x++) {
+      for (let z = 0; z < maxZ; z++) {
+        const miningMesh = _makeMiningMesh(x, y, z);
+        miningMesh.potential.set(new Float32Array(arrayBuffer, index, size*size*size));
+        index += size*size*size*Float32Array.BYTES_PER_ELEMENT;
+        miningMesh.brush.set(new Uint8Array(arrayBuffer, index, size*size*size*3));
+        index += size*size*size*3*Uint8Array.BYTES_PER_ELEMENT;
+        if (index % Float32Array.BYTES_PER_ELEMENT !== 0) {
+          index += Float32Array.BYTES_PER_ELEMENT - index % Float32Array.BYTES_PER_ELEMENT;
+        }
+        miningMesh.setDirty();
+        miningMeshes.push(miningMesh);
+      }
+    }
   }
+  objectSizeX.value = maxX;
+  objectSizeY.value = maxY;
+  objectSizeZ.value = maxZ;
   return miningMeshes;
 };
 const _paintMiningMeshes = (x, y, z) => {

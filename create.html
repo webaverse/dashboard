@@ -425,6 +425,18 @@ ammoPromise.then(newAmmo => {
   ammo = newAmmo;
 });
 
+/* const cubeMesh = (() => {
+  const geometry = new THREE.BoxBufferGeometry(3, 3, 3);
+  const material = new THREE.MeshPhongMaterial({
+    color: 0xFF0000,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.y = -3/2;
+  mesh.frustumCulled = false;
+  return mesh;
+})();
+scene.add(cubeMesh); */
+
 const _makeMiningMesh = (x, y, z) => {
   const terrainVsh = `
     attribute vec3 color;

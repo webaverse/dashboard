@@ -740,6 +740,8 @@ table tr {
 <script type=module>
 import {makePromise} from './util.js';
 import contract from './contract.js';
+import screenshot from './screenshot.js';
+
 contract.init();
 
 const PARCEL_SIZE = 10;
@@ -1333,6 +1335,26 @@ const _saveMiningMeshes = () => {
 
   return new Uint8Array(arrayBuffer, 0, index);
 };
+const _screenshotMiningMeshes = async () => {
+  const newScene = new THREE.Scene();
+  for (let i = 0; i < miningMeshes.length; i++) {
+    newScene.add(miningMeshes[i]);
+  }
+  newScene.add(pointerMesh);
+
+  const blobPromise = screenshot(newScene, new THREE.Vector3(0, 0, 3), new THREE.Quaternion(), {
+    width: 512,
+    height: 512,
+  });
+
+  for (let i = 0; i < miningMeshes.length; i++) {
+    scene.add(miningMeshes[i]);
+  }
+  scene.add(pointerMesh);
+
+  const blob = await blobPromise;
+  return blob;
+};
 const _loadMiningMeshes = uint8Array => {
   const arrayBuffer = uint8Array.buffer;
   let index = uint8Array.byteOffset;
@@ -1509,7 +1531,15 @@ opsForm.addEventListener('submit', async e => {
   e.preventDefault();
   const dataArrayBuffer = _saveMiningMeshes();
 
-  const dataHash = await fetch(`https://cryptopolys.webaverse.workers.dev/data/`, {
+  const blob = await _screenshotMiningMeshes();
+  console.log('got screenshot', blob);
+  const img = new Image();
+  img.src = URL.createObjectURL(blob);
+  img.style.position = 'relative';
+  img.style.zIndex = 100;
+  document.body.appendChild(img);
+
+  /* const dataHash = await fetch(`https://cryptopolys.webaverse.workers.dev/data/`, {
     method: 'PUT',
     body: dataArrayBuffer,
   })
@@ -1535,7 +1565,7 @@ opsForm.addEventListener('submit', async e => {
       p.reject(err);
     }
   });
-  await p;
+  await p; */
 
   /* for (let i = 0; i < miningMeshes.length; i++) {
     const miningMesh = miningMeshes[i];

@@ -76,7 +76,7 @@ header .nav i {
   padding: 0 7px;
   padding-top: 2px;
 }
-input[type=email],
+/* input[type=email],
 input[type=text]
 {
   margin-right: 10px;
@@ -87,7 +87,7 @@ input[type=text]
   font-family: inherit;
   font-size: inherit;
   outline: none;
-}
+} */
 header > .login-form {
   display: flex;
   margin-left: auto;
@@ -102,7 +102,10 @@ header > .login-form.phase-3 > .phaseless-content
 {
   display: none;
 }
-.tools, .colors {
+.tools,
+.ops,
+.colors
+{
   display: flex;
   position: absolute;
   z-index: 1;
@@ -111,7 +114,10 @@ header > .login-form.phase-3 > .phaseless-content
   top: 60px;
   left: 10px;
 }
-.tools > .tool, .colors > .color {
+.tools > .tool,
+.ops > .op,
+.colors > .color
+{
   display: flex;
   width: 30px;
   height: 30px;
@@ -129,6 +135,18 @@ header > .login-form.phase-3 > .phaseless-content
   color: #FFF;
 }
 .tools > .tool:active, .tools > .tool.selected {
+  background-color: #1e88e5;
+  color: #FFF;
+}
+.ops {
+  top: 60px;
+  right: 10px;
+}
+.ops > .op:hover {
+  background-color: #42a5f5;
+  color: #FFF;
+}
+.ops > .op:active, .ops > .op.selected {
   background-color: #1e88e5;
   color: #FFF;
 }
@@ -673,6 +691,11 @@ table tr {
         <span>x</span>
         <input type="number" id="object-size-z" value="1" min="1" max="8">
       </label>
+    </div>
+    <div class=ops>
+      <input type="text" id="object-name" placeholder="Object name">
+      <nav class="op" id=load-op><i class="fal fa-folder-open"></i></nav>
+      <nav class="op" id=save-op><i class="fal fa-save"></i></nav>
     </div>
     <div class=colors>
       <nav class="color selected"><div class=inner style="background-color: #ef5350;"></div></nav>

@@ -90,6 +90,7 @@ window.THREE = THREE;
 import {OrbitControls} from './OrbitControls.js';
 import {BufferGeometryUtils} from './BufferGeometryUtils.js';
 import {XRControllerModelFactory} from './XRControllerModelFactory.js';
+import {Ammo as AmmoLib} from './ammo.wasm.js';
 import './gif.js';
 import {makePromise} from './util.js';
 import contract from './contract.js';
@@ -312,6 +313,117 @@ const worker = (() => {
   });
   return worker;
 })();
+// window.Ammo = Ammo;
+const ammoPromise = (async () => {
+  const p = makePromise();
+  window.Module = { TOTAL_MEMORY: 100*1024*1024 };
+  AmmoLib().then(Ammo => {
+    Ammo.then = null;
+    p.accept(Ammo);
+  });
+  const Ammo = await p;
+
+  const localVector = new THREE.Vector3();
+  const localQuaternion = new THREE.Quaternion();
+  const ammoVector3 = new Ammo.btVector3();
+  const ammoQuaternion = new Ammo.btQuaternion();
+  const localTransform = new Ammo.btTransform();
+
+  var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
+  var dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
+  var overlappingPairCache = new Ammo.btDbvtBroadphase();
+  var solver = new Ammo.btSequentialImpulseConstraintSolver();
+  const dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+  dynamicsWorld.setGravity(new Ammo.btVector3(0, -9.8, 0));
+
+  {
+    var groundShape = new Ammo.btBoxShape(new Ammo.btVector3(100, 100, 100));
+
+    var groundTransform = new Ammo.btTransform();
+    groundTransform.setIdentity();
+    groundTransform.setOrigin(new Ammo.btVector3(0, -100, 0));
+
+    var mass = 0;
+    var localInertia = new Ammo.btVector3(0, 0, 0);
+    var myMotionState = new Ammo.btDefaultMotionState(groundTransform);
+    var rbInfo = new Ammo.btRigidBodyConstructionInfo(0, myMotionState, groundShape, localInertia);
+    var body = new Ammo.btRigidBody(rbInfo);
+
+    dynamicsWorld.addRigidBody(body);
+  }
+
+  const _makeConvexHullShape = object => {
+    const shape = new Ammo.btConvexHullShape();
+    let numPoints = 0;
+    object.updateMatrixWorld();
+    object.traverse(o => {
+      if (o.isMesh) {
+        const {geometry} = o;
+        const positions = geometry.attributes.position.array;
+        for (let i = 0; i < positions.length; i += 3) {
+          localVector.set(positions[i], positions[i+1], positions[i+2])
+            .applyMatrix4(o.matrixWorld);
+          // console.log('point', localVector.x, localVector.y, localVector.z);
+          ammoVector3.setValue(localVector.x, localVector.y, localVector.z);
+          const lastOne = i >= (positions.length - 3);
+          shape.addPoint(ammoVector3, lastOne);
+          numPoints++;
+        }
+      }
+    });
+    // console.log('sword points', numPoints);
+    return shape;
+  };
+
+  let lastTimestamp = 0;
+  return {
+    bindMiningMeshPhysics(miningMesh) {
+      const shape = _makeConvexHullShape(miningMesh);
+
+      var transform = new Ammo.btTransform();
+      transform.setIdentity();
+      transform.setOrigin(new Ammo.btVector3(0, 0, 0));
+
+      var mass = 1;
+      var localInertia = new Ammo.btVector3(0, 0, 0);
+      shape.calculateLocalInertia(mass, localInertia);
+
+      var myMotionState = new Ammo.btDefaultMotionState(transform);
+      var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
+      var body = new Ammo.btRigidBody(rbInfo);
+
+      dynamicsWorld.addRigidBody(body);
+
+      miningMesh.body = body;
+    },
+    simulate() {
+      const now = Date.now();
+      if (lastTimestamp === 0) {
+        lastTimestamp = now;
+      }
+      const timeDiff = now - lastTimestamp;
+
+      dynamicsWorld.stepSimulation(timeDiff/1000, 2);
+
+      lastTimestamp = now;
+    },
+    updateMiningMesh(mesh) {
+      if (mesh.body) {
+        mesh.body.getMotionState().getWorldTransform(localTransform);
+        const origin = localTransform.getOrigin();
+        mesh.position.set(origin.x(), origin.y(), origin.z());
+        // console.log('mesh pos', mesh.position.toArray());
+        const rotation = localTransform.getRotation();
+        mesh.quaternion.set(rotation.x(), rotation.y(), rotation.z(), rotation.w());
+      }
+    },
+  };
+})();
+let ammo = null;
+ammoPromise.then(newAmmo => {
+  ammo = newAmmo;
+});
+
 const _makeMiningMesh = (x, y, z) => {
   const terrainVsh = `
     attribute vec3 color;
@@ -822,6 +934,11 @@ const _collideMiningMeshes = async () => {
     collideQueued = true;
   }
 };
+const _bindMiningMeshPhysics = async () => {
+  for (let i = 0; i < miningMeshes.length; i++) {
+    ammo.bindMiningMeshPhysics(miningMeshes[i]);
+  }
+};
 
 const collisionMesh = (() => {
   const geometry = new THREE.BoxBufferGeometry(0.01, 0.01, 0.01);
@@ -1071,8 +1188,14 @@ const objectSizeZ = document.getElementById('object-size-z');
 
 function animate() {
   orbitControls.update();
-
   renderer.render(scene, camera);
+
+  if (ammo) {
+    ammo.simulate();
+    for (let i = 0; i < miningMeshes.length; i++) {
+      ammo.updateMiningMesh(miningMeshes[i]);
+    }
+  }
 }
 renderer.setAnimationLoop(animate);
 
@@ -1097,6 +1220,9 @@ renderer.setAnimationLoop(animate);
       scene.add(miningMeshes[i]);
     }
     _refreshMiningMeshes();
+    setTimeout(() => {
+      _bindMiningMeshPhysics();
+    }, 1000);
   }
 })();
 </script>

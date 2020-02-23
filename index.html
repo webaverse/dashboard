@@ -142,6 +142,10 @@ header > .login-form.phase-3 > .phaseless-content
   top: 60px;
   right: 10px;
 }
+.ops > .op {
+  position: relative;
+  overflow: hidden;
+}
 .ops > .op:hover {
   background-color: #42a5f5;
   color: #FFF;
@@ -149,6 +153,16 @@ header > .login-form.phase-3 > .phaseless-content
 .ops > .op:active, .ops > .op.selected {
   background-color: #1e88e5;
   color: #FFF;
+}
+.ops > .op input[type=submit] {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -webkit-appearance: none;
+  cursor: pointer;
+  opacity: 0;
 }
 .colors {
   bottom: 10px;
@@ -648,7 +662,7 @@ table tr {
           <div>Working...</div>
         </div>
       </form> -->
-      <div class=user-account id=user-account>
+      <!-- <div class=user-account id=user-account>
         <div class=wrap>
           <h1 id=login-name-static></h1>
           <div class=row>
@@ -662,7 +676,7 @@ table tr {
             <input type=button value="Connect Stripe" class=connect-stripe-button id=connect-stripe-button>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- <div class="popdown" id="developers-popdown">
         <ul>
           <li>CLI</li>
@@ -692,11 +706,11 @@ table tr {
         <input type="number" id="object-size-z" value="1" min="1" max="8">
       </label>
     </div>
-    <div class=ops>
-      <input type="text" id="object-name" placeholder="Object name">
+    <form class=ops id=ops-form>
+      <input type="text" required id="object-name" placeholder="Object name">
       <nav class="op" id=load-op><i class="fal fa-folder-open"></i></nav>
-      <nav class="op" id=save-op><i class="fal fa-save"></i></nav>
-    </div>
+      <nav class="op" id=save-op><i class="fal fa-save"></i><input type=submit></nav>
+    </form>
     <div class=colors>
       <nav class="color selected"><div class=inner style="background-color: #ef5350;"></div></nav>
       <nav class="color"><div class=inner style="background-color: #ec407a;"></div></nav>
@@ -1400,6 +1414,16 @@ Array.from(tools).forEach(tool => {
   });
 });
 let selectedTool = tools[0].getAttribute('tool');
+
+const opsForm = document.getElementById('ops-form');
+const objectNameEl = document.getElementById('object-name');
+opsForm.addEventListener('submit', e => {
+  e.preventDefault();
+  console.log('submit', objectNameEl.value);
+});
+document.getElementById('load-op').addEventListener('click', e => {
+  console.log('load');
+});
 
 const colors = document.querySelectorAll('.colors > .color');
 Array.from(colors).forEach(color => {

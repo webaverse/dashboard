@@ -1141,6 +1141,7 @@ const _makeMiningMesh = (x, y, z) => {
         origin: localRaycaster.ray.origin.toArray(new Float32Array(3)),
         direction: localRaycaster.ray.direction.toArray(new Float32Array(3))
       }).then(result => () => {
+        // console.log('collide', !isNaN(result.collision[0]));
         if (!isNaN(result.collision[0])) {
           collisionMesh.position.fromArray(result.collision);
           collisionMesh.visible = true;
@@ -1271,11 +1272,6 @@ const _eraseMiningMeshes = (x, y, z) => {
     miningMesh.erase(x, y, z);
   });
 };
-const _collideMiningMeshes = () => {
-  for (let i = 0; i < miningMeshes.length; i++) {
-    miningMeshes[i].collide();
-  }
-};
 let refreshing = false;
 let refreshQueued = false;
 const _refreshMiningMeshes = async () => {
@@ -1294,6 +1290,26 @@ const _refreshMiningMeshes = async () => {
     }
   } else {
     refreshQueued = true;
+  }
+};
+let colliding = false;
+let collideQueued = false;
+const _collideMiningMeshes = async () => {
+  if (!colliding) {
+    colliding = true;
+
+    const fns = await Promise.all(miningMeshes.map(miningMesh => miningMesh.collide()));
+    for (let i = 0; i < fns.length; i++) {
+      fns[i]();
+    }
+
+    colliding = false;
+    if (collideQueued) {
+      collideQueued = false;
+      _collideMiningMeshes();
+    }
+  } else {
+    collideQueued = true;
   }
 };
 

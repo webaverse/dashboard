@@ -85,7 +85,8 @@ header > .login-form.phase-3 > .phaseless-content
 }
 .tools,
 .ops,
-.colors
+.colors,
+.enters
 {
   display: flex;
   position: absolute;
@@ -97,16 +98,21 @@ header > .login-form.phase-3 > .phaseless-content
 }
 .tools > .tool,
 .ops > .op,
-.colors > .color
+.colors > .color,
+.enters > .enter
 {
   display: flex;
-  width: 30px;
-  height: 30px;
   justify-content: center;
   align-items: center;
   font-size: 16px;
   /* color: #000; */
   cursor: pointer;
+}
+.tools > .tool,
+.ops > .op,
+.colors > .color {
+  width: 30px;
+  height: 30px;
 }
 .tools > .tool {
   background-color: #EEE;
@@ -164,6 +170,24 @@ header > .login-form.phase-3 > .phaseless-content
 }
 .colors > .color:active, .colors > .color.selected {
   background-color: #000;
+}
+.enters {
+  bottom: 10px;
+  right: 10px;
+}
+.enters > .enter {
+  background-color: #333;
+  color: #FFF;
+}
+.enters > .enter:hover {
+  background-color: #42a5f5;
+}
+.enters > .enter:active {
+  background-color: #1e88e5;
+}
+.enters > .enter > i {
+  padding: 15px;
+  font-size: 40px;
 }
 .button {
   display: inline-block;

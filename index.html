@@ -1226,6 +1226,9 @@ const _makeMiningMesh = (x, y, z) => {
       return null;
     }
   }; */
+  mesh.setDirty = () => {
+    dirty = true;
+  };
   mesh.reset = () => {
     potential.fill(potentialFillValue);
     brush.fill(0);
@@ -1294,7 +1297,7 @@ const _saveMiningMeshes = () => {
   const arrayBuffer = new ArrayBuffer(300*1024);
   let index = 0;
 
-  const numMiningMeshes = miningMesh.length;
+  const numMiningMeshes = miningMeshes.length;
   new Uint32Array(arrayBuffer, index, 1)[0] = numMiningMeshes;
   index += Uint32Array.BYTES_PER_ELEMENT;
   for (let i = 0; i < numMiningMeshes; i++) {
@@ -1303,9 +1306,9 @@ const _saveMiningMeshes = () => {
     new Uint32Array(arrayBuffer, index, 3).set(Uint32Array.from([x, y, z]));
     index += 3*Uint32Array.BYTES_PER_ELEMENT;
     new Float32Array(arrayBuffer, index, size*size*size).set(miningMesh.potential);
-    index += miningMesh.potential.length*Float32Array.BYTES_PER_ELEMENT;
-    new Float32Array(arrayBuffer, index, size*size*size).set(miningMesh.brush);
-    index += miningMesh.brush.length*Float32Array.BYTES_PER_ELEMENT;
+    index += size*size*size*Float32Array.BYTES_PER_ELEMENT;
+    new Uint8Array(arrayBuffer, index, size*size*size*3).set(miningMesh.brush);
+    index += size*size*size*3*Float32Array.BYTES_PER_ELEMENT;
   }
 
   return new Uint8Array(arrayBuffer, 0, index);
@@ -1315,16 +1318,17 @@ const _loadMiningMeshes = uint8Array => {
   let index = uint8Array.byteOffset;
 
   const miningMeshes = [];
-  const numMiningMeshes = new Uint32Array(arrayBuffer, index);
+  const numMiningMeshes = new Uint32Array(arrayBuffer, index)[0];
   index += Uint32Array.BYTES_PER_ELEMENT;
   for (let i = 0; i < numMiningMeshes; i++) {
     const [x, y, z] = new Uint32Array(arrayBuffer, index, 3);
     index += 3*Uint32Array.BYTES_PER_ELEMENT;
     const miningMesh = _makeMiningMesh(x, y, z);
     miningMesh.potential.set(new Float32Array(arrayBuffer, index, size*size*size));
-    index += miningMesh.potential.length*Float32Array.BYTES_PER_ELEMENT;
-    miningMesh.brush.set(new Float32Array(arrayBuffer, index, size*size*size));
-    index += miningMesh.brush.length*Float32Array.BYTES_PER_ELEMENT;
+    index += size*size*size*Float32Array.BYTES_PER_ELEMENT;
+    miningMesh.brush.set(new Uint8Array(arrayBuffer, index, size*size*size*3));
+    index += size*size*size*3*Uint8Array.BYTES_PER_ELEMENT;
+    miningMesh.setDirty();
     miningMeshes.push(miningMesh);
   }
   return miningMeshes;
@@ -1473,9 +1477,15 @@ let selectedTool = tools[0].getAttribute('tool');
 
 const opsForm = document.getElementById('ops-form');
 const objectNameEl = document.getElementById('object-name');
-opsForm.addEventListener('submit', e => {
+opsForm.addEventListener('submit', async e => {
   e.preventDefault();
-  console.log('submit', objectNameEl.value);
+  const arrayBuffer = _saveMiningMeshes();
+  _newMiningMeshes();
+  miningMeshes = _loadMiningMeshes(arrayBuffer);
+  for (let i = 0; i < miningMeshes.length; i++) {
+    scene.add(miningMeshes[i]);
+  }
+  _refreshMiningMeshes();
 });
 document.getElementById('new-op').addEventListener('click', e => {
   _newMiningMeshes();

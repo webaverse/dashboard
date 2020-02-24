@@ -14,9 +14,6 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
-input[type=number]::-webkit-inner-spin-button {
-  opacity: 1
-}
 /* ul {
   margin: 0;
   padding: 0;
@@ -85,115 +82,6 @@ header > .login-form.phase-2 > .phaseless-content,
 header > .login-form.phase-3 > .phaseless-content
 {
   display: none;
-}
-.tools,
-.ops,
-.colors,
-.enters
-{
-  display: flex;
-  position: absolute;
-  z-index: 1;
-}
-.tools {
-  top: 60px;
-  left: 10px;
-}
-.tools > .tool,
-.ops > .op,
-.colors > .color,
-.enters > .enter
-{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  cursor: pointer;
-}
-.tools > .tool,
-.ops > .op,
-.colors > .color {
-  width: 30px;
-  height: 30px;
-}
-.tools > .tool {
-  background-color: #EEE;
-}
-.tools > .tool:hover {
-  background-color: #42a5f5;
-  color: #FFF;
-}
-.tools > .tool:active, .tools > .tool.selected {
-  background-color: #1e88e5;
-  color: #FFF;
-}
-.ops {
-  top: 60px;
-  right: 10px;
-}
-.ops > .op {
-  position: relative;
-  overflow: hidden;
-}
-.ops > .op:hover {
-  background-color: #42a5f5;
-  color: #FFF;
-}
-.ops > .op:active, .ops > .op.selected {
-  background-color: #1e88e5;
-  color: #FFF;
-}
-.ops > .op input[type=submit] {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  -webkit-appearance: none;
-  cursor: pointer;
-  opacity: 0;
-}
-.colors {
-  bottom: 10px;
-  left: 10px;
-}
-.colors > .color {
-  position: relative;
-}
-.colors > .color > .inner {
-  position: absolute;
-  top: 3px;
-  bottom: 3px;
-  left: 3px;
-  right: 3px;
-}
-.colors > .color:hover {
-  background-color: #333;
-}
-.colors > .color:active, .colors > .color.selected {
-  background-color: #000;
-}
-.enters {
-  bottom: 10px;
-  right: 0;
-}
-.enters > .enter {
-  margin-right: 10px;
-  background-color: #111;
-  color: #FFF;
-}
-.enters > .enter:hover {
-  background-color: #42a5f5;
-}
-.enters > .enter:active {
-  background-color: #1e88e5;
-}
-.enters > .enter.disabled {
-  display: none;
-}
-.enters > .enter > i {
-  padding: 15px;
-  font-size: 40px;
 }
 .button {
   display: inline-block;
@@ -459,18 +347,12 @@ body:not(.logging-in):not(.logged-in) #login-blocker {
   border-radius: 8px;
   text-align: center;
 }
-/* .blocker .wrap i {
-  position: absolute;
-  top: 0;
-  right: 0;
-} */
 .blocker .wrap img {
   width: 100px;
   height: 100px;
 }
 .blocker .wrap h1, .blocker .wrap h2, .blocker .wrap h3 {
   margin: 0;
-  /* font-weight: 300; */
 }
 .blocker .wrap .button {
   margin: 10px 0;
@@ -533,18 +415,6 @@ body:not(.logging-in):not(.logged-in) #login-blocker {
   display: flex;
   flex-direction: column;
 }
-/* #subscribe-popdown .plans h3 {
-  margin: 0;
-  font-size: 30px;
-}
-#subscribe-popdown .plans strong {
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-#subscribe-popdown .plans p {
-  margin: 0;
-  line-height: 1.4;
-} */
 #developers-popdown {
   position: absolute;
   display: flex;
@@ -563,6 +433,11 @@ header .popdown ul {
 header .popdown li {
   margin: 10px 0;
 }
+#interface-iframe {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
 canvas {
   position: absolute;
   top: 0;
@@ -571,18 +446,6 @@ canvas {
   height: 100vh;
   background-color: #000;
 }
-/* table {
-  width: 100%;
-}
-table colgroup col:nth-child(1) {
-  width: 20%;
-}
-table colgroup col:nth-child(3) {
-  width: 60%;
-}
-table tr {
-  background-color: #f2f3f5;
-} */
 .grid {
   display: flex;
   margin-top: 50px;

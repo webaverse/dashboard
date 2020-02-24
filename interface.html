@@ -1,382 +1,197 @@
 <!doctype html>
 <html>
   <head>
-    <!-- <link rel="stylesheet" href="https://render.exokit.xyz/open-sans.css">
-    <link rel="stylesheet" href="https://render.exokit.xyz/font-awesome.css"> -->
+    <link href="https://render.exokit.xyz/font-awesome.css" rel="stylesheet">
     <style>
 * {
   box-sizing: border-box;
 }
-body {
-  margin: 0;
-  font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
-  font-size: 200px;
-  background-color: red;
-}
-a {
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-}
-ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-ul li {
-  display: inline-block;
-  width: 668px;
-  height: 200px;
-  float: left;
-}
-ul li a {
-  display: flex;
-  padding: 40px;
-}
-ul li a.selected {
-  background-color: #5c6bc0;
-  color: #FFF;
-}
-ul li a img {
-  width: 120px;
-  height: 120px;
-  margin-right: 40px;
-  /* background-color: #f2f3f5; */
-  /* image-rendering: pixelated; */
-}
-ul li a .wrap {
-  display: flex;
-  flex-direction: column;
-  font-size: 42px;
-}
-ul li a .wrap h3,
-ul li a .wrap p {
-  margin: 0;
-  max-width: 428px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-ul li a .wrap h3 {
-  font-weight: 400;
-}
-.ui-left {
-  display: flex;
-  width: 2048px;
-  height: 2048px;
-  font-size: 80px;
-  background-color: #FFF;
-  flex-direction: column;
-  align-items: stretch;
-  /* box-shadow: 3px 0 3px rgba(0,0,0,0.05); */
-}
-.url-input {
-  margin: 40px;
-  padding: 40px;
-  background-color: #f2f3f5;
-  border: 0;
-  border-radius: 40px;
-  color: #5c5c6e;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: 1.6;
-  outline: none;
-}
-.radios {
-  display: flex;
-  margin: 40px;
-}
-.radios > .radio {
-  display: flex;
-  flex: 1;
-  height: 160px;
-  padding: 15px 40px;
-  border: 8px solid;
-  border-radius: 22px;
-  color: #ec407a;
-  justify-content: center;
-  align-items: center;
-}
-.radios > .radio:not(:first-child) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.radios > .radio:not(:last-child) {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.radios > .radio + .radio {
-  margin-left: -8px;
-}
-.radios > .radio.selected {
-  background-color: #ec407a;
-  border-color: #ec407a;
-  color: #FFF;
-}
-.actions-tab {
-  display: flex;
-  /* font-size: 30px;
-  font-weight: 300; */
-}
-.actions-tab section:nth-child(1) {
-  width: 1336px;
-}
-.actions-tab section:nth-child(2) {
-  width: 668px;
-}
-.actions-tab br {
-  clear: both;
-}
-.actions {
-}
-.actions .action {
-  position: relative;
-  display: inline-flex;
-  width: 668px;
-  height: 250px;
-  padding: 30px;
-  float: left;
-  align-items: center;
-}
-.actions .action .border {
-  position: absolute;
-  left: 30px;
-  right: 30px;
-  top: 30px;
-  bottom: 30px;
-  background-color: #f2f3f5;
-  border-radius: 20px;
-}
-.actions .action .icon {
-  position: relative;
-  display: flex;
-  width: 130px;
-  height: 130px;
-  margin-right: 20px;
-  // background-color: #f2f3f5;
-  // border-radius: 40px;
-  justify-content: center;
-  align-items: center;
-}
-.actions .action .wrap {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-.actions .action .wrap h3,
-.actions .action .wrap p {
-  margin: 0;
-}
-.actions .action .wrap h3 {
-  font-size: 50px;
-  // line-height: 1.6;
-  font-weight: 300;
-}
-.actions .action .wrap p {
-  font-size: 36px;
-}
-.channels {
-  display: flex;
-}
-.channel-controls {
-  display: flex;
-  width: 668px;
-  margin-top: 20px;
-  flex-direction: column;
-}
-.channel-controls .channel {
-  position: relative;
-  display: flex;
-  height: 250px;
-  padding: 60px;
-}
-.channel-controls .channel .border {
-  position: absolute;
-  left: 30px;
-  right: 30px;
-  top: 30px;
-  bottom: 30px;
-  // border: 10px solid transparent;
-  border-radius: 20px;
-}
-.channel-controls .channel.selected {
-  color: #FFF;
-}
-.channel-controls .channel.selected .border {
-  background-color: #000;
-}
-.channel-controls .channel .icon {
-  position: relative;
-  display: flex;
-  width: 130px;
-  height: 130px;
-  margin-right: 30px;
-  background-color: #f2f3f5;
-  border-radius: 30px;
-  color: #000;
-  justify-content: center;
-  align-items: center;
-}
-.channel-controls .channel .wrap {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-.channel-controls .channel .wrap h1,
-.channel-controls .channel .wrap h2,
-.channel-controls .channel .wrap h3,
-.channel-controls .channel .wrap p
-{
-  margin: 0;
-}
-.channel-controls .channel .wrap h3 {
-  /* font-size: 60px; */
-  font-size: 44px;
-  line-height: 1.6;
-}
-.channel-controls .channel .wrap p {
-  font-size: 36px;
-}
-.channel-list {
-  display: flex;
-  width: 1336px;
-  flex-direction: column;
-}
-.channel-list .item {
-  position: relative;
-  display: flex;
-  height: 230px;
-  padding: 20px 40px;
-}
-.channel-list .item .main {
-  display: flex;
-  flex: 1;
-  // background-color: #f2f3f5;
-  // border-left: 10px solid #000;
-  border-left: 10px solid #f2f3f5;
-  // border-radius: 20px;
-}
-.channel-list .item .main.selected {
-  background-color: #000;
-  border-left-color: #000;
-  color: #FFF;
-}
-.channel-list .item .main .icon {
-  position: relative;
-  display: flex;
-  // width: 190px;
-  height: 190px;
-  margin-left: 30px;
-  margin-right: 30px;
-  justify-content: center;
-  align-items: center;
-  // background-color: #f2f3f5;
-  // border-radius: 20px;
-  // font-size: 60px;
-}
-.channel-list .item .main .wrap {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-.channel-list .item .main .wrap h3,
-.channel-list .item .main .wrap p
-  {
-  margin: 0;
-}
-.channel-list .item .main .wrap h3 {
-  font-size: 60px;
-  line-height: 1.6;
-}
-.channel-list .item .main .wrap p {
-  font-size: 36px;
-}
-.channel-list .item .side {
-  display: flex;
-  width: 190px;
-  height: 190px;
-  margin-left: 30px;
-  justify-content: center;
-  align-items: center;
-  background-color: #f2f3f5;
-  border-radius: 20px;
-}
-.channel-list .item .side .icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.grid {
-  position: relative;
-  display: flex;
-  // padding: 30px;
-  justify-content: center;
-  align-items: center;
-}
-.grid .anchors {
-  position: relative;
-  width: 1200px;
-  height: 1200px;
-}
-.grid .anchors a {
-  position: absolute;
-  // width: 36px;
-  // height: 36px;
-}
-.grid svg {
-  width: inherit;
-  height: inherit;
-  background-color: #111;
-}
-.grid svg rect {
-  // width: 36px;
-  // height: 36px;
-  fill: #333;
-}
-/* .grid .item {
-  position: relative;
-  display: flex;
-  width: 300px;
-  height: 300px;
-  margin-right: 30px;
-  margin-bottom: 30px;
-  padding: 30px;
-  padding-top: 0;
-  float: left;
-  background-color: #f2f3f5;
-  flex-direction: column;
-}
-.grid .item .dot {
-  position: absolute;
-  top: 30px;
-  right: 20px;
-  width: 20px;
-  height: 20px;
-  background-color: #66bb6a;
-  border-radius: 100px;
-}
-.grid .item h3 {
-  font-size: 30px;
-  line-height: 1;
-}
-.grid .item .icon {
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-} */
-.grid-placeholder {
-  display: flex;
+html {
   width: 100%;
   height: 100%;
-  font-size: 100px;
+}
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: none transparent;
+  font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+  font-size: 13px;
+}
+input[type=number]::-webkit-inner-spin-button {
+  opacity: 1
+}
+.tools,
+.ops,
+.colors,
+.enters
+{
+  display: flex;
+  position: absolute;
+  z-index: 1;
+}
+.tools {
+  top: 60px;
+  left: 10px;
+}
+.tools > .tool,
+.ops > .op,
+.colors > .color,
+.enters > .enter
+{
+  display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+.tools > .tool,
+.ops > .op,
+.colors > .color {
+  width: 30px;
+  height: 30px;
+}
+.tools > .tool {
+  background-color: #EEE;
+}
+.tools > .tool:hover {
+  background-color: #42a5f5;
+  color: #FFF;
+}
+.tools > .tool:active, .tools > .tool.selected {
+  background-color: #1e88e5;
+  color: #FFF;
+}
+.ops {
+  top: 60px;
+  right: 10px;
+}
+.ops > .op {
+  position: relative;
+  overflow: hidden;
+}
+.ops > .op:hover {
+  background-color: #42a5f5;
+  color: #FFF;
+}
+.ops > .op:active, .ops > .op.selected {
+  background-color: #1e88e5;
+  color: #FFF;
+}
+.ops > .op input[type=submit] {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -webkit-appearance: none;
+  cursor: pointer;
+  opacity: 0;
+}
+.colors {
+  bottom: 10px;
+  left: 10px;
+}
+.colors > .color {
+  position: relative;
+}
+.colors > .color > .inner {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+}
+.colors > .color:hover {
+  background-color: #333;
+}
+.colors > .color:active, .colors > .color.selected {
+  background-color: #000;
+}
+.enters {
+  bottom: 10px;
+  right: 0;
+}
+.enters > .enter {
+  margin-right: 10px;
+  background-color: #111;
+  color: #FFF;
+}
+.enters > .enter:hover {
+  background-color: #42a5f5;
+}
+.enters > .enter:active {
+  background-color: #1e88e5;
+}
+.enters > .enter.disabled {
+  display: none;
+}
+.enters > .enter > i {
+  padding: 15px;
+  font-size: 40px;
+}
+.background {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
     </style>
   </head>
   <body style="width: {{width}}px; height: {{height}}px;">
-    <div>{{lol}}</div>
-    <a id="woot">YES!</a>
+    <div class=tools>
+      <nav class="tool selected" tool="camera"><i class="fal fa-camera"></i></nav>
+      <nav class=tool tool="brush"><i class="fal fa-dice-d8"></i></nav>
+      <nav class="tool" tool="select"><i class="fal fa-mouse-pointer"></i></nav>
+      <nav class="tool" tool="erase"><i class="fal fa-eraser"></i></nav>
+      <nav class="tool" tool="paint"><i class="fal fa-paint-brush"></i></nav>
+      <nav class="tool" tool="fill"><i class="fal fa-fill-drip"></i></nav>
+      <label>
+        <span>Brush size</span>
+        <input type="range" id="brush-size" value="0.5" min="0.1" max="2" step="0.1">
+        <span id=brush-size-text>0.5</span>
+      </label>
+      <label>
+        <span>Object size</span>
+        <input type="number" id="object-size-x" value="1" min="1" max="8">
+        <span>x</span>
+        <input type="number" id="object-size-y" value="1" min="1" max="8">
+        <span>x</span>
+        <input type="number" id="object-size-z" value="1" min="1" max="8">
+      </label>
+    </div>
+    <form class=ops id=ops-form>
+      <input type="text" required id="object-name" placeholder="Object name">
+      <nav class="op" id=new-op><i class="fal fa-sparkles"></i></nav>
+      <nav class="op" id=load-op><i class="fal fa-folder-open"></i></nav>
+      <nav class="op" id=save-op><i class="fal fa-save"></i><input type=submit></nav>
+    </form>
+    <div class=enters>
+      <nav class="enter" id=enable-physics-button><i class="fa fa-atom"></i></nav>
+      <nav class="enter disabled" id=enter-xr-button><i class="fa fa-head-vr"></i></nav>
+    </div>
+    <div class=colors>
+      <nav class="color selected"><div class=inner style="background-color: #ef5350;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #ec407a;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #ab47bc;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #7e57c2;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #5c6bc0;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #42a5f5;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #29b6f6;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #26c6da;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #26a69a;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #66bb6a;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #9ccc65;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #d4e157;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #ffee58;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #ffca28;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #ffa726;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #ff7043;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #8d6e63;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #bdbdbd;"></div></nav>
+      <nav class="color"><div class=inner style="background-color: #78909c;"></div></nav>
+    </div>
+    <div class=background></div>
   </body>
 </html>

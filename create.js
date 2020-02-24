@@ -9,6 +9,10 @@ import {makePromise} from './util.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
 
+const _load = () => {
+
+console.log('got load');
+
 contract.init();
 
 function parseQuery(queryString) {
@@ -53,7 +57,7 @@ const directionalLight2 = new THREE.DirectionalLight(0xFFFFFF, 3);
 directionalLight2.position.set(-0.5, -0.1, 0.5);
 scene.add(directionalLight2);
 
-const orbitControls = new OrbitControls(camera, renderer.domElement);
+const orbitControls = new OrbitControls(camera, interfaceDocument.querySelector('.background'), interfaceDocument);
 orbitControls.target.copy(camera.position).add(new THREE.Vector3(0, 0, -1.5));
 orbitControls.screenSpacePanning = true;
 // orbitControls.enabled = !!loginToken;
@@ -882,20 +886,7 @@ window.addEventListener('resize', e => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 });
-window.addEventListener('keydown', e => {
-  switch (e.which) {
-    case 49:
-    case 50:
-    case 51:
-    case 52:
-    case 53:
-    case 54:
-    {
-      tools[e.which - 49].click();
-      break;
-    }
-  }
-});
+
 const localRaycaster = new THREE.Raycaster();
 let toolDown = false;
 const _updateRaycasterFromMouseEvent = (raycaster, e) => {
@@ -942,14 +933,32 @@ const _beginTool = () => {
 const _endTool = () => {
   toolDown = false;
 };
-window.addEventListener('mousemove', e => {
-  _updateRaycasterFromMouseEvent(localRaycaster, e);
-  _updateTool(localRaycaster);
+[window, interfaceWindow].forEach(w => {
+  w.addEventListener('keydown', e => {
+    switch (e.which) {
+      case 49:
+      case 50:
+      case 51:
+      case 52:
+      case 53:
+      case 54:
+      {
+        tools[e.which - 49].click();
+        break;
+      }
+    }
+  });
+  w.addEventListener('mousemove', e => {
+    _updateRaycasterFromMouseEvent(localRaycaster, e);
+    _updateTool(localRaycaster);
+  });
+  w.addEventListener('mousedown', _beginTool);
+  w.addEventListener('mouseup', _endTool);
 });
-window.addEventListener('mousedown', _beginTool);
-window.addEventListener('mouseup', _endTool);
 
-const tools = document.querySelectorAll('.tools > .tool');
+// interface
+
+const tools = interfaceDocument.querySelectorAll('.tools > .tool');
 Array.from(tools).forEach(tool => {
   tool.addEventListener('click', e => {
     e.preventDefault();
@@ -965,19 +974,13 @@ Array.from(tools).forEach(tool => {
 });
 let selectedTool = tools[0].getAttribute('tool');
 
-const opsForm = document.getElementById('ops-form');
-const objectNameEl = document.getElementById('object-name');
+const opsForm = interfaceDocument.getElementById('ops-form');
+const objectNameEl = interfaceDocument.getElementById('object-name');
 opsForm.addEventListener('submit', async e => {
   e.preventDefault();
   const dataArrayBuffer = _saveMiningMeshes();
 
   const screenshotBlob = await _screenshotMiningMeshes();
-
-  /* const img = new Image();
-  img.src = URL.createObjectURL(screenshotBlob);
-  img.style.position = 'relative';
-  img.style.zIndex = 100;
-  document.body.appendChild(img); */
 
   const [
     dataHash,
@@ -1017,33 +1020,22 @@ opsForm.addEventListener('submit', async e => {
     }
   });
   await p;
-
-  /* for (let i = 0; i < miningMeshes.length; i++) {
-    const miningMesh = miningMeshes[i];
-    scene.remove(miningMesh);
-    miningMesh.destroy();
-  }
-  miningMeshes = _loadMiningMeshes(arrayBuffer);
-  for (let i = 0; i < miningMeshes.length; i++) {
-    scene.add(miningMeshes[i]);
-  }
-  _refreshMiningMeshes(); */
 });
-document.getElementById('new-op').addEventListener('click', e => {
+interfaceDocument.getElementById('new-op').addEventListener('click', e => {
   e.preventDefault();
   e.stopPropagation();
 
   objectNameEl.value = '';
   _newMiningMeshes();
 });
-document.getElementById('load-op').addEventListener('click', e => {
+interfaceDocument.getElementById('load-op').addEventListener('click', e => {
   e.preventDefault();
   e.stopPropagation();
 
   console.log('load');
 });
 
-const colors = document.querySelectorAll('.colors > .color');
+const colors = interfaceDocument.querySelectorAll('.colors > .color');
 Array.from(colors).forEach(color => {
   const inner = color.querySelector('.inner');
   color.addEventListener('click', e => {
@@ -1060,16 +1052,16 @@ Array.from(colors).forEach(color => {
 });
 let currentColor = new THREE.Color().setStyle(colors[0].querySelector('.inner').style.backgroundColor);
 pointerMesh.material.uniforms.uBrushColor.value.set(currentColor.r, currentColor.g, currentColor.b);
-const brushSizeEl = document.getElementById('brush-size');
+const brushSizeEl = interfaceDocument.getElementById('brush-size');
 let brushSize = brushSizeEl.value;
 brushSizeEl.addEventListener('input', e => {
   brushSize = e.target.value;
-  document.getElementById('brush-size-text').innerHTML = brushSize;
+  interfaceDocument.getElementById('brush-size-text').innerHTML = brushSize;
 });
 
-const objectSizeX = document.getElementById('object-size-x');
-const objectSizeY = document.getElementById('object-size-y');
-const objectSizeZ = document.getElementById('object-size-z');
+const objectSizeX = interfaceDocument.getElementById('object-size-x');
+const objectSizeY = interfaceDocument.getElementById('object-size-y');
+const objectSizeZ = interfaceDocument.getElementById('object-size-z');
 [objectSizeX, objectSizeY, objectSizeZ].forEach(el => {
   el.addEventListener('input', e => {
     const x = objectSizeX.value;
@@ -1079,77 +1071,75 @@ const objectSizeZ = document.getElementById('object-size-z');
     pointerMesh.resize(x, y, z);
   });
 });
-
-const enterXrButton = document.getElementById('enter-xr-button');
-let currentSession = null;
-{
-  function onSessionStarted(session) {
-    session.addEventListener('end', onSessionEnded);
-
-    renderer.xr.setSession(session);
-
-    currentSession = session;
-
-    const controllerModelFactory = new XRControllerModelFactory();
-    const controllerGrip1 = renderer.xr.getControllerGrip(0);
-    controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
-    scene.add(controllerGrip1);
-    const controllerGrip2 = renderer.xr.getControllerGrip(1);
-    controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
-    scene.add(controllerGrip2);
-
-    for (let i = 0; i < 2; i++) {
-      const controller = renderer.xr.getController(i);
-      controller.addEventListener('connected', e => {
-        controller.userData.data = e.data;
-      });
-      controller.addEventListener('selectstart', e => {
-        if (controller.userData.data && controller.userData.data.handedness === 'right') {
-          _beginTool();
-        }
-      });
-	    controller.addEventListener('selectend', e => {
-        if (controller.userData.data && controller.userData.data.handedness === 'right') {
-          _endTool();
-        }
-      });
-    }
-  }
-
-  function onSessionEnded(/*event*/) {
-    currentSession.removeEventListener('end', onSessionEnded);
-
-    currentSession = null;
-  }
-
-  enterXrButton.addEventListener('click', e => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (currentSession === null) {
-      // WebXR's requestReferenceSpace only works if the corresponding feature
-      // was requested at session creation time. For simplicity, just ask for
-      // the interesting ones as optional features, but be aware that the
-      // requestReferenceSpace call will fail if it turns out to be unavailable.
-      // ('local' is always available for immersive sessions and doesn't need to
-      // be requested separately.)
-      var sessionInit = {
-        optionalFeatures: [
-          'local-floor',
-          'bounded-floor',
-        ],
-      };
-      navigator.xr.requestSession('immersive-vr', sessionInit).then(onSessionStarted);
-    } else {
-      currentSession.end();
-    }
-  });
-}
-document.getElementById('enable-physics-button').addEventListener('click', e => {
+interfaceDocument.getElementById('enable-physics-button').addEventListener('click', e => {
   e.preventDefault();
   e.stopPropagation();
 
   _bindMiningMeshPhysics();
+});
+
+// xr
+
+const enterXrButton = interfaceDocument.getElementById('enter-xr-button');
+let currentSession = null;
+function onSessionStarted(session) {
+  session.addEventListener('end', onSessionEnded);
+
+  renderer.xr.setSession(session);
+
+  currentSession = session;
+
+  const controllerModelFactory = new XRControllerModelFactory();
+  const controllerGrip1 = renderer.xr.getControllerGrip(0);
+  controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
+  scene.add(controllerGrip1);
+  const controllerGrip2 = renderer.xr.getControllerGrip(1);
+  controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
+  scene.add(controllerGrip2);
+
+  for (let i = 0; i < 2; i++) {
+    const controller = renderer.xr.getController(i);
+    controller.addEventListener('connected', e => {
+      controller.userData.data = e.data;
+    });
+    controller.addEventListener('selectstart', e => {
+      if (controller.userData.data && controller.userData.data.handedness === 'right') {
+        _beginTool();
+      }
+    });
+    controller.addEventListener('selectend', e => {
+      if (controller.userData.data && controller.userData.data.handedness === 'right') {
+        _endTool();
+      }
+    });
+  }
+}
+function onSessionEnded() {
+  currentSession.removeEventListener('end', onSessionEnded);
+
+  currentSession = null;
+}
+enterXrButton.addEventListener('click', e => {
+  e.preventDefault();
+  e.stopPropagation();
+  
+  if (currentSession === null) {
+    // WebXR's requestReferenceSpace only works if the corresponding feature
+    // was requested at session creation time. For simplicity, just ask for
+    // the interesting ones as optional features, but be aware that the
+    // requestReferenceSpace call will fail if it turns out to be unavailable.
+    // ('local' is always available for immersive sessions and doesn't need to
+    // be requested separately.)
+    var sessionInit = {
+      optionalFeatures: [
+        'local-floor',
+        'bounded-floor',
+      ],
+    };
+    navigator.xr.requestSession('immersive-vr', sessionInit).then(onSessionStarted);
+  } else {
+    currentSession.end();
+  }
 });
 
 const uiRenderer = (() => {
@@ -1265,7 +1255,6 @@ function animate() {
   renderer.render(scene, camera);
   
   if (currentSession) {
-    
     for (let i = 0; i < 2; i++) {
       const controller = renderer.xr.getController(i);
       if (controller.userData.data) {
@@ -1322,3 +1311,18 @@ navigator.xr.isSessionSupported('immersive-vr').then(supported => {
     // nothing
   }
 });
+
+};
+
+const interfaceIframe = document.getElementById('interface-iframe');
+const interfaceWindow = interfaceIframe.contentWindow;
+const interfaceDocument = interfaceIframe.contentDocument;
+if (interfaceDocument.readyState === 'complete') {
+  _load();
+} else {
+  interfaceDocument.addEventListener('readystatechange', () => {
+    if (interfaceDocument.readyState === 'complete') {
+      _load();
+    }
+  });
+}

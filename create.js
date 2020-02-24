@@ -1167,7 +1167,7 @@ const uiRenderer = (() => {
       iframe.onerror = err => {
         reject(err);
       };
-      iframe.frameborder = 0;
+      iframe.setAttribute('frameborder', 0);
       iframe.style.position = 'absolute';
       iframe.style.width = `${uiSize}px`;
       iframe.style.height = `${uiSize}px`;
@@ -1280,6 +1280,7 @@ const uiMesh = (() => {
         mesh.visible = true;
         
         anchors = result.anchors;
+        console.log(anchors);
       });
   };
   mesh.intersect = uv => {

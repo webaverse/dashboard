@@ -896,21 +896,19 @@ window.addEventListener('keydown', e => {
 });
 const localRaycaster = new THREE.Raycaster();
 let mouseDown = false;
-const _updateLocalRaycaster = e => {
+const _updateRaycasterFromMouseEvent = (raycaster, e) => {
   const mouse = new THREE.Vector2(( ( e.clientX ) / window.innerWidth ) * 2 - 1, - ( ( e.clientY ) / window.innerHeight ) * 2 + 1);
-  localRaycaster.setFromCamera(mouse, camera);
+  raycaster.setFromCamera(mouse, camera);
 };
-window.addEventListener('mousemove', e => {
+const _updateTool = raycaster => {
   if (selectedTool === 'brush' || selectedTool === 'erase') {
-    _updateLocalRaycaster(e);
-    const targetPosition = localRaycaster.ray.origin.clone()
-      .add(new THREE.Vector3(0, 0, -1).applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), localRaycaster.ray.direction)));
+    const targetPosition = raycaster.ray.origin.clone()
+      .add(new THREE.Vector3(0, 0, -1).applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), raycaster.ray.direction)));
     pointerMesh.material.uniforms.targetPos.value.set(
       Math.floor(targetPosition.x*10),
       Math.floor(targetPosition.y*10),
       Math.floor(targetPosition.z*10)
     );
-    // console.log('move paint', mouseDown);
     if (mouseDown) {
       const v = pointerMesh.material.uniforms.targetPos.value;
       if (selectedTool === 'brush') {
@@ -921,22 +919,32 @@ window.addEventListener('mousemove', e => {
       _refreshMiningMeshes();
     }
   } else if (selectedTool === 'paint' || selectedTool === 'fill') {
-    _updateLocalRaycaster(e);
     _collideMiningMeshes();
   }
-});
-window.addEventListener('mousedown', e => {
+};
+const _beginTool = () => {
   const v = pointerMesh.material.uniforms.targetPos.value;
   if (selectedTool === 'brush') {
     _paintMiningMeshes(v.x+1, v.y+1, v.z+1);
+    _refreshMiningMeshes();
   } else if (selectedTool === 'erase') {
     _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
+    _refreshMiningMeshes();
   }
-  _refreshMiningMeshes();
   mouseDown = true;
+};
+const _endTool = () => {
+  mouseDown = false;
+};
+window.addEventListener('mousemove', e => {
+  _updateRaycasterFromMouseEvent(localRaycaster, e);
+  _updateTool(localRaycaster);
+});
+window.addEventListener('mousedown', e => {
+  _beginTool();
 });
 window.addEventListener('mouseup', e => {
-  mouseDown = false;
+  _endTool();
 });
 
 const tools = document.querySelectorAll('.tools > .tool');

@@ -15,8 +15,6 @@ import screenshot from './screenshot.js';
 
 const _load = () => {
 
-console.log('got load');
-
 contract.init();
 
 function parseQuery(queryString) {

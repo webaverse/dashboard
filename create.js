@@ -913,7 +913,9 @@ let toolDown = false;
 const _updateRaycasterFromMouseEvent = (raycaster, e) => {
   const mouse = new THREE.Vector2(( ( e.clientX ) / window.innerWidth ) * 2 - 1, - ( ( e.clientY ) / window.innerHeight ) * 2 + 1);
   raycaster.setFromCamera(mouse, camera);
-  raycaster.ray.origin.add(raycaster.ray.direction);
+  if (selectedTool !== 'paint') {
+    raycaster.ray.origin.add(raycaster.ray.direction);
+  }
 };
 const _updateRaycasterFromObject = (raycaster, o) => {
   raycaster.ray.origin.copy(o.position);

@@ -2,6 +2,7 @@ import * as THREE from './three.module.js';
 window.THREE = THREE;
 import {OrbitControls} from './OrbitControls.js';
 import {BufferGeometryUtils} from './BufferGeometryUtils.js';
+import {OutlineEffect} from './OutlineEffect.js';
 import {XRControllerModelFactory} from './XRControllerModelFactory.js';
 import {Ammo as AmmoLib} from './ammo.wasm.js';
 import './gif.js';
@@ -923,6 +924,31 @@ const collisionMesh = (() => {
 })();
 scene.add(collisionMesh);
 
+const outlineEffect = new OutlineEffect(renderer, {
+  defaultThickness: 0.01,
+  defaultColor: [0, 0, 1],
+  defaultAlpha: 0.5,
+  // defaultKeepAlive: false,//true,
+});
+const outlineScene = new THREE.Scene();
+let renderingOutline = false;
+let hoveredObjectMesh = null;
+scene.onAfterRender = () => {
+  if (renderingOutline || !hoveredObjectMesh) return;
+  renderingOutline = true;
+
+  const oldParent = hoveredObjectMesh.parent;
+  outlineScene.add(hoveredObjectMesh);
+
+  outlineEffect.renderOutline(outlineScene, camera);
+
+  if (oldParent) {
+    oldParent.add(hoveredObjectMesh);
+  }
+
+  renderingOutline = false;
+};
+
 window.addEventListener('resize', e => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -933,7 +959,7 @@ let toolDown = false;
 const _updateRaycasterFromMouseEvent = (raycaster, e) => {
   const mouse = new THREE.Vector2(( ( e.clientX ) / window.innerWidth ) * 2 - 1, - ( ( e.clientY ) / window.innerHeight ) * 2 + 1);
   raycaster.setFromCamera(mouse, camera);
-  if (selectedTool !== 'paint') {
+  if (selectedTool !== 'select' && selectedTool !== 'paint') {
     raycaster.ray.origin.add(raycaster.ray.direction);
   }
 };
@@ -957,6 +983,14 @@ const _updateTool = raycaster => {
         _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
       }
       _refreshMiningMeshes();
+    }
+  } else if (selectedTool === 'select') {
+    const intersections = raycaster.intersectObjects(objectMeshes);
+    if (intersections.length > 0) {
+      const [{object}] = intersections;
+      hoveredObjectMesh = object;
+    } else {
+      hoveredObjectMesh = null;
     }
   } else if (selectedTool === 'paint') {
     _collideMiningMeshes();

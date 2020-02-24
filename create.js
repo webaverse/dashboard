@@ -24,6 +24,7 @@ function parseQuery(queryString) {
 const PARCEL_SIZE = 10;
 const size = PARCEL_SIZE + 1;
 const uiSize = 2048;
+const uiWorldSize = 0.2;
 
 const canvas = document.getElementById('canvas');
 canvas.width = window.innerWidth;
@@ -1156,7 +1157,6 @@ const uiRenderer = (() => {
     new Promise((accept, reject) => {
       const iframe = document.createElement('iframe');
       iframe.src = 'https://render.exokit.xyz/';
-      // iframe.src = './exokit-render/index.html';
       iframe.onload = () => {
         accept(iframe);
       };
@@ -1218,7 +1218,8 @@ const uiRenderer = (() => {
   };
 })();
 const uiMesh = (() => {
-  const geometry = new THREE.PlaneBufferGeometry(0.2, 0.2);
+  const geometry = new THREE.PlaneBufferGeometry(0.2, 0.2)
+    .applyMatrix4(new THREE.Matrix4().makeTranslation(0, uiWorldSize/2, 0));
   const canvas = document.createElement('canvas');
   canvas.width = uiSize;
   canvas.height = uiSize;
@@ -1264,12 +1265,17 @@ function animate() {
   renderer.render(scene, camera);
   
   if (currentSession) {
+    
     for (let i = 0; i < 2; i++) {
       const controller = renderer.xr.getController(i);
-      if (controller.userData.data && controller.userData.data.handedness === 'right') {
-        _updateRaycasterFromObject(localRaycaster, controller);
-        _updateTool(localRaycaster);
-        break;
+      if (controller.userData.data) {
+        if (controller.userData.data.handedness === 'left') {
+          uiMesh.position.copy(controller.position);
+          uiMesh.quaternion.copy(controller.quaternion);
+        } else if (controller.userData.data.handedness === 'right') {
+          _updateRaycasterFromObject(localRaycaster, controller);
+          _updateTool(localRaycaster);
+        }
       }
     }
   }

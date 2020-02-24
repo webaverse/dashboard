@@ -942,6 +942,9 @@ window.addEventListener('mouseup', e => {
 const tools = document.querySelectorAll('.tools > .tool');
 Array.from(tools).forEach(tool => {
   tool.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     Array.from(tools).forEach(tool => {
       tool.classList.remove('selected');
     });
@@ -1017,9 +1020,15 @@ opsForm.addEventListener('submit', async e => {
   _refreshMiningMeshes(); */
 });
 document.getElementById('new-op').addEventListener('click', e => {
+  e.preventDefault();
+  e.stopPropagation();
+  
   _newMiningMeshes();
 });
 document.getElementById('load-op').addEventListener('click', e => {
+  e.preventDefault();
+  e.stopPropagation();
+
   console.log('load');
 });
 
@@ -1027,6 +1036,9 @@ const colors = document.querySelectorAll('.colors > .color');
 Array.from(colors).forEach(color => {
   const inner = color.querySelector('.inner');
   color.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     Array.from(colors).forEach(color => {
       color.classList.remove('selected');
     });
@@ -1091,6 +1103,9 @@ const enterXrButton = document.getElementById('enter-xr-button');
   }
 
   enterXrButton.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if ( currentSession === null ) {
 
       // WebXR's requestReferenceSpace only works if the corresponding feature
@@ -1111,6 +1126,9 @@ const enterXrButton = document.getElementById('enter-xr-button');
   });
 }
 document.getElementById('enable-physics-button').addEventListener('click', e => {
+  e.preventDefault();
+  e.stopPropagation();
+
   _bindMiningMeshPhysics();
 });
 

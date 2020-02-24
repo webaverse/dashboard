@@ -983,7 +983,14 @@ interfaceDocument.addEventListener('drop', e => {
     const [file] = e.dataTransfer.files;
     if (/^image\//.test(file.type)) {
       const objectMesh = (() => {
-        const geometry = new THREE.PlaneBufferGeometry(1, 1);
+        // const geometry = new THREE.PlaneBufferGeometry(1, 1);
+        const geometry = new THREE.BoxBufferGeometry(1, 1, 0.001);
+        for (let i = 0; i < geometry.attributes.position.array.length; i += 3) {
+          if (geometry.attributes.position.array[i + 2] < 0) {
+            const j = i*2/3;
+            geometry.attributes.uv.array[j] = 1 - geometry.attributes.uv.array[j];
+          }
+        }
         const img = new Image();
         img.src = URL.createObjectURL(file);
         img.onload = () => {

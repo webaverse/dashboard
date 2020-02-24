@@ -185,6 +185,9 @@ header > .login-form.phase-3 > .phaseless-content
 .enters > .enter:active {
   background-color: #1e88e5;
 }
+.enters > .enter.disabled {
+  display: none;
+}
 .enters > .enter > i {
   padding: 15px;
   font-size: 40px;

@@ -1055,9 +1055,9 @@ let toolDown = false;
 const _updateRaycasterFromMouseEvent = (raycaster, e) => {
   const mouse = new THREE.Vector2(( ( e.clientX ) / window.innerWidth ) * 2 - 1, - ( ( e.clientY ) / window.innerHeight ) * 2 + 1);
   raycaster.setFromCamera(mouse, camera);
-  /* if (selectedTool !== 'select' && selectedTool !== 'paint') {
+  if (selectedTool === 'brush') {
     raycaster.ray.origin.add(raycaster.ray.direction);
-  } */
+  }
 };
 const _updateRaycasterFromObject = (raycaster, o) => {
   raycaster.ray.origin.copy(o.position);
@@ -1100,9 +1100,13 @@ const _updateTool = raycaster => {
     rayMesh.scale.z = distance;
     rayMesh.visible = true;
 
+    orbitControls.enabled = false;
+
     uiMesh.intersect(uv);
   } else {
     rayMesh.visible = false;
+    
+    orbitControls.enabled = selectedTool === 'camera';
 
     uiMesh.intersect(null);
   }

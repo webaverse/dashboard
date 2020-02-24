@@ -23,6 +23,7 @@ function parseQuery(queryString) {
 
 const PARCEL_SIZE = 10;
 const size = PARCEL_SIZE + 1;
+const uiSize = 2048;
 
 const canvas = document.getElementById('canvas');
 canvas.width = window.innerWidth;
@@ -1150,8 +1151,6 @@ document.getElementById('enable-physics-button').addEventListener('click', e => 
 });
 
 const uiRenderer = (() => {
-  const uiSize = 1024;
-  
   const loadPromise = Promise.all([
     new Promise((accept, reject) => {
       const iframe = document.createElement('iframe');
@@ -1191,6 +1190,8 @@ const uiRenderer = (() => {
         id: ++renderIds,
         htmlString: interfaceHtml,
         templateData: {
+          width: uiSize,
+          height: uiSize,
           lol: 'zol',
         },
         width: uiSize,
@@ -1215,10 +1216,46 @@ const uiRenderer = (() => {
     },
   };
 })();
-uiRenderer.render()
-  .then(result => {
-    console.log('got result', result);
+const uiMesh = (() => {
+  const geometry = new THREE.PlaneBufferGeometry(0.2, 0.2);
+  const canvas = document.createElement('canvas');
+  canvas.width = uiSize;
+  canvas.height = uiSize;
+  const ctx = canvas.getContext('2d');
+  const imageData = ctx.createImageData(uiSize, uiSize);
+  const texture = new THREE.Texture(
+    canvas,
+    THREE.UVMapping,
+    THREE.ClampToEdgeWrapping,
+    THREE.ClampToEdgeWrapping,
+    THREE.LinearFilter,
+    THREE.LinearMipMapLinearFilter,
+    THREE.RGBAFormat,
+    THREE.UnsignedByteType,
+    16,
+    THREE.LinearEncoding
+  );
+  const material = new THREE.MeshPhongMaterial({
+    map: texture,
   });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.frustumCulled = false;
+
+  let anchors = [];
+  mesh.update = () => {
+    uiRenderer.render()
+      .then(result => {
+        imageData.data.set(result.data);
+        ctx.putImageData(imageData, 0, 0);
+        texture.needsUpdate = true;
+        console.log('got result', result, result.data.some(n => n < 255));
+      });
+  };
+  mesh.update();
+
+  return mesh;
+})();
+scene.add(uiMesh);
 
 function animate() {
   orbitControls.update();

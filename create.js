@@ -1503,6 +1503,7 @@ const uiMesh = (() => {
   };
   let hoveredAnchor = null;
   mesh.intersect = uv => {
+    hoveredAnchor = null;
     highlightMesh.visible = false;
 
     if (uv) {

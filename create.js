@@ -1080,6 +1080,19 @@ interfaceDocument.getElementById('enable-physics-button').addEventListener('clic
 
 // xr
 
+const _makeRayMesh = () => {
+  const geometry = new THREE.CylinderBufferGeometry(0.002, 0.002, 1, 3, 1, false, 0, Math.PI*2)
+    .applyMatrix4(new THREE.Matrix4().makeTranslation(0, 1/2, 0))
+    .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI/2)));
+  const material = new THREE.MeshBasicMaterial({
+    color: 0x42a5f5,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.visible = false;
+  mesh.frustumCulled = false;
+  return mesh;
+};
+
 const enterXrButton = interfaceDocument.getElementById('enter-xr-button');
 let currentSession = null;
 function onSessionStarted(session) {
@@ -1090,13 +1103,6 @@ function onSessionStarted(session) {
   currentSession = session;
 
   const controllerModelFactory = new XRControllerModelFactory();
-  const controllerGrip1 = renderer.xr.getControllerGrip(0);
-  controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
-  scene.add(controllerGrip1);
-  const controllerGrip2 = renderer.xr.getControllerGrip(1);
-  controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
-  scene.add(controllerGrip2);
-
   for (let i = 0; i < 2; i++) {
     const controller = renderer.xr.getController(i);
     controller.addEventListener('connected', e => {
@@ -1112,6 +1118,14 @@ function onSessionStarted(session) {
         _endTool();
       }
     });
+    
+    controller.rayMesh = _makeRayMesh();
+    controller.add(controller.rayMesh);
+    scene.add(controller);
+    
+    const controllerGrip = renderer.xr.getControllerGrip(i);
+    controllerGrip.add(controllerModelFactory.createControllerModel(controllerGrip));
+    scene.add(controllerGrip);
   }
 }
 function onSessionEnded() {
@@ -1267,6 +1281,15 @@ function animate() {
         } else if (controller.userData.data.handedness === 'right') {
           _updateRaycasterFromObject(localRaycaster, controller);
           _updateTool(localRaycaster);
+          
+          const intersections = localRaycaster.intersectObject(uiMesh);
+          if (intersections.length > 0 && intersections[0].distance < 3) {
+             const [{distance}] = intersections;
+            controller.rayMesh.scale.z = distance;
+            controller.rayMesh.visible = true;
+          } else {
+            controller.rayMesh.visible = false;
+          }
         }
       }
     }

@@ -1055,9 +1055,9 @@ let toolDown = false;
 const _updateRaycasterFromMouseEvent = (raycaster, e) => {
   const mouse = new THREE.Vector2(( ( e.clientX ) / window.innerWidth ) * 2 - 1, - ( ( e.clientY ) / window.innerHeight ) * 2 + 1);
   raycaster.setFromCamera(mouse, camera);
-  if (selectedTool !== 'select' && selectedTool !== 'paint') {
+  /* if (selectedTool !== 'select' && selectedTool !== 'paint') {
     raycaster.ray.origin.add(raycaster.ray.direction);
-  }
+  } */
 };
 const _updateRaycasterFromObject = (raycaster, o) => {
   raycaster.ray.origin.copy(o.position);
@@ -1091,39 +1091,61 @@ const _updateTool = raycaster => {
   } else if (selectedTool === 'paint') {
     _collideMiningMeshes();
   }
+  
+  const intersections = raycaster.intersectObject(uiMesh);
+  if (intersections.length > 0 && intersections[0].distance < 3) {
+    const [{distance, uv}] = intersections;
+    rayMesh.position.copy(raycaster.ray.origin);
+    rayMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, -1), raycaster.ray.direction);
+    rayMesh.scale.z = distance;
+    rayMesh.visible = true;
+
+    uiMesh.intersect(uv);
+  } else {
+    rayMesh.visible = false;
+
+    uiMesh.intersect(null);
+  }
 };
 const _beginTool = () => {
-  if (selectedTool === 'brush') {
-    const v = pointerMesh.material.uniforms.targetPos.value;
-    _paintMiningMeshes(v.x+1, v.y+1, v.z+1);
-    _refreshMiningMeshes();
-  } else if (selectedTool === 'erase') {
-    const v = pointerMesh.material.uniforms.targetPos.value;
-    _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
-    _refreshMiningMeshes();
-  } else if (selectedTool === 'select') {
-    if (!transformControlsHovered) {
-      if (selectedObjectMesh) {
-        _unbindObjectMeshControls(selectedObjectMesh);
+  if (uiMesh.click()) {
+    // nothing
+  } else {
+    if (selectedTool === 'brush') {
+      const v = pointerMesh.material.uniforms.targetPos.value;
+      _paintMiningMeshes(v.x+1, v.y+1, v.z+1);
+      _refreshMiningMeshes();
+    } else if (selectedTool === 'erase') {
+      const v = pointerMesh.material.uniforms.targetPos.value;
+      _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
+      _refreshMiningMeshes();
+    } else if (selectedTool === 'select') {
+      if (!transformControlsHovered) {
+        if (selectedObjectMesh) {
+          _unbindObjectMeshControls(selectedObjectMesh);
+        }
+        selectedObjectMesh = hoveredObjectMesh;
+        if (selectedObjectMesh) {
+          _bindObjectMeshControls(selectedObjectMesh);
+        }
       }
-      selectedObjectMesh = hoveredObjectMesh;
-      if (selectedObjectMesh) {
-        _bindObjectMeshControls(selectedObjectMesh);
-      }
+    } else if (selectedTool === 'paint') {
+      const v = new THREE.Vector3(
+        Math.floor(collisionMesh.position.x*10),
+        Math.floor(collisionMesh.position.y*10),
+        Math.floor(collisionMesh.position.z*10)
+      );
+      _colorMiningMeshes(v.x+1, v.y+1, v.z+1, currentColor);
+      _refreshMiningMeshes();
     }
-  } else if (selectedTool === 'paint') {
-    const v = new THREE.Vector3(
-      Math.floor(collisionMesh.position.x*10),
-      Math.floor(collisionMesh.position.y*10),
-      Math.floor(collisionMesh.position.z*10)
-    );
-    _colorMiningMeshes(v.x+1, v.y+1, v.z+1, currentColor);
-    _refreshMiningMeshes();
+
+    toolDown = true;
   }
-  toolDown = true;
 };
 const _endTool = () => {
-  toolDown = false;
+  if (toolDown) {
+    toolDown = false;
+  }
 };
 [window, interfaceWindow].forEach(w => {
   w.addEventListener('keydown', e => {
@@ -1279,7 +1301,7 @@ interfaceDocument.getElementById('enable-physics-button').addEventListener('clic
 
 // xr
 
-const _makeRayMesh = () => {
+const rayMesh = (() => {
   const geometry = new THREE.CylinderBufferGeometry(0.002, 0.002, 1, 3, 1, false, 0, Math.PI*2)
     .applyMatrix4(new THREE.Matrix4().makeTranslation(0, 1/2, 0))
     .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI/2)));
@@ -1290,7 +1312,8 @@ const _makeRayMesh = () => {
   mesh.visible = false;
   mesh.frustumCulled = false;
   return mesh;
-};
+})();
+scene.add(rayMesh);
 
 const enterXrButton = interfaceDocument.getElementById('enter-xr-button');
 let currentSession = null;
@@ -1317,10 +1340,6 @@ function onSessionStarted(session) {
         _endTool();
       }
     });
-    
-    controller.rayMesh = _makeRayMesh();
-    controller.add(controller.rayMesh);
-    scene.add(controller);
     
     const controllerGrip = renderer.xr.getControllerGrip(i);
     controllerGrip.add(controllerModelFactory.createControllerModel(controllerGrip));
@@ -1482,6 +1501,7 @@ const uiMesh = (() => {
         // console.log(anchors);
       });
   };
+  let hoveredAnchor = null;
   mesh.intersect = uv => {
     highlightMesh.visible = false;
 
@@ -1490,9 +1510,12 @@ const uiMesh = (() => {
       uv.multiplyScalar(uiSize);
 
       for (let i = 0; i < anchors.length; i++) {
-        const {top, bottom, left, right, width, height} = anchors[i];
+        const anchor = anchors[i];
+        const {top, bottom, left, right, width, height} = anchor;
         // console.log('check', {x: uv.x, y: uv.y, top, bottom, left, right});
         if (uv.x >= left && uv.x < right && uv.y >= top && uv.y < bottom) {
+          hoveredAnchor = anchor;
+          
           highlightMesh.position.x = -uiWorldSize/2 + (left + width/2)/uiSize*uiWorldSize;
           highlightMesh.position.y = uiWorldSize - (top + height/2)/uiSize*uiWorldSize;
           highlightMesh.scale.x = width/uiSize*uiWorldSize;
@@ -1501,6 +1524,25 @@ const uiMesh = (() => {
           break;
         }
       }
+    }
+  };
+  mesh.click = () => {
+    console.log('click', hoveredAnchor);
+    if (hoveredAnchor) {
+      const {id} = hoveredAnchor;
+      if (/^(?:tool-|color-)/.test(id)) {
+        interfaceDocument.getElementById(id).click();
+      } else {
+        switch (id) {
+          default: {
+            console.warn('unknown anchor click', id);
+            break;
+          }
+        }
+      }
+      return true;
+    } else {
+      return false;
     }
   };
   mesh.update();
@@ -1524,19 +1566,6 @@ function animate() {
         } else if (controller.userData.data.handedness === 'right') {
           _updateRaycasterFromObject(localRaycaster, controller);
           _updateTool(localRaycaster);
-          
-          const intersections = localRaycaster.intersectObject(uiMesh);
-          if (intersections.length > 0 && intersections[0].distance < 3) {
-            const [{distance, uv}] = intersections;
-            controller.rayMesh.scale.z = distance;
-            controller.rayMesh.visible = true;
-            
-            uiMesh.intersect(uv);
-          } else {
-            controller.rayMesh.visible = false;
-            
-            uiMesh.intersect(null);
-          }
         }
       }
     }

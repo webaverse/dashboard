@@ -1,6 +1,7 @@
 import * as THREE from './three.module.js';
 window.THREE = THREE;
 import {OrbitControls} from './OrbitControls.js';
+import {TransformControls} from './TransformControls.js';
 import {BufferGeometryUtils} from './BufferGeometryUtils.js';
 import {OutlineEffect} from './OutlineEffect.js';
 import {XRControllerModelFactory} from './XRControllerModelFactory.js';
@@ -972,6 +973,31 @@ window.addEventListener('resize', e => {
   camera.updateProjectionMatrix();
 });
 
+let transformControlsHovered = false;
+const _bindObjectMesh = o => {
+  const control = new TransformControls(camera, interfaceDocument.querySelector('.background'), interfaceDocument);
+  // control.setMode(transformMode);
+  control.size = 3;
+  // control.visible = toolManager.getSelectedElement() === xrIframe;
+  // control.enabled = control.visible;
+  control.addEventListener('dragging-changed', e => {
+    orbitControls.enabled = !e.value;
+  });
+  control.addEventListener('mouseEnter', () => {
+    transformControlsHovered = true;
+  });
+  control.addEventListener('mouseLeave', () => {
+    transformControlsHovered = false;
+  });
+  control.attach(o);
+  scene.add(control);
+  o.control = control;
+};
+const _unbindObjectMesh = o => {
+  scene.remove(o.control);
+  o.control = null;
+};
+
 const localRaycaster = new THREE.Raycaster();
 let toolDown = false;
 const _updateRaycasterFromMouseEvent = (raycaster, e) => {
@@ -1024,7 +1050,15 @@ const _beginTool = () => {
     _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
     _refreshMiningMeshes();
   } else if (selectedTool === 'select') {
-    selectedObjectMesh = hoveredObjectMesh;
+    if (!transformControlsHovered) {
+      if (selectedObjectMesh) {
+        _unbindObjectMesh(selectedObjectMesh);
+      }
+      selectedObjectMesh = hoveredObjectMesh;
+      if (selectedObjectMesh) {
+        _bindObjectMesh(selectedObjectMesh);
+      }
+    }
   } else if (selectedTool === 'paint') {
     const v = new THREE.Vector3(
       Math.floor(collisionMesh.position.x*10),

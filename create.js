@@ -466,75 +466,90 @@ const _makeMiningMesh = (x, y, z) => {
   }; */
   let dirty = false;
   mesh.set = (value, x, y, z) => {
-    // const x = Math.floor(pos.x - shift[0]);
-    // const y = Math.floor(pos.y - shift[1]);
-    // const z = Math.floor(pos.z - shift[2]);
-    // console.log('paint', x, y, z, currentColor);
     x -= mesh.x * PARCEL_SIZE;
     y -= mesh.y * PARCEL_SIZE;
     z -= mesh.z * PARCEL_SIZE;
-    // if (x >= 0 && x <= PARCEL_SIZE && y >= 0 && y <= PARCEL_SIZE && z >= 0 && z <= PARCEL_SIZE) {
-      /* const index = x + y*size*size + z*size;
-      potential[index] = -1; */
 
-      const factor = brushSize;
-      const factor2 = Math.ceil(brushSize)+1;
-      // console.log('factor', brushSize, factor2);
-      const max = Math.max(Math.sqrt(factor*factor*3), 0.1);
+    const factor = brushSize;
+    const factor2 = Math.ceil(brushSize);
+    const max = Math.max(Math.sqrt(factor*factor*3), 0.1);
+    for (let dx = -factor2; dx <= factor2; dx++) {
+      for (let dz = -factor2; dz <= factor2; dz++) {
+        for (let dy = -factor2; dy <= factor2; dy++) {
+          const ax = x + dx;
+          const ay = y + dy;
+          const az = z + dz;
+          if (
+            ax >= 0 &&
+            ay >= 0 &&
+            az >= 0 &&
+            ax <= PARCEL_SIZE &&
+            ay <= PARCEL_SIZE &&
+            az <= PARCEL_SIZE
+          ) {
+            const index = ax + ay*size*size + az*size;
+            const d = (max - Math.sqrt(dx*dx + dy*dy + dz*dz)) / max;
+            potential[index] = value > 0 ? Math.min(potential[index], -d) : Math.max(potential[index], d);
+            dirty = true;
+          }
+        }
+      }
+    }
+    if (value > 0) {
       for (let dx = -factor2; dx <= factor2; dx++) {
         for (let dz = -factor2; dz <= factor2; dz++) {
           for (let dy = -factor2; dy <= factor2; dy++) {
             const ax = x + dx;
             const ay = y + dy;
             const az = z + dz;
-            if (
-              ax >= 0 &&
-              ay >= 0 &&
-              az >= 0 &&
-              ax <= PARCEL_SIZE &&
-              ay <= PARCEL_SIZE &&
-              az <= PARCEL_SIZE
-            ) {
-              const index = ax + ay*size*size + az*size;
-              const d = (max - Math.sqrt(dx*dx + dy*dy + dz*dz)) / max;
-              potential[index] = value > 0 ? Math.min(potential[index], -d) : Math.max(potential[index], d);
-              dirty = true;
+            if (ax >= 0 && ax <= PARCEL_SIZE && ay >= 0 && ay <= PARCEL_SIZE && az >= 0 && az <= PARCEL_SIZE) {
+              const index2 = ax + ay*size*size + az*size;
+              const xi = index2*3;
+              const yi = index2*3+1;
+              const zi = index2*3+2;
+              // if ((dx === 0 && dy === 0 && dz === 0) || (brush[xi] === 0 && brush[yi] === 0 && brush[zi] === 0)) {
+                brush[xi] = currentColor.r*255;
+                brush[yi] = currentColor.g*255;
+                brush[zi] = currentColor.b*255;
+                dirty = true;
+              // }
             }
           }
         }
       }
-      const factor3 = Math.ceil(brushSize)+1;
-      // if (brush[index*3] === 0 && brush[index*3+1] === 0 && brush[index*3+2] === 0) {
-        for (let dx = -factor3; dx <= factor3; dx++) {
-          for (let dz = -factor3; dz <= factor3; dz++) {
-            for (let dy = -factor3; dy <= factor3; dy++) {
-              const ax = x + dx;
-              const ay = y + dy;
-              const az = z + dz;
-              if (ax >= 0 && ax <= PARCEL_SIZE && ay >= 0 && ay <= PARCEL_SIZE && az >= 0 && az <= PARCEL_SIZE) {
-                const index2 = ax + ay*size*size + az*size;
-                const xi = index2*3;
-                const yi = index2*3+1;
-                const zi = index2*3+2;
-                if ((dx === 0 && dy === 0 && dz === 0) || (brush[xi] === 0 && brush[yi] === 0 && brush[zi] === 0)) {
-                  brush[xi] = currentColor.r*255;
-                  brush[yi] = currentColor.g*255;
-                  brush[zi] = currentColor.b*255;
-                  dirty = true;
-                }
-              }
-            }
-          }
-        }
-      /* } else {
-        brush[index*3] = currentColor.r*255;
-        brush[index*3+1] = currentColor.g*255;
-        brush[index*3+2] = currentColor.b*255;
-      } */
-    // }
+    }
   };
   mesh.paint = mesh.set.bind(mesh, 1);
   mesh.erase = mesh.set.bind(mesh, -1);
+  mesh.color = (x, y, z, c) => {
+    x -= mesh.x * PARCEL_SIZE;
+    y -= mesh.y * PARCEL_SIZE;
+    z -= mesh.z * PARCEL_SIZE;
+
+    const factor = brushSize;
+    const factor2 = Math.ceil(brushSize);
+    for (let dx = -factor2; dx <= factor2; dx++) {
+      for (let dz = -factor2; dz <= factor2; dz++) {
+        for (let dy = -factor2; dy <= factor2; dy++) {
+          const ax = x + dx;
+          const ay = y + dy;
+          const az = z + dz;
+          if (ax >= 0 && ax <= PARCEL_SIZE && ay >= 0 && ay <= PARCEL_SIZE && az >= 0 && az <= PARCEL_SIZE) {
+            const index2 = ax + ay*size*size + az*size;
+            const xi = index2*3;
+            const yi = index2*3+1;
+            const zi = index2*3+2;
+            // if ((dx === 0 && dy === 0 && dz === 0) || (brush[xi] === 0 && brush[yi] === 0 && brush[zi] === 0)) {
+              brush[xi] = currentColor.r*255;
+              brush[yi] = currentColor.g*255;
+              brush[zi] = currentColor.b*255;
+              dirty = true;
+            // }
+          }
+        }
+      }
+    }
+  };
   mesh.refresh = () => {
     if (dirty) {
       dirty = false;
@@ -824,6 +839,12 @@ const _eraseMiningMeshes = (x, y, z) => {
     miningMesh.erase(x, y, z);
   });
 };
+const _colorMiningMeshes = (x, y, z, c) => {
+  const miningMesh = _findMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
+  miningMeshes.forEach(miningMesh => {
+    miningMesh.color(x, y, z, c);
+  });
+};
 let refreshing = false;
 let refreshQueued = false;
 const _refreshMiningMeshes = async () => {
@@ -920,12 +941,21 @@ const _updateTool = raycaster => {
   }
 };
 const _beginTool = () => {
-  const v = pointerMesh.material.uniforms.targetPos.value;
   if (selectedTool === 'brush') {
+    const v = pointerMesh.material.uniforms.targetPos.value;
     _paintMiningMeshes(v.x+1, v.y+1, v.z+1);
     _refreshMiningMeshes();
   } else if (selectedTool === 'erase') {
+    const v = pointerMesh.material.uniforms.targetPos.value;
     _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
+    _refreshMiningMeshes();
+  } else if (selectedTool === 'paint') {
+    const v = new THREE.Vector3(
+      Math.floor(collisionMesh.position.x*10),
+      Math.floor(collisionMesh.position.y*10),
+      Math.floor(collisionMesh.position.z*10)
+    );
+    _colorMiningMeshes(v.x+1, v.y+1, v.z+1, currentColor);
     _refreshMiningMeshes();
   }
   toolDown = true;
@@ -1280,7 +1310,7 @@ const uiMesh = (() => {
         mesh.visible = true;
         
         anchors = result.anchors;
-        console.log(anchors);
+        // console.log(anchors);
       });
   };
   mesh.intersect = uv => {

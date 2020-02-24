@@ -1607,7 +1607,7 @@ renderer.setAnimationLoop(animate);
       scene.remove(objectMesh);
       objectMesh.destroy();
     }
-    const {x, y, z, objectMeshes: newObjectMeshes} = _loadObjectMeshes(arrayBuffer);
+    const {x, y, z, objectMeshes: newObjectMeshes} = await _loadObjectMeshes(arrayBuffer);
     objectMeshes = newObjectMeshes;
     for (let i = 0; i < objectMeshes.length; i++) {
       scene.add(objectMeshes[i]);

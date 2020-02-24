@@ -1292,10 +1292,10 @@ const uiMesh = (() => {
         const {top, bottom, left, right, width, height} = anchors[i];
         // console.log('check', {x: uv.x, y: uv.y, top, bottom, left, right});
         if (uv.x >= left && uv.x < right && uv.y >= top && uv.y < bottom) {
-          highlightMesh.position.x = (uv.x + width/2) / uiSize * uiWorldSize;
-          highlightMesh.position.y = (uv.y + height/2) / uiSize * uiWorldSize;
-          highlightMesh.scale.x = width/uiSize;
-          highlightMesh.scale.y = height/uiSize;
+          highlightMesh.position.x = -uiWorldSize/2 + (left + width/2)/uiSize*uiWorldSize;
+          highlightMesh.position.y = uiWorldSize - (top + height/2)/uiSize*uiWorldSize;
+          highlightMesh.scale.x = width/uiSize*uiWorldSize;
+          highlightMesh.scale.y = height/uiSize*uiWorldSize;
           highlightMesh.visible = true;
           break;
         }

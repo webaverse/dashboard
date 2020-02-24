@@ -299,9 +299,9 @@ let ammo = null;
 
   let lastTimestamp = 0;
   ammo = {
-    bindMiningMeshPhysics(miningMesh) {
-      if (!miningMesh.body) {
-        const shape = _makeConvexHullShape(miningMesh);
+    bindObjectMeshPhysics(objectMesh) {
+      if (!objectMesh.body) {
+        const shape = _makeConvexHullShape(objectMesh);
 
         var transform = new Ammo.btTransform();
         transform.setIdentity();
@@ -317,7 +317,7 @@ let ammo = null;
 
         dynamicsWorld.addRigidBody(body);
 
-        miningMesh.body = body;
+        objectMesh.body = body;
       }
     },
     simulate() {
@@ -331,7 +331,7 @@ let ammo = null;
 
       lastTimestamp = now;
     },
-    updateMiningMesh(mesh) {
+    updateObjectMesh(mesh) {
       if (mesh.body) {
         mesh.body.getMotionState().getWorldTransform(localTransform);
         const origin = localTransform.getOrigin();
@@ -907,9 +907,9 @@ const _collideMiningMeshes = async () => {
     collideQueued = true;
   }
 };
-const _bindMiningMeshPhysics = async () => {
-  for (let i = 0; i < miningMeshes.length; i++) {
-    ammo.bindMiningMeshPhysics(miningMeshes[i]);
+const _bindObjectMeshPhysics = async () => {
+  for (let i = 0; i < objectMeshes.length; i++) {
+    ammo.bindObjectMeshPhysics(objectMeshes[i]);
   }
 };
 
@@ -1220,7 +1220,7 @@ interfaceDocument.getElementById('enable-physics-button').addEventListener('clic
   e.preventDefault();
   e.stopPropagation();
 
-  _bindMiningMeshPhysics();
+  _bindObjectMeshPhysics();
 });
 
 // xr
@@ -1490,8 +1490,8 @@ function animate() {
 
   if (ammo) {
     ammo.simulate();
-    for (let i = 0; i < miningMeshes.length; i++) {
-      ammo.updateMiningMesh(miningMeshes[i]);
+    for (let i = 0; i < objectMeshes.length; i++) {
+      ammo.updateObjectMesh(objectMeshes[i]);
     }
   }
 }

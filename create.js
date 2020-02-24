@@ -1265,6 +1265,9 @@ const uiMesh = (() => {
     mesh.visible = false;
     return mesh;
   })();
+  /* highlightMesh.position.x = -uiWorldSize/2 + (10 + 150/2)/uiSize*uiWorldSize;
+  highlightMesh.position.y = uiWorldSize - (60 + 150/2)/uiSize*uiWorldSize;
+  highlightMesh.scale.x = highlightMesh.scale.y = 150/uiSize*uiWorldSize; */
   mesh.add(highlightMesh);
 
   let anchors = [];

@@ -1004,7 +1004,6 @@ interfaceDocument.addEventListener('drop', e => {
         img.onerror = console.warn;
         const texture = new THREE.Texture();
         texture.generateMipmaps = false;
-        // texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
         texture.minFilter = THREE.LinearFilter;
         const material = new THREE.MeshBasicMaterial({
           map: texture,
@@ -1022,8 +1021,6 @@ interfaceDocument.addEventListener('drop', e => {
       objectMeshes.push(objectMesh);
     }
   }
-  // const data = ev.dataTransfer.getData("text/plain");
-  // ev.target.appendChild(document.getElementById(data));
 });
 
 let transformControlsHovered = false;

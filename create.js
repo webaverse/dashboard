@@ -1169,6 +1169,8 @@ const uiRenderer = (() => {
       };
       iframe.frameborder = 0;
       iframe.style.position = 'absolute';
+      iframe.style.width = `${uiSize}px`;
+      iframe.style.height = `${uiSize}px`;
       iframe.style.top = '-4096px';
       iframe.style.left = '-4096px';
       document.body.appendChild(iframe);

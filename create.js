@@ -1035,7 +1035,7 @@ interfaceDocument.getElementById('load-op').addEventListener('click', e => {
   console.log('load');
 });
 
-const colors = interfaceDocument.querySelectorAll('.colors > .color');
+const colors = interfaceDocument.querySelectorAll('.color');
 Array.from(colors).forEach(color => {
   const inner = color.querySelector('.inner');
   color.addEventListener('click', e => {
@@ -1183,7 +1183,7 @@ const uiRenderer = (() => {
         templateData: {
           width: uiSize,
           height: uiSize,
-          zoom: 3,
+          zoom: 5,
           hideOps: true,
         },
         width: uiSize,
@@ -1228,7 +1228,7 @@ const uiMesh = (() => {
     16,
     THREE.LinearEncoding
   );
-  const material = new THREE.MeshPhongMaterial({
+  const material = new THREE.MeshBasicMaterial({
     map: texture,
   });
   const mesh = new THREE.Mesh(geometry, material);

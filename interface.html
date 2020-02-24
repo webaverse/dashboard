@@ -36,7 +36,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 .tools > .row > .tool,
 .ops > .op,
-.colors > .color,
+.colors > .row > .color,
 .enters > .enter
 {
   display: flex;
@@ -47,14 +47,15 @@ input[type=number]::-webkit-inner-spin-button {
 }
 .tools > .row > .tool,
 .ops > .op,
-.colors > .color {
+.colors > .row > .color {
   width: 30px;
   height: 30px;
 }
-.tools {
+.tools,
+.colors {
   flex-direction: column;
 }
-.tools > .row {
+.row {
   display: flex;
 }
 .tools > .row > .tool {
@@ -98,20 +99,20 @@ input[type=number]::-webkit-inner-spin-button {
   bottom: 10px;
   left: 10px;
 }
-.colors > .color {
+.colors > .row > .color {
   position: relative;
 }
-.colors > .color > .inner {
+.colors > .row > .color > .inner {
   position: absolute;
   top: 3px;
   bottom: 3px;
   left: 3px;
   right: 3px;
 }
-.colors > .color:hover {
+.colors > .row > .color:hover {
   background-color: #333;
 }
-.colors > .color:active, .colors > .color.selected {
+.colors > .row > .color:active, .colors > .row > .color.selected {
   background-color: #000;
 }
 .enters {
@@ -180,25 +181,30 @@ input[type=number]::-webkit-inner-spin-button {
       <nav class="enter disabled" id=enter-xr-button><i class="fa fa-head-vr"></i></nav>
     </div>
     <div class=colors>
-      <nav class="color selected"><div class=inner style="background-color: #ef5350;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #ec407a;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #ab47bc;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #7e57c2;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #5c6bc0;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #42a5f5;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #29b6f6;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #26c6da;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #26a69a;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #66bb6a;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #9ccc65;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #d4e157;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #ffee58;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #ffca28;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #ffa726;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #ff7043;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #8d6e63;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #bdbdbd;"></div></nav>
-      <nav class="color"><div class=inner style="background-color: #78909c;"></div></nav>
+      <div class=row>
+        <nav class="color selected"><div class=inner style="background-color: #ef5350;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #ec407a;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #ab47bc;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #7e57c2;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #5c6bc0;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #42a5f5;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #29b6f6;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #26c6da;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #26a69a;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #66bb6a;"></div></nav>
+      </div>
+      <div class=row>
+        <nav class="color"><div class=inner style="background-color: #9ccc65;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #d4e157;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #ffee58;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #ffca28;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #ffa726;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #ff7043;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #8d6e63;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #bdbdbd;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #78909c;"></div></nav>
+        <nav class="color"><div class=inner style="background-color: #333333;"></div></nav>
+      </div>
     </div>
     <div class=background></div>
   </body>

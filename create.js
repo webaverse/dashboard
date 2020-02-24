@@ -992,6 +992,7 @@ interfaceDocument.addEventListener('drop', e => {
 
           mesh.scale.x = 0.5;
           mesh.scale.y = mesh.scale.x * img.height/img.width;
+          mesh.visible = true;
         };
         img.onerror = console.warn;
         const texture = new THREE.Texture();
@@ -1002,6 +1003,7 @@ interfaceDocument.addEventListener('drop', e => {
           map: texture,
         });
         const mesh = new THREE.Mesh(geometry, material);
+        mesh.visible = false;
         mesh.frustumCulled = false;
         return mesh;
       })();

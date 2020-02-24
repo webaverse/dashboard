@@ -973,6 +973,46 @@ window.addEventListener('resize', e => {
   camera.updateProjectionMatrix();
 });
 
+interfaceDocument.addEventListener('dragover', e => {
+  e.preventDefault();
+});
+interfaceDocument.addEventListener('drop', e => {
+  e.preventDefault();
+
+  if (e.dataTransfer.files.length > 0){
+    const [file] = e.dataTransfer.files;
+    if (/^image\//.test(file.type)) {
+      const objectMesh = (() => {
+        const geometry = new THREE.PlaneBufferGeometry(1, 1);
+        const img = new Image();
+        img.src = URL.createObjectURL(file);
+        img.onload = () => {
+          texture.image = img;
+          texture.needsUpdate = true;
+
+          mesh.scale.x = 0.5;
+          mesh.scale.y = mesh.scale.x * img.height/img.width;
+        };
+        img.onerror = console.warn;
+        const texture = new THREE.Texture();
+        texture.generateMipmaps = false;
+        // texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+        texture.minFilter = THREE.LinearFilter;
+        const material = new THREE.MeshBasicMaterial({
+          map: texture,
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.frustumCulled = false;
+        return mesh;
+      })();
+      scene.add(objectMesh);
+      console.log('load file', file);
+    }
+  }
+  // const data = ev.dataTransfer.getData("text/plain");
+  // ev.target.appendChild(document.getElementById(data));
+});
+
 let transformControlsHovered = false;
 const _bindObjectMesh = o => {
   const control = new TransformControls(camera, interfaceDocument.querySelector('.background'), interfaceDocument);

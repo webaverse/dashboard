@@ -146,15 +146,15 @@ input[type=number]::-webkit-inner-spin-button {
 }
     </style>
   </head>
-  <body style="width: {{width}}px; height: {{height}}px; zoom: {{zoom}};">
-    <div class=tools>
+  <body style="width: {{width}}px; height: {{height}}px;">
+    <div class=tools style="transform-origin: 0 0; transform: scale({{zoom}});">
       <div class=row>
-        <nav class="tool selected" tool="camera"><i class="fal fa-camera"></i></nav>
-        <nav class=tool tool="brush"><i class="fal fa-dice-d8"></i></nav>
-        <nav class="tool" tool="select"><i class="fal fa-mouse-pointer"></i></nav>
-        <nav class="tool" tool="erase"><i class="fal fa-eraser"></i></nav>
-        <nav class="tool" tool="paint"><i class="fal fa-paint-brush"></i></nav>
-        <nav class="tool" tool="fill"><i class="fal fa-fill-drip"></i></nav>
+        <a id=tool-1 class="tool selected" tool="camera"><i class="fal fa-camera"></i></a>
+        <a id=tool-2 class=tool tool="brush"><i class="fal fa-dice-d8"></i></a>
+        <a id=tool-3 class="tool" tool="select"><i class="fal fa-mouse-pointer"></i></a>
+        <a id=tool-4 class="tool" tool="erase"><i class="fal fa-eraser"></i></a>
+        <a id=tool-5 class="tool" tool="paint"><i class="fal fa-paint-brush"></i></a>
+        <a id=tool-6 class="tool" tool="fill"><i class="fal fa-fill-drip"></i></a>
       </div>
       <label class=row>
         <span>Brush size</span>
@@ -170,40 +170,40 @@ input[type=number]::-webkit-inner-spin-button {
         <input type="number" id="object-size-z" value="1" min="1" max="8">
       </label>
     </div>
-    <form class=ops id=ops-form style="{{#hideOps}}display: none;{{/hideOps}}">
+    <form class=ops id=ops-form style="{{#hideOps}}display: none;{{/hideOps}} transform-origin: 100% 0; transform: scale({{zoom}});">
       <input type="text" required id="object-name" placeholder="Object name">
-      <nav class="op" id=new-op><i class="fal fa-sparkles"></i></nav>
-      <nav class="op" id=load-op><i class="fal fa-folder-open"></i></nav>
-      <nav class="op" id=save-op><i class="fal fa-save"></i><input type=submit></nav>
+      <a class="op" id=new-op><i class="fal fa-sparkles"></i></a>
+      <a class="op" id=load-op><i class="fal fa-folder-open"></i></a>
+      <a class="op" id=save-op><i class="fal fa-save"></i><input type=submit></a>
     </form>
-    <div class=enters>
-      <nav class="enter" id=enable-physics-button><i class="fa fa-atom"></i></nav>
-      <nav class="enter disabled" id=enter-xr-button><i class="fa fa-head-vr"></i></nav>
+    <div class=enters style="transform-origin: 100% 100%; transform: scale({{zoom}});">
+      <a class="enter" id=enable-physics-button><i class="fa fa-atom"></i></a>
+      <a class="enter disabled" id=enter-xr-button><i class="fa fa-head-vr"></i></a>
     </div>
-    <div class=colors>
+    <div class=colors style="transform-origin: 0 100%; transform: scale({{zoom}});">
       <div class=row>
-        <nav class="color selected"><div class=inner style="background-color: #ef5350;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #ec407a;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #ab47bc;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #7e57c2;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #5c6bc0;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #42a5f5;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #29b6f6;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #26c6da;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #26a69a;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #66bb6a;"></div></nav>
+        <a id=color-1 class="color selected"><div class=inner style="background-color: #ef5350;"></div></a>
+        <a id=color-2 class="color"><div class=inner style="background-color: #ec407a;"></div></a>
+        <a id=color-3 class="color"><div class=inner style="background-color: #ab47bc;"></div></a>
+        <a id=color-4 class="color"><div class=inner style="background-color: #7e57c2;"></div></a>
+        <a id=color-5 class="color"><div class=inner style="background-color: #5c6bc0;"></div></a>
+        <a id=color-6 class="color"><div class=inner style="background-color: #42a5f5;"></div></a>
+        <a id=color-7 class="color"><div class=inner style="background-color: #29b6f6;"></div></a>
+        <a id=color-8 class="color"><div class=inner style="background-color: #26c6da;"></div></a>
+        <a id=color-9 class="color"><div class=inner style="background-color: #26a69a;"></div></a>
+        <a id=color-10 class="color"><div class=inner style="background-color: #66bb6a;"></div></a>
       </div>
       <div class=row>
-        <nav class="color"><div class=inner style="background-color: #9ccc65;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #d4e157;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #ffee58;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #ffca28;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #ffa726;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #ff7043;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #8d6e63;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #bdbdbd;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #78909c;"></div></nav>
-        <nav class="color"><div class=inner style="background-color: #333333;"></div></nav>
+        <a id=color-11 class="color"><div class=inner style="background-color: #9ccc65;"></div></a>
+        <a id=color-12 class="color"><div class=inner style="background-color: #d4e157;"></div></a>
+        <a id=color-13 class="color"><div class=inner style="background-color: #ffee58;"></div></a>
+        <a id=color-14 class="color"><div class=inner style="background-color: #ffca28;"></div></a>
+        <a id=color-15 class="color"><div class=inner style="background-color: #ffa726;"></div></a>
+        <a id=color-16 class="color"><div class=inner style="background-color: #ff7043;"></div></a>
+        <a id=color-17 class="color"><div class=inner style="background-color: #8d6e63;"></div></a>
+        <a id=color-18 class="color"><div class=inner style="background-color: #bdbdbd;"></div></a>
+        <a id=color-19 class="color"><div class=inner style="background-color: #78909c;"></div></a>
+        <a id=color-20 class="color"><div class=inner style="background-color: #333333;"></div></a>
       </div>
     </div>
     <div class=background></div>

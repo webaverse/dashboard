@@ -1001,6 +1001,7 @@ interfaceDocument.addEventListener('drop', e => {
         texture.minFilter = THREE.LinearFilter;
         const material = new THREE.MeshBasicMaterial({
           map: texture,
+          side: THREE.DoubleSide,
         });
         const mesh = new THREE.Mesh(geometry, material);
         mesh.visible = false;
@@ -1008,7 +1009,7 @@ interfaceDocument.addEventListener('drop', e => {
         return mesh;
       })();
       scene.add(objectMesh);
-      console.log('load file', file);
+      objectMeshes.push(objectMesh);
     }
   }
   // const data = ev.dataTransfer.getData("text/plain");

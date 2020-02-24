@@ -924,26 +924,44 @@ const collisionMesh = (() => {
 })();
 scene.add(collisionMesh);
 
-const outlineEffect = new OutlineEffect(renderer, {
+const hoverOutlineEffect = new OutlineEffect(renderer, {
   defaultThickness: 0.01,
-  defaultColor: [0, 0, 1],
+  defaultColor: new THREE.Color(0x42a5f5).toArray(),
+  defaultAlpha: 0.5,
+  // defaultKeepAlive: false,//true,
+});
+const selectOutlineEffect = new OutlineEffect(renderer, {
+  defaultThickness: 0.01,
+  defaultColor: new THREE.Color(0x66bb6a).toArray(),
   defaultAlpha: 0.5,
   // defaultKeepAlive: false,//true,
 });
 const outlineScene = new THREE.Scene();
 let renderingOutline = false;
 let hoveredObjectMesh = null;
+let selectedObjectMesh = null;
 scene.onAfterRender = () => {
-  if (renderingOutline || !hoveredObjectMesh) return;
+  if (renderingOutline) return;
   renderingOutline = true;
 
-  const oldParent = hoveredObjectMesh.parent;
-  outlineScene.add(hoveredObjectMesh);
+  let oldHoverParent;
+  if (hoveredObjectMesh) {
+    oldHoverParent = hoveredObjectMesh.parent;
+    outlineScene.add(hoveredObjectMesh);
+  }
+  hoverOutlineEffect.renderOutline(outlineScene, camera);
+  if (oldHoverParent) {
+    scene.add(hoveredObjectMesh);
+  }
 
-  outlineEffect.renderOutline(outlineScene, camera);
-
-  if (oldParent) {
-    oldParent.add(hoveredObjectMesh);
+  let oldSelectedParent;
+  if (selectedObjectMesh) {
+    oldSelectedParent = selectedObjectMesh.parent;
+    outlineScene.add(selectedObjectMesh);
+  }
+  selectOutlineEffect.renderOutline(outlineScene, camera);
+  if (oldSelectedParent) {
+    scene.add(selectedObjectMesh);
   }
 
   renderingOutline = false;
@@ -1005,6 +1023,8 @@ const _beginTool = () => {
     const v = pointerMesh.material.uniforms.targetPos.value;
     _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
     _refreshMiningMeshes();
+  } else if (selectedTool === 'select') {
+    selectedObjectMesh = hoveredObjectMesh;
   } else if (selectedTool === 'paint') {
     const v = new THREE.Vector3(
       Math.floor(collisionMesh.position.x*10),

@@ -1015,6 +1015,9 @@ interfaceDocument.addEventListener('drop', e => {
         mesh.frustumCulled = false;
         return mesh;
       })();
+      objectMesh.position.copy(camera.position)
+        .add(new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion));
+      objectMesh.quaternion.copy(camera.quaternion);
       scene.add(objectMesh);
       objectMeshes.push(objectMesh);
     }

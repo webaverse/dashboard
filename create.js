@@ -354,8 +354,8 @@ let ammo = null;
 })();
 scene.add(cubeMesh); */
 
-const _makeMiningMesh = (x, y, z) => {
-  const terrainVsh = `
+const miningMeshMaterial = (() => {
+  /* const terrainVsh = `
     attribute vec3 color;
     varying vec3 vColor;
     varying vec3 vViewPosition;
@@ -392,17 +392,15 @@ const _makeMiningMesh = (x, y, z) => {
       // float range = 2.01;
       vec3 minPos = uSelect - range;
       vec3 maxPos = minPos + (range*2.);
-      /* if (inRange(vViewPosition, minPos, maxPos)) {
-        gl_FragColor = color2;
-      } else { */
+      // if (inRange(vViewPosition, minPos, maxPos)) {
+        // gl_FragColor = color2;
+      // } else {
         gl_FragColor = color;
       // }
       // gl_FragColor.rgb += dotNL * 0.5;
     }
   `;
-
-  const geometry = new THREE.BufferGeometry();
-  /* const material = new THREE.ShaderMaterial({
+  const material = new THREE.ShaderMaterial({
     uniforms: {
       uSelect: {
         type: 'v3',
@@ -419,6 +417,11 @@ const _makeMiningMesh = (x, y, z) => {
     color: 0xFFFFFF,
     vertexColors: THREE.VertexColors,
   });
+  return material;
+})();
+const _makeMiningMesh = (x, y, z) => {
+  const geometry = new THREE.BufferGeometry();
+  const material = miningMeshMaterial;
   const mesh = new THREE.Mesh(geometry, material);
   mesh.frustumCulled = false;
   mesh.visible = false;
@@ -719,6 +722,17 @@ const _newMiningMeshes = () => {
   }
   _refreshMiningMeshes();
 };
+const objectMeshes = [];
+const _commitMiningMeshes = () => {
+  const geometry = BufferGeometryUtils.mergeBufferGeometries(miningMeshes.map(miningMesh => miningMesh.geometry));
+  const material = miningMeshMaterial;
+  const objectMesh = new THREE.Mesh(geometry, material);
+  objectMesh.frustumCulled = false;
+  scene.add(objectMesh);
+  objectMeshes.push(objectMesh);
+
+  _newMiningMeshes();
+};
 const _saveMiningMeshes = () => {
   const arrayBuffer = new ArrayBuffer(300*1024);
   let index = 0;
@@ -855,6 +869,12 @@ const _refreshMiningMeshes = async () => {
     for (let i = 0; i < fns.length; i++) {
       fns[i]();
     }
+    const commitTool = tools[5];
+    if (miningMeshes.some(miningMesh => miningMesh.visible)) {
+      commitTool.classList.remove('hidden');
+    } else {
+      commitTool.classList.add('hidden');
+    }
 
     refreshing = false;
     if (refreshQueued) {
@@ -938,7 +958,7 @@ const _updateTool = raycaster => {
       }
       _refreshMiningMeshes();
     }
-  } else if (selectedTool === 'paint' || selectedTool === 'fill') {
+  } else if (selectedTool === 'paint') {
     _collideMiningMeshes();
   }
 };
@@ -991,17 +1011,21 @@ const _endTool = () => {
 // interface
 
 const tools = interfaceDocument.querySelectorAll('.tool');
-Array.from(tools).forEach(tool => {
+Array.from(tools).forEach((tool, i) => {
   tool.addEventListener('click', e => {
     e.preventDefault();
     e.stopPropagation();
-    
-    Array.from(tools).forEach(tool => {
-      tool.classList.remove('selected');
-    });
-    selectedTool = tool.getAttribute('tool');
-    tool.classList.add('selected');
-    orbitControls.enabled = selectedTool === 'camera';
+
+    if (i === 5) {
+      _commitMiningMeshes();
+    } else {
+      Array.from(tools).forEach(tool => {
+        tool.classList.remove('selected');
+      });
+      selectedTool = tool.getAttribute('tool');
+      tool.classList.add('selected');
+      orbitControls.enabled = selectedTool === 'camera';
+    }
   });
 });
 let selectedTool = tools[0].getAttribute('tool');

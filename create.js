@@ -1167,6 +1167,7 @@ const uiRenderer = (() => {
       iframe.onerror = err => {
         reject(err);
       };
+      iframe.frameborder = 0;
       iframe.style.position = 'absolute';
       iframe.style.top = '-4096px';
       iframe.style.left = '-4096px';

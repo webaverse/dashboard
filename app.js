@@ -1149,6 +1149,77 @@ document.getElementById('enable-physics-button').addEventListener('click', e => 
   _bindMiningMeshPhysics();
 });
 
+const uiRenderer = (() => {
+  const uiSize = 1024;
+  
+  const loadPromise = Promise.all([
+    new Promise((accept, reject) => {
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://render.exokit.xyz/';
+      // iframe.src = './exokit-render/index.html';
+      iframe.onload = () => {
+        accept(iframe);
+      };
+      iframe.onerror = err => {
+        reject(err);
+      };
+      iframe.style.position = 'absolute';
+      iframe.style.top = '-4096px';
+      iframe.style.left = '-4096px';
+      document.body.appendChild(iframe);
+    }),
+    fetch('interface.html')
+      .then(res => res.text()),
+  ]);
+
+  let renderIds = 0;
+  return {
+    async render(searchResults, inventory, channels, selectedTab, rtcConnected, landConnected) {
+      const [iframe, interfaceHtml] = await loadPromise;
+
+      if (renderIds > 0) {
+        iframe.contentWindow.postMessage({
+          method: 'cancel',
+          id: renderIds,
+        });
+      }
+
+      const start = Date.now();
+      const mc = new MessageChannel();
+      iframe.contentWindow.postMessage({
+        method: 'render',
+        id: ++renderIds,
+        htmlString: interfaceHtml,
+        templateData: {
+          lol: 'zol',
+        },
+        width: uiSize,
+        height: uiSize,
+        port: mc.port2,
+      }, '*', [mc.port2]);
+      const result = await new Promise((accept, reject) => {
+        mc.port1.onmessage = e => {
+          const {data} = e;
+          const {error, result} = data;
+
+          if (result) {
+            console.log('time taken', Date.now() - start);
+
+            accept(result);
+          } else {
+            reject(error);
+          }
+        };
+      });
+      return result;
+    },
+  };
+})();
+uiRenderer.render()
+  .then(result => {
+    console.log('got result', result);
+  });
+
 function animate() {
   orbitControls.update();
   renderer.render(scene, camera);

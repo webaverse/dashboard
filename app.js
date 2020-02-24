@@ -895,21 +895,25 @@ window.addEventListener('keydown', e => {
   }
 });
 const localRaycaster = new THREE.Raycaster();
-let mouseDown = false;
+let toolDown = false;
 const _updateRaycasterFromMouseEvent = (raycaster, e) => {
   const mouse = new THREE.Vector2(( ( e.clientX ) / window.innerWidth ) * 2 - 1, - ( ( e.clientY ) / window.innerHeight ) * 2 + 1);
   raycaster.setFromCamera(mouse, camera);
+  raycaster.ray.origin.add(raycaster.ray.direction);
+};
+const _updateRaycasterFromObject = (raycaster, o) => {
+  raycaster.ray.origin.copy(o.position);
+  raycaster.ray.direction.set(0, 0, -1).applyQuaternion(o.quaternion);
 };
 const _updateTool = raycaster => {
   if (selectedTool === 'brush' || selectedTool === 'erase') {
-    const targetPosition = raycaster.ray.origin.clone()
-      .add(new THREE.Vector3(0, 0, -1).applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, -1), raycaster.ray.direction)));
+    const targetPosition = raycaster.ray.origin;
     pointerMesh.material.uniforms.targetPos.value.set(
       Math.floor(targetPosition.x*10),
       Math.floor(targetPosition.y*10),
       Math.floor(targetPosition.z*10)
     );
-    if (mouseDown) {
+    if (toolDown) {
       const v = pointerMesh.material.uniforms.targetPos.value;
       if (selectedTool === 'brush') {
         _paintMiningMeshes(v.x+1, v.y+1, v.z+1);
@@ -931,21 +935,17 @@ const _beginTool = () => {
     _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
     _refreshMiningMeshes();
   }
-  mouseDown = true;
+  toolDown = true;
 };
 const _endTool = () => {
-  mouseDown = false;
+  toolDown = false;
 };
 window.addEventListener('mousemove', e => {
   _updateRaycasterFromMouseEvent(localRaycaster, e);
   _updateTool(localRaycaster);
 });
-window.addEventListener('mousedown', e => {
-  _beginTool();
-});
-window.addEventListener('mouseup', e => {
-  _endTool();
-});
+window.addEventListener('mousedown', _beginTool);
+window.addEventListener('mouseup', _endTool);
 
 const tools = document.querySelectorAll('.tools > .tool');
 Array.from(tools).forEach(tool => {
@@ -1078,58 +1078,62 @@ const objectSizeZ = document.getElementById('object-size-z');
 });
 
 const enterXrButton = document.getElementById('enter-xr-button');
+let currentSession = null;
 {
-  let currentSession = null;
-
-  function onSessionStarted( session ) {
-
-    session.addEventListener( 'end', onSessionEnded );
+  function onSessionStarted(session) {
+    session.addEventListener('end', onSessionEnded);
 
     renderer.xr.setSession( session );
-    // button.textContent = 'EXIT VR';
 
     currentSession = session;
 
     const controllerModelFactory = new XRControllerModelFactory();
-    const controllerGrip1 = renderer.xr.getControllerGrip( 0 );
-    controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
-    scene.add( controllerGrip1 );
-    const controllerGrip2 = renderer.xr.getControllerGrip( 1 );
-    controllerGrip2.add( controllerModelFactory.createControllerModel( controllerGrip2 ) );
-    scene.add( controllerGrip2 );
+    const controllerGrip1 = renderer.xr.getControllerGrip(0);
+    controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
+    scene.add(controllerGrip1);
+    const controllerGrip2 = renderer.xr.getControllerGrip(1);
+    controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
+    scene.add(controllerGrip2);
+    
+    const controller1 = renderer.xr.getController(0);
+    controller1.addEventListener('connected', e => {
+      controller1.userData.data = e.data;
+    });
 
+    const controller2 = renderer.xr.getController(1);
+    controller2.addEventListener('connected', e => {
+      controller2.userData.data = e.data;
+    });
+    controller2.addEventListener('selectstart', _beginTool);
+	  controller2.addEventListener('selectend', _endTool);
   }
 
-  function onSessionEnded( /*event*/ ) {
-
-    currentSession.removeEventListener( 'end', onSessionEnded );
-
-    // button.textContent = 'ENTER VR';
+  function onSessionEnded(/*event*/) {
+    currentSession.removeEventListener('end', onSessionEnded);
 
     currentSession = null;
-
   }
 
   enterXrButton.addEventListener('click', e => {
     e.preventDefault();
     e.stopPropagation();
     
-    if ( currentSession === null ) {
-
+    if (currentSession === null) {
       // WebXR's requestReferenceSpace only works if the corresponding feature
       // was requested at session creation time. For simplicity, just ask for
       // the interesting ones as optional features, but be aware that the
       // requestReferenceSpace call will fail if it turns out to be unavailable.
       // ('local' is always available for immersive sessions and doesn't need to
       // be requested separately.)
-
-      var sessionInit = { optionalFeatures: [ 'local-floor', 'bounded-floor' ] };
-      navigator.xr.requestSession( 'immersive-vr', sessionInit ).then( onSessionStarted );
-
+      var sessionInit = {
+        optionalFeatures: [
+          'local-floor',
+          'bounded-floor',
+        ],
+      };
+      navigator.xr.requestSession('immersive-vr', sessionInit).then(onSessionStarted);
     } else {
-
       currentSession.end();
-
     }
   });
 }
@@ -1143,6 +1147,17 @@ document.getElementById('enable-physics-button').addEventListener('click', e => 
 function animate() {
   orbitControls.update();
   renderer.render(scene, camera);
+  
+  if (currentSession) {
+    for (let i = 0; i < 2; i++) {
+      const controller = renderer.xr.getController(0);
+      if (controller.userData.data && controller.userData.data.handedness === 'right') {
+        _updateRaycasterFromObject(localRaycaster, controller);
+        _updateTool(localRaycaster);
+      }
+    }
+    // console.log('got controller position', renderer.xr.getController(0), renderer.xr.getController(0).position.toArray().join(','), renderer.xr.getController(1).position.toArray().join(','));
+  }
 
   if (ammo) {
     ammo.simulate();

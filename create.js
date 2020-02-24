@@ -283,7 +283,7 @@ let ammo = null;
         const positions = geometry.attributes.position.array;
         for (let i = 0; i < positions.length; i += 3) {
           localVector.set(positions[i], positions[i+1], positions[i+2])
-            .applyMatrix4(o.matrixWorld);
+            // .applyMatrix4(o.matrixWorld);
           // console.log('point', localVector.x, localVector.y, localVector.z);
           ammoVector3.setValue(localVector.x, localVector.y, localVector.z);
           const lastOne = i >= (positions.length - 3);

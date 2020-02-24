@@ -1220,7 +1220,6 @@ opsForm.addEventListener('submit', async e => {
       .then(res => res.json())
       .then(j => j.hash),
   ]);
-  console.log('save data', {dataArrayBuffer, dataHash, screenshotHash});
   const metadataHash = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata/`, {
       method: 'PUT',
       body: JSON.stringify({

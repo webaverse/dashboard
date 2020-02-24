@@ -1190,6 +1190,9 @@ Array.from(tools).forEach((tool, i) => {
       });
       selectedTool = tool.getAttribute('tool');
       tool.classList.add('selected');
+      
+      uiMesh.update();
+      
       orbitControls.enabled = selectedTool === 'camera';
     }
     selectedObjectMesh && _unbindObjectMeshControls(selectedObjectMesh);
@@ -1198,6 +1201,7 @@ Array.from(tools).forEach((tool, i) => {
   });
 });
 let selectedTool = tools[0].getAttribute('tool');
+tools[0].classList.add('selected');
 
 const opsForm = interfaceDocument.getElementById('ops-form');
 const objectNameEl = interfaceDocument.getElementById('object-name');
@@ -1273,9 +1277,12 @@ Array.from(colors).forEach(color => {
     currentColor = new THREE.Color().setStyle(inner.style.backgroundColor);
     pointerMesh.material.uniforms.uBrushColor.value.set(currentColor.r, currentColor.g, currentColor.b);
     color.classList.add('selected');
+    
+    uiMesh.update();
   });
 });
 let currentColor = new THREE.Color().setStyle(colors[0].querySelector('.inner').style.backgroundColor);
+colors[0].classList.add('selected');
 pointerMesh.material.uniforms.uBrushColor.value.set(currentColor.r, currentColor.g, currentColor.b);
 const brushSizeEl = interfaceDocument.getElementById('brush-size');
 let brushSize = brushSizeEl.value;
@@ -1415,16 +1422,25 @@ const uiRenderer = (() => {
 
       const start = Date.now();
       const mc = new MessageChannel();
+      const templateData = {
+        width: uiSize,
+        height: uiSize,
+        zoom: 5,
+        hideOps: true,
+      };
+      for (let i = 0; i < tools.length; i++) {
+        templateData[`tool${i+1}Selected`] = selectedTool === tools[i].getAttribute('tool');
+      }
+      const currentColorString = currentColor.getHexString();
+      for (let i = 0; i < colors.length; i++) {
+        const colorString = new THREE.Color(colors[i].querySelector('.inner').style.backgroundColor).getHexString();
+        templateData[`color${i+1}Selected`] = currentColorString === colorString;
+      }
       iframe.contentWindow.postMessage({
         method: 'render',
         id: ++renderIds,
         htmlString: interfaceHtml,
-        templateData: {
-          width: uiSize,
-          height: uiSize,
-          zoom: 5,
-          hideOps: true,
-        },
+        templateData,
         width: uiSize,
         height: uiSize,
         port: mc.port2,

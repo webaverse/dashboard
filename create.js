@@ -1286,6 +1286,7 @@ const uiMesh = (() => {
     highlightMesh.visible = false;
 
     if (uv) {
+      uv.y = 1 - uv.y;
       uv.multiplyScalar(uiSize);
 
       for (let i = 0; i < anchors.length; i++) {

@@ -1288,11 +1288,9 @@ renderer.setAnimationLoop(animate);
     const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${o}`)
       .then(res => res.json());
     const {objectName, dataHash} = metadata;
-    // console.log('got metadata', metadata);
     objectNameEl.value = objectName;
     const arrayBuffer = await fetch(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`)
       .then(res => res.arrayBuffer());
-    // console.log('load ab', arrayBuffer);
     for (let i = 0; i < miningMeshes.length; i++) {
       const miningMesh = miningMeshes[i];
       scene.remove(miningMesh);

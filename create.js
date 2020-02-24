@@ -1142,6 +1142,21 @@ const _endTool = () => {
         tools[e.which - 49].click();
         break;
       }
+      case 8: // backspace
+      case 46: // del
+      {
+        if (selectedObjectMesh) {
+          _unbindObjectMeshControls(selectedObjectMesh);
+          scene.remove(selectedObjectMesh);
+          // selectedObjectMesh.destroy();
+          objectMeshes.splice(objectMeshes.indexOf(selectedObjectMesh), 1);
+          if (hoveredObjectMesh === selectedObjectMesh) {
+            hoveredObjectMesh = null;
+          }
+          selectedObjectMesh = null;
+        }
+        break;
+      }
     }
   });
   w.addEventListener('mousemove', e => {
@@ -1605,7 +1620,7 @@ renderer.setAnimationLoop(animate);
     for (let i = 0; i < objectMeshes.length; i++) {
       const objectMesh = objectMeshes[i];
       scene.remove(objectMesh);
-      objectMesh.destroy();
+      // objectMesh.destroy();
     }
     const {x, y, z, objectMeshes: newObjectMeshes} = await _loadObjectMeshes(arrayBuffer);
     objectMeshes = newObjectMeshes;

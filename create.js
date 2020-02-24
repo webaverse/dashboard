@@ -1528,7 +1528,6 @@ const uiMesh = (() => {
     }
   };
   mesh.click = () => {
-    console.log('click', hoveredAnchor);
     if (hoveredAnchor) {
       const {id} = hoveredAnchor;
       if (/^(?:tool-|color-)/.test(id)) {

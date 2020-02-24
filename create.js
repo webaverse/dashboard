@@ -1260,7 +1260,7 @@ const uiMesh = (() => {
       transparent: true,
       opacity: 0.5,
     });
-    const mesh = new THREE.Mesh();
+    const mesh = new THREE.Mesh(geometry, material);
     mesh.frustumCulled = false;
     mesh.visible = false;
     return mesh;

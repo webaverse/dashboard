@@ -4,6 +4,8 @@ import {OrbitControls} from './OrbitControls.js';
 import {TransformControls} from './TransformControls.js';
 import {BufferGeometryUtils} from './BufferGeometryUtils.js';
 import {OutlineEffect} from './OutlineEffect.js';
+import {GLTFLoader} from './GLTFLoader.js';
+import {GLTFExporter} from './GLTFExporter.js';
 import {XRControllerModelFactory} from './XRControllerModelFactory.js';
 import {Ammo as AmmoLib} from './ammo.wasm.js';
 import './gif.js';
@@ -415,7 +417,7 @@ const miningMeshMaterial = (() => {
       derivatives: true,
     },
   }); */
-  const material = new THREE.MeshPhongMaterial({
+  const material = new THREE.MeshStandardMaterial({
     color: 0xFFFFFF,
     vertexColors: THREE.VertexColors,
   });
@@ -724,52 +726,61 @@ const _newMiningMeshes = () => {
   }
   _refreshMiningMeshes();
 };
-const objectMeshes = [];
+let objectMeshes = [];
 const _commitMiningMeshes = () => {
-  const geometry = BufferGeometryUtils.mergeBufferGeometries(miningMeshes.map(miningMesh => miningMesh.geometry));
-  const material = miningMeshMaterial;
-  const objectMesh = new THREE.Mesh(geometry, material);
-  objectMesh.frustumCulled = false;
-  scene.add(objectMesh);
-  objectMeshes.push(objectMesh);
+  if (miningMeshes.some(miningMesh => miningMesh.visible)) {
+    const geometry = BufferGeometryUtils.mergeBufferGeometries(miningMeshes.map(miningMesh => miningMesh.geometry));
+    const material = miningMeshMaterial;
+    const objectMesh = new THREE.Mesh(geometry, material);
+    objectMesh.frustumCulled = false;
+    scene.add(objectMesh);
+    objectMeshes.push(objectMesh);
 
-  _newMiningMeshes();
+    _newMiningMeshes();
+  }
 };
-const _saveMiningMeshes = () => {
-  const arrayBuffer = new ArrayBuffer(300*1024);
-  let index = 0;
-
-  let maxX = -1;
-  let maxY = -1;
-  let maxZ = -1;
-  const numMiningMeshes = miningMeshes.length;
-  for (let i = 0; i < numMiningMeshes; i++) {
-    const miningMesh = miningMeshes[i];
-    maxX = Math.max(maxX, miningMesh.x);
-    maxY = Math.max(maxY, miningMesh.y);
-    maxZ = Math.max(maxZ, miningMesh.z);
-  }
-  maxX++;
-  maxY++;
-  maxZ++;
-  new Uint32Array(arrayBuffer, index, 3).set(Uint32Array.from([maxX, maxY, maxZ]));
-  index += 3*Uint32Array.BYTES_PER_ELEMENT;
-  for (let y = 0; y < maxY; y++) {
-    for (let x = 0; x < maxX; x++) {
-      for (let z = 0; z < maxZ; z++) {
-        const miningMesh = _findMiningMeshByIndex(x, y, z);
-        new Float32Array(arrayBuffer, index, size*size*size).set(miningMesh.potential);
-        index += size*size*size*Float32Array.BYTES_PER_ELEMENT;
-        new Uint8Array(arrayBuffer, index, size*size*size*3).set(miningMesh.brush);
-        index += size*size*size*3*Uint8Array.BYTES_PER_ELEMENT;
-        if (index % Float32Array.BYTES_PER_ELEMENT !== 0) {
-          index += Float32Array.BYTES_PER_ELEMENT - index % Float32Array.BYTES_PER_ELEMENT;
-        }
-      }
-    }
+const _saveObjectMeshes = async () => {
+  const exportScene = new THREE.Scene();
+  exportScene.userData.gltfExtensions = {
+    size: {
+      x: parseInt(objectSizeX.value, 10),
+      y: parseInt(objectSizeY.value, 10),
+      z: parseInt(objectSizeZ.value, 10),
+    },
+  };
+  for (let i = 0; i < objectMeshes.length; i++) {
+    exportScene.add(objectMeshes[i].clone());
   }
 
-  return new Uint8Array(arrayBuffer, 0, index);
+  const p = makePromise();
+  const exporter = new GLTFExporter();
+  exporter.parse(exportScene, gltf => {
+    p.accept(gltf);
+  }, {
+    binary: true,
+    includeCustomExtensions: true,
+  });
+  return await p;
+};
+const _loadObjectMeshes = async arrayBuffer => {
+  const blob = new Blob([arrayBuffer], {
+    type: 'model/gltf.binary',
+  });
+  const src = URL.createObjectURL(blob);
+
+  const p = makePromise();
+  const loader = new GLTFLoader();
+  loader.load(src, p.accept, function onProgress() {}, p.reject);
+  const o = await p;
+  const {scene} = o;
+  const {userData: {gltfExtensions: {size: {x, y, z}}}} = scene;
+  const objectMeshes = scene.children;
+  return {
+    x,
+    y,
+    z,
+    objectMeshes,
+  };
 };
 const _screenshotMiningMeshes = async () => {
   const newScene = new THREE.Scene();
@@ -812,39 +823,8 @@ const _screenshotMiningMeshes = async () => {
   });
   return blob;
 };
-const _loadMiningMeshes = uint8Array => {
-  const arrayBuffer = uint8Array.buffer;
-  let index = uint8Array.byteOffset;
-
-  const miningMeshes = [];
-  const [maxX, maxY, maxZ] = new Uint32Array(arrayBuffer, index, 3);
-  index += 3*Uint32Array.BYTES_PER_ELEMENT;
-  // console.log('load mining meshes', maxX, maxY, maxZ);
-  for (let y = 0; y < maxY; y++) {
-    for (let x = 0; x < maxX; x++) {
-      for (let z = 0; z < maxZ; z++) {
-        const miningMesh = _makeMiningMesh(x, y, z);
-        miningMesh.potential.set(new Float32Array(arrayBuffer, index, size*size*size));
-        index += size*size*size*Float32Array.BYTES_PER_ELEMENT;
-        miningMesh.brush.set(new Uint8Array(arrayBuffer, index, size*size*size*3));
-        index += size*size*size*3*Uint8Array.BYTES_PER_ELEMENT;
-        if (index % Float32Array.BYTES_PER_ELEMENT !== 0) {
-          index += Float32Array.BYTES_PER_ELEMENT - index % Float32Array.BYTES_PER_ELEMENT;
-        }
-        miningMesh.setDirty();
-        // console.log('got mining mesh', miningMesh);
-        miningMeshes.push(miningMesh);
-      }
-    }
-  }
-  objectSizeX.value = maxX;
-  objectSizeY.value = maxY;
-  objectSizeZ.value = maxZ;
-  return miningMeshes;
-};
 const _paintMiningMeshes = (x, y, z) => {
   const miningMeshes = _findMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
-  // console.log('found', miningMeshes.length);
   miningMeshes.forEach(miningMesh => {
     miningMesh.paint(x, y, z);
   });
@@ -1207,9 +1187,23 @@ const opsForm = interfaceDocument.getElementById('ops-form');
 const objectNameEl = interfaceDocument.getElementById('object-name');
 opsForm.addEventListener('submit', async e => {
   e.preventDefault();
-  const dataArrayBuffer = _saveMiningMeshes();
 
-  const screenshotBlob = await _screenshotMiningMeshes();
+  _commitMiningMeshes();
+  const [
+    dataArrayBuffer,
+    screenshotBlob,
+  ] = await Promise.all([
+    _saveObjectMeshes(),
+    _screenshotMiningMeshes(),
+  ]);
+  /* for (let i = 0; i < objectMeshes.length; i++) {
+    scene.remove(objectMeshes[i]);
+  }
+  const {x, y, z, objectMeshes: newObjectMeshes} = await _loadObjectMeshes(dataArrayBuffer);
+  objectMeshes = newObjectMeshes;
+  for (let i = 0; i < objectMeshes.length; i++) {
+    scene.add(objectMeshes[i]);
+  } */
 
   const [
     dataHash,
@@ -1228,6 +1222,7 @@ opsForm.addEventListener('submit', async e => {
       .then(res => res.json())
       .then(j => j.hash),
   ]);
+  console.log('save data', {dataArrayBuffer, dataHash, screenshotHash});
   const metadataHash = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata/`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -1610,16 +1605,18 @@ renderer.setAnimationLoop(animate);
     objectNameEl.value = objectName;
     const arrayBuffer = await fetch(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`)
       .then(res => res.arrayBuffer());
-    for (let i = 0; i < miningMeshes.length; i++) {
-      const miningMesh = miningMeshes[i];
-      scene.remove(miningMesh);
-      miningMesh.destroy();
+    for (let i = 0; i < objectMeshes.length; i++) {
+      const objectMesh = objectMeshes[i];
+      scene.remove(objectMesh);
+      objectMesh.destroy();
     }
-    miningMeshes = _loadMiningMeshes(new Uint8Array(arrayBuffer));
-    for (let i = 0; i < miningMeshes.length; i++) {
-      scene.add(miningMeshes[i]);
+    const {x, y, z, objectMeshes: newObjectMeshes} = _loadObjectMeshes(arrayBuffer);
+    objectMeshes = newObjectMeshes;
+    for (let i = 0; i < objectMeshes.length; i++) {
+      scene.add(objectMeshes[i]);
     }
-    _refreshMiningMeshes();
+    _resizeMiningMeshes(x, y, z);
+    _newMiningMeshes();
   }
 })();
 

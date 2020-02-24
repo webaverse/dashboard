@@ -1047,6 +1047,7 @@ const _unbindObjectMeshControls = o => {
   scene.remove(o.control);
   o.control.dispose();
   o.control = null;
+  transformControlsHovered = false;
 };
 
 const localRaycaster = new THREE.Raycaster();
@@ -1165,6 +1166,9 @@ Array.from(tools).forEach((tool, i) => {
       tool.classList.add('selected');
       orbitControls.enabled = selectedTool === 'camera';
     }
+    selectedObjectMesh && _unbindObjectMeshControls(selectedObjectMesh);
+    hoveredObjectMesh = null;
+    selectedObjectMesh = null;
   });
 });
 let selectedTool = tools[0].getAttribute('tool');

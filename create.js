@@ -958,7 +958,7 @@ const _endTool = () => {
 
 // interface
 
-const tools = interfaceDocument.querySelectorAll('.tools > .tool');
+const tools = interfaceDocument.querySelectorAll('.tool');
 Array.from(tools).forEach(tool => {
   tool.addEventListener('click', e => {
     e.preventDefault();
@@ -1183,7 +1183,8 @@ const uiRenderer = (() => {
         templateData: {
           width: uiSize,
           height: uiSize,
-          lol: 'zol',
+          zoom: 3,
+          hideOps: true,
         },
         width: uiSize,
         height: uiSize,
@@ -1248,6 +1249,7 @@ const uiMesh = (() => {
 
   return mesh;
 })();
+uiMesh.position.set(0.5, 0.5, 1);
 scene.add(uiMesh);
 
 function animate() {

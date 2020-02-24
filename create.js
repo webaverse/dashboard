@@ -1239,6 +1239,7 @@ const uiMesh = (() => {
     map: texture,
   });
   const mesh = new THREE.Mesh(geometry, material);
+  mesh.visible = false;
   mesh.frustumCulled = false;
 
   let anchors = [];
@@ -1248,7 +1249,7 @@ const uiMesh = (() => {
         imageData.data.set(result.data);
         ctx.putImageData(imageData, 0, 0);
         texture.needsUpdate = true;
-        console.log('got result', result, result.data.some(n => n < 255));
+        mesh.visible = true;
       });
   };
   mesh.update();

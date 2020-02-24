@@ -1031,7 +1031,8 @@ opsForm.addEventListener('submit', async e => {
 document.getElementById('new-op').addEventListener('click', e => {
   e.preventDefault();
   e.stopPropagation();
-  
+
+  objectNameEl.value = '';
   _newMiningMeshes();
 });
 document.getElementById('load-op').addEventListener('click', e => {

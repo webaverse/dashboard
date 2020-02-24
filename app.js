@@ -1094,18 +1094,23 @@ let currentSession = null;
     const controllerGrip2 = renderer.xr.getControllerGrip(1);
     controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
     scene.add(controllerGrip2);
-    
-    const controller1 = renderer.xr.getController(0);
-    controller1.addEventListener('connected', e => {
-      controller1.userData.data = e.data;
-    });
 
-    const controller2 = renderer.xr.getController(1);
-    controller2.addEventListener('connected', e => {
-      controller2.userData.data = e.data;
-    });
-    controller2.addEventListener('selectstart', _beginTool);
-	  controller2.addEventListener('selectend', _endTool);
+    for (let i = 0; i < 2; i++) {
+      const controller = renderer.xr.getController(i);
+      controller.addEventListener('connected', e => {
+        controller.userData.data = e.data;
+      });
+      controller.addEventListener('selectstart', e => {
+        if (controller.userData.data && controller.userData.data.handedness === 'right') {
+          _beginTool();
+        }
+      });
+	    controller.addEventListener('selectend', e => {
+        if (controller.userData.data && controller.userData.data.handedness === 'right') {
+          _endTool();
+        }
+      });
+    }
   }
 
   function onSessionEnded(/*event*/) {
@@ -1150,13 +1155,13 @@ function animate() {
   
   if (currentSession) {
     for (let i = 0; i < 2; i++) {
-      const controller = renderer.xr.getController(0);
+      const controller = renderer.xr.getController(i);
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
         _updateRaycasterFromObject(localRaycaster, controller);
         _updateTool(localRaycaster);
+        break;
       }
     }
-    // console.log('got controller position', renderer.xr.getController(0), renderer.xr.getController(0).position.toArray().join(','), renderer.xr.getController(1).position.toArray().join(','));
   }
 
   if (ammo) {

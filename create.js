@@ -1017,7 +1017,7 @@ interfaceDocument.addEventListener('drop', e => {
 });
 
 let transformControlsHovered = false;
-const _bindObjectMesh = o => {
+const _bindObjectMeshControls = o => {
   const control = new TransformControls(camera, interfaceDocument.querySelector('.background'), interfaceDocument);
   // control.setMode(transformMode);
   control.size = 3;
@@ -1036,7 +1036,7 @@ const _bindObjectMesh = o => {
   scene.add(control);
   o.control = control;
 };
-const _unbindObjectMesh = o => {
+const _unbindObjectMeshControls = o => {
   scene.remove(o.control);
   o.control.dispose();
   o.control = null;
@@ -1096,11 +1096,11 @@ const _beginTool = () => {
   } else if (selectedTool === 'select') {
     if (!transformControlsHovered) {
       if (selectedObjectMesh) {
-        _unbindObjectMesh(selectedObjectMesh);
+        _unbindObjectMeshControls(selectedObjectMesh);
       }
       selectedObjectMesh = hoveredObjectMesh;
       if (selectedObjectMesh) {
-        _bindObjectMesh(selectedObjectMesh);
+        _bindObjectMeshControls(selectedObjectMesh);
       }
     }
   } else if (selectedTool === 'paint') {

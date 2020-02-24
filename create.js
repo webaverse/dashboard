@@ -1100,13 +1100,13 @@ const _updateTool = raycaster => {
     rayMesh.scale.z = distance;
     rayMesh.visible = true;
 
-    orbitControls.enabled = false;
+    // orbitControls.enabled = false;
 
     uiMesh.intersect(uv);
   } else {
     rayMesh.visible = false;
     
-    orbitControls.enabled = selectedTool === 'camera';
+    // orbitControls.enabled = selectedTool === 'camera';
 
     uiMesh.intersect(null);
   }

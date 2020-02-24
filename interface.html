@@ -29,10 +29,11 @@ input[type=number]::-webkit-inner-spin-button {
   display: flex;
   position: absolute;
   z-index: 1;
+  padding: 10px;
 }
 .tools {
-  top: 60px;
-  left: 10px;
+  top: 50px;
+  left: 0;
 }
 .tools > .row > .tool,
 .ops > .op,
@@ -70,8 +71,8 @@ input[type=number]::-webkit-inner-spin-button {
   color: #FFF;
 }
 .ops {
-  top: 60px;
-  right: 10px;
+  top: 50px;
+  right: 0;
 }
 .ops > .op {
   position: relative;
@@ -96,8 +97,8 @@ input[type=number]::-webkit-inner-spin-button {
   opacity: 0;
 }
 .colors {
-  bottom: 10px;
-  left: 10px;
+  bottom: 0;
+  left: 0;
 }
 .colors > .row > .color {
   position: relative;
@@ -116,11 +117,13 @@ input[type=number]::-webkit-inner-spin-button {
   background-color: #000;
 }
 .enters {
-  bottom: 10px;
+  bottom: 0;
   right: 0;
 }
+.enters > .enter + .enter {
+margin-left: 10px;
+}
 .enters > .enter {
-  margin-right: 10px;
   background-color: #111;
   color: #FFF;
 }

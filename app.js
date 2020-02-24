@@ -226,8 +226,8 @@ const worker = (() => {
   });
   return worker;
 })();
-// window.Ammo = Ammo;
-const ammoPromise = (async () => {
+let ammo = null;
+(async () => {
   const p = makePromise();
   window.Module = { TOTAL_MEMORY: 100*1024*1024 };
   AmmoLib().then(Ammo => {
@@ -290,25 +290,27 @@ const ammoPromise = (async () => {
   };
 
   let lastTimestamp = 0;
-  return {
+  ammo = {
     bindMiningMeshPhysics(miningMesh) {
-      const shape = _makeConvexHullShape(miningMesh);
+      if (!miningMesh.body) {
+        const shape = _makeConvexHullShape(miningMesh);
 
-      var transform = new Ammo.btTransform();
-      transform.setIdentity();
-      transform.setOrigin(new Ammo.btVector3(0, 0, 0));
+        var transform = new Ammo.btTransform();
+        transform.setIdentity();
+        transform.setOrigin(new Ammo.btVector3(0, 0, 0));
 
-      var mass = 1;
-      var localInertia = new Ammo.btVector3(0, 0, 0);
-      shape.calculateLocalInertia(mass, localInertia);
+        var mass = 1;
+        var localInertia = new Ammo.btVector3(0, 0, 0);
+        shape.calculateLocalInertia(mass, localInertia);
 
-      var myMotionState = new Ammo.btDefaultMotionState(transform);
-      var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
-      var body = new Ammo.btRigidBody(rbInfo);
+        var myMotionState = new Ammo.btDefaultMotionState(transform);
+        var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
+        var body = new Ammo.btRigidBody(rbInfo);
 
-      dynamicsWorld.addRigidBody(body);
+        dynamicsWorld.addRigidBody(body);
 
-      miningMesh.body = body;
+        miningMesh.body = body;
+      }
     },
     simulate() {
       const now = Date.now();
@@ -333,10 +335,6 @@ const ammoPromise = (async () => {
     },
   };
 })();
-let ammo = null;
-ammoPromise.then(newAmmo => {
-  ammo = newAmmo;
-});
 
 /* const cubeMesh = (() => {
   const geometry = new THREE.BoxBufferGeometry(3, 3, 3);
@@ -1112,6 +1110,9 @@ const enterXrButton = document.getElementById('enter-xr-button');
     }
   });
 }
+document.getElementById('enable-physics-button').addEventListener('click', e => {
+  _bindMiningMeshPhysics();
+});
 
 function animate() {
   orbitControls.update();
@@ -1148,9 +1149,6 @@ renderer.setAnimationLoop(animate);
       scene.add(miningMeshes[i]);
     }
     _refreshMiningMeshes();
-    setTimeout(() => {
-      _bindMiningMeshPhysics();
-    }, 1000);
   }
 })();
 

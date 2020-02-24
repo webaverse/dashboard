@@ -105,7 +105,6 @@ header > .login-form.phase-3 > .phaseless-content
   justify-content: center;
   align-items: center;
   font-size: 16px;
-  /* color: #000; */
   cursor: pointer;
 }
 .tools > .tool,
@@ -173,9 +172,10 @@ header > .login-form.phase-3 > .phaseless-content
 }
 .enters {
   bottom: 10px;
-  right: 10px;
+  right: 0;
 }
 .enters > .enter {
+  margin-right: 10px;
   background-color: #111;
   color: #FFF;
 }

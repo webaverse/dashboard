@@ -1085,7 +1085,7 @@ let currentSession = null;
   function onSessionStarted(session) {
     session.addEventListener('end', onSessionEnded);
 
-    renderer.xr.setSession( session );
+    renderer.xr.setSession(session);
 
     currentSession = session;
 

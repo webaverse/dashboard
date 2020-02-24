@@ -1249,6 +1249,20 @@ const uiMesh = (() => {
   const mesh = new THREE.Mesh(geometry, material);
   mesh.visible = false;
   mesh.frustumCulled = false;
+  
+  const highlightMesh = (() => {
+    const geometry = new THREE.BoxBufferGeometry(1, 1, 0.01);
+    const material = new THREE.MeshBasicMaterial({
+      color: 0x42a5f5,
+      transparent: true,
+      opacity: 0.5,
+    });
+    const mesh = new THREE.Mesh();
+    mesh.frustumCulled = false;
+    mesh.visible = false;
+    return mesh;
+  })();
+  mesh.add(highlightMesh);
 
   let anchors = [];
   mesh.update = () => {
@@ -1258,7 +1272,29 @@ const uiMesh = (() => {
         ctx.putImageData(imageData, 0, 0);
         texture.needsUpdate = true;
         mesh.visible = true;
+        
+        anchors = result.anchors;
       });
+  };
+  mesh.intersect = uv => {
+    highlightMesh.visible = false;
+
+    if (uv) {
+      uv.multiplyScalar(uiSize);
+
+      for (let i = 0; i < anchors.length; i++) {
+        const {top, bottom, left, right, width, height} = anchors[i];
+        // console.log('check', {x: uv.x, y: uv.y, top, bottom, left, right});
+        if (uv.x >= left && uv.x < right && uv.y >= top && uv.y < bottom) {
+          highlightMesh.position.x = (uv.x + width/2) / uiSize * uiWorldSize;
+          highlightMesh.position.y = (uv.y + height/2) / uiSize * uiWorldSize;
+          highlightMesh.scale.x = width/uiSize;
+          highlightMesh.scale.y = height/uiSize;
+          highlightMesh.visible = true;
+          break;
+        }
+      }
+    }
   };
   mesh.update();
 
@@ -1284,11 +1320,15 @@ function animate() {
           
           const intersections = localRaycaster.intersectObject(uiMesh);
           if (intersections.length > 0 && intersections[0].distance < 3) {
-             const [{distance}] = intersections;
+            const [{distance, uv}] = intersections;
             controller.rayMesh.scale.z = distance;
             controller.rayMesh.visible = true;
+            
+            uiMesh.intersect(uv);
           } else {
             controller.rayMesh.visible = false;
+            
+            uiMesh.intersect(null);
           }
         }
       }

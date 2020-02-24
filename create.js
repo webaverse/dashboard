@@ -772,7 +772,7 @@ const _loadObjectMeshes = async arrayBuffer => {
   const o = await p;
   const {scene} = o;
   const {userData: {gltfExtensions: {size: {x, y, z}}}} = scene;
-  const objectMeshes = scene.children;
+  const objectMeshes = scene.children.slice();
   return {
     x,
     y,

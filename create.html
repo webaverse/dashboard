@@ -55,7 +55,7 @@
       <nav class="op" id=save-op><i class="fal fa-save"></i><input type=submit></nav>
     </form>
     <div class=enters>
-      <nav class=enter id=enter-xr-button>
+      <nav class="enter disabled" id=enter-xr-button>
         <i class="fa fa-head-vr"></i>
       </ops>
     </div>
@@ -1146,6 +1146,7 @@ const objectSizeZ = document.getElementById('object-size-z');
   });
 });
 
+const enterXrButton = document.getElementById('enter-xr-button');
 {
   let currentSession = null;
 
@@ -1159,10 +1160,10 @@ const objectSizeZ = document.getElementById('object-size-z');
     currentSession = session;
 
     const controllerModelFactory = new XRControllerModelFactory();
-    controllerGrip1 = renderer.xr.getControllerGrip( 0 );
+    const controllerGrip1 = renderer.xr.getControllerGrip( 0 );
     controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
     scene.add( controllerGrip1 );
-    controllerGrip2 = renderer.xr.getControllerGrip( 1 );
+    const controllerGrip2 = renderer.xr.getControllerGrip( 1 );
     controllerGrip2.add( controllerModelFactory.createControllerModel( controllerGrip2 ) );
     scene.add( controllerGrip2 );
 
@@ -1178,7 +1179,7 @@ const objectSizeZ = document.getElementById('object-size-z');
 
   }
 
-  document.getElementById('enter-xr-button').addEventListener('click', e => {
+  enterXrButton.addEventListener('click', e => {
     if ( currentSession === null ) {
 
       // WebXR's requestReferenceSpace only works if the corresponding feature
@@ -1239,6 +1240,15 @@ renderer.setAnimationLoop(animate);
     }, 1000);
   }
 })();
+
+navigator.xr.isSessionSupported('immersive-vr').then(supported => {
+  if (supported) {
+    renderer.xr.enabled = true;
+    enterXrButton.classList.remove('disabled');
+  } else {
+    // nothing
+  }
+});
 </script>
   </body>
 </html>

@@ -980,9 +980,9 @@ const _bindObjectMesh = o => {
   control.size = 3;
   // control.visible = toolManager.getSelectedElement() === xrIframe;
   // control.enabled = control.visible;
-  control.addEventListener('dragging-changed', e => {
+  /* control.addEventListener('dragging-changed', e => {
     orbitControls.enabled = !e.value;
-  });
+  }); */
   control.addEventListener('mouseEnter', () => {
     transformControlsHovered = true;
   });
@@ -995,6 +995,7 @@ const _bindObjectMesh = o => {
 };
 const _unbindObjectMesh = o => {
   scene.remove(o.control);
+  o.control.dispose();
   o.control = null;
 };
 

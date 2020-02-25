@@ -1726,7 +1726,7 @@ renderer.setAnimationLoop(animate);
   }
 })();
 
-navigator.xr.isSessionSupported('immersive-vr').then(supported => {
+navigator.xr && navigator.xr.isSessionSupported('immersive-vr').then(supported => {
   if (supported) {
     renderer.xr.enabled = true;
     enterXrButton.classList.remove('disabled');

@@ -1307,7 +1307,8 @@ const objectNameEl = interfaceDocument.getElementById('object-name');
 opsForm.addEventListener('submit', async e => {
   e.preventDefault();
 
-  _commitMiningMeshes();
+  await _commitMiningMeshes();
+  _centerObjectMeshes();
   const [
     dataArrayBuffer,
     screenshotBlob,

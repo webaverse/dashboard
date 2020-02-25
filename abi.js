@@ -549,6 +549,27 @@ export default [
 				"type": "uint256"
 			}
 		],
+		"name": "getSize",
+		"outputs": [
+			{
+				"internalType": "int256[]",
+				"name": "",
+				"type": "int256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
 		"name": "getSubtokenIds",
 		"outputs": [
 			{

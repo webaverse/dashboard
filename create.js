@@ -674,7 +674,7 @@ const _makeMiningMesh = (x, y, z) => {
 };
 let miningMeshes = [];
 const _findMiningMeshByIndex = (x, y, z) => miningMeshes.find(miningMesh => miningMesh.x === x && miningMesh.y === y && miningMesh.z === z);
-const _findMiningMeshesByContainCoord = (x, y, z) => {
+const _findOrAddMiningMeshesByContainCoord = (x, y, z) => {
   const result = [];
   const miningMesh = _findMiningMeshByIndex(x, y, z);
   miningMesh && result.push(miningMesh);
@@ -685,43 +685,25 @@ const _findMiningMeshesByContainCoord = (x, y, z) => {
       const az = Math.floor(z + dz*0.5);
       for (let dy = -factor; dy <= factor; dy++) {
         const ay = Math.floor(y + dy*0.5);
-        const miningMesh = _findMiningMeshByIndex(ax, ay, az);
-        miningMesh && !result.includes(miningMesh) && result.push(miningMesh);
-      }
-    }
-  }
-  return result;
-};
-const _resizeMiningMeshes = (x, y, z) => {
-  const requiredMap = new Map();
-  for (let ay = 0; ay < y; ay++) {
-    for (let ax = 0; ax < x; ax++) {
-      for (let az = 0; az < z; az++) {
         let miningMesh = _findMiningMeshByIndex(ax, ay, az);
         if (!miningMesh) {
           miningMesh = _makeMiningMesh(ax, ay, az);
           scene.add(miningMesh);
           miningMeshes.push(miningMesh);
         }
-        requiredMap.set(miningMesh, true);
+        !result.includes(miningMesh) && result.push(miningMesh);
       }
     }
   }
-  miningMeshes = miningMeshes.filter(miningMesh => {
-    if (requiredMap.get(miningMesh)) {
-      return true;
-    } else {
-      scene.remove(miningMesh);
-      miningMesh.destroy();
-      return false;
-    }
-  });
+  return result;
 };
-_resizeMiningMeshes(1, 1, 1);
 const _newMiningMeshes = () => {
   for (let i = 0; i < miningMeshes.length; i++) {
-    miningMeshes[i].reset();
+    const miningMesh = miningMeshes[i];
+    scene.remove(miningMesh);
+    miningMesh.destroy();
   }
+  miningMeshes.length = 0;
   _refreshMiningMeshes();
 };
 let objectMeshes = [];
@@ -822,19 +804,19 @@ const _screenshotMiningMeshes = async () => {
   return blob;
 };
 const _paintMiningMeshes = (x, y, z) => {
-  const miningMeshes = _findMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
+  const miningMeshes = _findOrAddMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
   miningMeshes.forEach(miningMesh => {
     miningMesh.paint(x, y, z);
   });
 };
 const _eraseMiningMeshes = (x, y, z) => {
-  const miningMesh = _findMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
+  const miningMesh = _findOrAddMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
   miningMeshes.forEach(miningMesh => {
     miningMesh.erase(x, y, z);
   });
 };
 const _colorMiningMeshes = (x, y, z, c) => {
-  const miningMesh = _findMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
+  const miningMesh = _findOrAddMiningMeshesByContainCoord(x/PARCEL_SIZE, y/PARCEL_SIZE, z/PARCEL_SIZE);
   miningMeshes.forEach(miningMesh => {
     miningMesh.color(x, y, z, c);
   });
@@ -1298,18 +1280,6 @@ brushSizeEl.addEventListener('input', e => {
   interfaceDocument.getElementById('brush-size-text').innerHTML = brushSize;
 });
 
-const objectSizeX = interfaceDocument.getElementById('object-size-x');
-const objectSizeY = interfaceDocument.getElementById('object-size-y');
-const objectSizeZ = interfaceDocument.getElementById('object-size-z');
-[objectSizeX, objectSizeY, objectSizeZ].forEach(el => {
-  el.addEventListener('input', e => {
-    const x = objectSizeX.value;
-    const y = objectSizeY.value;
-    const z = objectSizeZ.value;
-    _resizeMiningMeshes(x, y, z);
-    pointerMesh.resize(x, y, z);
-  });
-});
 interfaceDocument.getElementById('enable-physics-button').addEventListener('click', e => {
   e.preventDefault();
   e.stopPropagation();
@@ -1627,7 +1597,6 @@ renderer.setAnimationLoop(animate);
     for (let i = 0; i < objectMeshes.length; i++) {
       scene.add(objectMeshes[i]);
     }
-    _resizeMiningMeshes(x, y, z);
     _newMiningMeshes();
   }
 })();

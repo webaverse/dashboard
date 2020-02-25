@@ -275,14 +275,25 @@ background.addEventListener('dragover', e => {
   _updateRaycasterFromMouseEvent(localRaycaster, e);
   floorMeshes[0].intersect(localRaycaster, dragData.size);
 });
-background.addEventListener('drop', e => {
+background.addEventListener('drop', async e => {
   e.preventDefault();
 
   const intersection = floorMeshes[0].getIntersection();
   if (intersection) {
-    console.log('drop to', intersection.x, intersection.z, dragData.size);
+    console.log('drop to', dragData.id, [intersection.x, 0, intersection.z]);
+
+    const instance = await contract.getInstance();
+    const p = makePromise();
+    instance.bindToGrid(dragData.id, [intersection.x, 0, intersection.z], err => {
+      if (!err) {
+        p.accept();
+      } else {
+        p.reject(err);
+      }
+    });
+    floorMeshes[0].intersect(null);
+    await p;
   }
-  floorMeshes[0].intersect(null);
 });
 
 const localRaycaster = new THREE.Raycaster();
@@ -656,7 +667,8 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
     `;
     a.addEventListener('dragstart', e => {
       dragData = {
-        type: 'object',
+        // type: 'object',
+        id: i,
         hash: metadataHash,
         size,
       };

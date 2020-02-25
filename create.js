@@ -1174,19 +1174,25 @@ Array.from(tools).forEach((tool, i) => {
     if (tool.matches('[tool=commit]')) {
       _commitMiningMeshes();
     } else {
-      Array.from(tools).forEach(tool => {
-        tool.classList.remove('selected');
-      });
-      selectedTool = tool.getAttribute('tool');
-      tool.classList.add('selected');
-      
-      uiMesh.update();
-      
-      orbitControls.enabled = selectedTool === 'camera';
+      const newTool = tool.getAttribute('tool');
+      if (newTool !== selectedTool) {
+        Array.from(tools).forEach(tool => {
+          tool.classList.remove('selected');
+        });
+        selectedTool = newTool;
+        tool.classList.add('selected');
+        
+        uiMesh.update();
+        
+        orbitControls.enabled = selectedTool === 'camera';
+        
+        _commitMiningMeshes();
+
+        selectedObjectMesh && _unbindObjectMeshControls(selectedObjectMesh);
+        hoveredObjectMesh = null;
+        selectedObjectMesh = null;
+      }
     }
-    selectedObjectMesh && _unbindObjectMeshControls(selectedObjectMesh);
-    hoveredObjectMesh = null;
-    selectedObjectMesh = null;
   });
 });
 let selectedTool = tools[0].getAttribute('tool');

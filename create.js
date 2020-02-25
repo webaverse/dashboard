@@ -831,7 +831,7 @@ const _refreshMiningMeshes = async () => {
     for (let i = 0; i < fns.length; i++) {
       fns[i]();
     }
-    const commitTool = tools[5];
+    const commitTool = Array.from(tools).find(tool => tool.matches('[tool=commit]'));
     if (miningMeshes.some(miningMesh => miningMesh.visible)) {
       commitTool.classList.remove('hidden');
     } else {
@@ -1157,7 +1157,7 @@ Array.from(tools).forEach((tool, i) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (i === 5) {
+    if (tool.matches('[tool=commit]')) {
       _commitMiningMeshes();
     } else {
       Array.from(tools).forEach(tool => {

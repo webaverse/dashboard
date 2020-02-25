@@ -40,6 +40,7 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true,
 });
 renderer.setPixelRatio(window.devicePixelRatio);
+renderer.sortObjects = false;
 renderer.physicallyCorrectLights = true;
 
 const scene = new THREE.Scene();

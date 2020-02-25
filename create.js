@@ -833,8 +833,8 @@ const _screenshotMiningMeshes = async () => {
     directionalLight.position.set(0.5, 1, 0.5).multiplyScalar(100);
     newScene.add(directionalLight);
   }
-  for (let i = 0; i < miningMeshes.length; i++) {
-    newScene.add(miningMeshes[i]);
+  for (let i = 0; i < objectMeshes.length; i++) {
+    newScene.add(objectMeshes[i]);
   }
   newScene.add(pointerMesh);
 
@@ -855,8 +855,8 @@ const _screenshotMiningMeshes = async () => {
   }
   gif.render();
 
-  for (let i = 0; i < miningMeshes.length; i++) {
-    scene.add(miningMeshes[i]);
+  for (let i = 0; i < objectMeshes.length; i++) {
+    scene.add(objectMeshes[i]);
   }
   scene.add(pointerMesh);
 

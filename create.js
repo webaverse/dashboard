@@ -707,9 +707,10 @@ const _newMiningMeshes = () => {
   _refreshMiningMeshes();
 };
 let objectMeshes = [];
-const _commitMiningMeshes = () => {
+const _commitMiningMeshes = async () => {
+  await _waitForMiningMeshRefresh();
   if (miningMeshes.some(miningMesh => miningMesh.visible)) {
-    const geometry = BufferGeometryUtils.mergeBufferGeometries(miningMeshes.map(miningMesh => miningMesh.geometry));
+    const geometry = BufferGeometryUtils.mergeBufferGeometries(miningMeshes.filter(miningMesh => miningMesh.visible).map(miningMesh => miningMesh.geometry));
     const material = miningMeshMaterial;
     const objectMesh = new THREE.Mesh(geometry, material);
     objectMesh.frustumCulled = false;
@@ -823,6 +824,7 @@ const _colorMiningMeshes = (x, y, z, c) => {
 };
 let refreshing = false;
 let refreshQueued = false;
+const refreshCbs = [];
 const _refreshMiningMeshes = async () => {
   if (!refreshing) {
     refreshing = true;
@@ -842,9 +844,21 @@ const _refreshMiningMeshes = async () => {
     if (refreshQueued) {
       refreshQueued = false;
       _refreshMiningMeshes();
+    } else {
+      for (let i = 0; i < refreshCbs.length; i++) {
+        refreshCbs[i]();
+      }
+      refreshCbs.length = 0;
     }
   } else {
     refreshQueued = true;
+  }
+};
+const _waitForMiningMeshRefresh = async () => {
+  if (refreshing) {
+    const p = makePromise();
+    refreshCbs.push(p.accept);
+    await p;
   }
 };
 let colliding = false;

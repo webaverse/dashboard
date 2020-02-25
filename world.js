@@ -15,6 +15,8 @@ const _load = () => {
 
 contract.init();
 
+const parcelSize = 100;
+
 function parseQuery(queryString) {
   var query = {};
   var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
@@ -23,6 +25,9 @@ function parseQuery(queryString) {
     query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
   }
   return query;
+}
+function mod(a, n) {
+  return ((a%n)+n)%n;
 }
 
 const PARCEL_SIZE = 10;
@@ -72,18 +77,149 @@ orbitControls.screenSpacePanning = true;
 orbitControls.enableMiddleZoom = false;
 orbitControls.update();
 
-const floorMesh = (() => {
-  const geometry = new THREE.BoxBufferGeometry(3, 3, 3);
-  const material = new THREE.MeshStandardMaterial({
-    color: 0xFFFFFF,
+const parcelGeometry = (() => {
+  const tileGeometry = new THREE.PlaneBufferGeometry(1, 1)
+    .applyMatrix(new THREE.Matrix4().makeScale(0.95, 0.95, 1))
+    .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI/2)))
+    .toNonIndexed();
+  const numCoords = tileGeometry.attributes.position.array.length;
+  const numVerts = numCoords/3;
+  const positions = new Float32Array(numCoords*parcelSize*parcelSize);
+  const centers = new Float32Array(numCoords*parcelSize*parcelSize);
+  const typesx = new Float32Array(numVerts*parcelSize*parcelSize);
+  const typesz = new Float32Array(numVerts*parcelSize*parcelSize);
+  let i = 0;
+  for (let x = -parcelSize/2; x < parcelSize/2; x++) {
+    for (let z = -parcelSize/2; z < parcelSize/2; z++) {
+      const newTileGeometry = tileGeometry.clone()
+        .applyMatrix(new THREE.Matrix4().makeTranslation(x, 0, z));
+      positions.set(newTileGeometry.attributes.position.array, i * newTileGeometry.attributes.position.array.length);
+      for (let j = 0; j < newTileGeometry.attributes.position.array.length/3; j++) {
+        new THREE.Vector3(x, 0, z).toArray(centers, i*newTileGeometry.attributes.position.array.length + j*3);
+      }
+      let typex = 0;
+      if (mod((x + parcelSize/2), parcelSize) === 0) {
+        typex = 1/8;
+      } else if (mod((x + parcelSize/2), parcelSize) === parcelSize-1) {
+        typex = 2/8;
+      }
+      let typez = 0;
+      if (mod((z + parcelSize/2), parcelSize) === 0) {
+        typez = 1/8;
+      } else if (mod((z + parcelSize/2), parcelSize) === parcelSize-1) {
+        typez = 2/8;
+      }
+      for (let j = 0; j < numVerts; j++) {
+        typesx[i*numVerts + j] = typex;
+        typesz[i*numVerts + j] = typez;
+      }
+      i++;
+    }
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('center', new THREE.BufferAttribute(centers, 3));
+  geometry.setAttribute('typex', new THREE.BufferAttribute(typesx, 1));
+  geometry.setAttribute('typez', new THREE.BufferAttribute(typesz, 1));
+  return geometry;
+})();
+const floorVsh = `
+  #define PI 3.1415926535897932384626433832795
+
+  uniform vec3 uPosition;
+  uniform float uAnimation;
+  uniform vec4 uSelectedParcel;
+  attribute vec3 center;
+  attribute float typex;
+  attribute float typez;
+  varying vec3 vPosition;
+  varying float vTypex;
+  varying float vTypez;
+  varying float vDepth;
+  varying float vPulse;
+
+  float range = 1.0;
+
+  void main() {
+    float height;
+    vec3 c = center + uPosition;
+    float selectedWidth = uSelectedParcel.z - uSelectedParcel.x;
+    float selectedHeight = uSelectedParcel.w - uSelectedParcel.y;
+    // vPulse = 1.0 + (1.0 - mod(uAnimation * 2.0, 1.0)/2.0) * 0.2;
+    vPulse = 0.0;
+    vec3 p = vec3(position.x, position.y + height, position.z);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.);
+    vPosition = position;
+    vTypex = typex;
+    vTypez = typez;
+    vDepth = gl_Position.z / 30.0;
+  }
+`;
+const floorFsh = `
+  #define PI 3.1415926535897932384626433832795
+
+  uniform vec3 uColor;
+  uniform float uHover;
+  uniform float uAnimation;
+  varying vec3 vPosition;
+  varying float vTypex;
+  varying float vTypez;
+  varying float vDepth;
+  varying float vPulse;
+
+  void main() {
+    float add = uHover * 0.2;
+    vec3 f = fract(vPosition);
+    vec3 c = (uColor + add) * vPulse;
+    float a = (1.0-vDepth)*0.8;
+    gl_FragColor = vec4(c, a);
+  }
+`;
+const _makeFloorMesh = (x, z) => {
+  const geometry = parcelGeometry;
+  const material = new THREE.ShaderMaterial({
+    uniforms: {
+      uPosition: {
+        type: 'v3',
+        value: new THREE.Vector3(),
+      },
+      uColor: {
+        type: 'c',
+        value: new THREE.Color(0xAAAAAA),
+      },
+      uHover: {
+        type: 'f',
+        value: 0,
+      },
+      uSelectedParcel: {
+        type: 'v4',
+        value: new THREE.Vector4(),
+      },
+      uAnimation: {
+        type: 'f',
+        value: 1,
+      },
+    },
+    vertexShader: floorVsh,
+    fragmentShader: floorFsh,
+    side: THREE.DoubleSide,
+    transparent: true,
   });
   const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.y = -3/2;
+  mesh.position.set(x*parcelSize, 0, z*parcelSize);
+  mesh.material.uniforms.uPosition.value.copy(mesh.position);
   mesh.frustumCulled = false;
-  mesh.receiveShadow = true;
+  mesh.update = () => {
+    const xrSite = _getFloorMeshXrSite(mesh);
+    const color = _getSelectedColor(xrSite);
+    material.uniforms.uColor.value.setHex(color);
+  };
   return mesh;
-})();
-scene.add(floorMesh);
+};
+const floorMeshes = [_makeFloorMesh(0, 0)];
+floorMeshes.forEach(floorMesh => {
+  scene.add(floorMesh);
+});
 
 [
   'inventory-op',
@@ -367,6 +503,11 @@ function animate() {
         }
       }
     }
+  }
+
+  const now = Date.now();
+  for (let i = 0; i < floorMeshes.length; i++) {
+    floorMeshes[i].material.uniforms.uAnimation.value = (now%2000)/2000;
   }
 
   /* if (ammo) {

@@ -193,17 +193,19 @@ const pointerMesh = (() => {
   const mesh = new THREE.Mesh(geometry, material);
   mesh.frustumCulled = false;
   mesh.resize = (minX, minY, minZ, maxX, maxY, maxZ) => {
-    const geometries = [];
-    for (let ay = minY; ay < maxY; ay++) {
-      for (let ax = minX; ax < maxX; ax++) {
-        for (let az = minZ; az < maxZ; az++) {
-          const newBlockGeometry = blockGeometry.clone()
-            .applyMatrix4(new THREE.Matrix4().makeTranslation(ax, ay, az));
-          geometries.push(newBlockGeometry);
+    if (minX < maxX && minY < maxY && minZ < maxZ) {
+      const geometries = [];
+      for (let ay = minY; ay < maxY; ay++) {
+        for (let ax = minX; ax < maxX; ax++) {
+          for (let az = minZ; az < maxZ; az++) {
+            const newBlockGeometry = blockGeometry.clone()
+              .applyMatrix4(new THREE.Matrix4().makeTranslation(ax, ay, az));
+            geometries.push(newBlockGeometry);
+          }
         }
       }
+      mesh.geometry = BufferGeometryUtils.mergeBufferGeometries(geometries);
     }
-    mesh.geometry = BufferGeometryUtils.mergeBufferGeometries(geometries);
   };
   mesh.resize(0, 0, 0, 1, 1, 1);
   return mesh;

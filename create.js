@@ -305,7 +305,7 @@ let ammo = null;
 
         var transform = new Ammo.btTransform();
         transform.setIdentity();
-        transform.setOrigin(new Ammo.btVector3(0, 0, 0));
+        transform.setOrigin(new Ammo.btVector3(objectMesh.position.x, objectMesh.position.y, objectMesh.position.z));
 
         var mass = 1;
         var localInertia = new Ammo.btVector3(0, 0, 0);

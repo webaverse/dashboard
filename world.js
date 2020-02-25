@@ -550,6 +550,7 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
       e.dataTransfer.setData('text', JSON.stringify({
         type: 'object',
         hash: metadataHash,
+        size,
       }));
     });
     inventoryItemsEl.appendChild(a);

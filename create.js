@@ -741,8 +741,14 @@ const _centerObjectMeshes = () => {
     box.max.y = Math.max(box.max.y, localBox.max.y);
     box.max.z = Math.max(box.max.z, localBox.max.z);
   }
-  const center = box.getCenter(new THREE.Vector3())
-    .sub(new THREE.Vector3(0.5, 0.5, 0.5));
+  const center = box.getCenter(new THREE.Vector3());
+  center.sub(new THREE.Vector3(0, 0.5, 0));
+  if (box.max.x - box.min.x < 1) {
+    center.sub(new THREE.Vector3(0.5, 0, 0));
+  }
+  if (box.max.z - box.min.z < 1) {
+    center.sub(new THREE.Vector3(0, 0, 0.5));
+  }
   for (let i = 0; i < objectMeshes.length; i++) {
     objectMeshes[i].position.sub(center);
   }

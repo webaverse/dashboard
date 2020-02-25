@@ -50,7 +50,7 @@ renderer.shadowMap.type = THREE.PCFShadowMap;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xEEEEEE);
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0.5, 0.5, 2);
+camera.position.set(0, 0.5, 1);
 renderer.render(scene, camera);
 
 const ambientLight = new THREE.AmbientLight(0xFFFFFF);
@@ -70,7 +70,7 @@ directionalLight2.position.set(-0.5, -0.1, 0.5).multiplyScalar(100);
 scene.add(directionalLight2);
 
 const orbitControls = new OrbitControls(camera, interfaceDocument.querySelector('.background'), interfaceDocument);
-orbitControls.target.copy(camera.position).add(new THREE.Vector3(0, 0, -1.5));
+orbitControls.target.copy(camera.position).add(new THREE.Vector3(0, 0, -1));
 orbitControls.screenSpacePanning = true;
 // orbitControls.enabled = !!loginToken;
 orbitControls.enableMiddleZoom = false;
@@ -80,13 +80,15 @@ const parcelGeometry = (() => {
   const tileGeometry = new THREE.PlaneBufferGeometry(1, 1)
     .applyMatrix4(new THREE.Matrix4().makeScale(0.95, 0.95, 1))
     .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI/2)))
+    .applyMatrix4(new THREE.Matrix4().makeTranslation(0.5, 0, 0.5))
     .toNonIndexed();
   const numCoords = tileGeometry.attributes.position.array.length;
   const numVerts = numCoords/3;
   const positions = new Float32Array(numCoords*floorSize*floorSize);
+  const colors = new Float32Array(numCoords*floorSize*floorSize);
   const centers = new Float32Array(numCoords*floorSize*floorSize);
-  const typesx = new Float32Array(numVerts*floorSize*floorSize);
-  const typesz = new Float32Array(numVerts*floorSize*floorSize);
+  /* const typesx = new Float32Array(numVerts*floorSize*floorSize);
+  const typesz = new Float32Array(numVerts*floorSize*floorSize); */
   let i = 0;
   for (let x = -floorSize/2; x < floorSize/2; x++) {
     for (let z = -floorSize/2; z < floorSize/2; z++) {
@@ -96,7 +98,7 @@ const parcelGeometry = (() => {
       for (let j = 0; j < newTileGeometry.attributes.position.array.length/3; j++) {
         new THREE.Vector3(x, 0, z).toArray(centers, i*newTileGeometry.attributes.position.array.length + j*3);
       }
-      let typex = 0;
+      /* let typex = 0;
       if (mod((x + floorSize/2), floorSize) === 0) {
         typex = 1/8;
       } else if (mod((x + floorSize/2), floorSize) === floorSize-1) {
@@ -111,15 +113,17 @@ const parcelGeometry = (() => {
       for (let j = 0; j < numVerts; j++) {
         typesx[i*numVerts + j] = typex;
         typesz[i*numVerts + j] = typez;
-      }
+      } */
       i++;
     }
   }
+  // colors.fill(1);
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
   geometry.setAttribute('center', new THREE.BufferAttribute(centers, 3));
-  geometry.setAttribute('typex', new THREE.BufferAttribute(typesx, 1));
-  geometry.setAttribute('typez', new THREE.BufferAttribute(typesz, 1));
+  /* geometry.setAttribute('typex', new THREE.BufferAttribute(typesx, 1));
+  geometry.setAttribute('typez', new THREE.BufferAttribute(typesz, 1)); */
   return geometry;
 })();
 const floorVsh = `
@@ -128,10 +132,12 @@ const floorVsh = `
   uniform vec3 uPosition;
   uniform float uAnimation;
   uniform vec4 uSelectedParcel;
+  attribute vec3 color;
   attribute vec3 center;
   attribute float typex;
   attribute float typez;
   varying vec3 vPosition;
+  varying vec3 vColor;
   varying float vTypex;
   varying float vTypez;
   varying float vDepth;
@@ -144,14 +150,15 @@ const floorVsh = `
     vec3 c = center + uPosition;
     float selectedWidth = uSelectedParcel.z - uSelectedParcel.x;
     float selectedHeight = uSelectedParcel.w - uSelectedParcel.y;
-    // vPulse = 1.0 + (1.0 - mod(uAnimation * 2.0, 1.0)/2.0) * 0.2;
-    vPulse = 0.0;
+    vPulse = 1.0 + (1.0 - mod(uAnimation * 2.0, 1.0)/2.0) * 0.2;
+    // vPulse = 0.0;
     vec3 p = vec3(position.x, position.y + height, position.z);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.);
     vPosition = position;
     vTypex = typex;
     vTypez = typez;
     vDepth = gl_Position.z / 30.0;
+    vColor = color;
   }
 `;
 const floorFsh = `
@@ -161,15 +168,16 @@ const floorFsh = `
   uniform float uHover;
   uniform float uAnimation;
   varying vec3 vPosition;
+  varying vec3 vColor;
   varying float vTypex;
   varying float vTypez;
   varying float vDepth;
   varying float vPulse;
 
   void main() {
-    float add = uHover * 0.2;
+    // float add = uHover * 0.2;
     vec3 f = fract(vPosition);
-    vec3 c = (uColor + add) * vPulse;
+    vec3 c = vColor * vPulse;
     float a = (1.0-vDepth)*0.8;
     gl_FragColor = vec4(c, a);
   }
@@ -205,13 +213,37 @@ const _makeFloorMesh = (x, z) => {
     transparent: true,
   });
   const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.set(x*floorSize, 0, z*floorSize);
+  // mesh.position.set(x*floorSize, 0, z*floorSize);
   mesh.material.uniforms.uPosition.value.copy(mesh.position);
   mesh.frustumCulled = false;
   mesh.update = () => {
     const xrSite = _getFloorMeshXrSite(mesh);
     const color = _getSelectedColor(xrSite);
     material.uniforms.uColor.value.setHex(color);
+  };
+  const floorPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0));
+  const highlightColor = new THREE.Color(0x42a5f5);
+  const intersection = new THREE.Vector3(NaN, NaN, NaN);
+  mesh.getIntersection = () => !isNaN(intersection.x) ? intersection : null;
+  mesh.intersect = (raycaster, size) => {
+    intersection.set(NaN, NaN, NaN);
+    geometry.attributes.color.array.fill(0);
+
+    if (raycaster && raycaster.ray.intersectPlane(floorPlane, intersection)) {
+      intersection.x = Math.floor(intersection.x);
+      intersection.z = Math.floor(intersection.z);
+      for (let i = 0; i < geometry.attributes.position.array.length; i += 3) {
+        const px = geometry.attributes.position.array[i];
+        const pz = geometry.attributes.position.array[i+2];
+        if (px > intersection.x && px < intersection.x + size[0] && pz > intersection.z && pz < intersection.z + size[2]) {
+          geometry.attributes.color.array[i] = highlightColor.r;
+          geometry.attributes.color.array[i+1] = highlightColor.g;
+          geometry.attributes.color.array[i+2] = highlightColor.b;
+        }
+      }
+    }
+
+    geometry.attributes.color.needsUpdate = true;
   };
   return mesh;
 };
@@ -220,6 +252,7 @@ floorMeshes.forEach(floorMesh => {
   scene.add(floorMesh);
 });
 
+let dragData = null;
 [
   'inventory-op',
   'inventory-close-button',
@@ -230,6 +263,81 @@ floorMeshes.forEach(floorMesh => {
 
     interfaceDocument.getElementById('inventory').classList.toggle('open');
   });
+});
+
+const background = interfaceDocument.querySelector('.background');
+background.addEventListener('dragenter', e => {
+  e.preventDefault();
+});
+background.addEventListener('dragover', e => {
+  e.preventDefault();
+
+  _updateRaycasterFromMouseEvent(localRaycaster, e);
+  floorMeshes[0].intersect(localRaycaster, dragData.size);
+});
+background.addEventListener('drop', e => {
+  e.preventDefault();
+
+  const intersection = floorMeshes[0].getIntersection();
+  if (intersection) {
+    console.log('drop to', intersection.x, intersection.z, dragData.size);
+  }
+  floorMeshes[0].intersect(null);
+});
+
+const localRaycaster = new THREE.Raycaster();
+const _updateRaycasterFromMouseEvent = (raycaster, e) => {
+  const mouse = new THREE.Vector2(( ( e.clientX ) / window.innerWidth ) * 2 - 1, - ( ( e.clientY ) / window.innerHeight ) * 2 + 1);
+  raycaster.setFromCamera(mouse, camera);
+};
+
+[window, interfaceWindow].forEach(w => {
+  /* w.addEventListener('keydown', e => {
+    switch (e.which) {
+      case 49:
+      case 50:
+      case 51:
+      case 52:
+      case 53:
+      case 54:
+      {
+        tools[e.which - 49].click();
+        break;
+      }
+      case 87: {
+        selectedObjectMesh && selectedObjectMesh.control.setMode('translate');
+        break;
+      }
+      case 69: {
+        selectedObjectMesh && selectedObjectMesh.control.setMode('rotate');
+        break;
+      }
+      case 82: {
+        selectedObjectMesh && selectedObjectMesh.control.setMode('scale');
+        break;
+      }
+      case 8: // backspace
+      case 46: // del
+      {
+        if (selectedObjectMesh) {
+          _unbindObjectMeshControls(selectedObjectMesh);
+          scene.remove(selectedObjectMesh);
+          // selectedObjectMesh.destroy();
+          objectMeshes.splice(objectMeshes.indexOf(selectedObjectMesh), 1);
+          if (hoveredObjectMesh === selectedObjectMesh) {
+            hoveredObjectMesh = null;
+          }
+          selectedObjectMesh = null;
+        }
+        break;
+      }
+    }
+  });
+  w.addEventListener('mousemove', e => {
+    _updateRaycasterFromMouseEvent(localRaycaster, e);
+  });
+  w.addEventListener('mousedown', _beginTool);
+  w.addEventListener('mouseup', _endTool); */
 });
 
 // xr
@@ -482,7 +590,7 @@ const uiMesh = (() => {
 
   return mesh;
 })();
-uiMesh.position.set(0.5, 0.5, 1);
+uiMesh.position.set(0, 0.5, 0);
 scene.add(uiMesh);
 
 contract.init();
@@ -547,11 +655,15 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
       </div>
     `;
     a.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text', JSON.stringify({
+      dragData = {
         type: 'object',
         hash: metadataHash,
         size,
-      }));
+      };
+      // e.dataTransfer.setData('text', dragData);
+    });
+    a.addEventListener('dragend', e => {
+      dragData = null;
     });
     inventoryItemsEl.appendChild(a);
   }

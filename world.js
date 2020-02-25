@@ -79,8 +79,8 @@ orbitControls.update();
 
 const parcelGeometry = (() => {
   const tileGeometry = new THREE.PlaneBufferGeometry(1, 1)
-    .applyMatrix(new THREE.Matrix4().makeScale(0.95, 0.95, 1))
-    .applyMatrix(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI/2)))
+    .applyMatrix4(new THREE.Matrix4().makeScale(0.95, 0.95, 1))
+    .applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI/2)))
     .toNonIndexed();
   const numCoords = tileGeometry.attributes.position.array.length;
   const numVerts = numCoords/3;
@@ -92,7 +92,7 @@ const parcelGeometry = (() => {
   for (let x = -parcelSize/2; x < parcelSize/2; x++) {
     for (let z = -parcelSize/2; z < parcelSize/2; z++) {
       const newTileGeometry = tileGeometry.clone()
-        .applyMatrix(new THREE.Matrix4().makeTranslation(x, 0, z));
+        .applyMatrix4(new THREE.Matrix4().makeTranslation(x, 0, z));
       positions.set(newTileGeometry.attributes.position.array, i * newTileGeometry.attributes.position.array.length);
       for (let j = 0; j < newTileGeometry.attributes.position.array.length/3; j++) {
         new THREE.Vector3(x, 0, z).toArray(centers, i*newTileGeometry.attributes.position.array.length + j*3);

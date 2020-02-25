@@ -42,6 +42,8 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.sortObjects = false;
 renderer.physicallyCorrectLights = true;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xEEEEEE);
@@ -53,11 +55,16 @@ const ambientLight = new THREE.AmbientLight(0xFFFFFF);
 scene.add(ambientLight);
 
 const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 3);
-directionalLight.position.set(0.5, 1, 0.5);
+directionalLight.position.set(0.5, 1, 0.5).multiplyScalar(100);
+directionalLight.castShadow = true;
+directionalLight.shadow.mapSize.width = 1024;
+directionalLight.shadow.mapSize.height = 1024;
+directionalLight.shadow.camera.near = 0.5;
+directionalLight.shadow.camera.far = 500;
 scene.add(directionalLight);
 
 const directionalLight2 = new THREE.DirectionalLight(0xFFFFFF, 3);
-directionalLight2.position.set(-0.5, -0.1, 0.5);
+directionalLight2.position.set(-0.5, -0.1, 0.5).multiplyScalar(100);
 scene.add(directionalLight2);
 
 const orbitControls = new OrbitControls(camera, interfaceDocument.querySelector('.background'), interfaceDocument);
@@ -347,17 +354,18 @@ let ammo = null;
   };
 })();
 
-/* const cubeMesh = (() => {
+const floorMesh = (() => {
   const geometry = new THREE.BoxBufferGeometry(3, 3, 3);
-  const material = new THREE.MeshPhongMaterial({
-    color: 0xFF0000,
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xFFFFFF,
   });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.y = -3/2;
   mesh.frustumCulled = false;
+  mesh.receiveShadow = true;
   return mesh;
 })();
-scene.add(cubeMesh); */
+scene.add(floorMesh);
 
 const miningMeshMaterial = (() => {
   /* const terrainVsh = `
@@ -724,8 +732,9 @@ const _commitMiningMeshes = async () => {
     const geometry = BufferGeometryUtils.mergeBufferGeometries(visibleMiningMeshes.map(miningMesh => miningMesh.geometry));
     const material = miningMeshMaterial;
     const objectMesh = new THREE.Mesh(geometry, material);
-    _centerObjectMesh(objectMesh);
     objectMesh.frustumCulled = false;
+    objectMesh.castShadow = true;
+    _centerObjectMesh(objectMesh);
     scene.add(objectMesh);
     objectMeshes.push(objectMesh);
 
@@ -801,12 +810,17 @@ const _loadObjectMeshes = async arrayBuffer => {
   loader.load(src, p.accept, function onProgress() {}, p.reject);
   const o = await p;
   const {scene} = o;
-  const {userData: {gltfExtensions: {size: {x, y, z}}}} = scene;
+  // const {userData: {gltfExtensions: {size: {x, y, z}}}} = scene;
   const objectMeshes = scene.children.slice();
+  for (let i = 0; i < objectMeshes.length; i++) {
+    const objectMesh = objectMeshes[i];
+    objectMesh.frustumCulled = false;
+    objectMesh.castShadow = true;
+  }
   return {
-    x,
+    /* x,
     y,
-    z,
+    z, */
     objectMeshes,
   };
 };
@@ -816,7 +830,7 @@ const _screenshotMiningMeshes = async () => {
     const ambientLight = new THREE.AmbientLight(0x808080);
     newScene.add(ambientLight);
     const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
-    directionalLight.position.set(0.5, 1, 0.5);
+    directionalLight.position.set(0.5, 1, 0.5).multiplyScalar(100);
     newScene.add(directionalLight);
   }
   for (let i = 0; i < miningMeshes.length; i++) {

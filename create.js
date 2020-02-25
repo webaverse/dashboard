@@ -192,11 +192,11 @@ const pointerMesh = (() => {
   });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.frustumCulled = false;
-  mesh.resize = (x, y, z) => {
+  mesh.resize = (minX, minY, minZ, maxX, maxY, maxZ) => {
     const geometries = [];
-    for (let ay = 0; ay < y; ay++) {
-      for (let ax = 0; ax < x; ax++) {
-        for (let az = 0; az < z; az++) {
+    for (let ay = minY; ay < maxY; ay++) {
+      for (let ax = minX; ax < maxX; ax++) {
+        for (let az = minZ; az < maxZ; az++) {
           const newBlockGeometry = blockGeometry.clone()
             .applyMatrix4(new THREE.Matrix4().makeTranslation(ax, ay, az));
           geometries.push(newBlockGeometry);
@@ -205,7 +205,7 @@ const pointerMesh = (() => {
     }
     mesh.geometry = BufferGeometryUtils.mergeBufferGeometries(geometries);
   };
-  mesh.resize(1, 1, 1);
+  mesh.resize(0, 0, 0, 1, 1, 1);
   return mesh;
 })();
 scene.add(pointerMesh);
@@ -746,6 +746,17 @@ const _centerObjectMeshes = () => {
   for (let i = 0; i < objectMeshes.length; i++) {
     objectMeshes[i].position.sub(center);
   }
+
+  const gridBox = box.clone();
+  gridBox.min.sub(center);
+  gridBox.max.sub(center);
+  gridBox.min.x = Math.floor(gridBox.min.x);
+  gridBox.min.y = Math.floor(gridBox.min.y);
+  gridBox.min.z = Math.floor(gridBox.min.z);
+  gridBox.max.x = Math.floor(gridBox.max.x);
+  gridBox.max.y = Math.floor(gridBox.max.y);
+  gridBox.max.z = Math.floor(gridBox.max.z);
+  pointerMesh.resize(gridBox.min.x, gridBox.min.y, gridBox.min.z, gridBox.max.x+1, gridBox.max.y+1, gridBox.max.z+1);
 };
 const _saveObjectMeshes = async () => {
   const exportScene = new THREE.Scene();

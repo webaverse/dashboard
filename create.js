@@ -1355,7 +1355,7 @@ opsForm.addEventListener('submit', async e => {
 
   const p = makePromise();
   const instance = await contract.getInstance();
-  instance.mintWithMetadata(0, '0x0000000000000000000000000000000000000000', 1, 'hash', metadataHash, (err, value) => {
+  instance.mint([0x1, 0x1, 0x1], 'hash', metadataHash, (err, value) => {
     if (!err) {
       p.accept(value);
     } else {

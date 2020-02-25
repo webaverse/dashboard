@@ -280,7 +280,7 @@ background.addEventListener('drop', async e => {
 
   const intersection = floorMeshes[0].getIntersection();
   if (intersection) {
-    console.log('drop to', dragData.id, [intersection.x, 0, intersection.z]);
+    console.log('drop to', dragData.id, [intersection.x, 0, intersection.z], dragData.size);
 
     const instance = await contract.getInstance();
     const p = makePromise();

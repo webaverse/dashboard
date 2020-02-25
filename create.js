@@ -200,6 +200,8 @@ const pointerMesh = (() => {
   });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.frustumCulled = false;
+  const size = [0, 0, 0, 0, 0, 0];
+  mesh.getSize = () => size;
   mesh.resize = (minX, minY, minZ, maxX, maxY, maxZ) => {
     if (minX < maxX && minY < maxY && minZ < maxZ) {
       const geometries = [];
@@ -214,6 +216,12 @@ const pointerMesh = (() => {
       }
       mesh.geometry = BufferGeometryUtils.mergeBufferGeometries(geometries);
     }
+    size[0] = minX;
+    size[1] = minY;
+    size[2] = minZ;
+    size[3] = maxX;
+    size[4] = maxY;
+    size[5] = maxZ;
   };
   mesh.resize(0, 0, 0, 1, 1, 1);
   return mesh;
@@ -1370,7 +1378,8 @@ opsForm.addEventListener('submit', async e => {
 
   const p = makePromise();
   const instance = await contract.getInstance();
-  instance.mint([0x1, 0x1, 0x1], 'hash', metadataHash, (err, value) => {
+  const size = pointerMesh.getSize();
+  instance.mint([size[3] - size[0], size[4] - size[1], size[5] - size[2]], 'hash', metadataHash, (err, value) => {
     if (!err) {
       p.accept(value);
     } else {

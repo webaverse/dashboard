@@ -7,15 +7,13 @@ import {OutlineEffect} from './OutlineEffect.js';
 import {GLTFLoader} from './GLTFLoader.js';
 import {GLTFExporter} from './GLTFExporter.js';
 import {XRControllerModelFactory} from './XRControllerModelFactory.js';
-import {Ammo as AmmoLib} from './ammo.wasm.js';
-import {makePromise} from './util.js'; */
+import {Ammo as AmmoLib} from './ammo.wasm.js'; */
+import {makePromise} from './util.js';
 import contract from './contract.js';
 
 const _load = () => {
 
 contract.init();
-
-const parcelSize = 100;
 
 function parseQuery(queryString) {
   var query = {};
@@ -34,6 +32,7 @@ const PARCEL_SIZE = 10;
 const size = PARCEL_SIZE + 1;
 const uiSize = 2048;
 const uiWorldSize = 0.2;
+const floorSize = 100;
 
 const canvas = document.getElementById('canvas');
 canvas.width = window.innerWidth;
@@ -84,13 +83,13 @@ const parcelGeometry = (() => {
     .toNonIndexed();
   const numCoords = tileGeometry.attributes.position.array.length;
   const numVerts = numCoords/3;
-  const positions = new Float32Array(numCoords*parcelSize*parcelSize);
-  const centers = new Float32Array(numCoords*parcelSize*parcelSize);
-  const typesx = new Float32Array(numVerts*parcelSize*parcelSize);
-  const typesz = new Float32Array(numVerts*parcelSize*parcelSize);
+  const positions = new Float32Array(numCoords*floorSize*floorSize);
+  const centers = new Float32Array(numCoords*floorSize*floorSize);
+  const typesx = new Float32Array(numVerts*floorSize*floorSize);
+  const typesz = new Float32Array(numVerts*floorSize*floorSize);
   let i = 0;
-  for (let x = -parcelSize/2; x < parcelSize/2; x++) {
-    for (let z = -parcelSize/2; z < parcelSize/2; z++) {
+  for (let x = -floorSize/2; x < floorSize/2; x++) {
+    for (let z = -floorSize/2; z < floorSize/2; z++) {
       const newTileGeometry = tileGeometry.clone()
         .applyMatrix4(new THREE.Matrix4().makeTranslation(x, 0, z));
       positions.set(newTileGeometry.attributes.position.array, i * newTileGeometry.attributes.position.array.length);
@@ -98,15 +97,15 @@ const parcelGeometry = (() => {
         new THREE.Vector3(x, 0, z).toArray(centers, i*newTileGeometry.attributes.position.array.length + j*3);
       }
       let typex = 0;
-      if (mod((x + parcelSize/2), parcelSize) === 0) {
+      if (mod((x + floorSize/2), floorSize) === 0) {
         typex = 1/8;
-      } else if (mod((x + parcelSize/2), parcelSize) === parcelSize-1) {
+      } else if (mod((x + floorSize/2), floorSize) === floorSize-1) {
         typex = 2/8;
       }
       let typez = 0;
-      if (mod((z + parcelSize/2), parcelSize) === 0) {
+      if (mod((z + floorSize/2), floorSize) === 0) {
         typez = 1/8;
-      } else if (mod((z + parcelSize/2), parcelSize) === parcelSize-1) {
+      } else if (mod((z + floorSize/2), floorSize) === floorSize-1) {
         typez = 2/8;
       }
       for (let j = 0; j < numVerts; j++) {
@@ -206,7 +205,7 @@ const _makeFloorMesh = (x, z) => {
     transparent: true,
   });
   const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.set(x*parcelSize, 0, z*parcelSize);
+  mesh.position.set(x*floorSize, 0, z*floorSize);
   mesh.material.uniforms.uPosition.value.copy(mesh.position);
   mesh.frustumCulled = false;
   mesh.update = () => {
@@ -485,6 +484,77 @@ const uiMesh = (() => {
 })();
 uiMesh.position.set(0.5, 0.5, 1);
 scene.add(uiMesh);
+
+contract.init();
+
+const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
+(async () => {
+  const instance = await contract.getInstance();
+  const noncePromise = makePromise();
+  instance.getNonce((err, nonce) => {
+    if (!err) {
+      noncePromise.accept(nonce);
+    } else {
+      noncePromise.reject(err);
+    }
+  });
+  let nonce = await noncePromise;
+  nonce = nonce.toNumber();
+
+  console.log('got nonce', nonce);
+
+  for (let i = 1; i <= nonce; i++) {
+    const [
+      metadataHash,
+      size,
+    ] = await Promise.all([
+      (() => {
+        const p = makePromise();
+        instance.getMetadata(i, 'hash', (err, metadataHash) => {
+          if (!err) {
+            p.accept(metadataHash);
+          } else {
+            p.reject(err);
+          }
+        });
+        return p;
+      })(),
+      (() => {
+        const p = makePromise();
+        instance.getSize(i, (err, size) => {
+          if (!err) {
+            size = size.map(n => n.toNumber());
+            p.accept(size);
+          } else {
+            p.reject(err);
+          }
+        });
+        return p;
+      })(),
+    ]);
+    const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${metadataHash}`)
+      .then(res => res.json());
+    const {dataHash, screenshotHash} = metadata;
+    const a = document.createElement('a');
+    // a.href = `/create.html?o=${encodeURIComponent(metadataHash)}`;
+    a.classList.add('item');
+    a.setAttribute('draggable', true);
+    a.innerHTML = `\
+      <img src="https://cryptopolys.webaverse.workers.dev/data${screenshotHash}" width=80 height=80>
+      <div class=wrap>
+        <div class=name>${metadata.objectName}</div>
+        <div class=details>${size.join('x')}</div>
+      </div>
+    `;
+    a.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text', JSON.stringify({
+        type: 'object',
+        hash: metadataHash,
+      }));
+    });
+    inventoryItemsEl.appendChild(a);
+  }
+})();
 
 function animate() {
   orbitControls.update();

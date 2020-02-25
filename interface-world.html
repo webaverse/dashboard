@@ -176,6 +176,34 @@ margin-left: 10px;
 .inventory > header > .button {
   margin: 10px;
 }
+.inventory > .items > .item {
+  display: flex;
+  position: relative;
+  padding: 5px 0;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+.inventory > .items > .item:hover {
+  background-color: #42a5f5;
+  color: #FFF;
+}
+.inventory > .items > .item > .wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.inventory > .items > .item > .wrap > .name {
+}
+.inventory > .items > .item > img {
+  display: flex;
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  font-size: 50px;
+  justify-content: center;
+  align-items: center;
+}
 .background {
   position: absolute;
   top: 0;
@@ -236,9 +264,10 @@ margin-left: 10px;
     </div> -->
     <div class=inventory id=inventory>
       <header>
-        <input type=text>
+        <input type=text id=inventory-search-input>
         <a class=button id=inventory-close-button><i class="fal fa-times"></i></a>
       </header>
+      <div class=items id=inventory-items></div>
     </div>
     <div class=background></div>
   </body>

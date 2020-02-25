@@ -729,6 +729,24 @@ const _commitMiningMeshes = async () => {
     _newMiningMeshes();
   }
 };
+const _centerObjectMeshes = () => {
+  const box = new THREE.Box3();
+  for (let i = 0; i < objectMeshes.length; i++) {
+    const localBox = new THREE.Box3()
+      .setFromObject(objectMeshes[i]);
+    box.min.x = Math.min(box.min.x, localBox.min.x);
+    box.min.y = Math.min(box.min.y, localBox.min.y);
+    box.min.z = Math.min(box.min.z, localBox.min.z);
+    box.max.x = Math.max(box.max.x, localBox.max.x);
+    box.max.y = Math.max(box.max.y, localBox.max.y);
+    box.max.z = Math.max(box.max.z, localBox.max.z);
+  }
+  const center = box.getCenter(new THREE.Vector3())
+    .sub(new THREE.Vector3(0.5, 0.5, 0.5));
+  for (let i = 0; i < objectMeshes.length; i++) {
+    objectMeshes[i].position.sub(center);
+  }
+};
 const _saveObjectMeshes = async () => {
   const exportScene = new THREE.Scene();
   /* exportScene.userData.gltfExtensions = {
@@ -1182,6 +1200,8 @@ Array.from(tools).forEach((tool, i) => {
 
     if (tool.matches('[tool=commit]')) {
       _commitMiningMeshes();
+    } else if (tool.matches('[tool=center]')) {
+      _centerObjectMeshes();
     } else {
       const newTool = tool.getAttribute('tool');
       if (newTool !== selectedTool) {

@@ -1091,6 +1091,11 @@ const _updateTool = raycaster => {
       hoveredObjectMesh = null;
     }
   } else if (selectedTool === 'paint') {
+    if (hoveredObjectFace && toolDown) {
+      const {object: {geometry}} = hoveredObjectFace;
+      geometry.attributes.color.old = null;
+    }
+    
     const intersections = raycaster.intersectObjects(objectMeshes);
     if (intersections.length > 0) {
       const [{object, point, faceIndex}] = intersections;
@@ -1170,6 +1175,10 @@ const _beginTool = () => {
         }
       }
     } else if (selectedTool === 'paint') {
+      if (hoveredObjectFace) {
+        const {object: {geometry}} = hoveredObjectFace;
+        geometry.attributes.color.old = null;
+      }
       /* const v = new THREE.Vector3(
         Math.floor(collisionMesh.position.x*10),
         Math.floor(collisionMesh.position.y*10),

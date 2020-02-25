@@ -1165,6 +1165,18 @@ const _endTool = () => {
         tools[e.which - 49].click();
         break;
       }
+      case 87: {
+        selectedObjectMesh && selectedObjectMesh.control.setMode('translate');
+        break;
+      }
+      case 69: {
+        selectedObjectMesh && selectedObjectMesh.control.setMode('rotate');
+        break;
+      }
+      case 82: {
+        selectedObjectMesh && selectedObjectMesh.control.setMode('scale');
+        break;
+      }
       case 8: // backspace
       case 46: // del
       {

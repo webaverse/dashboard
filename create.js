@@ -707,12 +707,21 @@ const _newMiningMeshes = () => {
   _refreshMiningMeshes();
 };
 let objectMeshes = [];
+const _centerObjectMesh = objectMesh => {
+  const center = new THREE.Box3()
+    .setFromObject(objectMesh)
+    .getCenter(new THREE.Vector3());
+  objectMesh.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(-center.x, -center.y, -center.z));
+  objectMesh.position.copy(center);
+};
 const _commitMiningMeshes = async () => {
   await _waitForMiningMeshRefresh();
-  if (miningMeshes.some(miningMesh => miningMesh.visible)) {
-    const geometry = BufferGeometryUtils.mergeBufferGeometries(miningMeshes.filter(miningMesh => miningMesh.visible).map(miningMesh => miningMesh.geometry));
+  const visibleMiningMeshes = miningMeshes.filter(miningMesh => miningMesh.visible);
+  if (visibleMiningMeshes.length) {
+    const geometry = BufferGeometryUtils.mergeBufferGeometries(visibleMiningMeshes.map(miningMesh => miningMesh.geometry));
     const material = miningMeshMaterial;
     const objectMesh = new THREE.Mesh(geometry, material);
+    _centerObjectMesh(objectMesh);
     objectMesh.frustumCulled = false;
     scene.add(objectMesh);
     objectMeshes.push(objectMesh);

@@ -722,13 +722,13 @@ const _commitMiningMeshes = async () => {
 };
 const _saveObjectMeshes = async () => {
   const exportScene = new THREE.Scene();
-  exportScene.userData.gltfExtensions = {
+  /* exportScene.userData.gltfExtensions = {
     size: {
       x: parseInt(objectSizeX.value, 10),
       y: parseInt(objectSizeY.value, 10),
       z: parseInt(objectSizeZ.value, 10),
     },
-  };
+  }; */
   for (let i = 0; i < objectMeshes.length; i++) {
     exportScene.add(objectMeshes[i].clone());
   }

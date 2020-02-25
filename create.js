@@ -584,7 +584,7 @@ const _makeMiningMesh = (x, y, z) => {
       return Promise.resolve(() => {});
     }
   };
-  mesh.collide = () => {
+  /* mesh.collide = () => {
     if (mesh.visible) {
       return worker.request({
         method: 'collide',
@@ -620,7 +620,7 @@ const _makeMiningMesh = (x, y, z) => {
       return Promise.resolve(() => {});
     }
   };
-  /* mesh.update = () => {
+  mesh.update = () => {
     if (!colliding && geometry.attributes.position) {
       colliding = true;
 
@@ -888,7 +888,7 @@ const _waitForMiningMeshRefresh = async () => {
     await p;
   }
 };
-let colliding = false;
+/* let colliding = false;
 let collideQueued = false;
 const _collideMiningMeshes = async () => {
   if (!colliding) {
@@ -907,7 +907,7 @@ const _collideMiningMeshes = async () => {
   } else {
     collideQueued = true;
   }
-};
+}; */
 const _bindObjectMeshPhysics = async () => {
   for (let i = 0; i < objectMeshes.length; i++) {
     ammo.bindObjectMeshPhysics(objectMeshes[i]);
@@ -1064,6 +1064,7 @@ const _updateRaycasterFromObject = (raycaster, o) => {
   raycaster.ray.origin.copy(o.position);
   raycaster.ray.direction.set(0, 0, -1).applyQuaternion(o.quaternion);
 };
+let hoveredObjectFace = null;
 const _updateTool = raycaster => {
   if (selectedTool === 'brush' || selectedTool === 'erase') {
     const targetPosition = raycaster.ray.origin;
@@ -1090,7 +1091,41 @@ const _updateTool = raycaster => {
       hoveredObjectMesh = null;
     }
   } else if (selectedTool === 'paint') {
-    _collideMiningMeshes();
+    const intersections = raycaster.intersectObjects(objectMeshes);
+    if (intersections.length > 0) {
+      const [{object, point, faceIndex}] = intersections;
+      
+      collisionMesh.position.copy(point);
+      collisionMesh.visible = true;
+
+      const {geometry} = object;
+      const oldColorAttribute = geometry.attributes.color.old || geometry.attributes.color;
+      const oldColors = oldColorAttribute.array;
+      const newColors = Float32Array.from(oldColors);
+      for (let i = 0; i < 3; i++) {
+        newColors[faceIndex*9 + i*3] = currentColor.r;
+        newColors[faceIndex*9 + i*3 + 1] = currentColor.g;
+        newColors[faceIndex*9 + i*3 + 2] = currentColor.b;
+      }
+      geometry.setAttribute('color', new THREE.BufferAttribute(newColors, 3));
+      geometry.attributes.color.old = oldColorAttribute;
+      
+      hoveredObjectFace = {
+        object,
+        faceIndex,
+      };
+    } else {
+      collisionMesh.visible = false;
+
+      if (hoveredObjectFace) {
+        const {object: {geometry}} = hoveredObjectFace;
+        const oldColorAttribute = geometry.attributes.color.old;
+        if (oldColorAttribute) {
+          geometry.setAttribute('color', oldColorAttribute);
+        }
+      }
+      hoveredObjectFace = null;
+    }
   }
   
   const intersections = raycaster.intersectObject(uiMesh);
@@ -1135,13 +1170,13 @@ const _beginTool = () => {
         }
       }
     } else if (selectedTool === 'paint') {
-      const v = new THREE.Vector3(
+      /* const v = new THREE.Vector3(
         Math.floor(collisionMesh.position.x*10),
         Math.floor(collisionMesh.position.y*10),
         Math.floor(collisionMesh.position.z*10)
       );
       _colorMiningMeshes(v.x+1, v.y+1, v.z+1, currentColor);
-      _refreshMiningMeshes();
+      _refreshMiningMeshes(); */
     }
 
     toolDown = true;

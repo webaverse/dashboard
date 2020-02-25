@@ -1521,7 +1521,7 @@ const uiRenderer = (() => {
       iframe.style.left = '-4096px';
       document.body.appendChild(iframe);
     }),
-    fetch('interface.html')
+    fetch('interface-create.html')
       .then(res => res.text()),
   ]);
 

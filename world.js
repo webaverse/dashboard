@@ -715,6 +715,7 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
         const locationPromise = makePromise();
         instance.getGridBinding(id, (err, loc) => {
           if (!err) {
+            loc = new THREE.Vector3().fromArray(loc.map(l => l.toNumber()));
             locationPromise.accept(loc);
           } else {
             locationPromise.reject(err);
@@ -736,7 +737,9 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
     const o = await objectPromise;
     const objectMeshes = o.scene.children.slice();
     for (let i = 0; i < objectMeshes.length; i++) {
-      scene.add(objectMeshes[i]);
+      const objectMesh = objectMeshes[i];
+      objectMesh.position.add(loc);
+      scene.add(objectMesh);
     }
   }
 })();

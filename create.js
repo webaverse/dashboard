@@ -1327,19 +1327,19 @@ const _endTool = (primary, secondary) => {
         tools[e.which - 49].click();
         break;
       }
-      case 87: {
+      case 87: { // W
         selectedObjectMesh && selectedObjectMesh.control.setMode('translate');
         break;
       }
-      case 69: {
+      case 69: { // E
         selectedObjectMesh && selectedObjectMesh.control.setMode('rotate');
         break;
       }
-      case 82: {
+      case 82: { // R
         selectedObjectMesh && selectedObjectMesh.control.setMode('scale');
         break;
       }
-      case 83: {
+      case 83: { // S
         if (e.ctrlKey) {
           e.preventDefault();
           e.stopPropagation();
@@ -1348,7 +1348,7 @@ const _endTool = (primary, secondary) => {
         }
         break;
       }
-      case 79: {
+      case 79: { // O
         if (e.ctrlKey) {
           e.preventDefault();
           e.stopPropagation();
@@ -1357,7 +1357,7 @@ const _endTool = (primary, secondary) => {
         }
         break;
       }
-      case 67: {
+      case 67: { // C
         if (e.shiftKey) {
           _centerObjectMeshes();
         }

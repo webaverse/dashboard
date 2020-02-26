@@ -26,6 +26,25 @@ function parseQuery(queryString) {
   }
   return query;
 }
+function downloadFile(file, filename) {
+  const blobURL = URL.createObjectURL(file);
+  const tempLink = document.createElement('a');
+  tempLink.style.display = 'none';
+  tempLink.href = blobURL;
+  tempLink.setAttribute('download', filename);
+
+  // Safari thinks _blank anchor are pop ups. We only want to set _blank
+  // target if the browser does not support the HTML5 download attribute.
+  // This allows you to download files in desktop safari if pop up blocking
+  // is enabled.
+  /* if (typeof tempLink.download === 'undefined') {
+      tempLink.setAttribute('target', '_blank');
+  } */
+
+  document.body.appendChild(tempLink);
+  tempLink.click();
+  document.body.removeChild(tempLink);
+}
 
 const PARCEL_SIZE = 10;
 const size = PARCEL_SIZE + 1;
@@ -1536,8 +1555,12 @@ interfaceDocument.getElementById('load-op').addEventListener('click', e => {
 
   console.log('load');
 });
-interfaceDocument.getElementById('save-op').addEventListener('click', e => {
-  console.log('save');
+interfaceDocument.getElementById('save-op').addEventListener('click', async e => {
+  const arrayBuffer = await _saveObjectMeshes();
+  const blob = new Blob([arrayBuffer], {
+    type: 'model/gltf.binary',
+  });
+  downloadFile(blob, 'object.glb');
 });
 
 const colors = interfaceDocument.querySelectorAll('.color');

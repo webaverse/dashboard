@@ -695,15 +695,37 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
   const ids = await idsPromise;
 
   for (let i = 0; i < ids.length; i++) {
-    const metadataHashPromise = makePromise();
-    instance.getMetadata(ids[i], 'hash', (err, metadataHash) => {
-      if (!err) {
-        metadataHashPromise.accept(metadataHash);
-      } else {
-        metadataHashPromise.reject(err);
-      }
-    });
-    const metadataHash = await metadataHashPromise;
+    const id = ids[i];
+    const [
+      metadataHash,
+      loc,
+    ] = await Promise.all([
+      (() => {
+        const metadataHashPromise = makePromise();
+        instance.getMetadata(id, 'hash', (err, metadataHash) => {
+          if (!err) {
+            metadataHashPromise.accept(metadataHash);
+          } else {
+            metadataHashPromise.reject(err);
+          }
+        });
+        return metadataHashPromise;
+      })(),
+      (() => {
+        const locationPromise = makePromise();
+        instance.getGridBinding(id, (err, loc) => {
+          if (!err) {
+            locationPromise.accept(loc);
+          } else {
+            locationPromise.reject(err);
+          }
+        });
+        return locationPromise;
+      })(),
+    ]);
+
+    console.log('got loc', loc);
+
     const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${metadataHash}`)
       .then(res => res.json());
     const {dataHash} = metadata;

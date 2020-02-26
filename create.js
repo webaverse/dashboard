@@ -10,8 +10,8 @@ import './gif.js';
 import {makePromise} from './util.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
-import {makeObjectState, bindObjectScript, tickObjectScript} from './runtime.js';
 import {objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
+import {makeObjectState, bindObjectScript, tickObjectScript} from './runtime.js';
 
 const _load = () => {
 

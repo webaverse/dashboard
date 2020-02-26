@@ -1006,10 +1006,16 @@ const _setSelectedObjectMesh = newSelectedObjectMesh => {
     _bindObjectMeshControls(selectedObjectMesh);
   }
 
+  const scriptTool = Array.from(tools).find(tool => tool.matches('[tool=script]'));
   const shaderTool = Array.from(tools).find(tool => tool.matches('[tool=shader]'));
   if (selectedObjectMesh) {
+    scriptTool.classList.remove('hidden');
+
     shaderTool.classList.remove('hidden');
   } else {
+    scriptTool.classList.add('hidden');
+    scriptTool.classList.remove('open');
+
     shaderTool.classList.add('hidden');
     shaderTool.classList.remove('open');
     interfaceDocument.getElementById('shader-input').classList.remove('open');
@@ -1365,6 +1371,8 @@ Array.from(tools).forEach((tool, i) => {
       _commitMiningMeshes();
     } else if (tool.matches('[tool=image]')) {
       // nothing
+    } else if (tool.matches('[tool=script]')) {
+      tool.classList.toggle('open');
     } else if (tool.matches('[tool=shader]')) {
       const vertexShaderSource = selectedObjectMesh.material.program.vertexShader.source;
       const fragmentShaderSource = selectedObjectMesh.material.program.fragmentShader.source;

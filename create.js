@@ -12,6 +12,7 @@ import './gif.js';
 import {makePromise} from './util.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
+import {makeObjectState, bindObjectScript, tickObjectScript} from './runtime.js';
 
 const _load = () => {
 
@@ -783,7 +784,7 @@ const _newMiningMeshes = () => {
   miningMeshes.length = 0;
   _refreshMiningMeshes();
 };
-let objectMeshes = [];
+const objectMeshes = [];
 const _makeObjectMeshFromGeometry = (geometry, matrix) => {
   const material = miningMeshMaterial;
   const objectMesh = new THREE.Mesh(geometry, material);
@@ -900,7 +901,7 @@ const _loadObjectMeshes = async arrayBuffer => {
     const {script, shader} = gltfExtensions;
     if (typeof script === 'string') {
       scriptInputTextarea.value = script;
-      _bindObjectWorkerScript(script);
+      bindObjectScript(objectState, script, objectMeshes);
     }
     if (shader && typeof shader.vertex === 'string' && typeof shader.fragment === 'string') {
       shaderInputV.value = shader.vertex;
@@ -1038,69 +1039,7 @@ const _unbindObjectMeshPhysics = async () => {
     ammo.unbindObjectMeshPhysics(objectMeshes[i]);
   }
 };
-let objectWorker = null;
-const _bindObjectWorkerScript = scriptSrc => {
-  if (objectWorker) {
-    objectWorker.terminate();
-    objectWorker = null;
-  }
-  objectWorker = new Worker('./object-worker.js');
-  objectWorker.postMessage({
-    method: 'init',
-    args: {
-      scriptSrc,
-      numObjects: objectMeshes.length,
-    },
-  });
-  let ticking = false;
-  objectWorker.tick = () => {
-    if (!ticking) {
-      ticking = true;
-
-      objectWorker.postMessage({
-        method: 'tick',
-      });
-    }
-  };
-  objectWorker.addEventListener('message', e => {
-    const {method, args} = e.data;
-    switch (method) {
-      case 'tock': {
-        ticking = false;
-        break;
-      }
-      case 'update': {
-        const {attribute, index, value} = args;
-        switch (attribute) {
-          case 'position': {
-            objectMeshes[index].position.fromArray(value);
-            break;
-          }
-          case 'quaternion': {
-            objectMeshes[index].quaternion.fromArray(value);
-            break;
-          }
-          case 'scale': {
-            objectMeshes[index].scale.fromArray(value);
-            break;
-          }
-          default: {
-            console.warn('invalid worker update attribute', attribute);
-            break;
-          }
-        }
-        break;
-      }
-      default: {
-        console.warn('invalid worker method', method);
-        break;
-      }
-    }
-  });
-};
-const _bindObjectShader = (vertexShader, fragmentShader) => {
-  console.log('bind object shader', vertexShader, fragmentShader); // XXX
-};
+const objectState = makeObjectState();
 
 const collisionMesh = (() => {
   const geometry = new THREE.BoxBufferGeometry(0.01, 0.01, 0.01);
@@ -1598,7 +1537,7 @@ interfaceDocument.getElementById('script-input').addEventListener('mousedown', e
 });
 const scriptInputTextarea = interfaceDocument.getElementById('script-input-textarea');
 scriptInputTextarea.addEventListener('input', e => {
-  _bindObjectWorkerScript(e.target.value);
+  bindObjectScript(objectState, e.target.value, objectMeshes);
 });
 scriptInputTextarea.addEventListener('keydown', e => {
   e.stopPropagation();
@@ -1698,9 +1637,13 @@ _bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file =>
       container.remove(objectMesh);
       objectMesh.destroy();
     }
-    objectMeshes = await _loadObjectMeshes(arrayBuffer);
-    for (let i = 0; i < objectMeshes.length; i++) {
-      container.add(objectMeshes[i]);
+    objectMeshes.length = 0;
+    const newObjectMeshes = await _loadObjectMeshes(arrayBuffer);
+    objectMeshes.length = newObjectMeshes.length;
+    for (let i = 0; i < newObjectMeshes.length; i++) {
+      const newObjectMesh = newObjectMeshes[i];
+      objectMeshes[i] = newObjectMesh;
+      container.add(newObjectMesh);
     }
   };
   r.readAsArrayBuffer(file);
@@ -2094,7 +2037,7 @@ function animate() {
     _updateControllers();
   }
 
-  objectWorker && objectWorker.tick();
+  tickObjectScript(objectState);
 
   if (ammo) {
     ammo.simulate();
@@ -2120,9 +2063,13 @@ renderer.setAnimationLoop(animate);
       container.remove(objectMesh);
       objectMesh.destroy();
     }
-    objectMeshes = await _loadObjectMeshes(arrayBuffer);
+    objectMeshes.length = 0;
+    const newObjectMeshes = await _loadObjectMeshes(arrayBuffer);
+    objectMeshes.length = newObjectMeshes.length;
     for (let i = 0; i < objectMeshes.length; i++) {
-      container.add(objectMeshes[i]);
+      const newObjectMesh = newObjectMeshes[i];
+      objectMeshes[i] = newObjectMesh;
+      container.add(newObjectMesh);
     }
     _newMiningMeshes();
   }

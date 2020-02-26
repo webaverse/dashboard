@@ -1510,6 +1510,9 @@ interfaceDocument.getElementById('load-op').addEventListener('click', e => {
 const colors = interfaceDocument.querySelectorAll('.color');
 Array.from(colors).forEach(color => {
   const inner = color.querySelector('.inner');
+  color.addEventListener('mousedown', e => {
+    e.stopPropagation();
+  });
   color.addEventListener('click', e => {
     e.preventDefault();
     e.stopPropagation();

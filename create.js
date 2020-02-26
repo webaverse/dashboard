@@ -1102,6 +1102,7 @@ const _unbindObjectMeshControls = o => {
 
 const localRaycaster = new THREE.Raycaster();
 let toolDown = false;
+let toolGrip = false;
 const _updateRaycasterFromMouseEvent = (raycaster, e) => {
   const mouse = new THREE.Vector2(( ( e.clientX ) / window.innerWidth ) * 2 - 1, - ( ( e.clientY ) / window.innerHeight ) * 2 + 1);
   raycaster.setFromCamera(mouse, camera);
@@ -1132,12 +1133,18 @@ const _updateTool = raycaster => {
       _refreshMiningMeshes();
     }
   } else if (selectedTool === 'select') {
-    const intersections = raycaster.intersectObjects(objectMeshes);
-    if (intersections.length > 0) {
-      const [{object}] = intersections;
-      hoveredObjectMesh = object;
+    if (!toolGrip || !hoveredObjectMesh) {
+      const intersections = raycaster.intersectObjects(objectMeshes);
+      if (intersections.length > 0) {
+        const [{object}] = intersections;
+        hoveredObjectMesh = object;
+      } else {
+        hoveredObjectMesh = null;
+      }
     } else {
-      hoveredObjectMesh = null;
+      if (!transformControlsHovered) {
+        console.log('drag');
+      }
     }
   } else if (selectedTool === 'paint') {
     if (hoveredObjectFace && toolDown) {
@@ -1201,19 +1208,48 @@ const _updateTool = raycaster => {
     uiMesh.intersect(null);
   }
 };
-const _beginTool = () => {
-  if (uiMesh.click()) {
-    // nothing
-  } else {
-    if (selectedTool === 'brush') {
-      const v = pointerMesh.material.uniforms.targetPos.value;
-      _paintMiningMeshes(v.x+1, v.y+1, v.z+1);
-      _refreshMiningMeshes();
-    } else if (selectedTool === 'erase') {
-      const v = pointerMesh.material.uniforms.targetPos.value;
-      _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
-      _refreshMiningMeshes();
-    } else if (selectedTool === 'select') {
+const _beginTool = (primary, secondary) => {
+  if (primary) {
+    if (uiMesh.click()) {
+      // nothing
+    } else {
+      if (selectedTool === 'brush') {
+        const v = pointerMesh.material.uniforms.targetPos.value;
+        _paintMiningMeshes(v.x+1, v.y+1, v.z+1);
+        _refreshMiningMeshes();
+      } else if (selectedTool === 'erase') {
+        const v = pointerMesh.material.uniforms.targetPos.value;
+        _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
+        _refreshMiningMeshes();
+      } else if (selectedTool === 'select') {
+        if (!transformControlsHovered) {
+          if (selectedObjectMesh) {
+            _unbindObjectMeshControls(selectedObjectMesh);
+          }
+          selectedObjectMesh = hoveredObjectMesh;
+          if (selectedObjectMesh) {
+            _bindObjectMeshControls(selectedObjectMesh);
+          }
+        }
+      } else if (selectedTool === 'paint') {
+        if (hoveredObjectFace) {
+          const {object: {geometry}} = hoveredObjectFace;
+          geometry.attributes.color.old = null;
+        }
+        /* const v = new THREE.Vector3(
+          Math.floor(collisionMesh.position.x*10),
+          Math.floor(collisionMesh.position.y*10),
+          Math.floor(collisionMesh.position.z*10)
+        );
+        _colorMiningMeshes(v.x+1, v.y+1, v.z+1, currentColor);
+        _refreshMiningMeshes(); */
+      }
+
+      toolDown = true;
+    }
+  }
+  if (secondary) {
+    if (selectedTool === 'select') {
       if (!transformControlsHovered) {
         if (selectedObjectMesh) {
           _unbindObjectMeshControls(selectedObjectMesh);
@@ -1223,26 +1259,20 @@ const _beginTool = () => {
           _bindObjectMeshControls(selectedObjectMesh);
         }
       }
-    } else if (selectedTool === 'paint') {
-      if (hoveredObjectFace) {
-        const {object: {geometry}} = hoveredObjectFace;
-        geometry.attributes.color.old = null;
-      }
-      /* const v = new THREE.Vector3(
-        Math.floor(collisionMesh.position.x*10),
-        Math.floor(collisionMesh.position.y*10),
-        Math.floor(collisionMesh.position.z*10)
-      );
-      _colorMiningMeshes(v.x+1, v.y+1, v.z+1, currentColor);
-      _refreshMiningMeshes(); */
     }
-
-    toolDown = true;
+    toolGrip = true;
   }
 };
-const _endTool = () => {
-  if (toolDown) {
-    toolDown = false;
+const _endTool = (primary, secondary) => {
+  if (primary) {
+    if (toolDown) {
+      toolDown = false;
+    }
+  }
+  if (secondary) {
+    if (toolGrip) {
+      toolGrip = false;
+    }
   }
 };
 [window, interfaceWindow].forEach(w => {
@@ -1291,8 +1321,8 @@ const _endTool = () => {
     _updateRaycasterFromMouseEvent(localRaycaster, e);
     _updateTool(localRaycaster);
   });
-  w.addEventListener('mousedown', _beginTool);
-  w.addEventListener('mouseup', _endTool);
+  w.addEventListener('mousedown', _beginTool.bind(null, true, true));
+  w.addEventListener('mouseup', _endTool.bind(null, true, true));
 });
 
 // interface
@@ -1503,17 +1533,27 @@ function onSessionStarted(session) {
     });
     controller.addEventListener('selectstart', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
-        _beginTool();
+        _beginTool(true, false);
       }
     });
     controller.addEventListener('selectend', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
-        _endTool();
+        _endTool(true, false);
       }
     });
     
     const controllerGrip = renderer.xr.getControllerGrip(i);
     controllerGrip.add(controllerModelFactory.createControllerModel(controllerGrip));
+    controllerGrip.addEventListener('selectstart', e => {
+      if (controller.userData.data && controller.userData.data.handedness === 'right') {
+        _beginTool(false, true);
+      }
+    });
+    controllerGrip.addEventListener('selectend', e => {
+      if (controller.userData.data && controller.userData.data.handedness === 'right') {
+        _endTool(false, true);
+      }
+    });
     scene.add(controllerGrip);
   }
 }

@@ -344,21 +344,48 @@ let ammo = null;
       if (!objectMesh.body) {
         const shape = _makeConvexHullShape(objectMesh);
 
-        var transform = new Ammo.btTransform();
+        const transform = new Ammo.btTransform();
         transform.setIdentity();
         transform.setOrigin(new Ammo.btVector3(objectMesh.position.x, objectMesh.position.y, objectMesh.position.z));
 
-        var mass = 1;
-        var localInertia = new Ammo.btVector3(0, 0, 0);
+        const mass = 1;
+        const localInertia = new Ammo.btVector3(0, 0, 0);
         shape.calculateLocalInertia(mass, localInertia);
 
-        var myMotionState = new Ammo.btDefaultMotionState(transform);
-        var rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
-        var body = new Ammo.btRigidBody(rbInfo);
+        const myMotionState = new Ammo.btDefaultMotionState(transform);
+        const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
+        const body = new Ammo.btRigidBody(rbInfo);
 
         dynamicsWorld.addRigidBody(body);
 
         objectMesh.body = body;
+        objectMesh.ammoObjects = [
+          transform,
+          localInertia,
+          myMotionState,
+          rbInfo,
+          body,
+        ];
+        objectMesh.originalPosition = objectMesh.position.clone();
+        objectMesh.originalQuaternion = objectMesh.quaternion.clone();
+        objectMesh.originalScale = objectMesh.scale.clone();
+      }
+    },
+    unbindObjectMeshPhysics(objectMesh) {
+      if (objectMesh.body) {
+        dynamicsWorld.removeRigidBody(objectMesh.body);
+        objectMesh.body = null;
+        objectMesh.ammoObjects.forEach(o => {
+          Ammo.destroy(o);
+        });
+        objectMesh.ammoObjects.length = null;
+
+        objectMesh.position.copy(objectMesh.originalPosition);
+        objectMesh.quaternion.copy(objectMesh.originalQuaternion);
+        objectMesh.scale.copy(objectMesh.originalScale);
+        objectMesh.originalPosition = null;
+        objectMesh.originalQuaternion = null;
+        objectMesh.originalScale = null;
       }
     },
     simulate() {
@@ -975,6 +1002,11 @@ const _collideMiningMeshes = async () => {
 const _bindObjectMeshPhysics = async () => {
   for (let i = 0; i < objectMeshes.length; i++) {
     ammo.bindObjectMeshPhysics(objectMeshes[i]);
+  }
+};
+const _unbindObjectMeshPhysics = async () => {
+  for (let i = 0; i < objectMeshes.length; i++) {
+    ammo.unbindObjectMeshPhysics(objectMeshes[i]);
   }
 };
 
@@ -1620,11 +1652,17 @@ worldScaleEl.addEventListener('input', e => {
   interfaceDocument.getElementById('world-scale-text').innerHTML = worldScale;
 });
 
+let physicsBound = false;
 interfaceDocument.getElementById('enable-physics-button').addEventListener('click', e => {
   e.preventDefault();
   e.stopPropagation();
 
-  _bindObjectMeshPhysics();
+  physicsBound = !physicsBound;
+  if (physicsBound) {
+    _bindObjectMeshPhysics();
+  } else {
+    _unbindObjectMeshPhysics();
+  }
 });
 
 // xr

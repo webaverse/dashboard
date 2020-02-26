@@ -1551,7 +1551,19 @@ interfaceDocument.getElementById('new-op').addEventListener('click', e => {
   _newMiningMeshes();
 });
 _bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file => {
-  console.log('load file', file);
+  const r = new FileReader();
+  r.onload = async () => {
+    const arrayBuffer = r.result;
+    for (let i = 0; i < objectMeshes.length; i++) {
+      const objectMesh = objectMeshes[i];
+      container.remove(objectMesh);
+    }
+    objectMeshes = await _loadObjectMeshes(arrayBuffer);
+    for (let i = 0; i < objectMeshes.length; i++) {
+      container.add(objectMeshes[i]);
+    }
+  };
+  r.readAsArrayBuffer(file);
 });
 interfaceDocument.getElementById('save-op').addEventListener('click', async e => {
   const arrayBuffer = await _saveObjectMeshes();

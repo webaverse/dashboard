@@ -108,11 +108,20 @@ export async function saveObjectMeshes(objectMeshes) {
   });
   return await p;
 };
-export async function loadObjectMeshes(arrayBuffer) {
-  const blob = new Blob([arrayBuffer], {
-    type: 'model/gltf.binary',
-  });
-  const src = URL.createObjectURL(blob);
+export async function loadObjectMeshes(s) {
+  const src = (() => {
+    if (s === 'string') {
+      return s;
+    } else if (s instanceof ArrayBuffer) {
+      const blob = new Blob([s], {
+        type: 'model/gltf.binary',
+      });
+      return URL.createObjectURL(blob);
+    } else {
+      console.warn('cannot load object', s);
+      throw new Error('cannot load object');
+    }
+  })();
 
   const p = makePromise();
   const loader = new GLTFLoader();

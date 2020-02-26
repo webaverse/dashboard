@@ -1457,6 +1457,9 @@ interfaceDocument.getElementById('shader-input-f').addEventListener('input', e =
 });
 
 const objectNameEl = interfaceDocument.getElementById('object-name');
+objectNameEl.addEventListener('keydown', e => {
+  e.stopPropagation();
+});
 interfaceDocument.getElementById('ops-form').addEventListener('submit', async e => {
   e.preventDefault();
   e.stopPropagation();

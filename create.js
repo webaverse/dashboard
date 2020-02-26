@@ -1023,50 +1023,53 @@ window.addEventListener('resize', e => {
 interfaceDocument.addEventListener('dragover', e => {
   e.preventDefault();
 });
+const _handleUpload = file => {
+  if (/^image\//.test(file.type)) {
+    const objectMesh = (() => {
+      // const geometry = new THREE.PlaneBufferGeometry(1, 1);
+      const geometry = new THREE.BoxBufferGeometry(1, 1, 0.001);
+      for (let i = 0; i < geometry.attributes.position.array.length; i += 3) {
+        if (geometry.attributes.position.array[i + 2] < 0) {
+          const j = i*2/3;
+          geometry.attributes.uv.array[j] = 1 - geometry.attributes.uv.array[j];
+        }
+      }
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        texture.image = img;
+        texture.needsUpdate = true;
+
+        mesh.scale.x = 0.5;
+        mesh.scale.y = mesh.scale.x * img.height/img.width;
+        mesh.visible = true;
+      };
+      img.onerror = console.warn;
+      const texture = new THREE.Texture();
+      texture.generateMipmaps = false;
+      texture.minFilter = THREE.LinearFilter;
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        side: THREE.DoubleSide,
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.visible = false;
+      mesh.frustumCulled = false;
+      return mesh;
+    })();
+    objectMesh.position.copy(camera.position)
+      .add(new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion));
+    objectMesh.quaternion.copy(camera.quaternion);
+    scene.add(objectMesh);
+    objectMeshes.push(objectMesh);
+  }
+};
 interfaceDocument.addEventListener('drop', e => {
   e.preventDefault();
 
   if (e.dataTransfer.files.length > 0){
     const [file] = e.dataTransfer.files;
-    if (/^image\//.test(file.type)) {
-      const objectMesh = (() => {
-        // const geometry = new THREE.PlaneBufferGeometry(1, 1);
-        const geometry = new THREE.BoxBufferGeometry(1, 1, 0.001);
-        for (let i = 0; i < geometry.attributes.position.array.length; i += 3) {
-          if (geometry.attributes.position.array[i + 2] < 0) {
-            const j = i*2/3;
-            geometry.attributes.uv.array[j] = 1 - geometry.attributes.uv.array[j];
-          }
-        }
-        const img = new Image();
-        img.src = URL.createObjectURL(file);
-        img.onload = () => {
-          texture.image = img;
-          texture.needsUpdate = true;
-
-          mesh.scale.x = 0.5;
-          mesh.scale.y = mesh.scale.x * img.height/img.width;
-          mesh.visible = true;
-        };
-        img.onerror = console.warn;
-        const texture = new THREE.Texture();
-        texture.generateMipmaps = false;
-        texture.minFilter = THREE.LinearFilter;
-        const material = new THREE.MeshBasicMaterial({
-          map: texture,
-          side: THREE.DoubleSide,
-        });
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.visible = false;
-        mesh.frustumCulled = false;
-        return mesh;
-      })();
-      objectMesh.position.copy(camera.position)
-        .add(new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion));
-      objectMesh.quaternion.copy(camera.quaternion);
-      scene.add(objectMesh);
-      objectMeshes.push(objectMesh);
-    }
+    _handleUpload(file);
   }
 });
 
@@ -1297,14 +1300,21 @@ const _endTool = () => {
 const tools = interfaceDocument.querySelectorAll('.tool');
 Array.from(tools).forEach((tool, i) => {
   tool.addEventListener('click', e => {
-    e.preventDefault();
-    e.stopPropagation();
+    const _cancel = () => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
 
     if (tool.matches('[tool=commit]')) {
+      _cancel();
       _commitMiningMeshes();
+    } else if (tool.matches('[tool=image]')) {
+      // nothing
     } else if (tool.matches('[tool=center]')) {
+      _cancel();
       _centerObjectMeshes();
     } else {
+      _cancel();
       const newTool = tool.getAttribute('tool');
       if (newTool !== selectedTool) {
         Array.from(tools).forEach(tool => {
@@ -1328,6 +1338,26 @@ Array.from(tools).forEach((tool, i) => {
 });
 let selectedTool = tools[0].getAttribute('tool');
 tools[0].classList.add('selected');
+
+const _bindUploadFileButton = (inputFileEl, handleUpload) => {
+  inputFileEl.addEventListener('change', async e => {
+    const {files} = e.target;
+    if (files.length === 1) {
+      const [file] = files;
+      handleUpload(file);
+    }
+
+    const {parentNode} = inputFileEl;
+    parentNode.removeChild(inputFileEl);
+    const newInputFileEl = inputFileEl.ownerDocument.createElement('input');
+    newInputFileEl.type = 'file';
+    // newInputFileEl.id = 'upload-file-button';
+    newInputFileEl.style.display = 'none';
+    parentNode.appendChild(newInputFileEl);
+    _bindUploadFileButton(newInputFileEl);
+  });
+};
+_bindUploadFileButton(Array.from(tools).find(tool => tool.matches('[tool=image]')).querySelector('input[type=file]'), _handleUpload);
 
 const opsForm = interfaceDocument.getElementById('ops-form');
 const objectNameEl = interfaceDocument.getElementById('object-name');

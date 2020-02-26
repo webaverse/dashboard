@@ -991,6 +991,30 @@ const outlineScene = new THREE.Scene();
 let renderingOutline = false;
 let hoveredObjectMesh = null;
 let selectedObjectMesh = null;
+const _setHoveredObjectMesh = newHoveredObjectMesh => {
+  hoveredObjectMesh = newHoveredObjectMesh;
+};
+const _setSelectedObjectMesh = newSelectedObjectMesh => {
+  if (!selectedObjectMesh && hoveredObjectMesh === selectedObjectMesh) {
+    hoveredObjectMesh = null;
+  }
+  if (selectedObjectMesh) {
+    _unbindObjectMeshControls(selectedObjectMesh);
+  }
+  selectedObjectMesh = newSelectedObjectMesh;
+  if (selectedObjectMesh) {
+    _bindObjectMeshControls(selectedObjectMesh);
+  }
+
+  const shaderTool = Array.from(tools).find(tool => tool.matches('[tool=shader]'));
+  if (selectedObjectMesh) {
+    shaderTool.classList.remove('hidden');
+  } else {
+    shaderTool.classList.add('hidden');
+    shaderTool.classList.remove('open');
+    interfaceDocument.getElementById('shader-input').classList.remove('open');
+  }
+};
 scene.onAfterRender = () => {
   if (renderingOutline) return;
   renderingOutline = true;
@@ -1143,10 +1167,9 @@ const _updateTool = raycaster => {
     if (!toolGrip || !hoveredObjectMesh) {
       const intersections = raycaster.intersectObjects(objectMeshes);
       if (intersections.length > 0) {
-        const [{object}] = intersections;
-        hoveredObjectMesh = object;
+        _setHoveredObjectMesh(intersections[0].object);
       } else {
-        hoveredObjectMesh = null;
+        _setHoveredObjectMesh(null);
       }
     } else {
       if (!transformControlsHovered) {
@@ -1230,13 +1253,7 @@ const _beginTool = (primary, secondary) => {
         _refreshMiningMeshes();
       } else if (selectedTool === 'select') {
         if (!transformControlsHovered) {
-          if (selectedObjectMesh) {
-            _unbindObjectMeshControls(selectedObjectMesh);
-          }
-          selectedObjectMesh = hoveredObjectMesh;
-          if (selectedObjectMesh) {
-            _bindObjectMeshControls(selectedObjectMesh);
-          }
+          _setSelectedObjectMesh(hoveredObjectMesh);
         }
       } else if (selectedTool === 'paint') {
         if (hoveredObjectFace) {
@@ -1258,13 +1275,7 @@ const _beginTool = (primary, secondary) => {
   if (secondary) {
     if (selectedTool === 'select') {
       if (!transformControlsHovered) {
-        if (selectedObjectMesh) {
-          _unbindObjectMeshControls(selectedObjectMesh);
-        }
-        selectedObjectMesh = hoveredObjectMesh;
-        if (selectedObjectMesh) {
-          _bindObjectMeshControls(selectedObjectMesh);
-        }
+        _setSelectedObjectMesh(hoveredObjectMesh);
       }
     }
     toolGrip = true;
@@ -1313,12 +1324,9 @@ const _endTool = (primary, secondary) => {
         if (selectedObjectMesh) {
           _unbindObjectMeshControls(selectedObjectMesh);
           container.remove(selectedObjectMesh);
-          // selectedObjectMesh.destroy();
           objectMeshes.splice(objectMeshes.indexOf(selectedObjectMesh), 1);
-          if (hoveredObjectMesh === selectedObjectMesh) {
-            hoveredObjectMesh = null;
-          }
-          selectedObjectMesh = null;
+
+          _setSelectedObjectMesh(null);
         }
         break;
       }
@@ -1333,7 +1341,7 @@ const _endTool = (primary, secondary) => {
 });
 const _updateControllers = () => {
   if (gripDowns.every(gripDown => gripDown)) {
-
+    // XXX
   }
 };
 
@@ -1341,6 +1349,9 @@ const _updateControllers = () => {
 
 const tools = interfaceDocument.querySelectorAll('.tool');
 Array.from(tools).forEach((tool, i) => {
+  tool.addEventListener('mousedown', e => {
+    e.stopPropagation();
+  });
   tool.addEventListener('click', e => {
     const _cancel = () => {
       e.preventDefault();
@@ -1353,6 +1364,11 @@ Array.from(tools).forEach((tool, i) => {
     } else if (tool.matches('[tool=image]')) {
       // nothing
     } else if (tool.matches('[tool=shader]')) {
+      const gl = renderer.getContext();
+      const vertexShaderSource = gl.getShaderSource(selectedObjectMesh.material.program.vertexShader);
+      const fragmentShaderSource = gl.getShaderSource(selectedObjectMesh.material.program.fragmentShader)
+      interfaceDocument.getElementById('shader-input-v').value = vertexShaderSource;
+      interfaceDocument.getElementById('shader-input-f').value = fragmentShaderSource;
       interfaceDocument.getElementById('shader-input').classList.toggle('open');
       tool.classList.toggle('open');
     } else if (tool.matches('[tool=center]')) {
@@ -1374,9 +1390,8 @@ Array.from(tools).forEach((tool, i) => {
         
         _commitMiningMeshes();
 
-        selectedObjectMesh && _unbindObjectMeshControls(selectedObjectMesh);
-        hoveredObjectMesh = null;
-        selectedObjectMesh = null;
+        _setHoveredObjectMesh(null);
+        _setSelectedObjectMesh(null);
       }
     }
   });
@@ -1404,8 +1419,14 @@ const _bindUploadFileButton = (inputFileEl, handleUpload) => {
 };
 _bindUploadFileButton(Array.from(tools).find(tool => tool.matches('[tool=image]')).querySelector('input[type=file]'), _handleUpload);
 
-interfaceDocument.getElementById('shader-input').addEventListener('input', e => {
-  console.log('got new value', e.target.value);
+interfaceDocument.getElementById('shader-input').addEventListener('mousedown', e => {
+  e.stopPropagation();
+});
+interfaceDocument.getElementById('shader-input-v').addEventListener('input', e => {
+  console.log('new vertex value', e.target.value);
+});
+interfaceDocument.getElementById('shader-input-f').addEventListener('input', e => {
+  console.log('new fragment value', e.target.value);
 });
 
 const opsForm = interfaceDocument.getElementById('ops-form');

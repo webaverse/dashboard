@@ -163,16 +163,28 @@ margin-left: 10px;
   font-size: 40px;
 }
 .shader-input {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   width: 500px;
   left: 0;
   top: 50px;
   bottom: 0;
-  border-top: 90px solid #EEE;
-  border-bottom: 90px solid #EEE;
+  border-top: 90px solid #DDD;
+  border-bottom: 90px solid #DDD;
   z-index: 1;
   outline: none;
   resize: none;
+}
+.shader-input > .label {
+  padding: 5px 0;
+  background-color: #333;
+  color: #FFF;
+}
+.shader-input > textarea {
+  border: 0;
+  flex: 1;
+  outline: none;
 }
 .shader-input:not(.open) {
   display: none;
@@ -198,8 +210,8 @@ margin-left: 10px;
           <i class="fal fa-file-image"></i>
           <input type=file id=upload-image-input>
         </a>
-        <a id=tool-7 class="tool {{#tool7Selected}}selected{{/tool7Selected}}" tool="shader"><i class="fal fa-sunglasses"></i></a>
-        <a id=tool-8 class="tool {{#tool8Selected}}selected{{/tool8Selected}}" tool="center"><i class="fal fa-border-all"></i></a>
+        <a id=tool-7 class="tool {{#tool7Selected}}selected{{/tool7Selected}}" tool="center"><i class="fal fa-border-all"></i></a>
+        <a id=tool-8 class="tool {{#tool8Selected}}selected{{/tool8Selected}} hidden" tool="shader"><i class="fal fa-sunglasses"></i></a>
         <a id=tool-9 class="tool {{#tool9Selected}}selected{{/tool9Selected}} hidden" tool="commit"><i class="fal fa-check"></i></a>
       </div>
       <label class=row>
@@ -249,8 +261,14 @@ margin-left: 10px;
         <a id=color-20 class="color {{#color20Selected}}selected{{/color20Selected}}"><div class=inner style="background-color: #333333;"></div></a>
       </div>
     </div>
-    <textarea class=shader-input id=shader-input>main() {}
+    <div class=shader-input id=shader-input>
+      <div class=label>Vertex</div>
+      <textarea id=shader-input-v>vertex() {}
 </textarea>
+      <div class=label>Fragment</div>
+      <textarea id=shader-input-f>fragment() {}
+</textarea>
+    </div>
     <div class=background></div>
   </body>
 </html>

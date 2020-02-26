@@ -1342,6 +1342,12 @@ const _endTool = (primary, secondary) => {
         }
         break;
       }
+      case 67: {
+        if (e.shiftKey) {
+          _centerObjectMeshes();
+        }
+        break;
+      }
       case 8: // backspace
       case 46: // del
       {

@@ -1933,7 +1933,7 @@ renderer.setAnimationLoop(animate);
     objectMeshes.length = 0;
     const newObjectMeshes = await loadObjectMeshes(arrayBuffer);
     objectMeshes.length = newObjectMeshes.length;
-    for (let i = 0; i < objectMeshes.length; i++) {
+    for (let i = 0; i < newObjectMeshes.length; i++) {
       const newObjectMesh = newObjectMeshes[i];
       objectMeshes[i] = newObjectMesh;
       container.add(newObjectMesh);

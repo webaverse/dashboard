@@ -1062,6 +1062,7 @@ const _setSelectedObjectMesh = newSelectedObjectMesh => {
   } else {
     scriptTool.classList.add('hidden');
     scriptTool.classList.remove('open');
+    interfaceDocument.getElementById('script-input').classList.remove('open');
 
     shaderTool.classList.add('hidden');
     shaderTool.classList.remove('open');
@@ -1443,6 +1444,10 @@ Array.from(tools).forEach((tool, i) => {
     } else if (tool.matches('[tool=image]')) {
       // nothing
     } else if (tool.matches('[tool=script]')) {
+      interfaceDocument.getElementById('script-input-textarea').value = `renderer.on('tick', () => {
+  console.log('tick');
+});`;
+      interfaceDocument.getElementById('script-input').classList.toggle('open');
       tool.classList.toggle('open');
     } else if (tool.matches('[tool=shader]')) {
       const vertexShaderSource = selectedObjectMesh.material.program.vertexShader.source;
@@ -1498,6 +1503,13 @@ const _bindUploadFileButton = (inputFileEl, handleUpload) => {
   });
 };
 _bindUploadFileButton(Array.from(tools).find(tool => tool.matches('[tool=image]')).querySelector('input[type=file]'), _handleUpload);
+
+interfaceDocument.getElementById('script-input').addEventListener('mousedown', e => {
+  e.stopPropagation();
+});
+interfaceDocument.getElementById('script-input-textarea').addEventListener('input', e => {
+  console.log('new script value', e.target.value);
+});
 
 interfaceDocument.getElementById('shader-input').addEventListener('mousedown', e => {
   e.stopPropagation();

@@ -162,7 +162,9 @@ margin-left: 10px;
   padding: 15px;
   font-size: 40px;
 }
-.shader-input {
+.script-input,
+.shader-input
+{
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -177,17 +179,23 @@ margin-left: 10px;
   outline: none;
   resize: none;
 }
-.shader-input > .label {
+.script-input > .label,
+.shader-input > .label
+{
   padding: 5px 0;
   background-color: #333;
   color: #FFF;
 }
-.shader-input > textarea {
+.script-input > textarea,
+.shader-input > textarea
+{
   border: 0;
   flex: 1;
   outline: none;
 }
-.shader-input:not(.open) {
+.script-input:not(.open),
+.shader-input:not(.open)
+{
   display: none;
 }
 .background {
@@ -267,13 +275,15 @@ margin-left: 10px;
         <a id=color-20 class="color {{#color20Selected}}selected{{/color20Selected}}"><div class=inner style="background-color: #333333;"></div></a>
       </div>
     </div>
+    <div class=script-input id=script-input>
+      <div class=label>Script</div>
+      <textarea id=script-input-textarea></textarea>
+    </div>
     <div class=shader-input id=shader-input>
       <div class=label>Vertex</div>
-      <textarea id=shader-input-v>vertex() {}
-</textarea>
+      <textarea id=shader-input-v></textarea>
       <div class=label>Fragment</div>
-      <textarea id=shader-input-f>fragment() {}
-</textarea>
+      <textarea id=shader-input-f></textarea>
     </div>
     <div class=background></div>
   </body>

@@ -1443,19 +1443,33 @@ Array.from(tools).forEach((tool, i) => {
       _commitMiningMeshes();
     } else if (tool.matches('[tool=image]')) {
       // nothing
-    } else if (tool.matches('[tool=script]')) {
-      interfaceDocument.getElementById('script-input-textarea').value = `renderer.on('tick', () => {
+    } else if (tool.matches('[sidebar]')) {
+      const wasOpen = tool.classList.contains('open');
+
+      Array.from(tools)
+        .filter(tool => tool.matches('[sidebar]'))
+        .forEach(sidebar => {
+          sidebar.classList.remove('open');
+        });
+      [
+        'script-input',
+        'shader-input',
+      ].forEach(id => interfaceDocument.getElementById(id).classList.remove('open'));
+
+      if (tool.matches('[tool=script]')) {
+        interfaceDocument.getElementById('script-input-textarea').value = `renderer.on('tick', () => {
   console.log('tick');
 });`;
-      interfaceDocument.getElementById('script-input').classList.toggle('open');
-      tool.classList.toggle('open');
-    } else if (tool.matches('[tool=shader]')) {
-      const vertexShaderSource = selectedObjectMesh.material.program.vertexShader.source;
-      const fragmentShaderSource = selectedObjectMesh.material.program.fragmentShader.source;
-      interfaceDocument.getElementById('shader-input-v').value = vertexShaderSource;
-      interfaceDocument.getElementById('shader-input-f').value = fragmentShaderSource;
-      interfaceDocument.getElementById('shader-input').classList.toggle('open');
-      tool.classList.toggle('open');
+        interfaceDocument.getElementById('script-input').classList.toggle('open', !wasOpen);
+      } else if (tool.matches('[tool=shader]')) {
+        const vertexShaderSource = selectedObjectMesh.material.program.vertexShader.source;
+        const fragmentShaderSource = selectedObjectMesh.material.program.fragmentShader.source;
+        interfaceDocument.getElementById('shader-input-v').value = vertexShaderSource;
+        interfaceDocument.getElementById('shader-input-f').value = fragmentShaderSource;
+        interfaceDocument.getElementById('shader-input').classList.toggle('open', !wasOpen);
+      }
+
+      tool.classList.toggle('open', !wasOpen);
     } else if (tool.matches('[tool=center]')) {
       _cancel();
       _centerObjectMeshes();

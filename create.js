@@ -765,9 +765,13 @@ const _centerObjectMeshes = () => {
   center.sub(new THREE.Vector3(0, 0.5, 0));
   if (box.max.x - box.min.x < 1) {
     center.sub(new THREE.Vector3(0.5, 0, 0));
+  } else {
+    center.x -= Math.ceil(box.max.x - box.min.x - 1);
   }
   if (box.max.z - box.min.z < 1) {
     center.sub(new THREE.Vector3(0, 0, 0.5));
+  } else {
+    center.z -= Math.ceil(box.max.z - box.min.z - 1);
   }
   for (let i = 0; i < objectMeshes.length; i++) {
     objectMeshes[i].position.sub(center);

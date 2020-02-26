@@ -1324,6 +1324,24 @@ const _endTool = (primary, secondary) => {
         selectedObjectMesh && selectedObjectMesh.control.setMode('scale');
         break;
       }
+      case 83: {
+        if (e.ctrlKey) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          interfaceDocument.getElementById('save-op').click();
+        }
+        break;
+      }
+      case 79: {
+        if (e.ctrlKey) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          interfaceDocument.getElementById('load-op').click();
+        }
+        break;
+      }
       case 8: // backspace
       case 46: // del
       {

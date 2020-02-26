@@ -154,8 +154,6 @@ const pointerMesh = (() => {
   const dotsColors = new Float32Array(dotsGeometry.attributes.position.array.length);
   dotsColors.fill(0.7);
   dotsGeometry.setAttribute('color', new THREE.BufferAttribute(dotsColors, 3));
-  // const numDotsPositions = dotsGeometry.attributes.position.array.length;
-  const blockGeometry = BufferGeometryUtils.mergeBufferGeometries([sidesGeometry, dotsGeometry]);
   let geometry;
   const targetVsh = `
     uniform vec3 targetPos;
@@ -226,11 +224,14 @@ const pointerMesh = (() => {
   mesh.getSize = () => size;
   mesh.resize = (minX, minY, minZ, maxX, maxY, maxZ) => {
     if (minX < maxX && minY < maxY && minZ < maxZ) {
-      const geometries = [];
+      const geometries = [
+        sidesGeometry.clone()
+          .applyMatrix4(new THREE.Matrix4().makeScale(maxX - minX, maxY - minY, maxZ - minZ)),
+      ];
       for (let ay = minY; ay < maxY; ay++) {
         for (let ax = minX; ax < maxX; ax++) {
           for (let az = minZ; az < maxZ; az++) {
-            const newBlockGeometry = blockGeometry.clone()
+            const newBlockGeometry = dotsGeometry.clone()
               .applyMatrix4(new THREE.Matrix4().makeTranslation(ax, ay, az));
             geometries.push(newBlockGeometry);
           }

@@ -3,9 +3,9 @@ window.THREE = THREE;
 import {OrbitControls} from './OrbitControls.js';
 import {TransformControls} from './TransformControls.js';
 /* import {BufferGeometryUtils} from './BufferGeometryUtils.js';
-import {OutlineEffect} from './OutlineEffect.js';
+import {OutlineEffect} from './OutlineEffect.js'; */
 import {GLTFLoader} from './GLTFLoader.js';
-import {GLTFExporter} from './GLTFExporter.js';
+/* import {GLTFExporter} from './GLTFExporter.js';
 import {XRControllerModelFactory} from './XRControllerModelFactory.js';
 import {Ammo as AmmoLib} from './ammo.wasm.js'; */
 import {makePromise} from './util.js';
@@ -683,16 +683,40 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
 
 (async () => {
   const instance = await contract.getInstance();
-  const p = makePromise();
+  const idsPromise = makePromise();
   instance.getGridTokenIds([-5, 0, -5], [10, 10, 10], (err, ids) => {
     if (!err) {
-      p.accept(ids);
+      ids = ids.map(i => i.toNumber());
+      idsPromise.accept(ids);
     } else {
-      p.reject(err);
+      idsPromise.reject(err);
     }
   });
-  const ids = await p;
-  console.log('ids', ids);
+  const ids = await idsPromise;
+
+  for (let i = 0; i < ids.length; i++) {
+    const metadataHashPromise = makePromise();
+    instance.getMetadata(ids[i], 'hash', (err, metadataHash) => {
+      if (!err) {
+        metadataHashPromise.accept(metadataHash);
+      } else {
+        metadataHashPromise.reject(err);
+      }
+    });
+    const metadataHash = await metadataHashPromise;
+    const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${metadataHash}`)
+      .then(res => res.json());
+    const {dataHash} = metadata;
+
+    const objectPromise = makePromise();
+    const loader = new GLTFLoader();
+    loader.load(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`, objectPromise.accept, function onProgress() {}, objectPromise.reject);
+    const o = await objectPromise;
+    const objectMeshes = o.scene.children.slice();
+    for (let i = 0; i < objectMeshes.length; i++) {
+      scene.add(objectMeshes[i]);
+    }
+  }
 })();
 
 function animate() {

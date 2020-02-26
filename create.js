@@ -1026,6 +1026,7 @@ const _bindObjectMeshScript = (objectMesh, scriptSrc) => {
       scriptSrc,
     },
   });
+  window.worker = objectMesh.worker;
   let ticking = false;
   objectMesh.worker.tick = () => {
     if (!ticking) {
@@ -1041,6 +1042,28 @@ const _bindObjectMeshScript = (objectMesh, scriptSrc) => {
     switch (method) {
       case 'tock': {
         ticking = false;
+        break;
+      }
+      case 'update': {
+        const {attribute, value} = args;
+        switch (attribute) {
+          case 'position': {
+            objectMesh.position.fromArray(value);
+            break;
+          }
+          case 'quaternion': {
+            objectMesh.quaternion.fromArray(value);
+            break;
+          }
+          case 'scale': {
+            objectMesh.scale.fromArray(value);
+            break;
+          }
+          default: {
+            console.warn('invalid worker update attribute', attribute);
+            break;
+          }
+        }
         break;
       }
       default: {
@@ -1500,6 +1523,7 @@ Array.from(tools).forEach((tool, i) => {
       if (tool.matches('[tool=script]')) {
         interfaceDocument.getElementById('script-input-textarea').value = `renderer.addEventListener('tick', () => {
   console.log('tick');
+  object.position.y = 0.5 + Math.sin((Date.now() % 2000)/2000 * Math.PI*2);
 });`;
         interfaceDocument.getElementById('script-input').classList.toggle('open', !wasOpen);
       } else if (tool.matches('[tool=shader]')) {

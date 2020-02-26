@@ -776,6 +776,20 @@ const _newMiningMeshes = () => {
   _refreshMiningMeshes();
 };
 let objectMeshes = [];
+const _makeObjectMeshFromGeometry = geometry => {
+  const material = miningMeshMaterial;
+  const objectMesh = new THREE.Mesh(geometry, material);
+  objectMesh.frustumCulled = false;
+  objectMesh.castShadow = true;
+  objectMesh.worker = null;
+  objectMesh.destroy = () => {
+    if (objectMesh.worker) {
+      objectMesh.worker.terminate();
+      objectMesh.worker = null;
+    }
+  };
+  return objectMesh;
+};
 const _centerObjectMesh = objectMesh => {
   const center = new THREE.Box3()
     .setFromObject(objectMesh)
@@ -788,10 +802,7 @@ const _commitMiningMeshes = async () => {
   const visibleMiningMeshes = miningMeshes.filter(miningMesh => miningMesh.visible);
   if (visibleMiningMeshes.length) {
     const geometry = BufferGeometryUtils.mergeBufferGeometries(visibleMiningMeshes.map(miningMesh => miningMesh.geometry));
-    const material = miningMeshMaterial;
-    const objectMesh = new THREE.Mesh(geometry, material);
-    objectMesh.frustumCulled = false;
-    objectMesh.castShadow = true;
+    const objectMesh = _makeObjectMeshFromGeometry(geometry);
     _centerObjectMesh(objectMesh);
     container.add(objectMesh);
     objectMeshes.push(objectMesh);
@@ -873,13 +884,7 @@ const _loadObjectMeshes = async arrayBuffer => {
   const o = await p;
   const {scene} = o;
   // const {userData: {gltfExtensions: {size: {x, y, z}}}} = scene;
-  const objectMeshes = scene.children.slice();
-  for (let i = 0; i < objectMeshes.length; i++) {
-    const objectMesh = objectMeshes[i];
-    objectMesh.frustumCulled = false;
-    objectMesh.castShadow = true;
-  }
-  return objectMeshes;
+  return scene.children.map(child => _makeObjectMeshFromGeometry(child.geometry));
 };
 const _screenshotMiningMeshes = async () => {
   const newScene = new THREE.Scene();
@@ -1008,6 +1013,42 @@ const _unbindObjectMeshPhysics = async () => {
   for (let i = 0; i < objectMeshes.length; i++) {
     ammo.unbindObjectMeshPhysics(objectMeshes[i]);
   }
+};
+const _bindObjectMeshScript = (objectMesh, scriptSrc) => {
+  if (objectMesh.worker) {
+    objectMesh.worker.terminate();
+    objectMesh.worker = null;
+  }
+  objectMesh.worker = new Worker('./object-worker.js');
+  objectMesh.worker.postMessage({
+    method: 'init',
+    args: {
+      scriptSrc,
+    },
+  });
+  let ticking = false;
+  objectMesh.worker.tick = () => {
+    if (!ticking) {
+      ticking = true;
+
+      objectMesh.worker.postMessage({
+        method: 'tick',
+      });
+    }
+  };
+  objectMesh.worker.addEventListener('message', e => {
+    const {method, args} = e.data;
+    switch (method) {
+      case 'tock': {
+        ticking = false;
+        break;
+      }
+      default: {
+        console.warn('invalid worker method', method);
+        break;
+      }
+    }
+  });
 };
 
 const collisionMesh = (() => {
@@ -1457,7 +1498,7 @@ Array.from(tools).forEach((tool, i) => {
       ].forEach(id => interfaceDocument.getElementById(id).classList.remove('open'));
 
       if (tool.matches('[tool=script]')) {
-        interfaceDocument.getElementById('script-input-textarea').value = `renderer.on('tick', () => {
+        interfaceDocument.getElementById('script-input-textarea').value = `renderer.addEventListener('tick', () => {
   console.log('tick');
 });`;
         interfaceDocument.getElementById('script-input').classList.toggle('open', !wasOpen);
@@ -1521,8 +1562,12 @@ _bindUploadFileButton(Array.from(tools).find(tool => tool.matches('[tool=image]'
 interfaceDocument.getElementById('script-input').addEventListener('mousedown', e => {
   e.stopPropagation();
 });
-interfaceDocument.getElementById('script-input-textarea').addEventListener('input', e => {
-  console.log('new script value', e.target.value);
+const scriptInputTextarea = interfaceDocument.getElementById('script-input-textarea');
+scriptInputTextarea.addEventListener('input', e => {
+  _bindObjectMeshScript(selectedObjectMesh, e.target.value);
+});
+scriptInputTextarea.addEventListener('keydown', e => {
+  e.stopPropagation();
 });
 
 interfaceDocument.getElementById('shader-input').addEventListener('mousedown', e => {
@@ -1615,6 +1660,7 @@ _bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file =>
     for (let i = 0; i < objectMeshes.length; i++) {
       const objectMesh = objectMeshes[i];
       container.remove(objectMesh);
+      objectMesh.destroy();
     }
     objectMeshes = await _loadObjectMeshes(arrayBuffer);
     for (let i = 0; i < objectMeshes.length; i++) {
@@ -2012,6 +2058,13 @@ function animate() {
     _updateControllers();
   }
 
+  for (let i = 0; i < objectMeshes.length; i++) {
+    const objectMesh = objectMeshes[i];
+    if (objectMesh.worker) {
+      objectMesh.worker.tick();
+    }
+  }
+
   if (ammo) {
     ammo.simulate();
     for (let i = 0; i < objectMeshes.length; i++) {
@@ -2034,7 +2087,7 @@ renderer.setAnimationLoop(animate);
     for (let i = 0; i < objectMeshes.length; i++) {
       const objectMesh = objectMeshes[i];
       container.remove(objectMesh);
-      // objectMesh.destroy();
+      objectMesh.destroy();
     }
     objectMeshes = await _loadObjectMeshes(arrayBuffer);
     for (let i = 0; i < objectMeshes.length; i++) {

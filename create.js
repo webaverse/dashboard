@@ -1518,6 +1518,8 @@ scene.add(rayMesh);
 
 const enterXrButton = interfaceDocument.getElementById('enter-xr-button');
 let currentSession = null;
+const triggerDowns = [false, false];
+const gripDowns = [false, false];
 function onSessionStarted(session) {
   session.addEventListener('end', onSessionEnded);
 
@@ -1535,11 +1537,13 @@ function onSessionStarted(session) {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
         _beginTool(true, false);
       }
+      triggerDowns[i] = true;
     });
     controller.addEventListener('selectend', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
         _endTool(true, false);
       }
+      triggerDowns[i] = false;
     });
     
     const controllerGrip = renderer.xr.getControllerGrip(i);
@@ -1548,11 +1552,13 @@ function onSessionStarted(session) {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
         _beginTool(false, true);
       }
+      gripDowns[i] = true;
     });
     controllerGrip.addEventListener('selectend', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
         _endTool(false, true);
       }
+      gripDowns[i] = false;
     });
     scene.add(controllerGrip);
   }

@@ -863,13 +863,13 @@ const _centerObjectMeshes = () => {
 };
 const _saveObjectMeshes = async () => {
   const exportScene = new THREE.Scene();
-  /* exportScene.userData.gltfExtensions = {
-    size: {
-      x: parseInt(objectSizeX.value, 10),
-      y: parseInt(objectSizeY.value, 10),
-      z: parseInt(objectSizeZ.value, 10),
+  exportScene.userData.gltfExtensions = {
+    script: scriptInputTextarea.value,
+    shader: {
+      vertex: shaderInputV.value,
+      fragment: shaderInputF.value,
     },
-  }; */
+  };
   for (let i = 0; i < objectMeshes.length; i++) {
     exportScene.add(objectMeshes[i].clone());
   }
@@ -895,7 +895,16 @@ const _loadObjectMeshes = async arrayBuffer => {
   loader.load(src, p.accept, function onProgress() {}, p.reject);
   const o = await p;
   const {scene} = o;
-  // const {userData: {gltfExtensions: {size: {x, y, z}}}} = scene;
+  const {userData: {gltfExtensions: {script, shader}}} = scene;
+  if (typeof script === 'string') {
+    scriptInputTextarea.value = script;
+    _bindObjectWorkerScript(script);
+  }
+  if (shader && typeof shader.vertex === 'string' && typeof shader.fragment === 'string') {
+    shaderInputV.value = shader.vertex;
+    shaderInputF.value = shader.fragment;
+    _bindObjectShader(shader.vertex, shader.fragment);
+  }
   return scene.children.map(child => _makeObjectMeshFromGeometry(child.geometry, child.matrix));
 };
 const _screenshotMiningMeshes = async () => {

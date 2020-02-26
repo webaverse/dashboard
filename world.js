@@ -725,8 +725,6 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
       })(),
     ]);
 
-    console.log('got loc', loc);
-
     const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${metadataHash}`)
       .then(res => res.json());
     const {dataHash} = metadata;

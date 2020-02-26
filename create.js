@@ -488,6 +488,14 @@ const miningMeshMaterial = (() => {
     color: 0xFFFFFF,
     vertexColors: THREE.VertexColors,
   });
+
+  // precompile shader
+  const tempScene = new THREE.Scene();
+  const tempMesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(1, 1), material);
+  tempMesh.frustumCulled = false;
+  tempScene.add(tempMesh);
+  renderer.compile(tempMesh, camera);
+
   return material;
 })();
 const _makeMiningMesh = (x, y, z) => {
@@ -1117,22 +1125,6 @@ const _setSelectedObjectMesh = newSelectedObjectMesh => {
   if (selectedObjectMesh) {
     _bindObjectMeshControls(selectedObjectMesh);
   }
-
-  const scriptTool = Array.from(tools).find(tool => tool.matches('[tool=script]'));
-  const shaderTool = Array.from(tools).find(tool => tool.matches('[tool=shader]'));
-  if (selectedObjectMesh) {
-    scriptTool.classList.remove('hidden');
-
-    shaderTool.classList.remove('hidden');
-  } else {
-    scriptTool.classList.add('hidden');
-    scriptTool.classList.remove('open');
-    interfaceDocument.getElementById('script-input').classList.remove('open');
-
-    shaderTool.classList.add('hidden');
-    shaderTool.classList.remove('open');
-    interfaceDocument.getElementById('shader-input').classList.remove('open');
-  }
 };
 scene.onAfterRender = () => {
   if (renderingOutline) return;
@@ -1530,8 +1522,8 @@ Array.from(tools).forEach((tool, i) => {
 });`;
         interfaceDocument.getElementById('script-input').classList.toggle('open', !wasOpen);
       } else if (tool.matches('[tool=shader]')) {
-        const vertexShaderSource = selectedObjectMesh.material.program.vertexShader.source;
-        const fragmentShaderSource = selectedObjectMesh.material.program.fragmentShader.source;
+        const vertexShaderSource = miningMeshMaterial.program.vertexShader.source;
+        const fragmentShaderSource = miningMeshMaterial.program.fragmentShader.source;
         interfaceDocument.getElementById('shader-input-v').value = vertexShaderSource;
         interfaceDocument.getElementById('shader-input-f').value = fragmentShaderSource;
         interfaceDocument.getElementById('shader-input').classList.toggle('open', !wasOpen);

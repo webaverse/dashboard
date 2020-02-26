@@ -1512,17 +1512,12 @@ worldScaleEl.addEventListener('input', e => {
   worldScale = e.target.value;
 
   const cameraPosition = camera.position.clone()
-    .add(new THREE.Vector3(0, 0, -1.5).applyQuaternion(camera.quaternion))
-    // .sub(container.position);
-  // console.log('get camera position', cameraPosition.toArray());
-  // container.scale.set(1, 1, 1);
-  // container.updateMatrix();
+    .add(new THREE.Vector3(0, 0, -1.5).applyQuaternion(camera.quaternion));
   container.matrix
     .premultiply(new THREE.Matrix4().makeTranslation(-cameraPosition.x, -cameraPosition.y, -cameraPosition.z))
     .premultiply(new THREE.Matrix4().makeScale(worldScale/container.scale.x, worldScale/container.scale.y, worldScale/container.scale.z))
     .premultiply(new THREE.Matrix4().makeTranslation(cameraPosition.x, cameraPosition.y, cameraPosition.z))
     .decompose(container.position, container.quaternion, container.scale);
-  // container.scale.set(worldScale, worldScale, worldScale);
 
   interfaceDocument.getElementById('world-scale-text').innerHTML = worldScale;
 });

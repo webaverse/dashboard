@@ -775,30 +775,6 @@ function animate() {
 }
 renderer.setAnimationLoop(animate);
 
-(async () => {
-  const q = parseQuery(window.location.search);
-  const {o} = q;
-  if (o) {
-    const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${o}`)
-      .then(res => res.json());
-    const {objectName, dataHash} = metadata;
-    objectNameEl.value = objectName;
-    const arrayBuffer = await fetch(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`)
-      .then(res => res.arrayBuffer());
-    for (let i = 0; i < objectMeshes.length; i++) {
-      const objectMesh = objectMeshes[i];
-      scene.remove(objectMesh);
-      // objectMesh.destroy();
-    }
-    const {x, y, z, objectMeshes: newObjectMeshes} = await _loadObjectMeshes(arrayBuffer);
-    objectMeshes = newObjectMeshes;
-    for (let i = 0; i < objectMeshes.length; i++) {
-      scene.add(objectMeshes[i]);
-    }
-    _newMiningMeshes();
-  }
-})();
-
 navigator.xr && navigator.xr.isSessionSupported('immersive-vr').then(supported => {
   if (supported) {
     renderer.xr.enabled = true;

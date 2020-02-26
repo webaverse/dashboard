@@ -1322,11 +1322,13 @@ const _endTool = (primary, secondary) => {
       case 46: // del
       {
         if (selectedObjectMesh) {
-          _unbindObjectMeshControls(selectedObjectMesh);
-          container.remove(selectedObjectMesh);
-          objectMeshes.splice(objectMeshes.indexOf(selectedObjectMesh), 1);
+          const oldSelectedObjectMesh = selectedObjectMesh;
 
+          _setHoveredObjectMesh(null);
           _setSelectedObjectMesh(null);
+
+          oldSelectedObjectMesh.parent.remove(oldSelectedObjectMesh);
+          objectMeshes.splice(objectMeshes.indexOf(oldSelectedObjectMesh), 1);
         }
         break;
       }
@@ -1364,9 +1366,8 @@ Array.from(tools).forEach((tool, i) => {
     } else if (tool.matches('[tool=image]')) {
       // nothing
     } else if (tool.matches('[tool=shader]')) {
-      const gl = renderer.getContext();
-      const vertexShaderSource = gl.getShaderSource(selectedObjectMesh.material.program.vertexShader);
-      const fragmentShaderSource = gl.getShaderSource(selectedObjectMesh.material.program.fragmentShader)
+      const vertexShaderSource = selectedObjectMesh.material.program.vertexShader.source;
+      const fragmentShaderSource = selectedObjectMesh.material.program.fragmentShader.source;
       interfaceDocument.getElementById('shader-input-v').value = vertexShaderSource;
       interfaceDocument.getElementById('shader-input-f').value = fragmentShaderSource;
       interfaceDocument.getElementById('shader-input').classList.toggle('open');

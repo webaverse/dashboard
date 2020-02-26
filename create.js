@@ -1498,11 +1498,20 @@ Array.from(colors).forEach(color => {
 let currentColor = new THREE.Color().setStyle(colors[0].querySelector('.inner').style.backgroundColor);
 colors[0].classList.add('selected');
 pointerMesh.material.uniforms.uBrushColor.value.set(currentColor.r, currentColor.g, currentColor.b);
+
 const brushSizeEl = interfaceDocument.getElementById('brush-size');
 let brushSize = brushSizeEl.value;
 brushSizeEl.addEventListener('input', e => {
   brushSize = e.target.value;
   interfaceDocument.getElementById('brush-size-text').innerHTML = brushSize;
+});
+
+const worldScaleEl = interfaceDocument.getElementById('world-scale');
+let worldScale = worldScaleEl.value;
+worldScaleEl.addEventListener('input', e => {
+  worldScale = e.target.value;
+  container.scale.set(worldScale, worldScale, worldScale);
+  interfaceDocument.getElementById('world-scale-text').innerHTML = worldScale;
 });
 
 interfaceDocument.getElementById('enable-physics-button').addEventListener('click', e => {

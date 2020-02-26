@@ -17554,6 +17554,7 @@ function WebGLShader( gl, type, string ) {
 
 	gl.shaderSource( shader, string );
 	gl.compileShader( shader );
+	shader.source = string; // XXX Exokit
 
 	return shader;
 

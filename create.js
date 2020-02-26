@@ -1550,11 +1550,8 @@ interfaceDocument.getElementById('new-op').addEventListener('click', e => {
   objectNameEl.value = '';
   _newMiningMeshes();
 });
-interfaceDocument.getElementById('load-op').addEventListener('click', e => {
-  e.preventDefault();
-  e.stopPropagation();
-
-  console.log('load'); // XXX
+_bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file => {
+  console.log('load file', file);
 });
 interfaceDocument.getElementById('save-op').addEventListener('click', async e => {
   const arrayBuffer = await _saveObjectMeshes();

@@ -21,6 +21,15 @@ body {
 textarea {
   font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
 }
+input[type=file] {
+  position: absolute;
+  width: 300px;
+  height: 100px;
+  left: 0;
+  top: -50px;
+  cursor: pointer;
+  outline: none;
+}
 input[type=number]::-webkit-inner-spin-button {
   opacity: 1
 }
@@ -79,15 +88,6 @@ input[type=number]::-webkit-inner-spin-button {
 }
 .tools > .row > .tool.hidden {
   display: none;
-}
-.tools > .row > .tool > input[type=file] {
-  position: absolute;
-  width: 300px;
-  height: 100px;
-  left: 0;
-  top: -50px;
-  cursor: pointer;
-  outline: none;
 }
 .ops {
   top: 50px;
@@ -230,7 +230,10 @@ margin-left: 10px;
     <form class=ops id=ops-form style="{{#hideOps}}display: none;{{/hideOps}} transform-origin: 100% 0; transform: scale({{zoom}});">
       <input type="text" required id="object-name" placeholder="Object name">
       <a class="op" id=new-op><i class="fal fa-sparkles"></i></a>
-      <a class="op" id=load-op><i class="fal fa-folder-open"></i></a>
+      <a class="op" id=load-op>
+        <i class="fal fa-folder-open"></i>
+        <input type=file id=load-op-input>
+      </a>
       <a class="op" id=save-op><i class="fal fa-save"></i></a>
       <a class="op" id=mint-op><i class="fal fa-cloud-upload"></i><input type=submit id=save-submit-input></a>
     </form>

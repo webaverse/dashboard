@@ -251,19 +251,19 @@ const pointerMesh = (() => {
 })();
 container.add(pointerMesh);
 
-const worker = (() => {
+const mcWorker = (() => {
   let cbs = [];
-  const worker = new Worker('mc-worker.js');
-  worker.onmessage = e => {
+  const w = new Worker('mc-worker.js');
+  w.onmessage = e => {
     const {data} = e;
     const {error, result} = data;
     cbs.shift()(error, result);
   };
-  worker.onerror = err => {
+  w.onerror = err => {
     console.warn(err);
   };
-  worker.request = (req, transfers) => new Promise((accept, reject) => {
-    worker.postMessage(req, transfers);
+  w.request = (req, transfers) => new Promise((accept, reject) => {
+    w.postMessage(req, transfers);
 
     cbs.push((err, result) => {
       if (!err) {
@@ -273,7 +273,7 @@ const worker = (() => {
       }
     });
   });
-  return worker;
+  return w;
 })();
 let ammo = null;
 (async () => {
@@ -629,7 +629,7 @@ const _makeMiningMesh = (x, y, z) => {
       dirty = false;
 
       const arrayBuffer = new ArrayBuffer(300*1024);
-      return worker.request({
+      return mcWorker.request({
         method: 'march',
         dims,
         potential,
@@ -655,7 +655,7 @@ const _makeMiningMesh = (x, y, z) => {
   };
   /* mesh.collide = () => {
     if (mesh.visible) {
-      return worker.request({
+      return mcWorker.request({
         method: 'collide',
         positions: geometry.attributes.position.array,
         origin: localRaycaster.ray.origin.toArray(new Float32Array(3)),
@@ -694,7 +694,7 @@ const _makeMiningMesh = (x, y, z) => {
       colliding = true;
 
       const controllerMesh = controllerMeshes[1]; // XXX make this work for all controllers
-      worker.request({
+      mcWorker.request({
         method: 'collide',
         positions: geometry.attributes.position.array,
         indices: geometry.index.array,

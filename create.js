@@ -895,15 +895,18 @@ const _loadObjectMeshes = async arrayBuffer => {
   loader.load(src, p.accept, function onProgress() {}, p.reject);
   const o = await p;
   const {scene} = o;
-  const {userData: {gltfExtensions: {script, shader}}} = scene;
-  if (typeof script === 'string') {
-    scriptInputTextarea.value = script;
-    _bindObjectWorkerScript(script);
-  }
-  if (shader && typeof shader.vertex === 'string' && typeof shader.fragment === 'string') {
-    shaderInputV.value = shader.vertex;
-    shaderInputF.value = shader.fragment;
-    _bindObjectShader(shader.vertex, shader.fragment);
+  const {userData: {gltfExtensions}} = scene;
+  if (gltfExtensions) {
+    const {script, shader} = gltfExtensions;
+    if (typeof script === 'string') {
+      scriptInputTextarea.value = script;
+      _bindObjectWorkerScript(script);
+    }
+    if (shader && typeof shader.vertex === 'string' && typeof shader.fragment === 'string') {
+      shaderInputV.value = shader.vertex;
+      shaderInputF.value = shader.fragment;
+      _bindObjectShader(shader.vertex, shader.fragment);
+    }
   }
   return scene.children.map(child => _makeObjectMeshFromGeometry(child.geometry, child.matrix));
 };

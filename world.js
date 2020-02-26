@@ -302,55 +302,6 @@ const _updateRaycasterFromMouseEvent = (raycaster, e) => {
   raycaster.setFromCamera(mouse, camera);
 };
 
-[window, interfaceWindow].forEach(w => {
-  /* w.addEventListener('keydown', e => {
-    switch (e.which) {
-      case 49:
-      case 50:
-      case 51:
-      case 52:
-      case 53:
-      case 54:
-      {
-        tools[e.which - 49].click();
-        break;
-      }
-      case 87: {
-        selectedObjectMesh && selectedObjectMesh.control.setMode('translate');
-        break;
-      }
-      case 69: {
-        selectedObjectMesh && selectedObjectMesh.control.setMode('rotate');
-        break;
-      }
-      case 82: {
-        selectedObjectMesh && selectedObjectMesh.control.setMode('scale');
-        break;
-      }
-      case 8: // backspace
-      case 46: // del
-      {
-        if (selectedObjectMesh) {
-          _unbindObjectMeshControls(selectedObjectMesh);
-          scene.remove(selectedObjectMesh);
-          // selectedObjectMesh.destroy();
-          objectMeshes.splice(objectMeshes.indexOf(selectedObjectMesh), 1);
-          if (hoveredObjectMesh === selectedObjectMesh) {
-            hoveredObjectMesh = null;
-          }
-          selectedObjectMesh = null;
-        }
-        break;
-      }
-    }
-  });
-  w.addEventListener('mousemove', e => {
-    _updateRaycasterFromMouseEvent(localRaycaster, e);
-  });
-  w.addEventListener('mousedown', _beginTool);
-  w.addEventListener('mouseup', _endTool); */
-});
-
 // xr
 
 const rayMesh = (() => {

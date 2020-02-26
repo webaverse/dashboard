@@ -1014,30 +1014,31 @@ const _unbindObjectMeshPhysics = async () => {
     ammo.unbindObjectMeshPhysics(objectMeshes[i]);
   }
 };
-const _bindObjectMeshScript = (objectMesh, scriptSrc) => {
-  if (objectMesh.worker) {
-    objectMesh.worker.terminate();
-    objectMesh.worker = null;
+let objectWorker = null;
+const _bindObjectWorkerScript = scriptSrc => {
+  if (objectWorker) {
+    objectWorker.terminate();
+    objectWorker = null;
   }
-  objectMesh.worker = new Worker('./object-worker.js');
-  objectMesh.worker.postMessage({
+  objectWorker = new Worker('./object-worker.js');
+  objectWorker.postMessage({
     method: 'init',
     args: {
       scriptSrc,
+      numObjects: objectMeshes.length,
     },
   });
-  window.worker = objectMesh.worker;
   let ticking = false;
-  objectMesh.worker.tick = () => {
+  objectWorker.tick = () => {
     if (!ticking) {
       ticking = true;
 
-      objectMesh.worker.postMessage({
+      objectWorker.postMessage({
         method: 'tick',
       });
     }
   };
-  objectMesh.worker.addEventListener('message', e => {
+  objectWorker.addEventListener('message', e => {
     const {method, args} = e.data;
     switch (method) {
       case 'tock': {
@@ -1045,18 +1046,18 @@ const _bindObjectMeshScript = (objectMesh, scriptSrc) => {
         break;
       }
       case 'update': {
-        const {attribute, value} = args;
+        const {attribute, index, value} = args;
         switch (attribute) {
           case 'position': {
-            objectMesh.position.fromArray(value);
+            objectMeshes[index].position.fromArray(value);
             break;
           }
           case 'quaternion': {
-            objectMesh.quaternion.fromArray(value);
+            objectMeshes[index].quaternion.fromArray(value);
             break;
           }
           case 'scale': {
-            objectMesh.scale.fromArray(value);
+            objectMeshes[index].scale.fromArray(value);
             break;
           }
           default: {
@@ -1523,7 +1524,9 @@ Array.from(tools).forEach((tool, i) => {
       if (tool.matches('[tool=script]')) {
         interfaceDocument.getElementById('script-input-textarea').value = `renderer.addEventListener('tick', () => {
   // console.log('tick');
-  object.position.y = 0.5 + Math.sin((Date.now() % 2000)/2000 * Math.PI*2);
+  objects.forEach(object => {
+    object.position.y = 0.5 + Math.sin((Date.now() % 2000)/2000 * Math.PI*2);
+  });
 });`;
         interfaceDocument.getElementById('script-input').classList.toggle('open', !wasOpen);
       } else if (tool.matches('[tool=shader]')) {
@@ -1588,7 +1591,7 @@ interfaceDocument.getElementById('script-input').addEventListener('mousedown', e
 });
 const scriptInputTextarea = interfaceDocument.getElementById('script-input-textarea');
 scriptInputTextarea.addEventListener('input', e => {
-  _bindObjectMeshScript(selectedObjectMesh, e.target.value);
+  _bindObjectWorkerScript(e.target.value);
 });
 scriptInputTextarea.addEventListener('keydown', e => {
   e.stopPropagation();
@@ -2082,12 +2085,7 @@ function animate() {
     _updateControllers();
   }
 
-  for (let i = 0; i < objectMeshes.length; i++) {
-    const objectMesh = objectMeshes[i];
-    if (objectMesh.worker) {
-      objectMesh.worker.tick();
-    }
-  }
+  objectWorker && objectWorker.tick();
 
   if (ammo) {
     ammo.simulate();

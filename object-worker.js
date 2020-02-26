@@ -1,4 +1,4 @@
-// console.log('object worker started');
+console.log('object worker started');
 
 const renderer = new EventTarget();
 
@@ -47,7 +47,7 @@ class Quaternion {
   set w(v) { this._w = v; this.onchange && this.onchange(this._x, this._y, this._z, this._w); }
 }
 class Entity extends EventTarget {
-  constructor() {
+  constructor(index) {
     super();
 
     this.position = new Vector3();
@@ -55,6 +55,7 @@ class Entity extends EventTarget {
       self.postMessage({
         method: 'update',
         args: {
+          index,
           attribute: 'position',
           value: [x, y, z],
         },
@@ -65,6 +66,7 @@ class Entity extends EventTarget {
       self.postMessage({
         method: 'update',
         args: {
+          index,
           attribute: 'quaternion',
           value: [x, y, z, w],
         },
@@ -75,6 +77,7 @@ class Entity extends EventTarget {
       self.postMessage({
         method: 'update',
         args: {
+          index,
           attribute: 'scale',
           value: [x, y, z],
         },
@@ -82,13 +85,17 @@ class Entity extends EventTarget {
     };
   }
 }
-const object = new Entity();
+let objects = [];
 
 self.onmessage = e => {
   const {method, args} = e.data;
   switch (method) {
     case 'init': {
-      const {scriptSrc} = args;
+      const {scriptSrc, numObjects} = args;
+      objects = Array(numObjects);
+      for (let i = 0; i < numObjects; i++) {
+        objects[i] = new Entity(i);
+      }
       try {
         eval(scriptSrc);
       } catch(err) {

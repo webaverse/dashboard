@@ -1438,10 +1438,10 @@ interfaceDocument.getElementById('shader-input-f').addEventListener('input', e =
   console.log('new fragment value', e.target.value);
 });
 
-const opsForm = interfaceDocument.getElementById('ops-form');
 const objectNameEl = interfaceDocument.getElementById('object-name');
-opsForm.addEventListener('submit', async e => {
+interfaceDocument.getElementById('ops-form').addEventListener('submit', async e => {
   e.preventDefault();
+  e.stopPropagation();
 
   await _commitMiningMeshes();
   _centerObjectMeshes();
@@ -1513,6 +1513,9 @@ interfaceDocument.getElementById('load-op').addEventListener('click', e => {
   e.stopPropagation();
 
   console.log('load');
+});
+interfaceDocument.getElementById('save-op').addEventListener('click', e => {
+  console.log('save');
 });
 
 const colors = interfaceDocument.querySelectorAll('.color');

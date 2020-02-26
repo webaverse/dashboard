@@ -1352,6 +1352,9 @@ Array.from(tools).forEach((tool, i) => {
       _commitMiningMeshes();
     } else if (tool.matches('[tool=image]')) {
       // nothing
+    } else if (tool.matches('[tool=shader]')) {
+      interfaceDocument.getElementById('shader-input').classList.toggle('open');
+      tool.classList.toggle('open');
     } else if (tool.matches('[tool=center]')) {
       _cancel();
       _centerObjectMeshes();
@@ -1400,6 +1403,10 @@ const _bindUploadFileButton = (inputFileEl, handleUpload) => {
   });
 };
 _bindUploadFileButton(Array.from(tools).find(tool => tool.matches('[tool=image]')).querySelector('input[type=file]'), _handleUpload);
+
+interfaceDocument.getElementById('shader-input').addEventListener('input', e => {
+  console.log('got new value', e.target.value);
+});
 
 const opsForm = interfaceDocument.getElementById('ops-form');
 const objectNameEl = interfaceDocument.getElementById('object-name');

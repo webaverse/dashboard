@@ -18,6 +18,9 @@ body {
   font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
   font-size: 13px;
 }
+textarea {
+  font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+}
 input[type=number]::-webkit-inner-spin-button {
   opacity: 1
 }
@@ -28,7 +31,7 @@ input[type=number]::-webkit-inner-spin-button {
 {
   display: flex;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   padding: 10px;
 }
 .tools {
@@ -69,7 +72,8 @@ input[type=number]::-webkit-inner-spin-button {
   color: #FFF;
 }
 .tools > .row > .tool:active,
-.tools > .row > .tool.selected {
+.tools > .row > .tool.selected,
+.tools > .row > .tool.open {
   background-color: #1e88e5;
   color: #FFF;
 }
@@ -158,6 +162,21 @@ margin-left: 10px;
   padding: 15px;
   font-size: 40px;
 }
+.shader-input {
+  position: absolute;
+  width: 500px;
+  left: 0;
+  top: 50px;
+  bottom: 0;
+  border-top: 90px solid #EEE;
+  border-bottom: 90px solid #EEE;
+  z-index: 1;
+  outline: none;
+  resize: none;
+}
+.shader-input:not(.open) {
+  display: none;
+}
 .background {
   position: absolute;
   top: 0;
@@ -179,8 +198,9 @@ margin-left: 10px;
           <i class="fal fa-file-image"></i>
           <input type=file id=upload-image-input>
         </a>
-        <a id=tool-7 class="tool {{#tool7Selected}}selected{{/tool7Selected}}" tool="center"><i class="fal fa-border-all"></i></a>
-        <a id=tool-8 class="tool {{#tool8Selected}}selected{{/tool8Selected}} hidden" tool="commit"><i class="fal fa-check"></i></a>
+        <a id=tool-7 class="tool {{#tool7Selected}}selected{{/tool7Selected}}" tool="shader"><i class="fal fa-sunglasses"></i></a>
+        <a id=tool-8 class="tool {{#tool8Selected}}selected{{/tool8Selected}}" tool="center"><i class="fal fa-border-all"></i></a>
+        <a id=tool-9 class="tool {{#tool9Selected}}selected{{/tool9Selected}} hidden" tool="commit"><i class="fal fa-check"></i></a>
       </div>
       <label class=row>
         <span>Brush size</span>
@@ -229,6 +249,8 @@ margin-left: 10px;
         <a id=color-20 class="color {{#color20Selected}}selected{{/color20Selected}}"><div class=inner style="background-color: #333333;"></div></a>
       </div>
     </div>
+    <textarea class=shader-input id=shader-input>main() {}
+</textarea>
     <div class=background></div>
   </body>
 </html>

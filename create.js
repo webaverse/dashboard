@@ -784,9 +784,13 @@ const _newMiningMeshes = () => {
   _refreshMiningMeshes();
 };
 let objectMeshes = [];
-const _makeObjectMeshFromGeometry = geometry => {
+const _makeObjectMeshFromGeometry = (geometry, matrix) => {
   const material = miningMeshMaterial;
   const objectMesh = new THREE.Mesh(geometry, material);
+  if (matrix) {
+    objectMesh.matrix.copy(matrix)
+      .decompose(objectMesh.position, objectMesh.quaternion, objectMesh.scale);
+  }
   objectMesh.frustumCulled = false;
   objectMesh.castShadow = true;
   objectMesh.worker = null;
@@ -810,7 +814,7 @@ const _commitMiningMeshes = async () => {
   const visibleMiningMeshes = miningMeshes.filter(miningMesh => miningMesh.visible);
   if (visibleMiningMeshes.length) {
     const geometry = BufferGeometryUtils.mergeBufferGeometries(visibleMiningMeshes.map(miningMesh => miningMesh.geometry));
-    const objectMesh = _makeObjectMeshFromGeometry(geometry);
+    const objectMesh = _makeObjectMeshFromGeometry(geometry, null);
     _centerObjectMesh(objectMesh);
     container.add(objectMesh);
     objectMeshes.push(objectMesh);
@@ -892,7 +896,7 @@ const _loadObjectMeshes = async arrayBuffer => {
   const o = await p;
   const {scene} = o;
   // const {userData: {gltfExtensions: {size: {x, y, z}}}} = scene;
-  return scene.children.map(child => _makeObjectMeshFromGeometry(child.geometry));
+  return scene.children.map(child => _makeObjectMeshFromGeometry(child.geometry, child.matrix));
 };
 const _screenshotMiningMeshes = async () => {
   const newScene = new THREE.Scene();

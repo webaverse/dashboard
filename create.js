@@ -1553,7 +1553,7 @@ interfaceDocument.getElementById('load-op').addEventListener('click', e => {
   e.preventDefault();
   e.stopPropagation();
 
-  console.log('load');
+  console.log('load'); // XXX
 });
 interfaceDocument.getElementById('save-op').addEventListener('click', async e => {
   const arrayBuffer = await _saveObjectMeshes();

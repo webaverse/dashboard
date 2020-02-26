@@ -832,12 +832,7 @@ const _loadObjectMeshes = async arrayBuffer => {
     objectMesh.frustumCulled = false;
     objectMesh.castShadow = true;
   }
-  return {
-    /* x,
-    y,
-    z, */
-    objectMeshes,
-  };
+  return objectMeshes;
 };
 const _screenshotMiningMeshes = async () => {
   const newScene = new THREE.Scene();
@@ -1487,14 +1482,6 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
     _saveObjectMeshes(),
     _screenshotMiningMeshes(),
   ]);
-  /* for (let i = 0; i < objectMeshes.length; i++) {
-    scene.remove(objectMeshes[i]);
-  }
-  const {x, y, z, objectMeshes: newObjectMeshes} = await _loadObjectMeshes(dataArrayBuffer);
-  objectMeshes = newObjectMeshes;
-  for (let i = 0; i < objectMeshes.length; i++) {
-    scene.add(objectMeshes[i]);
-  } */
 
   const [
     dataHash,
@@ -1952,8 +1939,7 @@ renderer.setAnimationLoop(animate);
       container.remove(objectMesh);
       // objectMesh.destroy();
     }
-    const {x, y, z, objectMeshes: newObjectMeshes} = await _loadObjectMeshes(arrayBuffer);
-    objectMeshes = newObjectMeshes;
+    objectMeshes = await _loadObjectMeshes(arrayBuffer);
     for (let i = 0; i < objectMeshes.length; i++) {
       container.add(objectMeshes[i]);
     }

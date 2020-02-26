@@ -1086,6 +1086,9 @@ const _bindObjectWorkerScript = scriptSrc => {
     }
   });
 };
+const _bindObjectShader = (vertexShader, fragmentShader) => {
+  console.log('bind object shader', vertexShader, fragmentShader); // XXX
+};
 
 const collisionMesh = (() => {
   const geometry = new THREE.BoxBufferGeometry(0.01, 0.01, 0.01);
@@ -1598,7 +1601,7 @@ shaderInputV.addEventListener('keydown', e => {
   e.stopPropagation();
 });
 shaderInputV.addEventListener('input', e => {
-  console.log('new vertex value', e.target.value);
+  _bindObjectShader(shaderInputV.value, shaderInputF.value);
 });
 const shaderInputF = interfaceDocument.getElementById('shader-input-f');
 shaderInputF.value = miningMeshMaterial.program.fragmentShader.source;
@@ -1606,7 +1609,7 @@ shaderInputF.addEventListener('keydown', e => {
   e.stopPropagation();
 });
 shaderInputF.addEventListener('input', e => {
-  console.log('new fragment value', e.target.value);
+  _bindObjectShader(shaderInputV.value, shaderInputF.value);
 });
 
 const objectNameEl = interfaceDocument.getElementById('object-name');

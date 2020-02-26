@@ -1449,10 +1449,18 @@ _bindUploadFileButton(Array.from(tools).find(tool => tool.matches('[tool=image]'
 interfaceDocument.getElementById('shader-input').addEventListener('mousedown', e => {
   e.stopPropagation();
 });
-interfaceDocument.getElementById('shader-input-v').addEventListener('input', e => {
+const shaderInputV = interfaceDocument.getElementById('shader-input-v');
+shaderInputV.addEventListener('keydown', e => {
+  e.stopPropagation();
+});
+shaderInputV.addEventListener('input', e => {
   console.log('new vertex value', e.target.value);
 });
-interfaceDocument.getElementById('shader-input-f').addEventListener('input', e => {
+const shaderInputF = interfaceDocument.getElementById('shader-input-f');
+shaderInputF.addEventListener('keydown', e => {
+  e.stopPropagation();
+});
+shaderInputF.addEventListener('input', e => {
   console.log('new fragment value', e.target.value);
 });
 

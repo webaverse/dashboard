@@ -1522,7 +1522,7 @@ Array.from(tools).forEach((tool, i) => {
 
       if (tool.matches('[tool=script]')) {
         interfaceDocument.getElementById('script-input-textarea').value = `renderer.addEventListener('tick', () => {
-  console.log('tick');
+  // console.log('tick');
   object.position.y = 0.5 + Math.sin((Date.now() % 2000)/2000 * Math.PI*2);
 });`;
         interfaceDocument.getElementById('script-input').classList.toggle('open', !wasOpen);

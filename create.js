@@ -67,6 +67,9 @@ const directionalLight2 = new THREE.DirectionalLight(0xFFFFFF, 3);
 directionalLight2.position.set(-0.5, -0.1, 0.5).multiplyScalar(100);
 scene.add(directionalLight2);
 
+const container = new THREE.Object3D();
+scene.add(container);
+
 const orbitControls = new OrbitControls(camera, interfaceDocument.querySelector('.background'), interfaceDocument);
 orbitControls.target.copy(camera.position).add(new THREE.Vector3(0, 0, -1.5));
 orbitControls.screenSpacePanning = true;
@@ -226,7 +229,7 @@ const pointerMesh = (() => {
   mesh.resize(0, 0, 0, 1, 1, 1);
   return mesh;
 })();
-scene.add(pointerMesh);
+container.add(pointerMesh);
 
 const worker = (() => {
   let cbs = [];
@@ -373,7 +376,7 @@ const floorMesh = (() => {
   mesh.receiveShadow = true;
   return mesh;
 })();
-scene.add(floorMesh);
+container.add(floorMesh);
 
 const miningMeshMaterial = (() => {
   /* const terrainVsh = `
@@ -707,7 +710,7 @@ const _findOrAddMiningMeshesByContainCoord = (x, y, z) => {
         let miningMesh = _findMiningMeshByIndex(ax, ay, az);
         if (!miningMesh) {
           miningMesh = _makeMiningMesh(ax, ay, az);
-          scene.add(miningMesh);
+          container.add(miningMesh);
           miningMeshes.push(miningMesh);
         }
         !result.includes(miningMesh) && result.push(miningMesh);
@@ -719,7 +722,7 @@ const _findOrAddMiningMeshesByContainCoord = (x, y, z) => {
 const _newMiningMeshes = () => {
   for (let i = 0; i < miningMeshes.length; i++) {
     const miningMesh = miningMeshes[i];
-    scene.remove(miningMesh);
+    container.remove(miningMesh);
     miningMesh.destroy();
   }
   miningMeshes.length = 0;
@@ -743,7 +746,7 @@ const _commitMiningMeshes = async () => {
     objectMesh.frustumCulled = false;
     objectMesh.castShadow = true;
     _centerObjectMesh(objectMesh);
-    scene.add(objectMesh);
+    container.add(objectMesh);
     objectMeshes.push(objectMesh);
 
     _newMiningMeshes();
@@ -868,9 +871,9 @@ const _screenshotMiningMeshes = async () => {
   gif.render();
 
   for (let i = 0; i < objectMeshes.length; i++) {
-    scene.add(objectMeshes[i]);
+    container.add(objectMeshes[i]);
   }
-  scene.add(pointerMesh);
+  container.add(pointerMesh);
 
   const blob = await new Promise((accept, reject) => {
     gif.on('finished', accept);
@@ -970,7 +973,7 @@ const collisionMesh = (() => {
   mesh.frustumCulled = false;
   return mesh;
 })();
-scene.add(collisionMesh);
+container.add(collisionMesh);
 
 const hoverOutlineEffect = new OutlineEffect(renderer, {
   defaultThickness: 0.01,
@@ -992,6 +995,10 @@ scene.onAfterRender = () => {
   if (renderingOutline) return;
   renderingOutline = true;
 
+  outlineScene.position.copy(container.position);
+  outlineScene.quaternion.copy(container.quaternion);
+  outlineScene.scale.copy(container.scale);
+
   let oldHoverParent;
   if (hoveredObjectMesh) {
     oldHoverParent = hoveredObjectMesh.parent;
@@ -999,7 +1006,7 @@ scene.onAfterRender = () => {
   }
   hoverOutlineEffect.renderOutline(outlineScene, camera);
   if (oldHoverParent) {
-    scene.add(hoveredObjectMesh);
+    container.add(hoveredObjectMesh);
   }
 
   let oldSelectedParent;
@@ -1009,7 +1016,7 @@ scene.onAfterRender = () => {
   }
   selectOutlineEffect.renderOutline(outlineScene, camera);
   if (oldSelectedParent) {
-    scene.add(selectedObjectMesh);
+    container.add(selectedObjectMesh);
   }
 
   renderingOutline = false;
@@ -1060,7 +1067,7 @@ const _handleUpload = file => {
     objectMesh.position.copy(camera.position)
       .add(new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion));
     objectMesh.quaternion.copy(camera.quaternion);
-    scene.add(objectMesh);
+    container.add(objectMesh);
     objectMeshes.push(objectMesh);
   }
 };
@@ -1305,7 +1312,7 @@ const _endTool = (primary, secondary) => {
       {
         if (selectedObjectMesh) {
           _unbindObjectMeshControls(selectedObjectMesh);
-          scene.remove(selectedObjectMesh);
+          container.remove(selectedObjectMesh);
           // selectedObjectMesh.destroy();
           objectMeshes.splice(objectMeshes.indexOf(selectedObjectMesh), 1);
           if (hoveredObjectMesh === selectedObjectMesh) {
@@ -1847,13 +1854,13 @@ renderer.setAnimationLoop(animate);
       .then(res => res.arrayBuffer());
     for (let i = 0; i < objectMeshes.length; i++) {
       const objectMesh = objectMeshes[i];
-      scene.remove(objectMesh);
+      container.remove(objectMesh);
       // objectMesh.destroy();
     }
     const {x, y, z, objectMeshes: newObjectMeshes} = await _loadObjectMeshes(arrayBuffer);
     objectMeshes = newObjectMeshes;
     for (let i = 0; i < objectMeshes.length; i++) {
-      scene.add(objectMeshes[i]);
+      container.add(objectMeshes[i]);
     }
     _newMiningMeshes();
   }

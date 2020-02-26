@@ -1353,7 +1353,7 @@ const _endTool = (primary, secondary) => {
           e.preventDefault();
           e.stopPropagation();
 
-          interfaceDocument.getElementById('load-op').click();
+          interfaceDocument.getElementById('load-op-input').click();
         }
         break;
       }

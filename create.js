@@ -1526,10 +1526,6 @@ Array.from(tools).forEach((tool, i) => {
 });`;
         interfaceDocument.getElementById('script-input').classList.toggle('open', !wasOpen);
       } else if (tool.matches('[tool=shader]')) {
-        const vertexShaderSource = miningMeshMaterial.program.vertexShader.source;
-        const fragmentShaderSource = miningMeshMaterial.program.fragmentShader.source;
-        interfaceDocument.getElementById('shader-input-v').value = vertexShaderSource;
-        interfaceDocument.getElementById('shader-input-f').value = fragmentShaderSource;
         interfaceDocument.getElementById('shader-input').classList.toggle('open', !wasOpen);
       }
 
@@ -1597,6 +1593,7 @@ interfaceDocument.getElementById('shader-input').addEventListener('mousedown', e
   e.stopPropagation();
 });
 const shaderInputV = interfaceDocument.getElementById('shader-input-v');
+shaderInputV.value = miningMeshMaterial.program.vertexShader.source;
 shaderInputV.addEventListener('keydown', e => {
   e.stopPropagation();
 });
@@ -1604,6 +1601,7 @@ shaderInputV.addEventListener('input', e => {
   console.log('new vertex value', e.target.value);
 });
 const shaderInputF = interfaceDocument.getElementById('shader-input-f');
+shaderInputF.value = miningMeshMaterial.program.fragmentShader.source;
 shaderInputF.addEventListener('keydown', e => {
   e.stopPropagation();
 });

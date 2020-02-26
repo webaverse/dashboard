@@ -4,8 +4,6 @@ import {OrbitControls} from './OrbitControls.js';
 import {TransformControls} from './TransformControls.js';
 import {BufferGeometryUtils} from './BufferGeometryUtils.js';
 import {OutlineEffect} from './OutlineEffect.js';
-import {GLTFLoader} from './GLTFLoader.js';
-import {GLTFExporter} from './GLTFExporter.js';
 import {XRControllerModelFactory} from './XRControllerModelFactory.js';
 import {Ammo as AmmoLib} from './ammo.wasm.js';
 import './gif.js';
@@ -13,6 +11,7 @@ import {makePromise} from './util.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
 import {makeObjectState, bindObjectScript, tickObjectScript} from './runtime.js';
+import {objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
 
 const _load = () => {
 
@@ -426,82 +425,17 @@ const floorMesh = (() => {
 })();
 container.add(floorMesh);
 
-const miningMeshMaterial = (() => {
-  /* const terrainVsh = `
-    attribute vec3 color;
-    varying vec3 vColor;
-    varying vec3 vViewPosition;
-    void main() {
-      vec4 mvPosition = modelMatrix * vec4( position.xyz, 1.0 );
-      gl_Position = projectionMatrix * modelViewMatrix * vec4( position.xyz, 1.0 );
-      vColor = color;
-      vViewPosition = mvPosition.xyz;
-    }
-  `;
-  const terrainFsh = `
-    varying vec3 vColor;
-    uniform vec3 uSelect;
-    varying vec3 vViewPosition;
-    // vec4 color = vec4(${new THREE.Color(0x9ccc65).toArray().map(n => n.toFixed(8)).join(',')}, 1.0);
-    // vec4 color2 = vec4(${new THREE.Color(0xec407a).toArray().map(n => n.toFixed(8)).join(',')}, 1.0);
-    bool inRange(vec3 pos, vec3 minPos, vec3 maxPos) {
-      return pos.x >= minPos.x &&
-        pos.y >= minPos.y &&
-        pos.z >= minPos.z &&
-        pos.x <= maxPos.x &&
-        pos.y <= maxPos.y &&
-        pos.z <= maxPos.z;
-    }
-    void main() {
-      // vec3 vColor = vec3(1.0, 0, 0);
-      vec4 color = vec4(vColor, 1.0);
-      vec3 fdx = vec3( dFdx( -vViewPosition.x ), dFdx( -vViewPosition.y ), dFdx( -vViewPosition.z ) );
-      vec3 fdy = vec3( dFdy( -vViewPosition.x ), dFdy( -vViewPosition.y ), dFdy( -vViewPosition.z ) );
-      vec3 normal = normalize( cross( fdx, fdy ) );
-      float dotNL = saturate( dot( normal, normalize(vec3(1.0, 1.0, 1.0))) );
-
-      float range = 1.01;
-      // float range = 2.01;
-      vec3 minPos = uSelect - range;
-      vec3 maxPos = minPos + (range*2.);
-      // if (inRange(vViewPosition, minPos, maxPos)) {
-        // gl_FragColor = color2;
-      // } else {
-        gl_FragColor = color;
-      // }
-      // gl_FragColor.rgb += dotNL * 0.5;
-    }
-  `;
-  const material = new THREE.ShaderMaterial({
-    uniforms: {
-      uSelect: {
-        type: 'v3',
-        value: new THREE.Vector3(NaN, NaN, NaN),
-      },
-    },
-    vertexShader: terrainVsh,
-    fragmentShader: terrainFsh,
-    extensions: {
-      derivatives: true,
-    },
-  }); */
-  const material = new THREE.MeshStandardMaterial({
-    color: 0xFFFFFF,
-    vertexColors: THREE.VertexColors,
-  });
-
+(() => {
   // precompile shader
   const tempScene = new THREE.Scene();
-  const tempMesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(1, 1), material);
+  const tempMesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(1, 1), objectMaterial);
   tempMesh.frustumCulled = false;
   tempScene.add(tempMesh);
   renderer.compile(tempMesh, camera);
-
-  return material;
 })();
 const _makeMiningMesh = (x, y, z) => {
   const geometry = new THREE.BufferGeometry();
-  const material = miningMeshMaterial;
+  const material = objectMaterial;
   const mesh = new THREE.Mesh(geometry, material);
   mesh.frustumCulled = false;
   mesh.visible = false;
@@ -785,24 +719,6 @@ const _newMiningMeshes = () => {
   _refreshMiningMeshes();
 };
 const objectMeshes = [];
-const _makeObjectMeshFromGeometry = (geometry, matrix) => {
-  const material = miningMeshMaterial;
-  const objectMesh = new THREE.Mesh(geometry, material);
-  if (matrix) {
-    objectMesh.matrix.copy(matrix)
-      .decompose(objectMesh.position, objectMesh.quaternion, objectMesh.scale);
-  }
-  objectMesh.frustumCulled = false;
-  objectMesh.castShadow = true;
-  objectMesh.worker = null;
-  objectMesh.destroy = () => {
-    if (objectMesh.worker) {
-      objectMesh.worker.terminate();
-      objectMesh.worker = null;
-    }
-  };
-  return objectMesh;
-};
 const _centerObjectMesh = objectMesh => {
   const center = new THREE.Box3()
     .setFromObject(objectMesh)
@@ -815,7 +731,7 @@ const _commitMiningMeshes = async () => {
   const visibleMiningMeshes = miningMeshes.filter(miningMesh => miningMesh.visible);
   if (visibleMiningMeshes.length) {
     const geometry = BufferGeometryUtils.mergeBufferGeometries(visibleMiningMeshes.map(miningMesh => miningMesh.geometry));
-    const objectMesh = _makeObjectMeshFromGeometry(geometry, null);
+    const objectMesh = makeObjectMeshFromGeometry(geometry, null);
     _centerObjectMesh(objectMesh);
     container.add(objectMesh);
     objectMeshes.push(objectMesh);
@@ -861,55 +777,6 @@ const _centerObjectMeshes = () => {
   gridBox.max.y = Math.floor(gridBox.max.y);
   gridBox.max.z = Math.floor(gridBox.max.z);
   pointerMesh.resize(gridBox.min.x, gridBox.min.y, gridBox.min.z, gridBox.max.x+1, gridBox.max.y+1, gridBox.max.z+1);
-};
-const _saveObjectMeshes = async () => {
-  const exportScene = new THREE.Scene();
-  exportScene.userData.gltfExtensions = {
-    script: scriptInputTextarea.value,
-    shader: {
-      vertex: shaderInputV.value,
-      fragment: shaderInputF.value,
-    },
-  };
-  for (let i = 0; i < objectMeshes.length; i++) {
-    exportScene.add(objectMeshes[i].clone());
-  }
-
-  const p = makePromise();
-  const exporter = new GLTFExporter();
-  exporter.parse(exportScene, gltf => {
-    p.accept(gltf);
-  }, {
-    binary: true,
-    includeCustomExtensions: true,
-  });
-  return await p;
-};
-const _loadObjectMeshes = async arrayBuffer => {
-  const blob = new Blob([arrayBuffer], {
-    type: 'model/gltf.binary',
-  });
-  const src = URL.createObjectURL(blob);
-
-  const p = makePromise();
-  const loader = new GLTFLoader();
-  loader.load(src, p.accept, function onProgress() {}, p.reject);
-  const o = await p;
-  const {scene} = o;
-  const {userData: {gltfExtensions}} = scene;
-  if (gltfExtensions) {
-    const {script, shader} = gltfExtensions;
-    if (typeof script === 'string') {
-      scriptInputTextarea.value = script;
-      bindObjectScript(objectState, script, objectMeshes);
-    }
-    if (shader && typeof shader.vertex === 'string' && typeof shader.fragment === 'string') {
-      shaderInputV.value = shader.vertex;
-      shaderInputF.value = shader.fragment;
-      _bindObjectShader(shader.vertex, shader.fragment);
-    }
-  }
-  return scene.children.map(child => _makeObjectMeshFromGeometry(child.geometry, child.matrix));
 };
 const _screenshotMiningMeshes = async () => {
   const newScene = new THREE.Scene();
@@ -1547,7 +1414,7 @@ interfaceDocument.getElementById('shader-input').addEventListener('mousedown', e
   e.stopPropagation();
 });
 const shaderInputV = interfaceDocument.getElementById('shader-input-v');
-shaderInputV.value = miningMeshMaterial.program.vertexShader.source;
+shaderInputV.value = objectMaterial.program.vertexShader.source;
 shaderInputV.addEventListener('keydown', e => {
   e.stopPropagation();
 });
@@ -1555,7 +1422,7 @@ shaderInputV.addEventListener('input', e => {
   _bindObjectShader(shaderInputV.value, shaderInputF.value);
 });
 const shaderInputF = interfaceDocument.getElementById('shader-input-f');
-shaderInputF.value = miningMeshMaterial.program.fragmentShader.source;
+shaderInputF.value = objectMaterial.program.fragmentShader.source;
 shaderInputF.addEventListener('keydown', e => {
   e.stopPropagation();
 });
@@ -1577,7 +1444,7 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
     dataArrayBuffer,
     screenshotBlob,
   ] = await Promise.all([
-    _saveObjectMeshes(),
+    saveObjectMeshes(objectMeshes),
     _screenshotMiningMeshes(),
   ]);
 
@@ -1638,7 +1505,7 @@ _bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file =>
       objectMesh.destroy();
     }
     objectMeshes.length = 0;
-    const newObjectMeshes = await _loadObjectMeshes(arrayBuffer);
+    const newObjectMeshes = await loadObjectMeshes(arrayBuffer);
     objectMeshes.length = newObjectMeshes.length;
     for (let i = 0; i < newObjectMeshes.length; i++) {
       const newObjectMesh = newObjectMeshes[i];
@@ -1649,7 +1516,7 @@ _bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file =>
   r.readAsArrayBuffer(file);
 });
 interfaceDocument.getElementById('save-op').addEventListener('click', async e => {
-  const arrayBuffer = await _saveObjectMeshes();
+  const arrayBuffer = await saveObjectMeshes(objectMeshes);
   const blob = new Blob([arrayBuffer], {
     type: 'model/gltf.binary',
   });
@@ -2064,7 +1931,7 @@ renderer.setAnimationLoop(animate);
       objectMesh.destroy();
     }
     objectMeshes.length = 0;
-    const newObjectMeshes = await _loadObjectMeshes(arrayBuffer);
+    const newObjectMeshes = await loadObjectMeshes(arrayBuffer);
     objectMeshes.length = newObjectMeshes.length;
     for (let i = 0; i < objectMeshes.length; i++) {
       const newObjectMesh = newObjectMeshes[i];

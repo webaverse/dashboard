@@ -1324,6 +1324,11 @@ const _endTool = (primary, secondary) => {
   w.addEventListener('mousedown', _beginTool.bind(null, true, true));
   w.addEventListener('mouseup', _endTool.bind(null, true, true));
 });
+const _updateControllers = () => {
+  if (gripDowns.every(gripDown => gripDown)) {
+
+  }
+};
 
 // interface
 
@@ -1520,6 +1525,7 @@ const enterXrButton = interfaceDocument.getElementById('enter-xr-button');
 let currentSession = null;
 const triggerDowns = [false, false];
 const gripDowns = [false, false];
+let scaleState = null;
 function onSessionStarted(session) {
   session.addEventListener('end', onSessionEnded);
 
@@ -1552,13 +1558,34 @@ function onSessionStarted(session) {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
         _beginTool(false, true);
       }
+      const oldGripDownsAll = gripDowns.every(gripDown => gripDown);
       gripDowns[i] = true;
+      const newGripDownsAll = gripDowns.every(gripDown => gripDown);
+      if (newGripDownsAll && oldGripDownsAll) {
+        scaleState = {
+          startPosition: renderer.xr.getControllerGrip(0).position.clone()
+            .add(renderer.xr.getControllerGrip(1).position),
+          startQuaternion: new THREE.Quaternion().setFromUnitVectors(
+            new THREE.Vector3(1, 0, 0),
+            renderer.xr.getControllerGrip(0).position.clone()
+              .sub(renderer.xr.getControllerGrip(1).position)
+              .normalize()
+          ),
+          startWorldWidth: renderer.xr.getControllerGrip(0).position
+            .distanceTo(renderer.xr.getControllerGrip(1).position),
+          startScale: 1,
+        };
+      }
     });
     controllerGrip.addEventListener('selectend', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
         _endTool(false, true);
       }
       gripDowns[i] = false;
+      const newGripDownsAll = gripDowns.every(gripDown => gripDown);
+      if (!newGripDownsAll) {
+        scaleState = null;
+      }
     });
     scene.add(controllerGrip);
   }
@@ -1795,6 +1822,8 @@ function animate() {
         }
       }
     }
+
+    _updateControllers();
   }
 
   if (ammo) {

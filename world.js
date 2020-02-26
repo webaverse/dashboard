@@ -681,6 +681,20 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
   }
 })();
 
+(async () => {
+  const instance = await contract.getInstance();
+  const p = makePromise();
+  instance.getGridTokenIds([-5, 0, -5], [10, 10, 10], (err, ids) => {
+    if (!err) {
+      p.accept(ids);
+    } else {
+      p.reject(err);
+    }
+  });
+  const ids = await p;
+  console.log('ids', ids);
+})();
+
 function animate() {
   orbitControls.update();
   renderer.render(scene, camera);

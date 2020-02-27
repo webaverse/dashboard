@@ -693,11 +693,11 @@ const objectStates = [];
     }
     if (script) {
       const objectState = makeObjectState();
-      bindObjectScript(objectState, script, objectMeshes);
+      bindObjectScript(objectState, script, newObjectMeshes);
       objectStates.push(objectState);
     }
     if (vertex || fragment) {
-      bindObjectShader(objectMeshes, vertex, fragment);
+      bindObjectShader(newObjectMeshes, vertex, fragment);
     }
   }
 })();

@@ -1,4 +1,4 @@
-console.log('object worker started');
+// console.log('object worker started');
 
 const renderer = new EventTarget();
 

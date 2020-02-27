@@ -1618,12 +1618,18 @@ pointerMesh.material.uniforms.uBrushColor.value.set(currentColor.r, currentColor
 
 const brushSizeEl = interfaceDocument.getElementById('brush-size');
 let brushSize = brushSizeEl.value;
+brushSizeEl.addEventListener('mousedown', e => {
+  e.stopPropagation();
+});
 brushSizeEl.addEventListener('input', e => {
   brushSize = e.target.value;
   interfaceDocument.getElementById('brush-size-text').innerHTML = brushSize;
 });
 
 const worldScaleEl = interfaceDocument.getElementById('world-scale');
+worldScaleEl.addEventListener('mousedown', e => {
+  e.stopPropagation();
+});
 let worldScale = worldScaleEl.value;
 worldScaleEl.addEventListener('input', e => {
   worldScale = e.target.value;

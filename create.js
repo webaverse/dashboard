@@ -594,8 +594,6 @@ const _makeMiningMesh = (x, y, z) => {
           geometry.computeVertexNormals();
           mesh.visible = true;
 
-          geometry.settr = new Error().stack;
-
           dirtyUv = true;
         } else {
           mesh.visible = false;
@@ -609,12 +607,6 @@ const _makeMiningMesh = (x, y, z) => {
     if (dirtyUv) {
       dirtyUv = false;
 
-      geometry.unsettr = new Error().stack;
-
-      /* if (!geometry.attributes.position.array.length) {
-        debugger;
-      } */
-
       const arrayBuffer = new ArrayBuffer(300*1024);
       return uvWorker.request({
         method: 'uvParameterize',
@@ -623,9 +615,6 @@ const _makeMiningMesh = (x, y, z) => {
       }, [arrayBuffer]).then(res => {
         if (!dirtyUv) {
           return () => {
-            /* if (geometry.attributes.position.array.length !== res.uvs.length*3/2) {
-              debugger;
-            } */
             geometry.setAttribute('uv', new THREE.BufferAttribute(res.uvs, 2));
           };
         } else {
@@ -767,6 +756,7 @@ const _centerObjectMesh = objectMesh => {
   objectMesh.position.copy(center);
 };
 const _commitMiningMeshes = async () => {
+  _parameterizeMiningMeshes();
   await _waitForMiningMesh();
   const visibleMiningMeshes = miningMeshes.filter(miningMesh => miningMesh.visible);
   if (visibleMiningMeshes.length) {
@@ -1153,7 +1143,7 @@ const _updateRaycasterFromObject = (raycaster, o) => {
   raycaster.ray.direction.set(0, 0, -1).applyQuaternion(o.quaternion);
 };
 let hoveredObjectFace = null;
-const _updateTool = async raycaster => {
+const _updateTool = raycaster => {
   if (selectedTool === 'brush' || selectedTool === 'erase') {
     const targetPosition = raycaster.ray.origin;
     pointerMesh.material.uniforms.targetPos.value.set(
@@ -1168,8 +1158,7 @@ const _updateTool = async raycaster => {
       } else if (selectedTool === 'erase') {
         _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
       }
-      await _refreshMiningMeshes();
-      await _parameterizeMiningMeshes();
+      _refreshMiningMeshes();
     }
   } else if (selectedTool === 'select') {
     if (!toolGrip || !hoveredObjectMesh) {
@@ -1246,7 +1235,7 @@ const _updateTool = async raycaster => {
     uiMesh.intersect(null);
   }
 };
-const _beginTool = async (primary, secondary) => {
+const _beginTool = (primary, secondary) => {
   if (primary) {
     if (uiMesh.click()) {
       // nothing
@@ -1254,13 +1243,11 @@ const _beginTool = async (primary, secondary) => {
       if (selectedTool === 'brush') {
         const v = pointerMesh.material.uniforms.targetPos.value;
         _paintMiningMeshes(v.x+1, v.y+1, v.z+1);
-        await _refreshMiningMeshes();
-        await _parameterizeMiningMeshes();
+        _refreshMiningMeshes();
       } else if (selectedTool === 'erase') {
         const v = pointerMesh.material.uniforms.targetPos.value;
         _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
-        await _refreshMiningMeshes();
-        await _parameterizeMiningMeshes();
+        _refreshMiningMeshes();
       } else if (selectedTool === 'select') {
         if (!transformControlsHovered) {
           _setSelectedObjectMesh(hoveredObjectMesh);

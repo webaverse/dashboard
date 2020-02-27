@@ -634,6 +634,8 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
   }
 })();
 
+const objectMeshes = [];
+const objectStates = [];
 (async () => {
   const instance = await contract.getInstance();
   const idsPromise = makePromise();
@@ -682,14 +684,17 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
       .then(res => res.json());
     const {dataHash} = metadata;
 
-    const {objectMeshes, script, shader: {vertex, fragment}} = await loadObjectMeshes(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`);
-    for (let i = 0; i < objectMeshes.length; i++) {
-      const objectMesh = objectMeshes[i];
-      objectMesh.position.add(loc);
-      scene.add(objectMesh);
+    const {objectMeshes: newObjectMeshes, script, shader: {vertex, fragment}} = await loadObjectMeshes(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`);
+    for (let i = 0; i < newObjectMeshes.length; i++) {
+      const newObjectMesh = newObjectMeshes[i];
+      newObjectMesh.position.add(loc);
+      scene.add(newObjectMesh);
+      objectMeshes.push(newObjectMesh);
     }
     if (script) {
+      const objectState = makeObjectState();
       bindObjectScript(objectState, script, objectMeshes);
+      objectStates.push(objectState);
     }
     if (vertex || fragment) {
       bindObjectShader(objectMeshes, vertex, fragment);
@@ -719,6 +724,10 @@ function animate() {
   const now = Date.now();
   for (let i = 0; i < floorMeshes.length; i++) {
     floorMeshes[i].material.uniforms.uAnimation.value = (now%2000)/2000;
+  }
+
+  for (let i = 0; i < objectStates.length; i++) {
+    tickObjectScript(objectStates[i]);
   }
 
   /* if (ammo) {

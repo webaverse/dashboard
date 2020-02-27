@@ -423,33 +423,57 @@ const _handleMessage = data => {
     case 'uvParameterize': {
       const allocator = new Allocator();
 
-      const {positions: positionsData, faces: facesData, arrayBuffer} = data;
+      const {positions: positionsData, normals: normalsData, faces: facesData, arrayBuffer} = data;
 
       const positions = allocator.alloc(Float32Array, positionsData.length);
       positions.set(positionsData);
+      const normals = allocator.alloc(Float32Array, normalsData.length);
+      normals.set(normalsData);
       const faces = allocator.alloc(Uint32Array, facesData.length);
       faces.set(facesData);
+      const outPositions = allocator.alloc(Float32Array, 300*1024/Float32Array.BYTES_PER_ELEMENT);
+      const numOutPositions = allocator.alloc(Uint32Array, 1);
+      const outNormals = allocator.alloc(Float32Array, 300*1024/Float32Array.BYTES_PER_ELEMENT);
+      const numOutNormals = allocator.alloc(Uint32Array, 1);
+      const outFaces = allocator.alloc(Uint32Array, faces.length);
       const uvs = allocator.alloc(Float32Array, 300*1024/Float32Array.BYTES_PER_ELEMENT);
       const numUvs = allocator.alloc(Uint32Array, 1);
 
       self.Module._doUvParameterize(
         positions.offset,
         positions.length,
+        normals.offset,
+        normals.length,
         faces.offset,
         faces.length,
+        outPositions.offset,
+        numOutPositions.offset,
+        outNormals.offset,
+        numOutNormals.offset,
+        outFaces.offset,
         uvs.offset,
         numUvs.offset
       );
 
       let index = 0;
+      const outPositions2 = new Float32Array(arrayBuffer, index, numOutPositions[0]);
+      outPositions2.set(outPositions.slice(0, numOutPositions[0]));
+      index += numOutPositions[0]*Float32Array.BYTES_PER_ELEMENT;
+      const outNormals2 = new Float32Array(arrayBuffer, index, numOutNormals[0]);
+      outNormals2.set(outNormals.slice(0, numOutNormals[0]));
+      index += numOutNormals[0]*Float32Array.BYTES_PER_ELEMENT;
+      const outFaces2 = new Uint32Array(arrayBuffer, index, faces.length);
+      outFaces2.set(outFaces.slice(0, faces.length));
+      index += faces.length*Uint32Array.BYTES_PER_ELEMENT;
       const outUvs = new Float32Array(arrayBuffer, index, numUvs[0]);
-      outUvs.set(
-        uvs.slice(0, numUvs[0])
-      );
-      // index += numUvs[0]*Float32Array.BYTES_PER_ELEMENT;
+      outUvs.set(uvs.slice(0, numUvs[0]));
+      index += numUvs[0]*Float32Array.BYTES_PER_ELEMENT;
 
       self.postMessage({
         result: {
+          positions: outPositions2,
+          normals: outNormals2,
+          faces: outFaces2,
           uvs: outUvs,
         },
       }, [arrayBuffer]);

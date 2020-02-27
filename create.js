@@ -585,7 +585,6 @@ const _makeMiningMesh = (x, y, z) => {
         scale,
         arrayBuffer,
       }, [arrayBuffer]).then(res => () => {
-        // console.log('got res', res);
         if (res.positions.length > 0) {
           geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
           geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(res.positions.length*2/3), 2));
@@ -612,12 +611,18 @@ const _makeMiningMesh = (x, y, z) => {
       return uvWorker.request({
         method: 'uvParameterize',
         positions: geometry.attributes.position.array,
+        normals: geometry.attributes.color.array,
         faces: geometry.index.array,
         arrayBuffer,
       }, [arrayBuffer]).then(res => {
         if (!dirtyUv) {
           return () => {
+            geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(res.normals, 3));
             geometry.setAttribute('uv', new THREE.BufferAttribute(res.uvs, 2));
+            geometry.deleteAttribute('normal');
+            geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
+            geometry.computeVertexNormals();
           };
         } else {
           return mesh.parameterize();
@@ -1225,8 +1230,8 @@ const _updateTool = raycaster => {
       let {image: canvas} = texture;
       if (canvas.nodeName !== 'CANVAS') {
         canvas = document.createElement('canvas');
-        canvas.width = 512;
-        canvas.height = 512;
+        canvas.width = 2048;
+        canvas.height = 2048;
         const ctx = canvas.getContext('2d');
         ctx.fillStyle = '#FFF';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1236,7 +1241,8 @@ const _updateTool = raycaster => {
         object.material.map = texture;
       }
       const {ctx} = canvas;
-      ctx.fillRect(uv.x * canvas.width - 2, (1 - uv.y) * canvas.height - 2, 4, 4);
+      const pixelWidth = 11;
+      ctx.fillRect(uv.x * canvas.width - (pixelWidth-1)/2, (1 - uv.y) * canvas.height - (pixelWidth-1)/2, pixelWidth, pixelWidth);
       texture.needsUpdate = true;
 
       collisionMesh.position.copy(point);

@@ -218,11 +218,11 @@ const _makeFloorMesh = (x, z) => {
   // mesh.position.set(x*floorSize, 0, z*floorSize);
   mesh.material.uniforms.uPosition.value.copy(mesh.position);
   mesh.frustumCulled = false;
-  mesh.update = () => {
+  /* mesh.update = () => {
     const xrSite = _getFloorMeshXrSite(mesh);
     const color = _getSelectedColor(xrSite);
     material.uniforms.uColor.value.setHex(color);
-  };
+  }; */
   const floorPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0));
   const highlightColor = new THREE.Color(0x42a5f5);
   const intersection = new THREE.Vector3(NaN, NaN, NaN);

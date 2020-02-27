@@ -1239,7 +1239,6 @@ const _updateTool = raycaster => {
           const ctx = canvas.getContext('2d');
           ctx.fillStyle = '#FFF';
           ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = '#000';
           ctx.lineWidth = 11;
           canvas.ctx = ctx;
 
@@ -1249,16 +1248,26 @@ const _updateTool = raycaster => {
         const {ctx} = canvas;
         const x = uv.x * canvas.width - (ctx.lineWidth-1)/2;
         const y = (1 - uv.y) * canvas.height - (ctx.lineWidth-1)/2;
-        if (hoveredObjectPaint && Math.sqrt(sq(x - hoveredObjectPaint.lastX), sq(y - hoveredObjectPaint.lastY)) < ctx.lineWidth*10) {
+        if (
+          hoveredObjectPaint &&
+          (
+            faceIndex === hoveredObjectPaint.faceIndex ||
+            Math.sqrt(sq(x - hoveredObjectPaint.lastX), sq(y - hoveredObjectPaint.lastY)) < ctx.lineWidth*10
+          )
+        ) {
+          ctx.beginPath();
+          ctx.strokeStyle = '#' + currentColor.getHexString();
           ctx.moveTo(hoveredObjectPaint.lastX, hoveredObjectPaint.lastY);
           ctx.lineTo(x, y);
           ctx.stroke();
         } else {
+          ctx.fillStyle = '#' + currentColor.getHexString();
           ctx.fillRect(x, y, ctx.lineWidth, ctx.lineWidth);
         }
         hoveredObjectPaint = {
           lastX: x,
           lastY: y,
+          faceIndex,
         };
         texture.needsUpdate = true;
       } else {

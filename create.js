@@ -1278,6 +1278,10 @@ const _endTool = (primary, secondary) => {
         }
         break;
       }
+      case 27: { // esc
+        _setSelectedObjectMesh(null);
+        break;
+      }
       case 8: // backspace
       case 46: // del
       {

@@ -1249,7 +1249,7 @@ const _updateTool = raycaster => {
         const {ctx} = canvas;
         const x = uv.x * canvas.width - (ctx.lineWidth-1)/2;
         const y = (1 - uv.y) * canvas.height - (ctx.lineWidth-1)/2;
-        if (hoveredObjectPaint && Math.sqrt(sq(x - hoveredObjectPaint.lastX), sq(y - hoveredObjectPaint.lastY)) < ctx.lineWidth*20) {
+        if (hoveredObjectPaint && Math.sqrt(sq(x - hoveredObjectPaint.lastX), sq(y - hoveredObjectPaint.lastY)) < ctx.lineWidth*10) {
           ctx.moveTo(hoveredObjectPaint.lastX, hoveredObjectPaint.lastY);
           ctx.lineTo(x, y);
           ctx.stroke();

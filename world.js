@@ -224,24 +224,63 @@ const _makeFloorMesh = (x, z) => {
     material.uniforms.uColor.value.setHex(color);
   }; */
   const floorPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0));
-  const highlightColor = new THREE.Color(0x42a5f5);
-  const intersection = new THREE.Vector3(NaN, NaN, NaN);
-  mesh.getIntersection = () => !isNaN(intersection.x) ? intersection : null;
+  const intersectHighlightColor = new THREE.Color(0x42a5f5);
+  const intersection = [NaN, NaN, NaN, NaN];
+  mesh.getIntersection = () => !isNaN(intersection[0]) ? intersection : null;
   mesh.intersect = (raycaster, size) => {
-    intersection.set(NaN, NaN, NaN);
+    for (let i = 0; i < 4; i++) {
+      intersection[i] = NaN;
+    }
+
+    const intersectionResult = new THREE.Vector3();
+    if (raycaster && raycaster.ray.intersectPlane(floorPlane, intersectionResult)) {
+      intersection[0] = Math.floor(intersectionResult.x);
+      intersection[1] = Math.floor(intersectionResult.z);
+      intersection[2] = intersection[0] + size[0];
+      intersection[3] = intersection[1] + size[2];
+    }
+  };
+  let highlights = {};
+  mesh.setHighlight = (x1, z1, x2, z2, c) => {
+    for (let z = z1; z < z2; z++) {
+      for (let x = x1; x < x2; x++) {
+        highlights[[x, z].join(',')] = c;
+      }
+    }
+  };
+  mesh.clearHighlights = () => {
+    highlights = {};
+  };
+  mesh.refresh = () => {
     geometry.attributes.color.array.fill(0);
 
-    if (raycaster && raycaster.ray.intersectPlane(floorPlane, intersection)) {
-      intersection.x = Math.floor(intersection.x);
-      intersection.z = Math.floor(intersection.z);
-      for (let i = 0; i < geometry.attributes.position.array.length; i += 3) {
-        const px = geometry.attributes.position.array[i];
-        const pz = geometry.attributes.position.array[i+2];
-        if (px > intersection.x && px < intersection.x + size[0] && pz > intersection.z && pz < intersection.z + size[2]) {
-          geometry.attributes.color.array[i] = highlightColor.r;
-          geometry.attributes.color.array[i+1] = highlightColor.g;
-          geometry.attributes.color.array[i+2] = highlightColor.b;
+    const _highlight = (x, z, c) => {
+      x += floorSize/2;
+      z += floorSize/2;
+      const startIndex = (floorSize*x + z)*3*2;
+      if (startIndex*3 >= 0 && startIndex*3 < geometry.attributes.color.array.length) {
+        for (let i = 0; i < 3*2; i++) {
+          geometry.attributes.color.array[startIndex*3 + i*3] += c.r;
+          geometry.attributes.color.array[startIndex*3 + i*3 + 1] += c.g;
+          geometry.attributes.color.array[startIndex*3 + i*3 + 2] += c.b;
         }
+      }
+    };
+
+    if (!isNaN(intersection[0])) {
+      for (let x = intersection[0]; x < intersection[2]; x++) {
+        for (let z = intersection[1]; z < intersection[3]; z++) {
+          _highlight(x, z, intersectHighlightColor);
+        }
+      }
+    }
+    for (const k in highlights) {
+      const match = k.match(/^(-?[0-9]+),(-?[0-9]+)$/);
+      if (match) {
+        const x = parseInt(match[1], 10);
+        const z = parseInt(match[2], 10);
+        const c = highlights[k];
+        _highlight(x, z, c);
       }
     }
 
@@ -276,17 +315,18 @@ background.addEventListener('dragover', e => {
 
   _updateRaycasterFromMouseEvent(localRaycaster, e);
   floorMeshes[0].intersect(localRaycaster, dragData.size);
+  floorMeshes[0].refresh();
 });
 background.addEventListener('drop', async e => {
   e.preventDefault();
 
   const intersection = floorMeshes[0].getIntersection();
   if (intersection) {
-    console.log('drop to', dragData.id, [intersection.x, 0, intersection.z], dragData.size);
+    console.log('drop to', dragData.id, [intersection[0], 0, intersection[1]], dragData.size);
 
     const instance = await contract.getInstance();
     const p = makePromise();
-    instance.bindToGrid(dragData.id, [intersection.x, 0, intersection.z], err => {
+    instance.bindToGrid(dragData.id, [intersection[0], 0, intersection[1]], err => {
       if (!err) {
         p.accept();
       } else {
@@ -294,6 +334,7 @@ background.addEventListener('drop', async e => {
       }
     });
     floorMeshes[0].intersect(null);
+    floorMeshes[0].refresh();
     await p;
   }
 });
@@ -518,7 +559,6 @@ const uiMesh = (() => {
       for (let i = 0; i < anchors.length; i++) {
         const anchor = anchors[i];
         const {top, bottom, left, right, width, height} = anchor;
-        // console.log('check', {x: uv.x, y: uv.y, top, bottom, left, right});
         if (uv.x >= left && uv.x < right && uv.y >= top && uv.y < bottom) {
           hoveredAnchor = anchor;
           
@@ -654,6 +694,7 @@ const objectStates = [];
     const [
       metadataHash,
       loc,
+      size,
     ] = await Promise.all([
       (() => {
         const metadataHashPromise = makePromise();
@@ -678,6 +719,18 @@ const objectStates = [];
         });
         return locationPromise;
       })(),
+      (() => {
+        const sizePromise = makePromise();
+        instance.getSize(id, (err, size) => {
+          if (!err) {
+            size = new THREE.Vector3().fromArray(size.map(l => l.toNumber()));
+            sizePromise.accept(size);
+          } else {
+            sizePromise.reject(err);
+          }
+        });
+        return sizePromise;
+      })(),
     ]);
 
     const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${metadataHash}`)
@@ -699,7 +752,10 @@ const objectStates = [];
     if (vertex || fragment) {
       bindObjectShader(newObjectMeshes, vertex, fragment);
     }
+
+    floorMeshes[0].setHighlight(loc.x, loc.z, loc.x + size.x, loc.z + size.z, new THREE.Color(0x66bb6a));
   }
+  floorMeshes[0].refresh();
 })();
 
 function animate() {

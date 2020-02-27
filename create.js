@@ -45,6 +45,7 @@ function downloadFile(file, filename) {
   tempLink.click();
   document.body.removeChild(tempLink);
 }
+function sq(n) { return n*n; }
 
 const PARCEL_SIZE = 10;
 const size = PARCEL_SIZE + 1;
@@ -1150,6 +1151,7 @@ const _updateRaycasterFromObject = (raycaster, o) => {
   raycaster.ray.direction.set(0, 0, -1).applyQuaternion(o.quaternion);
 };
 let hoveredObjectFace = null;
+let hoveredObjectPaint = null;
 const _updateTool = raycaster => {
   if (selectedTool === 'brush' || selectedTool === 'erase') {
     const targetPosition = raycaster.ray.origin;
@@ -1233,18 +1235,34 @@ const _updateTool = raycaster => {
           canvas = document.createElement('canvas');
           canvas.width = 2048;
           canvas.height = 2048;
+
           const ctx = canvas.getContext('2d');
           ctx.fillStyle = '#FFF';
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.fillStyle = '#000';
+          ctx.lineWidth = 11;
           canvas.ctx = ctx;
+
           texture = new THREE.Texture(canvas);
           object.material.map = texture;
         }
         const {ctx} = canvas;
-        const pixelWidth = 11;
-        ctx.fillRect(uv.x * canvas.width - (pixelWidth-1)/2, (1 - uv.y) * canvas.height - (pixelWidth-1)/2, pixelWidth, pixelWidth);
+        const x = uv.x * canvas.width - (ctx.lineWidth-1)/2;
+        const y = (1 - uv.y) * canvas.height - (ctx.lineWidth-1)/2;
+        if (hoveredObjectPaint && Math.sqrt(sq(x - hoveredObjectPaint.lastX), sq(y - hoveredObjectPaint.lastY)) < ctx.lineWidth*20) {
+          ctx.moveTo(hoveredObjectPaint.lastX, hoveredObjectPaint.lastY);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+        } else {
+          ctx.fillRect(x, y, ctx.lineWidth, ctx.lineWidth);
+        }
+        hoveredObjectPaint = {
+          lastX: x,
+          lastY: y,
+        };
         texture.needsUpdate = true;
+      } else {
+        hoveredObjectPaint = null;
       }
 
       collisionMesh.position.copy(point);

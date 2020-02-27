@@ -1229,6 +1229,20 @@ const _endTool = (primary, secondary) => {
     }
   }
 };
+let clipboardObjectMesh = null;
+const _clipboardCopy = objectMesh => {
+  clipboardObjectMesh = {
+    geometry: objectMesh.geometry.clone(),
+    matrix: objectMesh.matrix.clone(),
+  };
+};
+const _clipboardPaste = () => {
+  if (clipboardObjectMesh) {
+    const objectMesh = makeObjectMeshFromGeometry(clipboardObjectMesh.geometry, clipboardObjectMesh.matrix);
+    container.add(objectMesh);
+    objectMeshes.push(objectMesh);
+  }
+};
 [window, interfaceWindow].forEach(w => {
   w.addEventListener('keydown', e => {
     switch (e.which) {
@@ -1272,9 +1286,35 @@ const _endTool = (primary, secondary) => {
         }
         break;
       }
+      case 88: { // X
+        if (e.ctrlKey) {
+          if (selectedObjectMesh) {
+            _clipboardCopy(selectedObjectMesh);
+            
+            const oldSelectedObjectMesh = selectedObjectMesh;
+
+            _setHoveredObjectMesh(null);
+            _setSelectedObjectMesh(null);
+
+            oldSelectedObjectMesh.parent.remove(oldSelectedObjectMesh);
+            objectMeshes.splice(objectMeshes.indexOf(oldSelectedObjectMesh), 1);
+          }
+        }
+        break;
+      }
       case 67: { // C
-        if (e.shiftKey) {
+        if (e.ctrlKey) {
+          if (selectedObjectMesh) {
+            _clipboardCopy(selectedObjectMesh);
+          }
+        } else if (e.shiftKey) {
           _centerObjectMeshes();
+        }
+        break;
+      }
+      case 86: { // V
+        if (e.ctrlKey) {
+          _clipboardPaste();
         }
         break;
       }

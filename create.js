@@ -1216,6 +1216,21 @@ const _updateTool = raycaster => {
       }
       hoveredObjectFace = null;
     }
+  } else if (selectedTool === 'pencil') {
+    const intersections = raycaster.intersectObjects(objectMeshes);
+    if (intersections.length > 0) {
+      const [{object, point, faceIndex, uv}] = intersections;
+
+      const canvas = object.material.map.image;
+      const {ctx} = canvas;
+      ctx.fillRect(uv.x * canvas.width - 2, (1 - uv.y) * canvas.height - 2, 4, 4);
+      object.material.map.needsUpdate = true;
+
+      collisionMesh.position.copy(point);
+      collisionMesh.visible = true;
+    } else {
+      collisionMesh.visible = false;
+    }
   }
   
   const intersections = raycaster.intersectObject(uiMesh);

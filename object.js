@@ -3,7 +3,7 @@ import {GLTFLoader} from './GLTFLoader.js';
 import {GLTFExporter} from './GLTFExporter.js';
 import {makePromise} from './util.js';
 
-function CheckerBoardTexture(color1, color2, rows, cols) {
+/* function CheckerBoardTexture(color1, color2, rows, cols) {
   color1 = color1 || new THREE.Color(0xafafaf);
   color2 = color2 || new THREE.Color(0x3f3f3f);
 
@@ -38,9 +38,8 @@ function CheckerBoardTexture(color1, color2, rows, cols) {
   THREE.DataTexture.call(this, pixelData, width, height, format, type, mapping, wrapS, wrapT, magFilter, minFilter);
   this.repeat.set(rows * .5, cols * .5);
   this.needsUpdate = true;
-  // return THREE.ImageUtils.generateDataTexture(4, 4, new THREE.Color(0xff0000));
 }
-CheckerBoardTexture.prototype = Object.create(THREE.DataTexture.prototype);
+CheckerBoardTexture.prototype = Object.create(THREE.DataTexture.prototype); */
 
 export const objectMaterial = (() => {
   /* const terrainVsh = `
@@ -104,12 +103,23 @@ export const objectMaterial = (() => {
   const material = new THREE.MeshStandardMaterial({
     color: 0xFFFFFF,
     vertexColors: THREE.VertexColors,
-    map: new CheckerBoardTexture(undefined, undefined, 64, 64),
+    // map: new CheckerBoardTexture(undefined, undefined, 64, 64),
   });
   return material;
 })();
 export function makeObjectMeshFromGeometry(geometry, matrix) {
-  const objectMesh = new THREE.Mesh(geometry, objectMaterial);
+  const material = objectMaterial.clone();
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#FFF';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#000';
+  canvas.ctx = ctx;
+  material.map = new THREE.Texture(canvas);
+
+  const objectMesh = new THREE.Mesh(geometry, material);
   if (matrix) {
     objectMesh.matrix.copy(matrix)
       .decompose(objectMesh.position, objectMesh.quaternion, objectMesh.scale);

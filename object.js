@@ -102,16 +102,15 @@ export const objectMaterial = (() => {
   }); */
 
   const pixelData = Uint8Array.from([255, 255, 255, 0]);
-  var width = 1,
-    height = 1,
-    format = THREE.RGBAFormat,
-    type = THREE.UnsignedByteType,
-    mapping = THREE.UVMapping,
-    wrapS = THREE.RepeatWrapping,
-    wrapT = THREE.RepeatWrapping,
-    magFilter = THREE.LinearFilter,
-    minFilter = THREE.LinearMipMapLinearFilter;
-
+  const width = 1;
+  const height = 1;
+  const format = THREE.RGBAFormat;
+  const type = THREE.UnsignedByteType;
+  const mapping = THREE.UVMapping;
+  const wrapS = THREE.RepeatWrapping;
+  const wrapT = THREE.RepeatWrapping;
+  const magFilter = THREE.LinearFilter;
+  const minFilter = THREE.LinearFilter;
   const texture = new THREE.DataTexture(pixelData, width, height, format, type, mapping, wrapS, wrapT, magFilter, minFilter);
 
   const material = new THREE.MeshStandardMaterial({

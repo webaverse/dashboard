@@ -85,13 +85,13 @@ export function makeObjectMeshFromGeometry(geometry, matrix) {
   };
   return objectMesh;
 };
-export async function saveObjectMeshes(objectMeshes) {
+export async function saveObjectMeshes(objectMeshes, script, vertexShader, fragmentShader) {
   const exportScene = new THREE.Scene();
   exportScene.userData.gltfExtensions = {
-    script: scriptInputTextarea.value,
+    script,
     shader: {
-      vertex: shaderInputV.value,
-      fragment: shaderInputF.value,
+      vertex: vertexShader,
+      fragment: fragmentShader,
     },
   };
   for (let i = 0; i < objectMeshes.length; i++) {
@@ -129,17 +129,12 @@ export async function loadObjectMeshes(s) {
   const o = await p;
   const {scene} = o;
   const {userData: {gltfExtensions}} = scene;
-  if (gltfExtensions) {
-    const {script, shader} = gltfExtensions;
-    if (typeof script === 'string') {
-      scriptInputTextarea.value = script;
-      bindObjectScript(objectState, script, objectMeshes);
-    }
-    if (shader && typeof shader.vertex === 'string' && typeof shader.fragment === 'string') {
-      shaderInputV.value = shader.vertex;
-      shaderInputF.value = shader.fragment;
-      _bindObjectShader(shader.vertex, shader.fragment);
-    }
-  }
-  return scene.children.map(child => makeObjectMeshFromGeometry(child.geometry, child.matrix));
+  return {
+    objectMeshes: scene.children.map(child => makeObjectMeshFromGeometry(child.geometry, child.matrix)),
+    script: (gltfExtensions && typeof gltfExtensions.script === 'string') ? gltfExtensions.script : null,
+    shader: {
+      vertex: (gltfExtensions && gltfExtensions.shader && typeof gltfExtensions.shader.vertex === 'string') ? gltfExtensions.shader.vertex : null,
+      fragment: (gltfExtensions && gltfExtensions.shader && typeof gltfExtensions.shader.fragment === 'string') ? gltfExtensions.shader.fragment : null,
+    },
+  };
 };

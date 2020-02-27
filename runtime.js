@@ -63,3 +63,6 @@ export function bindObjectScript(objectState, scriptSrc, objectMeshes) {
 export function tickObjectScript(objectState) {
   objectState.worker && objectState.worker.tick();
 };
+export function bindObjectShader(objectMeshes, vertex, fragment) {
+  // XXX
+};

@@ -1500,6 +1500,14 @@ interfaceDocument.getElementById('new-op').addEventListener('click', e => {
 
   objectNameEl.value = '';
   _newMiningMeshes();
+  _setHoveredObjectMesh(null);
+  _setSelectedObjectMesh(null);
+  for (let i = 0; i < objectMeshes.length; i++) {
+    const objectMesh = objectMeshes[i];
+    container.remove(objectMesh);
+    objectMesh.destroy();
+  }
+  objectMeshes.length = 0;
 });
 _bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file => {
   const r = new FileReader();

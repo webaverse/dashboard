@@ -234,10 +234,10 @@ const _handleMessage = data => {
       scale[2] = scaleData[2];
       const positions = allocator.alloc(Float32Array, 1024*1024/Float32Array.BYTES_PER_ELEMENT);
       const colors = allocator.alloc(Float32Array, 1024*1024/Uint8Array.BYTES_PER_ELEMENT);
-      const barycentrics = allocator.alloc(Float32Array, 1024*1024/Float32Array.BYTES_PER_ELEMENT);
+      const faces = allocator.alloc(Uint32Array, 1024*1024/Float32Array.BYTES_PER_ELEMENT);
       const positionIndex = allocator.alloc(Uint32Array, 1);
       const colorIndex = allocator.alloc(Uint32Array, 1);
-      const barycentricIndex = allocator.alloc(Uint32Array, 1);
+      const faceIndex = allocator.alloc(Uint32Array, 1);
       self.Module._doMarchingCubes(
         dims.offset,
         potential.offset,
@@ -246,10 +246,10 @@ const _handleMessage = data => {
         scale.offset,
         positions.offset,
         colors.offset,
-        barycentrics.offset,
+        faces.offset,
         positionIndex.offset,
         colorIndex.offset,
-        barycentricIndex.offset
+        faceIndex.offset
       );
 
       let index = 0;
@@ -260,15 +260,15 @@ const _handleMessage = data => {
       const outColors = new Float32Array(arrayBuffer, index, colorIndex[0]);
       outColors.set(colors.slice(0, colorIndex[0]));
       index += colorIndex[0]*Float32Array.BYTES_PER_ELEMENT;
-      const outBarycentrics = new Float32Array(arrayBuffer, index, barycentricIndex[0]);
-      outBarycentrics.set(barycentrics.slice(0, barycentricIndex[0]));
-      // index += barycentricIndex[0]*Float32Array.BYTES_PER_ELEMENT;
+      const outFaces = new Uint32Array(arrayBuffer, index, faceIndex[0]);
+      outFaces.set(faces.slice(0, faceIndex[0]));
+      // index += faceIndex[0]*Uint8Array.BYTES_PER_ELEMENT;
 
       self.postMessage({
         result: {
           positions: outPositions,
           colors: outColors,
-          barycentrics: outBarycentrics,
+          faces: outFaces,
           arrayBuffer,
         },
       }, [arrayBuffer]);
@@ -423,16 +423,20 @@ const _handleMessage = data => {
     case 'uvParameterize': {
       const allocator = new Allocator();
 
-      const {positions: positionsData, arrayBuffer} = data;
+      const {positions: positionsData, faces: facesData, arrayBuffer} = data;
 
       const positions = allocator.alloc(Float32Array, positionsData.length);
       positions.set(positionsData);
+      const faces = allocator.alloc(Uint32Array, facesData.length);
+      faces.set(facesData);
       const uvs = allocator.alloc(Float32Array, 300*1024/Float32Array.BYTES_PER_ELEMENT);
       const numUvs = allocator.alloc(Uint32Array, 1);
 
       self.Module._doUvParameterize(
         positions.offset,
         positions.length,
+        faces.offset,
+        faces.length,
         uvs.offset,
         numUvs.offset
       );

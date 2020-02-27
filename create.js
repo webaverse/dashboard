@@ -585,12 +585,13 @@ const _makeMiningMesh = (x, y, z) => {
         scale,
         arrayBuffer,
       }, [arrayBuffer]).then(res => () => {
+        // console.log('got res', res);
         if (res.positions.length > 0) {
           geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
           geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(res.positions.length*2/3), 2));
           geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
-          // geometry.setAttribute('highlight', new THREE.BufferAttribute(new Float32Array(res.positions.array.length), 3));
           geometry.deleteAttribute('normal');
+          geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
           geometry.computeVertexNormals();
           mesh.visible = true;
 
@@ -611,6 +612,7 @@ const _makeMiningMesh = (x, y, z) => {
       return uvWorker.request({
         method: 'uvParameterize',
         positions: geometry.attributes.position.array,
+        faces: geometry.index.array,
         arrayBuffer,
       }, [arrayBuffer]).then(res => {
         if (!dirtyUv) {

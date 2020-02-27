@@ -1408,7 +1408,9 @@ scriptInputTextarea.value = `renderer.addEventListener('tick', () => {
   });
 });`;
 scriptInputTextarea.addEventListener('input', e => {
-  bindObjectScript(objectState, e.target.value, objectMeshes);
+  if (scriptsBound) {
+    bindObjectScript(objectState, e.target.value, objectMeshes);
+  }
 });
 scriptInputTextarea.addEventListener('keydown', e => {
   e.stopPropagation();
@@ -1518,7 +1520,9 @@ _bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file =>
     }
     if (script) {
       scriptInputTextarea.value = script;
-      bindObjectScript(objectState, script, objectMeshes);
+      if (scriptsBound) {
+        bindObjectScript(objectState, script, objectMeshes);
+      }
     }
     if (vertex) {
       shaderInputV.value = vertex;
@@ -1585,6 +1589,19 @@ worldScaleEl.addEventListener('input', e => {
     .decompose(container.position, container.quaternion, container.scale);
 
   interfaceDocument.getElementById('world-scale-text').innerHTML = worldScale;
+});
+
+let scriptsBound = false;
+interfaceDocument.getElementById('enable-scripts-button').addEventListener('click', e => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  scriptsBound = !scriptsBound;
+  if (scriptsBound) {
+    bindObjectScript(objectState, scriptInputTextarea.value, objectMeshes);
+  } else {
+    bindObjectScript(objectState, null, null);
+  }
 });
 
 let physicsBound = false;
@@ -1957,7 +1974,9 @@ renderer.setAnimationLoop(animate);
     }
     if (script) {
       scriptInputTextarea.value = script;
-      bindObjectScript(objectState, script, objectMeshes);
+      if (scriptsBound) {
+        bindObjectScript(objectState, script, objectMeshes);
+      }
     }
     if (vertex) {
       shaderInputV.value = vertex;

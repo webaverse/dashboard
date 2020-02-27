@@ -1226,24 +1226,26 @@ const _updateTool = raycaster => {
     if (intersections.length > 0) {
       const [{object, point, faceIndex, uv}] = intersections;
 
-      let texture = object.material.map;
-      let {image: canvas} = texture;
-      if (canvas.nodeName !== 'CANVAS') {
-        canvas = document.createElement('canvas');
-        canvas.width = 2048;
-        canvas.height = 2048;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#FFF';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#000';
-        canvas.ctx = ctx;
-        texture = new THREE.Texture(canvas);
-        object.material.map = texture;
+      if (toolDown) {
+        let texture = object.material.map;
+        let {image: canvas} = texture;
+        if (canvas.nodeName !== 'CANVAS') {
+          canvas = document.createElement('canvas');
+          canvas.width = 2048;
+          canvas.height = 2048;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#FFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#000';
+          canvas.ctx = ctx;
+          texture = new THREE.Texture(canvas);
+          object.material.map = texture;
+        }
+        const {ctx} = canvas;
+        const pixelWidth = 11;
+        ctx.fillRect(uv.x * canvas.width - (pixelWidth-1)/2, (1 - uv.y) * canvas.height - (pixelWidth-1)/2, pixelWidth, pixelWidth);
+        texture.needsUpdate = true;
       }
-      const {ctx} = canvas;
-      const pixelWidth = 11;
-      ctx.fillRect(uv.x * canvas.width - (pixelWidth-1)/2, (1 - uv.y) * canvas.height - (pixelWidth-1)/2, pixelWidth, pixelWidth);
-      texture.needsUpdate = true;
 
       collisionMesh.position.copy(point);
       collisionMesh.visible = true;

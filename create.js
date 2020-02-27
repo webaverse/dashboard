@@ -251,7 +251,7 @@ const pointerMesh = (() => {
 })();
 container.add(pointerMesh);
 
-const mcWorker = (() => {
+const _makeWasmWorker = () => {
   let cbs = [];
   const w = new Worker('mc-worker.js');
   w.onmessage = e => {
@@ -274,7 +274,9 @@ const mcWorker = (() => {
     });
   });
   return w;
-})();
+};
+const mcWorker = _makeWasmWorker();
+const uvWorker = _makeWasmWorker();
 let ammo = null;
 (async () => {
   const p = makePromise();
@@ -481,7 +483,7 @@ const _makeMiningMesh = (x, y, z) => {
     const z = pos.z - shift[2];
     return potential[x + y*size*size + z*size];
   }; */
-  let dirty = false;
+  let dirtyPos = false;
   mesh.set = (value, x, y, z) => {
     x -= mesh.x * PARCEL_SIZE;
     y -= mesh.y * PARCEL_SIZE;
@@ -507,7 +509,7 @@ const _makeMiningMesh = (x, y, z) => {
             const index = ax + ay*size*size + az*size;
             const d = (max - Math.sqrt(dx*dx + dy*dy + dz*dz)) / max;
             potential[index] = value > 0 ? Math.min(potential[index], -d) : Math.max(potential[index], d);
-            dirty = true;
+            dirtyPos = true;
           }
         }
       }
@@ -528,7 +530,7 @@ const _makeMiningMesh = (x, y, z) => {
                 brush[xi] = currentColor.r*255;
                 brush[yi] = currentColor.g*255;
                 brush[zi] = currentColor.b*255;
-                dirty = true;
+                dirtyPos = true;
               // }
             }
           }
@@ -560,16 +562,17 @@ const _makeMiningMesh = (x, y, z) => {
               brush[xi] = currentColor.r*255;
               brush[yi] = currentColor.g*255;
               brush[zi] = currentColor.b*255;
-              dirty = true;
+              dirtyPos = true;
             // }
           }
         }
       }
     }
   };
+  let positions = null;
   mesh.refresh = () => {
-    if (dirty) {
-      dirty = false;
+    if (dirtyPos) {
+      dirtyPos = false;
 
       const arrayBuffer = new ArrayBuffer(300*1024);
       return mcWorker.request({
@@ -579,21 +582,51 @@ const _makeMiningMesh = (x, y, z) => {
         brush,
         shift,
         scale,
-        arrayBuffer
-      }, [arrayBuffer]).then(res => () => {
-        if (res.positions.length > 0) {
-          geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
-          geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
-          // geometry.setAttribute('highlight', new THREE.BufferAttribute(new Float32Array(res.positions.array.length), 3));
-          geometry.deleteAttribute('normal');
-          geometry.computeVertexNormals();
-          mesh.visible = true;
-        } else {
-          mesh.visible = false;
-        }
+        arrayBuffer,
+      }, [arrayBuffer]).then(res => {
+        return () => {
+          if (res.positions.length > 0) {
+            geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
+            geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(res.positions.length*2/3), 2));
+            geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
+            // geometry.setAttribute('highlight', new THREE.BufferAttribute(new Float32Array(res.positions.array.length), 3));
+            geometry.deleteAttribute('normal');
+            geometry.computeVertexNormals();
+            mesh.visible = true;
+
+            positions = res.positions;
+            mesh.parameterize();
+          } else {
+            mesh.visible = false;
+          }
+        };
       });
     } else {
       return Promise.resolve(() => {});
+    }
+  };
+  let parameterizing = false;
+  let parameterizeQueued = false;
+  mesh.parameterize = async () => {
+    if (!parameterizing) {
+      parameterizing = true;
+
+      const arrayBuffer = new ArrayBuffer(300*1024);
+      const res = await uvWorker.request({
+        method: 'uvParameterize',
+        positions,
+        arrayBuffer,
+      }, [arrayBuffer]);
+
+      parameterizing = false;
+      if (parameterizeQueued) {
+        parameterizeQueued = false;
+        mesh.parameterize();
+      } else {
+        geometry.setAttribute('uv', new THREE.BufferAttribute(res.uvs, 2));
+      }
+    } else {
+      parameterizeQueued = true;
     }
   };
   /* mesh.collide = () => {
@@ -668,15 +701,15 @@ const _makeMiningMesh = (x, y, z) => {
     } else {
       return null;
     }
-  }; */
+  };
   mesh.setDirty = () => {
-    dirty = true;
+    dirtyPos = true;
   };
   mesh.reset = () => {
     potential.fill(potentialFillValue);
     brush.fill(0);
-    dirty = true;
-  };
+    dirtyPos = true;
+  }; */
   mesh.destroy = () => {
     geometry.dispose();
     material.dispose();

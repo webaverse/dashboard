@@ -420,6 +420,39 @@ const _handleMessage = data => {
       allocator.freeAll();
       break;
     }
+    case 'uvParameterize': {
+      const allocator = new Allocator();
+
+      const {positions: positionsData, arrayBuffer} = data;
+
+      const positions = allocator.alloc(Float32Array, positionsData.length);
+      positions.set(positionsData);
+      const uvs = allocator.alloc(Float32Array, 300*1024/Float32Array.BYTES_PER_ELEMENT);
+      const numUvs = allocator.alloc(Uint32Array, 1);
+
+      self.Module._doUvParameterize(
+        positions.offset,
+        positions.length,
+        uvs.offset,
+        numUvs.offset
+      );
+
+      let index = 0;
+      const outUvs = new Float32Array(arrayBuffer, index, numUvs[0]);
+      outUvs.set(
+        uvs.slice(0, numUvs[0])
+      );
+      // index += numUvs[0]*Float32Array.BYTES_PER_ELEMENT;
+
+      self.postMessage({
+        result: {
+          uvs: outUvs,
+        },
+      }, [arrayBuffer]);
+
+      allocator.freeAll();
+      break;
+    }
     default: {
       console.warn('unknown method', data.method);
       break;

@@ -110,7 +110,7 @@ export async function saveObjectMeshes(objectMeshes, script, vertexShader, fragm
 };
 export async function loadObjectMeshes(s) {
   const src = (() => {
-    if (s === 'string') {
+    if (typeof s === 'string') {
       return s;
     } else if (s instanceof ArrayBuffer) {
       const blob = new Blob([s], {

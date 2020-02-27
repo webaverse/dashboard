@@ -100,25 +100,31 @@ export const objectMaterial = (() => {
       derivatives: true,
     },
   }); */
+
+  const pixelData = Uint8Array.from([255, 255, 255, 0]);
+  var width = 1,
+    height = 1,
+    format = THREE.RGBAFormat,
+    type = THREE.UnsignedByteType,
+    mapping = THREE.UVMapping,
+    wrapS = THREE.RepeatWrapping,
+    wrapT = THREE.RepeatWrapping,
+    magFilter = THREE.LinearFilter,
+    minFilter = THREE.LinearMipMapLinearFilter;
+
+  const texture = new THREE.DataTexture(pixelData, width, height, format, type, mapping, wrapS, wrapT, magFilter, minFilter);
+
   const material = new THREE.MeshStandardMaterial({
     color: 0xFFFFFF,
     vertexColors: THREE.VertexColors,
     // map: new CheckerBoardTexture(undefined, undefined, 64, 64),
+    map: texture,
   });
   return material;
 })();
 export function makeObjectMeshFromGeometry(geometry, matrix) {
   const material = objectMaterial.clone();
-  const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#FFF';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#000';
-  canvas.ctx = ctx;
-  material.map = new THREE.Texture(canvas);
-
+  // material.map = new THREE.Texture();
   const objectMesh = new THREE.Mesh(geometry, material);
   if (matrix) {
     objectMesh.matrix.copy(matrix)

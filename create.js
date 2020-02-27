@@ -1221,10 +1221,23 @@ const _updateTool = raycaster => {
     if (intersections.length > 0) {
       const [{object, point, faceIndex, uv}] = intersections;
 
-      const canvas = object.material.map.image;
+      let texture = object.material.map;
+      let {image: canvas} = texture;
+      if (canvas.nodeName !== 'CANVAS') {
+        canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#FFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#000';
+        canvas.ctx = ctx;
+        texture = new THREE.Texture(canvas);
+        object.material.map = texture;
+      }
       const {ctx} = canvas;
       ctx.fillRect(uv.x * canvas.width - 2, (1 - uv.y) * canvas.height - 2, 4, 4);
-      object.material.map.needsUpdate = true;
+      texture.needsUpdate = true;
 
       collisionMesh.position.copy(point);
       collisionMesh.visible = true;

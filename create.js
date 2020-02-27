@@ -1599,8 +1599,25 @@ interfaceDocument.getElementById('enable-scripts-button').addEventListener('clic
   scriptsBound = !scriptsBound;
   if (scriptsBound) {
     bindObjectScript(objectState, scriptInputTextarea.value, objectMeshes);
+
+    for (let i = 0; i < objectMeshes.length; i++) {
+      const objectMesh = objectMeshes[i];
+      objectMesh.originalPosition = objectMesh.position.clone();
+      objectMesh.originalQuaternion = objectMesh.quaternion.clone();
+      objectMesh.originalScale = objectMesh.scale.clone();
+    }
   } else {
     bindObjectScript(objectState, null, null);
+
+    for (let i = 0; i < objectMeshes.length; i++) {
+      const objectMesh = objectMeshes[i];
+      objectMesh.position.copy(objectMesh.originalPosition);
+      objectMesh.quaternion.copy(objectMesh.originalQuaternion);
+      objectMesh.scale.copy(objectMesh.originalScale);
+      objectMesh.originalPosition = null;
+      objectMesh.originalQuaternion = null;
+      objectMesh.originalScale = null;
+    }
   }
 });
 

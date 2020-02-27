@@ -10,6 +10,8 @@ import {XRControllerModelFactory} from './XRControllerModelFactory.js';
 import {Ammo as AmmoLib} from './ammo.wasm.js'; */
 import {makePromise} from './util.js';
 import contract from './contract.js';
+import {objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
+import {makeObjectState, bindObjectScript, tickObjectScript, bindObjectShader} from './runtime.js';
 
 const _load = () => {
 
@@ -680,15 +682,17 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
       .then(res => res.json());
     const {dataHash} = metadata;
 
-    const objectPromise = makePromise();
-    const loader = new GLTFLoader();
-    loader.load(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`, objectPromise.accept, function onProgress() {}, objectPromise.reject);
-    const o = await objectPromise;
-    const objectMeshes = o.scene.children.slice();
+    const {objectMeshes, script, shader: {vertex, fragment}} = await loadObjectMeshes(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`);
     for (let i = 0; i < objectMeshes.length; i++) {
       const objectMesh = objectMeshes[i];
       objectMesh.position.add(loc);
       scene.add(objectMesh);
+    }
+    if (script) {
+      bindObjectScript(objectState, script, objectMeshes);
+    }
+    if (vertex || fragment) {
+      bindObjectShader(objectMeshes, vertex, fragment);
     }
   }
 })();

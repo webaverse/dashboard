@@ -1138,45 +1138,13 @@ const _updateTool = raycaster => {
       }
     }
   } else if (selectedTool === 'paint') {
-    if (hoveredObjectFace && toolDown) {
-      const {object: {geometry}} = hoveredObjectFace;
-      geometry.attributes.color.old = null;
-    }
-    
     const intersections = raycaster.intersectObjects(objectMeshes);
     if (intersections.length > 0) {
-      const [{object, point, faceIndex}] = intersections;
-      
+      const [{point}] = intersections;
       collisionMesh.position.copy(point);
       collisionMesh.visible = true;
-
-      const {geometry} = object;
-      const oldColorAttribute = geometry.attributes.color.old || geometry.attributes.color;
-      const oldColors = oldColorAttribute.array;
-      const newColors = Float32Array.from(oldColors);
-      for (let i = 0; i < 3; i++) {
-        newColors[faceIndex*9 + i*3] = currentColor.r;
-        newColors[faceIndex*9 + i*3 + 1] = currentColor.g;
-        newColors[faceIndex*9 + i*3 + 2] = currentColor.b;
-      }
-      geometry.setAttribute('color', new THREE.BufferAttribute(newColors, 3));
-      geometry.attributes.color.old = oldColorAttribute;
-      
-      hoveredObjectFace = {
-        object,
-        faceIndex,
-      };
     } else {
       collisionMesh.visible = false;
-
-      if (hoveredObjectFace) {
-        const {object: {geometry}} = hoveredObjectFace;
-        const oldColorAttribute = geometry.attributes.color.old;
-        if (oldColorAttribute) {
-          geometry.setAttribute('color', oldColorAttribute);
-        }
-      }
-      hoveredObjectFace = null;
     }
   } else if (selectedTool === 'pencil') {
     const intersections = raycaster.intersectObjects(objectMeshes);
@@ -1194,7 +1162,6 @@ const _updateTool = raycaster => {
           const ctx = canvas.getContext('2d');
           ctx.fillStyle = '#FFF';
           ctx.fillRect(0, 0, canvas.width, canvas.height);
-          // ctx.lineWidth = 11;
           ctx.lineJoin = ctx.lineCap = 'round';
           canvas.ctx = ctx;
 
@@ -1298,9 +1265,16 @@ const _beginTool = (primary, secondary) => {
           _setSelectedObjectMesh(hoveredObjectMesh);
         }
       } else if (selectedTool === 'paint') {
-        if (hoveredObjectFace) {
-          const {object: {geometry}} = hoveredObjectFace;
-          geometry.attributes.color.old = null;
+        const intersections = localRaycaster.intersectObjects(objectMeshes);
+        if (intersections.length > 0) {
+          const [{object, faceIndex}] = intersections;
+          const {geometry} = object; 
+          for (let i = 0; i < geometry.attributes.color.array.length; i += 3) {
+            geometry.attributes.color.array[i] = currentColor.r;
+            geometry.attributes.color.array[i+1] = currentColor.g;
+            geometry.attributes.color.array[i+2] = currentColor.b;
+          }
+          geometry.attributes.color.needsUpdate = true;
         }
       }
 

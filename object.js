@@ -48,7 +48,7 @@ export const objectImage = (() => {
   canvas.height = 1;
   const ctx = canvas.getContext('2d');
   const imageData = ctx.createImageData(1, 1);
-  imageData.data.set(Uint8Array.from([255, 255, 255, 0]));
+  imageData.data.set(Uint8Array.from([255, 255, 255, 255]));
   ctx.putImageData(imageData, 0, 0);
   return canvas;
 })();
@@ -65,6 +65,7 @@ export const objectTexture = (() => {
     16,
     THREE.LinearEncoding
   );
+  texture.needsUpdate = true;
   return texture;
 })();
 export const objectMaterial = (() => {

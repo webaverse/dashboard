@@ -1192,7 +1192,6 @@ const _updateTool = raycaster => {
           const oldCanvas = canvas;
           canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
-          ctx.fillStyle = '#FFF';
           ctx.lineJoin = ctx.lineCap = 'round';
           canvas.ctx = ctx;
 
@@ -1200,10 +1199,13 @@ const _updateTool = raycaster => {
             canvas.width = oldCanvas.width;
             canvas.height = oldCanvas.height;
             ctx.drawImage(oldCanvas, 0, 0, oldCanvas.width, oldCanvas.height);
+            ctx.flipped = false;
           } else {
             canvas.width = 2048;
             canvas.height = 2048;
+            ctx.fillStyle = 'rgba(255, 255, 255, 255)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.flipped = true;
           }
 
           object.material.map.image = canvas;
@@ -1211,7 +1213,7 @@ const _updateTool = raycaster => {
         }
         const {ctx} = canvas;
         const x = uv.x * canvas.width;
-        const y = uv.y * canvas.height;
+        const y = (ctx.flipped ? (1 - uv.y) : uv.y) * canvas.height;
 
         if (
           hoveredObjectPaint &&
@@ -1319,8 +1321,7 @@ const _beginTool = (primary, secondary) => {
           execute(action);
         }
       } else if (selectedTool === 'pencil') {
-        console.log('begin tool');
-        objectMeshOldCanvases = _snapshotCanvases(objectMeshes);
+        // objectMeshOldCanvases = _snapshotCanvases(objectMeshes);
       }
 
       toolDown = true;
@@ -1338,14 +1339,13 @@ const _beginTool = (primary, secondary) => {
 const _endTool = (primary, secondary) => {
   if (primary) {
     if (selectedTool === 'pencil') {
-      console.log('end tool');
-      const objectMeshNewCanvases = _snapshotCanvases(objectMeshes);
+      /* const objectMeshNewCanvases = _snapshotCanvases(objectMeshes);
       const action = createAction('pencil', {
         objectMeshes,
         oldCanvases: objectMeshOldCanvases,
         newCanvases: objectMeshNewCanvases,
       });
-      execute(action);
+      execute(action); */
     }
 
     toolDown = false;

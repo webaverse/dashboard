@@ -1306,7 +1306,7 @@ let clipboardObjectMesh = null;
 const _clipboardCopy = objectMesh => {
   clipboardObjectMesh = {
     geometry: objectMesh.geometry.clone(),
-    texture: objectMesh.map.clone,
+    texture: objectMesh.map && objectMesh.map.clone(),
     matrix: objectMesh.matrix.clone(),
   };
 };

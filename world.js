@@ -10,7 +10,7 @@ import {XRControllerModelFactory} from './XRControllerModelFactory.js';
 import {Ammo as AmmoLib} from './ammo.wasm.js'; */
 import {makePromise} from './util.js';
 import contract from './contract.js';
-import {objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
+import {loadObjectMeshes} from './object.js';
 import {makeObjectState, bindObjectScript, tickObjectScript, bindObjectShader} from './runtime.js';
 
 const _load = () => {

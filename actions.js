@@ -101,7 +101,7 @@ export function createAction(method, args) {
 }
 export function execute(action) {
   action.forward();
-  pushAction();
+  pushAction(action);
 }
 export function pushAction(action) {
   redos.length = 0;

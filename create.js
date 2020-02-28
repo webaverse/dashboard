@@ -1321,7 +1321,7 @@ const _beginTool = (primary, secondary) => {
           execute(action);
         }
       } else if (selectedTool === 'pencil') {
-        // objectMeshOldCanvases = _snapshotCanvases(objectMeshes);
+        objectMeshOldCanvases = _snapshotCanvases(objectMeshes);
       }
 
       toolDown = true;
@@ -1339,13 +1339,13 @@ const _beginTool = (primary, secondary) => {
 const _endTool = (primary, secondary) => {
   if (primary) {
     if (selectedTool === 'pencil') {
-      /* const objectMeshNewCanvases = _snapshotCanvases(objectMeshes);
+      const objectMeshNewCanvases = _snapshotCanvases(objectMeshes);
       const action = createAction('pencil', {
         objectMeshes,
         oldCanvases: objectMeshOldCanvases,
         newCanvases: objectMeshNewCanvases,
       });
-      execute(action); */
+      execute(action);
     }
 
     toolDown = false;

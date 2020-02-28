@@ -1192,7 +1192,6 @@ const _updateTool = raycaster => {
           const oldCanvas = canvas;
           canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
-          ctx.lineJoin = ctx.lineCap = 'round';
           canvas.ctx = ctx;
 
           if (oldCanvas.nodeName === 'IMG') {
@@ -1205,6 +1204,8 @@ const _updateTool = raycaster => {
             ctx.fillStyle = 'rgba(255, 255, 255, 255)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
           }
+
+          ctx.lineJoin = ctx.lineCap = 'round';
 
           object.material.map.image = canvas;
           object.material.map.needsUpdate = true;

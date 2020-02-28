@@ -1158,15 +1158,25 @@ const _updateTool = raycaster => {
         let texture = object.material.map;
         let {image: canvas} = texture;
         if (canvas.nodeName !== 'CANVAS') {
+          const oldCanvas = canvas;
           canvas = document.createElement('canvas');
-          canvas.width = 2048;
-          canvas.height = 2048;
-
           const ctx = canvas.getContext('2d');
           ctx.fillStyle = '#FFF';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.lineJoin = ctx.lineCap = 'round';
           canvas.ctx = ctx;
+
+          if (oldCanvas.nodeName === 'IMG') {
+            canvas.width = oldCanvas.width;
+            canvas.height = oldCanvas.height;
+            ctx.save();
+            ctx.scale(1, -1);
+            ctx.drawImage(oldCanvas, 0, 0, oldCanvas.width, -oldCanvas.height);
+            ctx.restore();
+          } else {
+            canvas.width = 2048;
+            canvas.height = 2048;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          }
 
           texture = new THREE.Texture(
             canvas,

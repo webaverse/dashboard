@@ -149,6 +149,9 @@ export function makeObjectMeshFromGeometry(geometry, texture, matrix) {
   objectMesh.castShadow = true;
   objectMesh.worker = null;
   objectMesh.destroy = () => {
+    objectMesh.geometry.dispose();
+    objectMesh.material.map.dispose();
+    objectMesh.material.dispose();
     if (objectMesh.worker) {
       objectMesh.worker.terminate();
       objectMesh.worker = null;

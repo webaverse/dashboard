@@ -1029,6 +1029,9 @@ const _handleUpload = file => {
           geometry.attributes.uv.array[j] = 1 - geometry.attributes.uv.array[j];
         }
       }
+      const colors = new Float32Array(geometry.attributes.position.array.length);
+      colors.fill(1)
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
       const img = new Image();
       img.src = URL.createObjectURL(file);
       img.onload = () => {
@@ -1040,16 +1043,19 @@ const _handleUpload = file => {
         mesh.visible = true;
       };
       img.onerror = console.warn;
+
       const texture = new THREE.Texture();
       texture.generateMipmaps = false;
       texture.minFilter = THREE.LinearFilter;
-      const material = new THREE.MeshBasicMaterial({
+
+      const mesh = makeObjectMeshFromGeometry(geometry, texture, null);
+      /* const material = new THREE.MeshBasicMaterial({
         map: texture,
         side: THREE.DoubleSide,
       });
       const mesh = new THREE.Mesh(geometry, material);
       mesh.visible = false;
-      mesh.frustumCulled = false;
+      mesh.frustumCulled = false; */
       return mesh;
     })();
     objectMesh.position.copy(camera.position)

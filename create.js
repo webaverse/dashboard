@@ -10,7 +10,7 @@ import './gif.js';
 import {makePromise} from './util.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
-import {objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
+import {objectImage, objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
 import {createAction, execute, undo, redo, clearHistory} from './actions.js';
 import {makeObjectState, bindObjectScript, tickObjectScript, bindObjectShader} from './runtime.js';
 
@@ -1188,7 +1188,7 @@ const _updateTool = raycaster => {
       if (toolDown) {
         let texture = object.material.map;
         let {image: canvas} = texture;
-        if (canvas.nodeName !== 'CANVAS') {
+        if (!canvas.ctx) {
           const oldCanvas = canvas;
           canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
@@ -1199,33 +1199,19 @@ const _updateTool = raycaster => {
           if (oldCanvas.nodeName === 'IMG') {
             canvas.width = oldCanvas.width;
             canvas.height = oldCanvas.height;
-            ctx.save();
-            ctx.scale(1, -1);
-            ctx.drawImage(oldCanvas, 0, 0, oldCanvas.width, -oldCanvas.height);
-            ctx.restore();
+            ctx.drawImage(oldCanvas, 0, 0, oldCanvas.width, oldCanvas.height);
           } else {
             canvas.width = 2048;
             canvas.height = 2048;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
           }
 
-          texture = new THREE.Texture(
-            canvas,
-            THREE.UVMapping,
-            THREE.ClampToEdgeWrapping,
-            THREE.ClampToEdgeWrapping,
-            THREE.LinearFilter,
-            THREE.LinearMipMapLinearFilter,
-            THREE.RGBAFormat,
-            THREE.UnsignedByteType,
-            16,
-            THREE.LinearEncoding
-          );
-          object.material.map = texture;
+          object.material.map.image = canvas;
+          object.material.map.needsUpdate = true;
         }
         const {ctx} = canvas;
         const x = uv.x * canvas.width;
-        const y = (1 - uv.y) * canvas.height;
+        const y = uv.y * canvas.height;
 
         if (
           hoveredObjectPaint &&
@@ -1287,6 +1273,20 @@ const _updateTool = raycaster => {
     uiMesh.intersect(null);
   }
 };
+let objectMeshOldCanvases = [];
+const _snapshotCanvases = objectMeshes => objectMeshes.map(objectMesh => {
+  const oldImage = objectMesh.material.map.image;
+  if (oldImage !== objectImage) {
+    const canvas = document.createElement('canvas');
+    canvas.width = oldImage.width;
+    canvas.height = oldImage.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(oldImage, 0, 0, oldImage.width, oldImage.height);
+    return canvas;
+  } else {
+    return null;
+  }
+});
 const _beginTool = (primary, secondary) => {
   if (primary) {
     if (uiMesh.click()) {
@@ -1318,6 +1318,9 @@ const _beginTool = (primary, secondary) => {
           });
           execute(action);
         }
+      } else if (selectedTool === 'pencil') {
+        console.log('begin tool');
+        objectMeshOldCanvases = _snapshotCanvases(objectMeshes);
       }
 
       toolDown = true;
@@ -1334,14 +1337,21 @@ const _beginTool = (primary, secondary) => {
 };
 const _endTool = (primary, secondary) => {
   if (primary) {
-    if (toolDown) {
-      toolDown = false;
+    if (selectedTool === 'pencil') {
+      console.log('end tool');
+      const objectMeshNewCanvases = _snapshotCanvases(objectMeshes);
+      const action = createAction('pencil', {
+        objectMeshes,
+        oldCanvases: objectMeshOldCanvases,
+        newCanvases: objectMeshNewCanvases,
+      });
+      execute(action);
     }
+
+    toolDown = false;
   }
   if (secondary) {
-    if (toolGrip) {
-      toolGrip = false;
-    }
+    toolGrip = false;
   }
 };
 let clipboardObjectMesh = null;

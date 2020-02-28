@@ -1,5 +1,6 @@
-const undos = [];
-const redos = [];
+let undos = [];
+let redos = [];
+const maxHistoryLength = 20;
 export function createAction(method, args) {
   switch (method) {
     case 'addObject': {
@@ -76,6 +77,9 @@ export function execute(action) {
   redos.length = 0;
   action.forward();
   undos.push(action);
+  if (undos.length > maxHistoryLength) {
+    undos = undos.slice(-maxHistoryLength);
+  }
 }
 export function undo() {
   const action = undos.pop();

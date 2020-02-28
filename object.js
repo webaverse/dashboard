@@ -121,9 +121,11 @@ export const objectMaterial = (() => {
   });
   return material;
 })();
-export function makeObjectMeshFromGeometry(geometry, matrix) {
+export function makeObjectMeshFromGeometry(geometry, texture, matrix) {
   const material = objectMaterial.clone();
-  // material.map = new THREE.Texture();
+  if (texture) {
+    material.map = texture;
+  }
   const objectMesh = new THREE.Mesh(geometry, material);
   if (matrix) {
     objectMesh.matrix.copy(matrix)
@@ -185,7 +187,7 @@ export async function loadObjectMeshes(s) {
   const {scene} = o;
   const {userData: {gltfExtensions}} = scene;
   return {
-    objectMeshes: scene.children.map(child => makeObjectMeshFromGeometry(child.geometry, child.matrix)),
+    objectMeshes: scene.children.map(child => makeObjectMeshFromGeometry(child.geometry, child.material.map, child.matrix)),
     script: (gltfExtensions && typeof gltfExtensions.script === 'string') ? gltfExtensions.script : null,
     shader: {
       vertex: (gltfExtensions && gltfExtensions.shader && typeof gltfExtensions.shader.vertex === 'string') ? gltfExtensions.shader.vertex : null,

@@ -754,7 +754,7 @@ const _commitMiningMeshes = async () => {
   const visibleMiningMeshes = miningMeshes.filter(miningMesh => miningMesh.visible);
   if (visibleMiningMeshes.length) {
     const geometry = BufferGeometryUtils.mergeBufferGeometries(visibleMiningMeshes.map(miningMesh => miningMesh.geometry));
-    const objectMesh = makeObjectMeshFromGeometry(geometry, null);
+    const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
     await _parameterizeObjectMesh(objectMesh);
     _centerObjectMesh(objectMesh);
     container.add(objectMesh);
@@ -1306,12 +1306,13 @@ let clipboardObjectMesh = null;
 const _clipboardCopy = objectMesh => {
   clipboardObjectMesh = {
     geometry: objectMesh.geometry.clone(),
+    texture: objectMesh.map.clone,
     matrix: objectMesh.matrix.clone(),
   };
 };
 const _clipboardPaste = () => {
   if (clipboardObjectMesh) {
-    const objectMesh = makeObjectMeshFromGeometry(clipboardObjectMesh.geometry, clipboardObjectMesh.matrix);
+    const objectMesh = makeObjectMeshFromGeometry(clipboardObjectMesh.geometry, clipboardObjectMesh.texture, clipboardObjectMesh.matrix);
     container.add(objectMesh);
     objectMeshes.push(objectMesh);
   }

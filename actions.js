@@ -2,26 +2,30 @@ const undos = [];
 const redos = [];
 export function createAction(method, args) {
   switch (method) {
-    case 'add': {
-      const {scene, object} = args;
+    case 'addObject': {
+      const {container, objectMesh, objectMeshes} = args;
       return {
         forward() {
-          scene.add(object);
+          container.add(objectMesh);
+          objectMeshes.push(objectMesh);
         },
         back() {
-          scene.remove(object);
+          container.remove(objectMesh);
+          objectMeshes.splice(objectMeshes.indexOf(objectMesh), 1);
         },
       };
       break;
     }
-    case 'remove': {
-      const {scene, object} = args;
+    case 'removeObject': {
+      const {container, objectMesh, objectMeshes} = args;
       return {
         forward() {
-          scene.remove(object);
+          container.remove(objectMesh);
+          objectMeshes.splice(objectMeshes.indexOf(objectMesh), 1);
         },
         back() {
-          scene.add(object);
+          container.add(objectMesh);
+          objectMeshes.push(objectMesh);
         },
       };
       break;
@@ -70,7 +74,7 @@ export function redo() {
     console.warn('nothing to redo');
   }
 }
-export function clear() {
+export function clearHistory() {
   undos.length = 0;
   redos.length = 0;
 }

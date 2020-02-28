@@ -11,7 +11,7 @@ import {makePromise} from './util.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
 import {objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
-import {createAction, execute, undo, redo, clear} from './actions.js';
+import {createAction, execute, undo, redo, clearHistory} from './actions.js';
 import {makeObjectState, bindObjectScript, tickObjectScript, bindObjectShader} from './runtime.js';
 
 const _load = () => {
@@ -761,10 +761,14 @@ const _commitMiningMeshes = async () => {
     const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
     await _parameterizeObjectMesh(objectMesh);
     _centerObjectMesh(objectMesh);
-    container.add(objectMesh);
-    objectMeshes.push(objectMesh);
-
     _newMiningMeshes();
+
+    const action = createAction('addObject', {
+      objectMesh,
+      container,
+      objectMeshes,
+    });
+    execute(action);
   }
 };
 const _centerObjectMeshes = () => {
@@ -1460,8 +1464,12 @@ const _clipboardPaste = () => {
           _setHoveredObjectMesh(null);
           _setSelectedObjectMesh(null);
 
-          oldSelectedObjectMesh.parent.remove(oldSelectedObjectMesh);
-          objectMeshes.splice(objectMeshes.indexOf(oldSelectedObjectMesh), 1);
+          const action = createAction('removeObject', {
+            objectMesh: oldSelectedObjectMesh,
+            container,
+            objectMeshes,
+          });
+          execute(action);
         }
         break;
       }

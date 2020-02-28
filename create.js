@@ -1365,8 +1365,13 @@ const _clipboardCopy = objectMesh => {
 const _clipboardPaste = () => {
   if (clipboardObjectMesh) {
     const objectMesh = makeObjectMeshFromGeometry(clipboardObjectMesh.geometry, clipboardObjectMesh.texture, clipboardObjectMesh.matrix);
-    container.add(objectMesh);
-    objectMeshes.push(objectMesh);
+
+    const action = createAction('addObject', {
+      objectMesh,
+      container,
+      objectMeshes,
+    });
+    execute(action);
   }
 };
 [window, interfaceWindow].forEach(w => {
@@ -1425,8 +1430,12 @@ const _clipboardPaste = () => {
             _setHoveredObjectMesh(null);
             _setSelectedObjectMesh(null);
 
-            oldSelectedObjectMesh.parent.remove(oldSelectedObjectMesh);
-            objectMeshes.splice(objectMeshes.indexOf(oldSelectedObjectMesh), 1);
+            const action = createAction('removeObject', {
+              objectMesh: oldSelectedObjectMesh,
+              container,
+              objectMeshes,
+            });
+            execute(action);
           }
         }
         break;

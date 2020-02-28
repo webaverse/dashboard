@@ -1243,7 +1243,18 @@ const _updateTool = raycaster => {
           ctx.lineJoin = ctx.lineCap = 'round';
           canvas.ctx = ctx;
 
-          texture = new THREE.Texture(canvas);
+          texture = new THREE.Texture(
+            canvas,
+            THREE.UVMapping,
+            THREE.ClampToEdgeWrapping,
+            THREE.ClampToEdgeWrapping,
+            THREE.LinearFilter,
+            THREE.LinearMipMapLinearFilter,
+            THREE.RGBAFormat,
+            THREE.UnsignedByteType,
+            16,
+            THREE.LinearEncoding
+          );
           object.material.map = texture;
         }
         const {ctx} = canvas;

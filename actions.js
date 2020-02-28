@@ -1,3 +1,5 @@
+import {objectImage} from './object.js';
+
 let undos = [];
 let redos = [];
 const maxHistoryLength = 20;
@@ -64,6 +66,30 @@ export function createAction(method, args) {
         },
         back() {
           _paint(oldColor);
+        },
+      };
+      break;
+    }
+    case 'pencil': {
+      const {objectMeshes, oldCanvases, newCanvases} = args;
+      const _setCanvases = canvases => {
+        for (let i = 0; i < objectMeshes.length; i++) {
+          const objectMesh = objectMeshes[i];
+          const canvas = canvases[i];
+          if (canvas) {
+            objectMesh.material.map.image = canvas;
+          } else {
+            objectMesh.material.map.image = objectImage;
+          }
+          objectMesh.material.map.needsUpdate = true;
+        }
+      };
+      return {
+        forward() {
+          _setCanvases(newCanvases);
+        },
+        back() {
+          _setCanvases(oldCanvases);
         },
       };
       break;

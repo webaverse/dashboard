@@ -11,7 +11,7 @@ import {makePromise} from './util.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
 import {objectImage, objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
-import {createAction, execute, undo, redo, clearHistory} from './actions.js';
+import {createAction, execute, pushAction, undo, redo, clearHistory} from './actions.js';
 import {makeObjectState, bindObjectScript, tickObjectScript, bindObjectShader} from './runtime.js';
 
 const _load = () => {
@@ -1199,13 +1199,11 @@ const _updateTool = raycaster => {
             canvas.width = oldCanvas.width;
             canvas.height = oldCanvas.height;
             ctx.drawImage(oldCanvas, 0, 0, oldCanvas.width, oldCanvas.height);
-            ctx.flipped = false;
           } else {
             canvas.width = 2048;
             canvas.height = 2048;
             ctx.fillStyle = 'rgba(255, 255, 255, 255)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.flipped = true;
           }
 
           object.material.map.image = canvas;
@@ -1213,7 +1211,7 @@ const _updateTool = raycaster => {
         }
         const {ctx} = canvas;
         const x = uv.x * canvas.width;
-        const y = (ctx.flipped ? (1 - uv.y) : uv.y) * canvas.height;
+        const y = uv.y * canvas.height;
 
         if (
           hoveredObjectPaint &&
@@ -1345,7 +1343,7 @@ const _endTool = (primary, secondary) => {
         oldCanvases: objectMeshOldCanvases,
         newCanvases: objectMeshNewCanvases,
       });
-      execute(action);
+      pushAction(action);
     }
 
     toolDown = false;

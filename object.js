@@ -65,6 +65,7 @@ export const objectTexture = (() => {
     16,
     THREE.LinearEncoding
   );
+  texture.flipY = false;
   texture.needsUpdate = true;
   return texture;
 })();

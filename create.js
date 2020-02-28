@@ -1239,31 +1239,43 @@ const _updateTool = raycaster => {
           const ctx = canvas.getContext('2d');
           ctx.fillStyle = '#FFF';
           ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.lineWidth = 11;
+          // ctx.lineWidth = 11;
+          ctx.lineJoin = ctx.lineCap = 'round';
           canvas.ctx = ctx;
 
           texture = new THREE.Texture(canvas);
           object.material.map = texture;
         }
         const {ctx} = canvas;
-        const x = uv.x * canvas.width - (ctx.lineWidth-1)/2;
-        const y = (1 - uv.y) * canvas.height - (ctx.lineWidth-1)/2;
+        const x = uv.x * canvas.width;
+        const y = (1 - uv.y) * canvas.height;
+
+        function getRandomInt(min, max) {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
         if (
           hoveredObjectPaint &&
           (
             faceIndex === hoveredObjectPaint.faceIndex ||
-            Math.sqrt(sq(x - hoveredObjectPaint.lastX), sq(y - hoveredObjectPaint.lastY)) < ctx.lineWidth*10
+            Math.sqrt(sq(x - hoveredObjectPaint.lastX), sq(y - hoveredObjectPaint.lastY)) < 50
           )
         ) {
-          ctx.beginPath();
-          ctx.strokeStyle = '#' + currentColor.getHexString();
-          ctx.moveTo(hoveredObjectPaint.lastX, hoveredObjectPaint.lastY);
-          ctx.lineTo(x, y);
-          ctx.stroke();
+          // nothing
         } else {
-          ctx.fillStyle = '#' + currentColor.getHexString();
-          ctx.fillRect(x, y, ctx.lineWidth, ctx.lineWidth);
+          hoveredObjectPaint = null;
         }
+
+        if (!hoveredObjectPaint) {
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+        }
+
+        ctx.strokeStyle = '#' + currentColor.getHexString();
+        ctx.lineWidth = getRandomInt(5, 9);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
         hoveredObjectPaint = {
           lastX: x,
           lastY: y,

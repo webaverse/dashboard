@@ -1269,7 +1269,7 @@ const _updateTool = raycaster => {
           hoveredObjectPaint &&
           (
             faceIndex === hoveredObjectPaint.faceIndex ||
-            Math.sqrt(sq(x - hoveredObjectPaint.lastX), sq(y - hoveredObjectPaint.lastY)) < 100
+            Math.sqrt(sq(x - hoveredObjectPaint.lastX), sq(y - hoveredObjectPaint.lastY)) < 50
           )
         ) {
           // nothing

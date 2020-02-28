@@ -100,8 +100,11 @@ export function createAction(method, args) {
   }
 }
 export function execute(action) {
-  redos.length = 0;
   action.forward();
+  pushAction();
+}
+export function pushAction(action) {
+  redos.length = 0;
   undos.push(action);
   if (undos.length > maxHistoryLength) {
     undos = undos.slice(-maxHistoryLength);

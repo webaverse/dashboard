@@ -1283,9 +1283,11 @@ const _updateTool = raycaster => {
         }
 
         ctx.strokeStyle = '#' + currentColor.getHexString();
-        ctx.lineWidth = getRandomInt(5, 9);
+        ctx.lineWidth = getRandomInt(7, 9);
         ctx.lineTo(x, y);
         ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
 
         hoveredObjectPaint = {
           lastX: x,

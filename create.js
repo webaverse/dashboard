@@ -1049,13 +1049,6 @@ const _handleUpload = file => {
       texture.minFilter = THREE.LinearFilter;
 
       const mesh = makeObjectMeshFromGeometry(geometry, texture, null);
-      /* const material = new THREE.MeshBasicMaterial({
-        map: texture,
-        side: THREE.DoubleSide,
-      });
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.visible = false;
-      mesh.frustumCulled = false; */
       return mesh;
     })();
     objectMesh.position.copy(camera.position)

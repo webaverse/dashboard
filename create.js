@@ -485,7 +485,6 @@ const _makeMiningMesh = (x, y, z) => {
     return potential[x + y*size*size + z*size];
   }; */
   let dirtyPos = false;
-  let dirtyUv = false;
   mesh.set = (value, x, y, z) => {
     x -= mesh.x * PARCEL_SIZE;
     y -= mesh.y * PARCEL_SIZE;
@@ -594,39 +593,8 @@ const _makeMiningMesh = (x, y, z) => {
           geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
           geometry.computeVertexNormals();
           mesh.visible = true;
-
-          dirtyUv = true;
         } else {
           mesh.visible = false;
-        }
-      });
-    } else {
-      return Promise.resolve(() => {});
-    }
-  };
-  mesh.parameterize = () => {
-    if (dirtyUv) {
-      dirtyUv = false;
-
-      const arrayBuffer = new ArrayBuffer(300*1024);
-      return uvWorker.request({
-        method: 'uvParameterize',
-        positions: geometry.attributes.position.array,
-        normals: geometry.attributes.color.array,
-        faces: geometry.index.array,
-        arrayBuffer,
-      }, [arrayBuffer]).then(res => {
-        if (!dirtyUv) {
-          return () => {
-            geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(res.normals, 3));
-            geometry.setAttribute('uv', new THREE.BufferAttribute(res.uvs, 2));
-            geometry.deleteAttribute('normal');
-            geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
-            geometry.computeVertexNormals();
-          };
-        } else {
-          return mesh.parameterize();
         }
       });
     } else {
@@ -763,13 +731,31 @@ const _centerObjectMesh = objectMesh => {
   objectMesh.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(-center.x, -center.y, -center.z));
   objectMesh.position.copy(center);
 };
+const _parameterizeObjectMesh = objectMesh => {
+  const {geometry} = objectMesh;
+  const arrayBuffer = new ArrayBuffer(300*1024);
+  return uvWorker.request({
+    method: 'uvParameterize',
+    positions: geometry.attributes.position.array,
+    normals: geometry.attributes.color.array,
+    faces: geometry.index.array,
+    arrayBuffer,
+  }, [arrayBuffer]).then(res => {
+    geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(res.normals, 3));
+    geometry.setAttribute('uv', new THREE.BufferAttribute(res.uvs, 2));
+    geometry.deleteAttribute('normal');
+    geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
+    geometry.computeVertexNormals();
+  });
+};
 const _commitMiningMeshes = async () => {
-  _parameterizeMiningMeshes();
   await _waitForMiningMesh();
   const visibleMiningMeshes = miningMeshes.filter(miningMesh => miningMesh.visible);
   if (visibleMiningMeshes.length) {
     const geometry = BufferGeometryUtils.mergeBufferGeometries(visibleMiningMeshes.map(miningMesh => miningMesh.geometry));
     const objectMesh = makeObjectMeshFromGeometry(geometry, null);
+    await _parameterizeObjectMesh(objectMesh);
     _centerObjectMesh(objectMesh);
     container.add(objectMesh);
     objectMeshes.push(objectMesh);
@@ -907,41 +893,10 @@ const _refreshMiningMeshes = async () => {
     refreshQueued = true;
   }
 };
-let parameterizing = false;
-let parameterizeQueued = false;
-const parameterizeCbs = [];
-const _parameterizeMiningMeshes = async () => {
-  if (!parameterizing) {
-    parameterizing = true;
-
-    const fns = await Promise.all(miningMeshes.map(miningMesh => miningMesh.parameterize()));
-    for (let i = 0; i < fns.length; i++) {
-      fns[i]();
-    }
-
-    parameterizing = false;
-    if (parameterizeQueued) {
-      parameterizeQueued = false;
-      _parameterizeMiningMeshes();
-    } else {
-      for (let i = 0; i < parameterizeCbs.length; i++) {
-        parameterizeCbs[i]();
-      }
-      parameterizeCbs.length = 0;
-    }
-  } else {
-    parameterizeQueued = true;
-  }
-};
 const _waitForMiningMesh = async () => {
   if (refreshing) {
     const p = makePromise();
     refreshCbs.push(p.accept);
-    await p;
-  }
-  if (parameterizing) {
-    const p = makePromise();
-    parameterizeCbs.push(p.accept);
     await p;
   }
 };

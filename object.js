@@ -41,6 +41,32 @@ import {makePromise} from './util.js';
 }
 CheckerBoardTexture.prototype = Object.create(THREE.DataTexture.prototype); */
 
+// const png1x1WhiteBase64 = `iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGP6zwAAAgcBApocMXEAAAAASUVORK5CYII=`;
+export const objectImage = (() => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1;
+  canvas.height = 1;
+  const ctx = canvas.getContext('2d');
+  const imageData = ctx.createImageData(1, 1);
+  imageData.data.set(Uint8Array.from([255, 255, 255, 0]));
+  ctx.putImageData(imageData, 0, 0);
+  return canvas;
+})();
+export const objectTexture = (() => {
+  const texture = new THREE.Texture(
+    objectImage,
+    THREE.UVMapping,
+    THREE.ClampToEdgeWrapping,
+    THREE.ClampToEdgeWrapping,
+    THREE.LinearFilter,
+    THREE.LinearMipMapLinearFilter,
+    THREE.RGBAFormat,
+    THREE.UnsignedByteType,
+    16,
+    THREE.LinearEncoding
+  );
+  return texture;
+})();
 export const objectMaterial = (() => {
   /* const terrainVsh = `
     attribute vec3 color;
@@ -101,23 +127,11 @@ export const objectMaterial = (() => {
     },
   }); */
 
-  const pixelData = Uint8Array.from([255, 255, 255, 0]);
-  const width = 1;
-  const height = 1;
-  const format = THREE.RGBAFormat;
-  const type = THREE.UnsignedByteType;
-  const mapping = THREE.UVMapping;
-  const wrapS = THREE.RepeatWrapping;
-  const wrapT = THREE.RepeatWrapping;
-  const magFilter = THREE.LinearFilter;
-  const minFilter = THREE.LinearFilter;
-  const texture = new THREE.DataTexture(pixelData, width, height, format, type, mapping, wrapS, wrapT, magFilter, minFilter);
-
   const material = new THREE.MeshStandardMaterial({
     color: 0xFFFFFF,
     vertexColors: THREE.VertexColors,
     // map: new CheckerBoardTexture(undefined, undefined, 64, 64),
-    map: texture,
+    map: objectTexture,
   });
   return material;
 })();

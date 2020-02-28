@@ -11,6 +11,7 @@ import {makePromise} from './util.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
 import {objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
+import {createAction, execute, undo, redo, clear} from './actions.js';
 import {makeObjectState, bindObjectScript, tickObjectScript, bindObjectShader} from './runtime.js';
 
 const _load = () => {
@@ -1083,6 +1084,33 @@ const _bindObjectMeshControls = o => {
   control.addEventListener('mouseLeave', () => {
     transformControlsHovered = false;
   });
+  const _snapshotTransform = o => ({
+    position: o.position.clone(),
+    quaternion: o.quaternion.clone(),
+    scale: o.scale.clone(),
+  });
+  let lastTransform = _snapshotTransform(o);
+  let changed = false;
+  control.addEventListener('mouseDown', () => {
+    lastTransform = _snapshotTransform(o);
+  });
+  control.addEventListener('mouseUp', () => {
+    if (changed) {
+      changed = false;
+
+      const newTransform = _snapshotTransform(o);
+      const action = createAction('transform', {
+        object: o,
+        oldTransform: lastTransform,
+        newTransform,
+      });
+      execute(action);
+      lastTransform = newTransform;
+    }
+  });
+  control.addEventListener('objectChange', e => {
+    changed = true;
+  });
   control.attach(o);
   scene.add(control);
   o.control = control;
@@ -1329,12 +1357,15 @@ const _clipboardPaste = () => {
 [window, interfaceWindow].forEach(w => {
   w.addEventListener('keydown', e => {
     switch (e.which) {
-      case 49:
+      case 49: // 1
       case 50:
       case 51:
       case 52:
       case 53:
       case 54:
+      case 55:
+      case 56:
+      case 57: // 9
       {
         tools[e.which - 49].click();
         break;
@@ -1398,6 +1429,22 @@ const _clipboardPaste = () => {
       case 86: { // V
         if (e.ctrlKey) {
           _clipboardPaste();
+        }
+        break;
+      }
+      case 90: { // Z
+        if (e.ctrlKey) {
+          if (e.shiftKey) {
+            redo();
+          } else {
+            undo();
+          }
+        }
+        break;
+      }
+      case 89: { // Y
+        if (e.ctrlKey) {
+          redo();
         }
         break;
       }

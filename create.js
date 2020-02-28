@@ -45,6 +45,9 @@ function downloadFile(file, filename) {
   tempLink.click();
   document.body.removeChild(tempLink);
 }
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 function sq(n) { return n*n; }
 
 const PARCEL_SIZE = 10;
@@ -1182,10 +1185,6 @@ const _updateTool = raycaster => {
         const {ctx} = canvas;
         const x = uv.x * canvas.width;
         const y = (1 - uv.y) * canvas.height;
-
-        function getRandomInt(min, max) {
-          return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
 
         if (
           hoveredObjectPaint &&

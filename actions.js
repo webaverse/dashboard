@@ -46,6 +46,27 @@ export function createAction(method, args) {
       };
       break;
     }
+    case 'paint': {
+      const {objectMesh, oldColor, newColor} = args;
+      const _paint = c => {
+        const {geometry} = objectMesh; 
+        for (let i = 0; i < geometry.attributes.color.array.length; i += 3) {
+          geometry.attributes.color.array[i] = c.r;
+          geometry.attributes.color.array[i+1] = c.g;
+          geometry.attributes.color.array[i+2] = c.b;
+        }
+        geometry.attributes.color.needsUpdate = true;
+      };
+      return {
+        forward() {
+          _paint(newColor);
+        },
+        back() {
+          _paint(oldColor);
+        },
+      };
+      break;
+    }
     default: {
       throw new Error('unknown action method: ' + method);
     }

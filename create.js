@@ -1307,14 +1307,16 @@ const _beginTool = (primary, secondary) => {
       } else if (selectedTool === 'paint') {
         const intersections = localRaycaster.intersectObjects(objectMeshes);
         if (intersections.length > 0) {
-          const [{object, faceIndex}] = intersections;
-          const {geometry} = object; 
-          for (let i = 0; i < geometry.attributes.color.array.length; i += 3) {
-            geometry.attributes.color.array[i] = currentColor.r;
-            geometry.attributes.color.array[i+1] = currentColor.g;
-            geometry.attributes.color.array[i+2] = currentColor.b;
-          }
-          geometry.attributes.color.needsUpdate = true;
+          const [{object}] = intersections;
+
+          const oldColor = new THREE.Color().fromArray(object.geometry.attributes.color.array);
+          const newColor = currentColor.clone();
+          const action = createAction('paint', {
+            objectMesh: object,
+            oldColor,
+            newColor,
+          });
+          execute(action);
         }
       }
 

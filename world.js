@@ -12,7 +12,7 @@ import {apiHost} from './config.js';
 import {makePromise} from './util.js';
 import contract from './contract.js';
 import {loadObjectMeshes} from './object.js';
-import {makeObjectState, bindObjectScript, tickObjectScript, bindObjectShader} from './runtime.js';
+import {makeObjectState, bindObjectScript, tickObjectScript/*, bindObjectShader*/} from './runtime.js';
 
 const _load = () => {
 
@@ -738,7 +738,7 @@ const objectStates = [];
       .then(res => res.json());
     const {dataHash} = metadata;
 
-    const {objectMeshes: newObjectMeshes, script, shader: {vertex, fragment}} = await loadObjectMeshes(`${apiHost}/data${dataHash}`);
+    const {objectMeshes: newObjectMeshes, script/*, shader: {vertex, fragment}*/} = await loadObjectMeshes(`${apiHost}/data${dataHash}`);
     for (let i = 0; i < newObjectMeshes.length; i++) {
       const newObjectMesh = newObjectMeshes[i];
       newObjectMesh.position.add(loc);
@@ -750,9 +750,9 @@ const objectStates = [];
       bindObjectScript(objectState, script, newObjectMeshes);
       objectStates.push(objectState);
     }
-    if (vertex || fragment) {
+    /* if (vertex || fragment) {
       bindObjectShader(newObjectMeshes, vertex, fragment);
-    }
+    } */
 
     floorMeshes[0].setHighlight(loc.x, loc.z, loc.x + size.x, loc.z + size.z, new THREE.Color(0x66bb6a));
   }

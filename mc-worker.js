@@ -481,6 +481,70 @@ const _handleMessage = data => {
       allocator.freeAll();
       break;
     }
+    case 'cut': {
+      const allocator = new Allocator();
+
+      const {positions: positionsData, faces: facesData, position: positionData, quaternion: quaternionData, scale: scaleData, arrayBuffer} = data;
+
+      const positions = allocator.alloc(Float32Array, positionsData.length);
+      positions.set(positionsData);
+      const faces = allocator.alloc(Uint32Array, facesData.length);
+      faces.set(facesData);
+      const position = allocator.alloc(Float32Array, 3);
+      position.set(positionData);
+      const quaternion = allocator.alloc(Float32Array, 4);
+      quaternion.set(quaternionData);
+      const scale = allocator.alloc(Float32Array, 3);
+      scale.set(scaleData);
+
+      const outPositions = allocator.alloc(Float32Array, 500*1024/Float32Array.BYTES_PER_ELEMENT);
+      const numOutPositions = allocator.alloc(Uint32Array, 2);
+      const outFaces = allocator.alloc(Uint32Array, 500*1024/Uint32Array.BYTES_PER_ELEMENT);
+      const numOutFaces = allocator.alloc(Uint32Array, 2);
+
+      self.Module._doCut(
+        positions.offset,
+        positions.length,
+        faces.offset,
+        faces.length,
+        position.offset,
+        quaternion.offset,
+        scale.offset,
+        outPositions.offset,
+        numOutPositions.offset,
+        outFaces.offset,
+        numOutFaces.offset
+      );
+
+      let index = 0;
+      const outPositions2 = new Float32Array(arrayBuffer, index, numOutPositions[0]);
+      outPositions2.set(outPositions.slice(0, numOutPositions[0]));
+      index += numOutPositions[0]*Float32Array.BYTES_PER_ELEMENT;
+      const outFaces2 = new Uint32Array(arrayBuffer, index, numOutFaces[0]);
+      outFaces2.set(outFaces.slice(0, numOutFaces[0]));
+      index += numOutFaces[0]*Uint32Array.BYTES_PER_ELEMENT;
+
+      const outPositions3 = new Float32Array(arrayBuffer, index, numOutPositions[1]);
+      outPositions3.set(outPositions.slice(numOutPositions[0], numOutPositions[0] + numOutPositions[1]));
+      index += numOutPositions[1]*Float32Array.BYTES_PER_ELEMENT;
+      const outFaces3 = new Uint32Array(arrayBuffer, index, numOutFaces[1]);
+      outFaces3.set(outFaces.slice(numOutFaces[0], numOutFaces[0] + numOutFaces[1]));
+      index += numOutFaces[1]*Uint32Array.BYTES_PER_ELEMENT;
+
+      // console.log('worker positions', numOutPositions[0], numOutPositions[1], numOutFaces[0], numOutFaces[1], outPositions2, outFaces2, outPositions3, outFaces3);
+
+      self.postMessage({
+        result: {
+          positions: outPositions2,
+          faces: outFaces2,
+          positions2: outPositions3,
+          faces2: outFaces3,
+        },
+      }, [arrayBuffer]);
+
+      allocator.freeAll();
+      break;
+    }
     default: {
       console.warn('unknown method', data.method);
       break;

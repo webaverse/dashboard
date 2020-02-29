@@ -593,7 +593,7 @@ const _makeMiningMesh = (x, y, z) => {
           geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
           geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(res.positions.length*2/3), 2));
           geometry.setAttribute('color', new THREE.BufferAttribute(res.colors, 3));
-          geometry.deleteAttribute('normal');
+          // geometry.deleteAttribute('normal');
           geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
           geometry.computeVertexNormals();
           mesh.visible = true;
@@ -748,7 +748,7 @@ const _parameterizeObjectMesh = objectMesh => {
     geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
     geometry.setAttribute('color', new THREE.BufferAttribute(res.normals, 3));
     geometry.setAttribute('uv', new THREE.BufferAttribute(res.uvs, 2));
-    geometry.deleteAttribute('normal');
+    // geometry.deleteAttribute('normal');
     geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
     geometry.computeVertexNormals();
   });

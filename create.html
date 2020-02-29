@@ -26,6 +26,22 @@
       <a href="/" class="nav" id="explore-dropdown">World</a>
       <a href="/create.html" class="nav open" id="explore-dropdown">Create</a>
       <a href="/gallery.html" class="nav" id="explore-dropdown">Gallery</a>
+      <div class="room disconnected">
+        <div>Multiplayer disconnected</div>
+        <div class=button>Create room</div>
+        <div class=button>Use code</div>
+      </div>
+      <div class="room dialog">
+        <div>Multiplayer disconnected</div>
+        <input type=text value="Enter room code">
+        <div class=button>Connect</div>
+        <div class=button>Cancel</div>
+      </div>
+      <div class="room connected">
+        <div>Multiplayer connected</div>
+        <div class=code>Room code: </div>
+        <div class=button>Disconnect</div>
+      </div>
     </header>
     <canvas id=canvas></canvas>
     <iframe src="interface-create.html" id="interface-iframe" frameborder="0"></iframe>

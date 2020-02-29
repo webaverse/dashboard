@@ -83,7 +83,7 @@ header > .login-form.phase-3 > .phaseless-content
 {
   display: none;
 }
-.button {
+/* .button {
   display: inline-block;
   margin-right: 15px;
   padding: 7px 15px;
@@ -99,7 +99,7 @@ header > .login-form.phase-3 > .phaseless-content
 }
 .button.highlight:hover {
   background-color: #d32f2f;
-}
+} */
 .login-form .phase-content {
   display: flex;
   align-items: center;
@@ -432,6 +432,39 @@ header .popdown ul {
 }
 header .popdown li {
   margin: 10px 0;
+}
+header .room {
+  display: flex;
+  padding: 5px 10px;
+  margin-right: auto;
+  background-color: #F4F4F4;
+  border-radius: 7px;
+  align-items: center;
+}
+header .room.disconnected,
+header .room.dialog,
+header .room.connected {
+  display: none;
+}
+header .room.disconnected {
+  display: flex;
+}
+header .room .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #42a5f5;
+  color: #FFF;
+  border-radius: 8px;
+  cursor: pointer;
+}
+header .room .button:hover {
+  background-color: #1e88e5;
+}
+header .room .button:active {
+  transform: translateY(1px);
 }
 #interface-iframe {
   position: absolute;

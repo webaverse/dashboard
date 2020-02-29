@@ -33,6 +33,36 @@ export function createAction(method, args) {
       };
       break;
     }
+    case 'swapObjects': {
+      const {container, objectMeshes, oldObjectMeshes, newObjectMeshes} = args;
+      return {
+        forward() {
+          for (let i = 0; i < oldObjectMeshes.length; i++) {
+            const oldObjectMesh = oldObjectMeshes[i];
+            container.remove(oldObjectMesh);
+            objectMeshes.splice(objectMeshes.indexOf(oldObjectMesh), 1);
+          }
+          for (let i = 0; i < newObjectMeshes.length; i++) {
+            const newObjectMesh = newObjectMeshes[i];
+            container.add(newObjectMesh);
+            objectMeshes.push(newObjectMesh);
+          }
+        },
+        back() {
+          for (let i = 0; i < newObjectMeshes.length; i++) {
+            const newObjectMesh = newObjectMeshes[i];
+            container.remove(newObjectMesh);
+            objectMeshes.splice(objectMeshes.indexOf(newObjectMesh), 1);
+          }
+          for (let i = 0; i < oldObjectMeshes.length; i++) {
+            const oldObjectMesh = oldObjectMeshes[i];
+            container.add(oldObjectMesh);
+            objectMeshes.push(oldObjectMesh);
+          }
+        },
+      };
+      break;
+    }
     case 'transform': {
       const {object, oldTransform, newTransform} = args;
       return {

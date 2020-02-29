@@ -1271,7 +1271,7 @@ const _updateTool = raycaster => {
         scalpelMesh.position.copy(scalpelMesh.startPosition);
       }
       normal.normalize();
-      scalpelMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, -1), normal);
+      scalpelMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), normal);
     }
   }
   
@@ -1309,7 +1309,7 @@ const _snapshotCanvases = objectMeshes => objectMeshes.map(objectMesh => {
   }
 });
 let scalpelMesh = (() => {
-  const geometry = new THREE.BoxBufferGeometry(10, 10, 0.001);
+  const geometry = new THREE.BoxBufferGeometry(10, 0.001, 10);
   const material = new THREE.MeshBasicMaterial({
     color: 0x42a5f5,
     side: THREE.DoubleSide,
@@ -1364,7 +1364,7 @@ const _beginTool = (primary, secondary) => {
         const normal = new THREE.Vector3(1, 0, 0)
           .cross(scalpelMesh.startDirection)
           .normalize();
-        scalpelMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, -1), normal);
+        scalpelMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), normal);
         scalpelMesh.visible = true;
       }
 
@@ -1392,6 +1392,10 @@ const _endTool = (primary, secondary) => {
       pushAction(action);
     } else if (selectedTool === 'scalpel') {
       scalpelMesh.visible = false;
+
+      if (selectedObjectMesh) {
+        _splitObjectMesh(selectedObjectMesh, scalpelMesh.position.clone().sub(selectedObjectMesh.position), scalpelMesh.quaternion, scalpelMesh.scale);
+      }
     }
 
     toolDown = false;
@@ -1419,6 +1423,76 @@ const _clipboardPaste = () => {
     });
     execute(action);
   }
+};
+const _splitObjectMesh = (objectMesh, p = new THREE.Vector3(), q = new THREE.Quaternion(), s = new THREE.Vector3(1, 1, 1)) => {
+  const {geometry} = objectMesh;
+  const arrayBuffer = new ArrayBuffer(300*1024);
+  const position = objectMesh.position.clone();
+  const quaternion = objectMesh.quaternion.clone();
+  const scale = objectMesh.scale.clone();
+  const color = new THREE.Color().fromArray(objectMesh.geometry.attributes.color.array);
+  uvWorker.request({
+    method: 'cut',
+    positions: geometry.attributes.position.array,
+    faces: geometry.index.array,
+    position: p.toArray(),
+    quaternion: q.toArray(),
+    scale: s.toArray(),
+    arrayBuffer,
+  }, [arrayBuffer]).then(res => {
+    const newObjectMeshes = [];
+    {
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
+      geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(res.positions.length*2/3), 2));
+      const colors = new Float32Array(res.positions.length);
+      for (let i = 0; i < colors.length; i += 3) {
+        colors[i] = color.r;
+        colors[i+1] = color.g;
+        colors[i+2] = color.b;
+      }
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      // geometry.deleteAttribute('normal');
+      geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
+      geometry.computeVertexNormals();
+      const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
+      objectMesh.position.copy(position);
+      objectMesh.quaternion.copy(quaternion);
+      objectMesh.scale.copy(scale);
+      newObjectMeshes.push(objectMesh);
+    }
+    {
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.BufferAttribute(res.positions2, 3));
+      geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(res.positions2.length*2/3), 2));
+      const colors = new Float32Array(res.positions2.length);
+      for (let i = 0; i < colors.length; i += 3) {
+        colors[i] = color.r;
+        colors[i+1] = color.g;
+        colors[i+2] = color.b;
+      }
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      // geometry.deleteAttribute('normal');
+      geometry.setIndex(new THREE.BufferAttribute(res.faces2, 1));
+      geometry.computeVertexNormals();
+      const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
+      objectMesh.position.copy(position);
+      objectMesh.quaternion.copy(quaternion);
+      objectMesh.scale.copy(scale);
+      newObjectMeshes.push(objectMesh);
+    }
+
+    _setHoveredObjectMesh(null);
+    _setSelectedObjectMesh(null);
+
+    const action = createAction('swapObjects', {
+      oldObjectMeshes: [objectMesh],
+      newObjectMeshes,
+      container,
+      objectMeshes,
+    });
+    execute(action);
+  });
 };
 [window, interfaceWindow].forEach(w => {
   w.addEventListener('keydown', e => {
@@ -1489,64 +1563,7 @@ const _clipboardPaste = () => {
       case 75: { // K
         if (e.ctrlKey) {
           if (selectedObjectMesh) {
-            const {geometry} = selectedObjectMesh;
-            const arrayBuffer = new ArrayBuffer(300*1024);
-            const position = selectedObjectMesh.position.clone();
-            const quaternion = selectedObjectMesh.quaternion.clone();
-            const scale = selectedObjectMesh.scale.clone();
-            const color = new THREE.Color().fromArray(selectedObjectMesh.geometry.attributes.color.array);
-            uvWorker.request({
-              method: 'cut',
-              positions: geometry.attributes.position.array,
-              faces: geometry.index.array,
-              position: selectedObjectMesh.position.toArray(),
-              quaternion: selectedObjectMesh.quaternion.toArray(),
-              scale: selectedObjectMesh.scale.toArray(),
-              arrayBuffer,
-            }, [arrayBuffer]).then(res => {
-              {
-                const geometry = new THREE.BufferGeometry();
-                geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
-                geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(res.positions.length*2/3), 2));
-                const colors = new Float32Array(res.positions.length);
-                for (let i = 0; i < colors.length; i += 3) {
-                  colors[i] = color.r;
-                  colors[i+1] = color.g;
-                  colors[i+2] = color.b;
-                }
-                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-                // geometry.deleteAttribute('normal');
-                geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
-                geometry.computeVertexNormals();
-                const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
-                objectMesh.position.copy(position);
-                objectMesh.quaternion.copy(quaternion);
-                objectMesh.scale.copy(scale);
-                container.add(objectMesh);
-                objectMeshes.push(objectMesh);
-              }
-              {
-                const geometry = new THREE.BufferGeometry();
-                geometry.setAttribute('position', new THREE.BufferAttribute(res.positions2, 3));
-                geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(res.positions2.length*2/3), 2));
-                const colors = new Float32Array(res.positions2.length);
-                for (let i = 0; i < colors.length; i += 3) {
-                  colors[i] = color.r;
-                  colors[i+1] = color.g;
-                  colors[i+2] = color.b;
-                }
-                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-                // geometry.deleteAttribute('normal');
-                geometry.setIndex(new THREE.BufferAttribute(res.faces2, 1));
-                geometry.computeVertexNormals();
-                const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
-                objectMesh.position.copy(position);
-                objectMesh.quaternion.copy(quaternion);
-                objectMesh.scale.copy(scale);
-                container.add(objectMesh);
-                objectMeshes.push(objectMesh);
-              }
-            });
+            _splitObjectMesh(selectedObjectMesh);
           }
         }
         break;
@@ -1677,8 +1694,10 @@ Array.from(tools).forEach((tool, i) => {
         
         _commitMiningMeshes();
 
-        _setHoveredObjectMesh(null);
-        _setSelectedObjectMesh(null);
+        if (!['camera', 'scalpel'].includes(selectedTool)) {
+          _setHoveredObjectMesh(null);
+          _setSelectedObjectMesh(null);
+        }
       }
     }
   });

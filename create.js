@@ -1253,6 +1253,26 @@ const _updateTool = raycaster => {
     } else {
       collisionMesh.visible = false;
     }
+  } else if (selectedTool === 'scalpel') {
+    if (toolDown) {
+      scalpelMesh.endPosition.copy(localRaycaster.ray.origin)
+        .add(localRaycaster.ray.direction);
+      const normal = scalpelMesh.endPosition.clone()
+        .sub(scalpelMesh.startPosition);
+      if (normal.length() > 0.001) {
+        normal
+          .cross(localRaycaster.ray.direction);
+        scalpelMesh.position.copy(scalpelMesh.startPosition)
+          .add(scalpelMesh.endPosition)
+          .divideScalar(2);
+      } else {
+        normal.set(1, 0, 0)
+          .cross(scalpelMesh.startDirection);
+        scalpelMesh.position.copy(scalpelMesh.startPosition);
+      }
+      normal.normalize();
+      scalpelMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, -1), normal);
+    }
   }
   
   const intersections = raycaster.intersectObject(uiMesh);
@@ -1288,6 +1308,21 @@ const _snapshotCanvases = objectMeshes => objectMeshes.map(objectMesh => {
     return null;
   }
 });
+let scalpelMesh = (() => {
+  const geometry = new THREE.BoxBufferGeometry(10, 10, 0.001);
+  const material = new THREE.MeshBasicMaterial({
+    color: 0x42a5f5,
+    side: THREE.DoubleSide,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.frustumCulled = false;
+  mesh.visible = false;
+  mesh.startPosition = new THREE.Vector3();
+  mesh.startDirection = new THREE.Vector3();
+  mesh.endPosition = new THREE.Vector3();
+  return mesh;
+})();
+container.add(scalpelMesh);
 const _beginTool = (primary, secondary) => {
   if (primary) {
     if (uiMesh.click()) {
@@ -1321,6 +1356,16 @@ const _beginTool = (primary, secondary) => {
         }
       } else if (selectedTool === 'pencil') {
         objectMeshOldCanvases = _snapshotCanvases(objectMeshes);
+      } else if (selectedTool === 'scalpel') {
+        scalpelMesh.startPosition.copy(localRaycaster.ray.origin)
+          .add(localRaycaster.ray.direction);
+        scalpelMesh.startDirection.copy(localRaycaster.ray.direction);
+        scalpelMesh.position.copy(scalpelMesh.startPosition);
+        const normal = new THREE.Vector3(1, 0, 0)
+          .cross(scalpelMesh.startDirection)
+          .normalize();
+        scalpelMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, -1), normal);
+        scalpelMesh.visible = true;
       }
 
       toolDown = true;
@@ -1345,6 +1390,8 @@ const _endTool = (primary, secondary) => {
         newCanvases: objectMeshNewCanvases,
       });
       pushAction(action);
+    } else if (selectedTool === 'scalpel') {
+      scalpelMesh.visible = false;
     }
 
     toolDown = false;

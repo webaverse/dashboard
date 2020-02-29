@@ -8,6 +8,7 @@ import {XRControllerModelFactory} from './XRControllerModelFactory.js';
 import {Ammo as AmmoLib} from './ammo.wasm.js';
 import './gif.js';
 import {makePromise} from './util.js';
+import {apiHost} from './config.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
 import {objectImage, objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
@@ -1801,20 +1802,20 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
     dataHash,
     screenshotHash,
   ] = await Promise.all([
-    fetch(`https://cryptopolys.webaverse.workers.dev/data/`, {
+    fetch(`${apiHost}/data/`, {
       method: 'PUT',
       body: dataArrayBuffer,
     })
       .then(res => res.json())
       .then(j => j.hash),
-    fetch(`https://cryptopolys.webaverse.workers.dev/data/`, {
+    fetch(`${apiHost}/data/`, {
       method: 'PUT',
       body: screenshotBlob,
     })
       .then(res => res.json())
       .then(j => j.hash),
   ]);
-  const metadataHash = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata/`, {
+  const metadataHash = await fetch(`${apiHost}/metadata/`, {
       method: 'PUT',
       body: JSON.stringify({
         objectName: objectNameEl.value,
@@ -2327,11 +2328,11 @@ renderer.setAnimationLoop(animate);
   const q = parseQuery(window.location.search);
   const {o} = q;
   if (o) {
-    const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${o}`)
+    const metadata = await fetch(`${apiHost}/metadata${o}`)
       .then(res => res.json());
     const {objectName, dataHash} = metadata;
     objectNameEl.value = objectName;
-    const arrayBuffer = await fetch(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`)
+    const arrayBuffer = await fetch(`${apiHost}/data${dataHash}`)
       .then(res => res.arrayBuffer());
     for (let i = 0; i < objectMeshes.length; i++) {
       const objectMesh = objectMeshes[i];

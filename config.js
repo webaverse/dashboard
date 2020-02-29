@@ -1,0 +1,1 @@
+export const apiHost = `https://api.cryptopolys.com`;

@@ -8,6 +8,7 @@ import {GLTFLoader} from './GLTFLoader.js';
 /* import {GLTFExporter} from './GLTFExporter.js';
 import {XRControllerModelFactory} from './XRControllerModelFactory.js';
 import {Ammo as AmmoLib} from './ammo.wasm.js'; */
+import {apiHost} from './config.js';
 import {makePromise} from './util.js';
 import contract from './contract.js';
 import {loadObjectMeshes} from './object.js';
@@ -644,7 +645,7 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
         return p;
       })(),
     ]);
-    const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${metadataHash}`)
+    const metadata = await fetch(`${apiHost}/metadata${metadataHash}`)
       .then(res => res.json());
     const {dataHash, screenshotHash} = metadata;
     const a = document.createElement('a');
@@ -652,7 +653,7 @@ const inventoryItemsEl = interfaceDocument.getElementById('inventory-items');
     a.classList.add('item');
     a.setAttribute('draggable', true);
     a.innerHTML = `\
-      <img src="https://cryptopolys.webaverse.workers.dev/data${screenshotHash}" width=80 height=80>
+      <img src="${apiHost}/data${screenshotHash}" width=80 height=80>
       <div class=wrap>
         <div class=name>${metadata.objectName}</div>
         <div class=details>${size.join('x')}</div>
@@ -733,11 +734,11 @@ const objectStates = [];
       })(),
     ]);
 
-    const metadata = await fetch(`https://cryptopolys.webaverse.workers.dev/metadata${metadataHash}`)
+    const metadata = await fetch(`${apiHost}/metadata${metadataHash}`)
       .then(res => res.json());
     const {dataHash} = metadata;
 
-    const {objectMeshes: newObjectMeshes, script, shader: {vertex, fragment}} = await loadObjectMeshes(`https://cryptopolys.webaverse.workers.dev/data${dataHash}`);
+    const {objectMeshes: newObjectMeshes, script, shader: {vertex, fragment}} = await loadObjectMeshes(`${apiHost}/data${dataHash}`);
     for (let i = 0; i < newObjectMeshes.length; i++) {
       const newObjectMesh = newObjectMeshes[i];
       newObjectMesh.position.add(loc);

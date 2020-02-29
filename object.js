@@ -133,6 +133,7 @@ export const objectMaterial = (() => {
     color: 0xFFFFFF,
     vertexColors: THREE.VertexColors,
     // map: new CheckerBoardTexture(undefined, undefined, 64, 64),
+    flatShading: true,
     map: objectTexture,
   });
   return material;

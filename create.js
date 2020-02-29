@@ -753,22 +753,37 @@ const _parameterizeObjectMesh = objectMesh => {
     geometry.computeVertexNormals();
   });
 };
+let committing = false;
+let commitQueued = false;
 const _commitMiningMeshes = async () => {
-  await _waitForMiningMesh();
-  const visibleMiningMeshes = miningMeshes.filter(miningMesh => miningMesh.visible);
-  if (visibleMiningMeshes.length) {
-    const geometry = BufferGeometryUtils.mergeBufferGeometries(visibleMiningMeshes.map(miningMesh => miningMesh.geometry));
-    const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
-    await _parameterizeObjectMesh(objectMesh);
-    _centerObjectMesh(objectMesh);
-    _newMiningMeshes();
+  if (!committing) {
+    committing = true;
 
-    const action = createAction('addObject', {
-      objectMesh,
-      container,
-      objectMeshes,
-    });
-    execute(action);
+    await _waitForMiningMesh();
+
+    const visibleMiningMeshes = miningMeshes.filter(miningMesh => miningMesh.visible);
+    if (visibleMiningMeshes.length) {
+      const geometry = BufferGeometryUtils.mergeBufferGeometries(visibleMiningMeshes.map(miningMesh => miningMesh.geometry));
+      const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
+      await _parameterizeObjectMesh(objectMesh);
+      _centerObjectMesh(objectMesh);
+      _newMiningMeshes();
+
+      const action = createAction('addObject', {
+        objectMesh,
+        container,
+        objectMeshes,
+      });
+      execute(action);
+    }
+
+    committing = false;
+    if (commitQueued) {
+      commitQueued = false;
+      _commitMiningMeshes();
+    }
+  } else {
+    commitQueued = true;
   }
 };
 const _centerObjectMeshes = () => {

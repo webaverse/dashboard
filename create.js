@@ -13,7 +13,7 @@ import contract from './contract.js';
 import screenshot from './screenshot.js';
 import {objectImage, objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
 import {createAction, execute, pushAction, undo, redo, clearHistory} from './actions.js';
-import {makeObjectState, bindObjectScript, tickObjectScript, bindObjectShader} from './runtime.js';
+import {makeObjectState, bindObjectScript, tickObjectScript/*, bindObjectShader*/} from './runtime.js';
 
 const _load = () => {
 
@@ -1681,14 +1681,14 @@ Array.from(tools).forEach((tool, i) => {
         });
       [
         'script-input',
-        'shader-input',
+        // 'shader-input',
       ].forEach(id => interfaceDocument.getElementById(id).classList.remove('open'));
 
       if (tool.matches('[tool=script]')) {
         interfaceDocument.getElementById('script-input').classList.toggle('open', !wasOpen);
-      } else if (tool.matches('[tool=shader]')) {
+      } /* else if (tool.matches('[tool=shader]')) {
         interfaceDocument.getElementById('shader-input').classList.toggle('open', !wasOpen);
-      }
+      } */
 
       tool.classList.toggle('open', !wasOpen);
     } else if (tool.matches('[tool=center]')) {
@@ -1760,7 +1760,7 @@ scriptInputTextarea.addEventListener('keydown', e => {
   e.stopPropagation();
 });
 
-interfaceDocument.getElementById('shader-input').addEventListener('mousedown', e => {
+/* interfaceDocument.getElementById('shader-input').addEventListener('mousedown', e => {
   e.stopPropagation();
 });
 const shaderInputV = interfaceDocument.getElementById('shader-input-v');
@@ -1778,7 +1778,7 @@ shaderInputF.addEventListener('keydown', e => {
 });
 shaderInputF.addEventListener('input', e => {
   bindObjectShader(objectMeshes, shaderInputV.value, shaderInputF.value);
-});
+}); */
 
 const objectNameEl = interfaceDocument.getElementById('object-name');
 objectNameEl.addEventListener('keydown', e => {
@@ -1794,7 +1794,7 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
     dataArrayBuffer,
     screenshotBlob,
   ] = await Promise.all([
-    saveObjectMeshes(objectMeshes, scriptInputTextarea.value, shaderInputV.value, shaderInputF.value),
+    saveObjectMeshes(objectMeshes, scriptInputTextarea.value/*, shaderInputV.value, shaderInputF.value*/),
     _screenshotMiningMeshes(),
   ]);
 
@@ -1863,7 +1863,7 @@ _bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file =>
       objectMesh.destroy();
     }
     objectMeshes.length = 0;
-    const {objectMeshes: newObjectMeshes, script, shader: {vertex, fragment}} = await loadObjectMeshes(arrayBuffer);
+    const {objectMeshes: newObjectMeshes, script/*, shader: {vertex, fragment}*/} = await loadObjectMeshes(arrayBuffer);
     objectMeshes.length = newObjectMeshes.length;
     for (let i = 0; i < newObjectMeshes.length; i++) {
       const newObjectMesh = newObjectMeshes[i];
@@ -1876,7 +1876,7 @@ _bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file =>
         bindObjectScript(objectState, script, objectMeshes);
       }
     }
-    if (vertex) {
+    /* if (vertex) {
       shaderInputV.value = vertex;
     }
     if (fragment) {
@@ -1884,12 +1884,12 @@ _bindUploadFileButton(interfaceDocument.getElementById('load-op-input'), file =>
     }
     if (vertex || fragment) {
       bindObjectShader(objectMeshes, vertex, fragment);
-    }
+    } */
   };
   r.readAsArrayBuffer(file);
 });
 interfaceDocument.getElementById('save-op').addEventListener('click', async e => {
-  const arrayBuffer = await saveObjectMeshes(objectMeshes, scriptInputTextarea.value, shaderInputV.value, shaderInputF.value);
+  const arrayBuffer = await saveObjectMeshes(objectMeshes, scriptInputTextarea.value/*, shaderInputV.value, shaderInputF.value*/);
   const blob = new Blob([arrayBuffer], {
     type: 'model/gltf.binary',
   });
@@ -2340,7 +2340,7 @@ renderer.setAnimationLoop(animate);
       objectMesh.destroy();
     }
     objectMeshes.length = 0;
-    const {objectMeshes: newObjectMeshes, script, shader: {vertex, fragment}} = await loadObjectMeshes(arrayBuffer);
+    const {objectMeshes: newObjectMeshes, script/*, shader: {vertex, fragment}*/} = await loadObjectMeshes(arrayBuffer);
     objectMeshes.length = newObjectMeshes.length;
     for (let i = 0; i < newObjectMeshes.length; i++) {
       const newObjectMesh = newObjectMeshes[i];
@@ -2353,7 +2353,7 @@ renderer.setAnimationLoop(animate);
         bindObjectScript(objectState, script, objectMeshes);
       }
     }
-    if (vertex) {
+    /* if (vertex) {
       shaderInputV.value = vertex;
     }
     if (fragment) {
@@ -2361,7 +2361,7 @@ renderer.setAnimationLoop(animate);
     }
     if (vertex || fragment) {
       bindObjectShader(objectMeshes, vertex, fragment);
-    }
+    } */
   }
 })();
 

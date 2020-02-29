@@ -203,7 +203,7 @@ input[type=number]::-webkit-inner-spin-button {
   font-size: 12px;
 }
 .script-input,
-.shader-input
+/*.shader-input*/
 {
   display: flex;
   flex-direction: column;
@@ -220,21 +220,21 @@ input[type=number]::-webkit-inner-spin-button {
   resize: none;
 }
 .script-input > .label,
-.shader-input > .label
+/*.shader-input > .label*/
 {
   padding: 5px 0;
   background-color: #333;
   color: #FFF;
 }
 .script-input > textarea,
-.shader-input > textarea
+/*.shader-input > textarea*/
 {
   border: 0;
   flex: 1;
   outline: none;
 }
 .script-input:not(.open),
-.shader-input:not(.open)
+/*.shader-input:not(.open)*/
 {
   display: none;
 }
@@ -293,11 +293,11 @@ input[type=number]::-webkit-inner-spin-button {
           <i class="fal fa-scroll"></i>
           <div class=label>Edit script</div>
         </a>
-        <a id=tool-11 class="tool {{#tool11Selected}}selected{{/tool11Selected}}" sidebar tool="shader">
+        <!-- <a id=tool-11 class="tool {{#tool11Selected}}selected{{/tool11Selected}}" sidebar tool="shader">
           <i class="fal fa-sunglasses"></i>
           <div class=label>Edit shader</div>
-        </a>
-        <a id=tool-12 class="tool {{#tool12Selected}}selected{{/tool12Selected}} hidden" tool="commit">
+        </a> -->
+        <a id=tool-11 class="tool {{#tool11Selected}}selected{{/tool11Selected}} hidden" tool="commit">
           <i class="fal fa-check"></i>
           <div class=label>Commit object</div>
         </a>
@@ -382,12 +382,12 @@ input[type=number]::-webkit-inner-spin-button {
       <div class=label>Script</div>
       <textarea id=script-input-textarea></textarea>
     </div>
-    <div class=shader-input id=shader-input>
+    <!-- <div class=shader-input id=shader-input>
       <div class=label>Vertex</div>
       <textarea id=shader-input-v></textarea>
       <div class=label>Fragment</div>
       <textarea id=shader-input-f></textarea>
-    </div>
+    </div> -->
     <div class=background></div>
   </body>
 </html>

@@ -1439,6 +1439,65 @@ const _clipboardPaste = () => {
         }
         break;
       }
+      case 75: { // K
+        if (e.ctrlKey) {
+          if (selectedObjectMesh) {
+            const {geometry} = selectedObjectMesh;
+            const arrayBuffer = new ArrayBuffer(500*1024);
+            console.log('cut top 1');
+            const color = new THREE.Color().fromArray(selectedObjectMesh.geometry.attributes.color.array);
+            uvWorker.request({
+              method: 'cut',
+              positions: geometry.attributes.position.array,
+              faces: geometry.index.array,
+              position: selectedObjectMesh.position.clone().multiplyScalar(-1).toArray(),
+              quaternion: selectedObjectMesh.quaternion.toArray(),
+              scale: selectedObjectMesh.scale.toArray(),
+              arrayBuffer,
+            }, [arrayBuffer]).then(res => {
+              console.log('cut top 2', res);
+
+              {
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
+                geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(res.positions.length*2/3), 2));
+                const colors = new Float32Array(res.positions.length);
+                for (let i = 0; i < colors.length; i += 3) {
+                  colors[i] = color.r;
+                  colors[i+1] = color.g;
+                  colors[i+2] = color.b;
+                }
+                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                // geometry.deleteAttribute('normal');
+                geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
+                geometry.computeVertexNormals();
+                const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
+                container.add(objectMesh);
+                objectMeshes.push(objectMesh);
+              }
+              {
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', new THREE.BufferAttribute(res.positions2, 3));
+                geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(res.positions2.length*2/3), 2));
+                const colors = new Float32Array(res.positions2.length);
+                for (let i = 0; i < colors.length; i += 3) {
+                  colors[i] = color.r;
+                  colors[i+1] = color.g;
+                  colors[i+2] = color.b;
+                }
+                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                // geometry.deleteAttribute('normal');
+                geometry.setIndex(new THREE.BufferAttribute(res.faces2, 1));
+                geometry.computeVertexNormals();
+                const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
+                container.add(objectMesh);
+                objectMeshes.push(objectMesh);
+              }
+            });
+          }
+        }
+        break;
+      }
       case 67: { // C
         if (e.ctrlKey) {
           if (selectedObjectMesh) {

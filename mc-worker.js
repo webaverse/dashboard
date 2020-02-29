@@ -497,9 +497,9 @@ const _handleMessage = data => {
       const scale = allocator.alloc(Float32Array, 3);
       scale.set(scaleData);
 
-      const outPositions = allocator.alloc(Float32Array, 500*1024/Float32Array.BYTES_PER_ELEMENT);
+      const outPositions = allocator.alloc(Float32Array, 300*1024/Float32Array.BYTES_PER_ELEMENT);
       const numOutPositions = allocator.alloc(Uint32Array, 2);
-      const outFaces = allocator.alloc(Uint32Array, 500*1024/Uint32Array.BYTES_PER_ELEMENT);
+      const outFaces = allocator.alloc(Uint32Array, 300*1024/Uint32Array.BYTES_PER_ELEMENT);
       const numOutFaces = allocator.alloc(Uint32Array, 2);
 
       self.Module._doCut(

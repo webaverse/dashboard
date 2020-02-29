@@ -1443,20 +1443,20 @@ const _clipboardPaste = () => {
         if (e.ctrlKey) {
           if (selectedObjectMesh) {
             const {geometry} = selectedObjectMesh;
-            const arrayBuffer = new ArrayBuffer(500*1024);
-            console.log('cut top 1');
+            const arrayBuffer = new ArrayBuffer(300*1024);
+            const position = selectedObjectMesh.position.clone();
+            const quaternion = selectedObjectMesh.quaternion.clone();
+            const scale = selectedObjectMesh.scale.clone();
             const color = new THREE.Color().fromArray(selectedObjectMesh.geometry.attributes.color.array);
             uvWorker.request({
               method: 'cut',
               positions: geometry.attributes.position.array,
               faces: geometry.index.array,
-              position: selectedObjectMesh.position.clone().multiplyScalar(-1).toArray(),
+              position: selectedObjectMesh.position.toArray(),
               quaternion: selectedObjectMesh.quaternion.toArray(),
               scale: selectedObjectMesh.scale.toArray(),
               arrayBuffer,
             }, [arrayBuffer]).then(res => {
-              console.log('cut top 2', res);
-
               {
                 const geometry = new THREE.BufferGeometry();
                 geometry.setAttribute('position', new THREE.BufferAttribute(res.positions, 3));
@@ -1472,6 +1472,9 @@ const _clipboardPaste = () => {
                 geometry.setIndex(new THREE.BufferAttribute(res.faces, 1));
                 geometry.computeVertexNormals();
                 const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
+                objectMesh.position.copy(position);
+                objectMesh.quaternion.copy(quaternion);
+                objectMesh.scale.copy(scale);
                 container.add(objectMesh);
                 objectMeshes.push(objectMesh);
               }
@@ -1490,6 +1493,9 @@ const _clipboardPaste = () => {
                 geometry.setIndex(new THREE.BufferAttribute(res.faces2, 1));
                 geometry.computeVertexNormals();
                 const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
+                objectMesh.position.copy(position);
+                objectMesh.quaternion.copy(quaternion);
+                objectMesh.scale.copy(scale);
                 container.add(objectMesh);
                 objectMeshes.push(objectMesh);
               }

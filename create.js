@@ -14,7 +14,7 @@ import screenshot from './screenshot.js';
 import {objectImage, objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
 import {createAction, execute, pushAction, undo, redo, clearHistory} from './actions.js';
 import {makeObjectState, bindObjectScript, tickObjectScript/*, bindObjectShader*/} from './runtime.js';
-import {XRChannelConnection} from './multiplayer.js';
+import {makeId, XRChannelConnection} from './multiplayer.js';
 
 const _load = () => {
 
@@ -1995,21 +1995,17 @@ interfaceDocument.getElementById('enable-physics-button').addEventListener('clic
 
 // multiplayer
 
-const roomAlphabetStartIndex = 'A'.charCodeAt(0);
-const roomAlphabetEndIndex = 'Z'.charCodeAt(0)+1;
-const roomIdLength = 4;
-const _makeId = () => {
-  let result = '';
-  for (let i = 0; i < roomIdLength; i++) {
-    result += String.fromCharCode(roomAlphabetStartIndex + Math.floor(Math.random() * (roomAlphabetEndIndex - roomAlphabetStartIndex)));
-  }
-  return result;
-};
+let roomId = null;
 let channelConnection = null;
 const _connectMultiplayer = async () => {
-  channelConnection = new XRChannelConnection(presenceHost);
+  roomId = makeId();
+  document.getElementById('room-code-text').innerText = roomId;
+  document.getElementById('room-link').href = `${window.location.protocol}//${window.location.host}${window.location.pathname}?r=${roomId}`;
+  channelConnection = new XRChannelConnection(roomId);
 };
 const _disconnectMultiplayer = async () => {
+  roomId = null;
+
   channelConnection.disconnect()
   channelConnection = null;
 };

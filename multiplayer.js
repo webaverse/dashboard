@@ -22,13 +22,13 @@ const defaultIceServers = [
 const roomAlphabetStartIndex = 'A'.charCodeAt(0);
 const roomAlphabetEndIndex = 'Z'.charCodeAt(0)+1;
 const roomIdLength = 4;
-const _makeId = () => {
+function makeId() {
   let result = '';
   for (let i = 0; i < roomIdLength; i++) {
     result += String.fromCharCode(roomAlphabetStartIndex + Math.floor(Math.random() * (roomAlphabetEndIndex - roomAlphabetStartIndex)));
   }
   return result;
-};
+}
 
 class DbSocket extends EventTarget {
   constructor(roomId, connectionId) {
@@ -76,6 +76,8 @@ class DbSocket extends EventTarget {
   close() {
     this.cleanup();
     this.cleanup = null;
+
+    this.dispatchEvent(new CustomEvent('close'));
   }
   async send(data) {
     const roomRef = database.ref('connections/' + this.roomId);
@@ -85,10 +87,10 @@ class DbSocket extends EventTarget {
 }
 
 class XRChannelConnection extends EventTarget {
-  constructor(roomId = _makeId(), options = {}) {
+  constructor(roomId = makeId(), options = {}) {
     super();
 
-    const connectionId = _makeId();
+    const connectionId = makeId();
     this.connectionId = connectionId;
     this.rtcWs = new DbSocket(roomId, connectionId);
     this.peerConnections = [];
@@ -523,9 +525,9 @@ class XRPeerConnection extends EventTarget {
   }
 }
 
-window.HttpSocket = HttpSocket;
 export {
-  DbSocket,
+  makeId,
+  // DbSocket,
   XRChannelConnection,
   XRPeerConnection,
 };

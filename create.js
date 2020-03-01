@@ -2383,7 +2383,7 @@ uiMesh.position.set(0.5, 0.5, 1);
 scene.add(uiMesh);
 
 function animate() {
-  orbitControls.update();
+  orbitControls.enabled && orbitControls.update();
   
   if (currentSession) {
     for (let i = 0; i < 2; i++) {

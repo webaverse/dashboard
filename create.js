@@ -2000,8 +2000,7 @@ let channelConnection = null;
 const peerConnections = [];
 const _connectMultiplayer = async rid => {
   const roomId = rid || makeId();
-  document.getElementById('room-code-text').innerText = roomId;
-  document.getElementById('room-link').href = `${window.location.protocol}//${window.location.host}${window.location.pathname}?r=${roomId}`;
+
   channelConnection = new XRChannelConnection(roomId);
   channelConnection.addEventListener('peerconnection', e => {
     const peerConnection = e.detail;
@@ -2017,11 +2016,20 @@ const _connectMultiplayer = async rid => {
       document.getElementById('user-count-text').innerText = peerConnections.length + 1;
     });
   });
+
+  document.getElementById('room-code-text').innerText = roomId;
+  const href = `${window.location.protocol}//${window.location.host}${window.location.pathname}?r=${roomId}`;
+  document.getElementById('room-link').href = href;
+
+  history.replaceState(null, '', href);
 };
 const _disconnectMultiplayer = async () => {
   if (channelConnection) {
     channelConnection.disconnect()
     channelConnection = null;
+
+    const href = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+    history.replaceState(null, '', href);
   }
 };
 window.addEventListener('beforeunload', _disconnectMultiplayer);
@@ -2395,8 +2403,11 @@ renderer.setAnimationLoop(animate);
 
 (async () => {
   const q = parseQuery(window.location.search);
-  const {o, r} = q;
-  if (o) {
+  const {r, o} = q;
+  if (r) {
+    document.getElementById('room-code-input').value = r;
+    document.getElementById('connect-button').click();
+  } else if (o) {
     const metadata = await fetch(`${apiHost}/metadata${o}`)
       .then(res => res.json());
     const {objectName, dataHash} = metadata;
@@ -2431,10 +2442,6 @@ renderer.setAnimationLoop(animate);
     if (vertex || fragment) {
       bindObjectShader(objectMeshes, vertex, fragment);
     } */
-  }
-  if (r) {
-    document.getElementById('room-code-input').value = r;
-    document.getElementById('connect-button').click();
   }
 })();
 

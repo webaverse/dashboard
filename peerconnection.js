@@ -51,11 +51,11 @@ export function updatePlayerXr(xr, camera) {
     for (let i = 0; i < 2; i++) {
       const controller = xr.getController(i);
       if (controller.userData.data && controller.userData.data.handedness === 'left') {
-        rig.inputs.leftGamepad.position.copy(controller.position);
-        rig.inputs.leftGamepad.quaternion.copy(controller.quaternion);
-      } else if (controller.userData.data && controller.userData.data.handedness === 'right') {
         rig.inputs.rightGamepad.position.copy(controller.position);
         rig.inputs.rightGamepad.quaternion.copy(controller.quaternion);
+      } else if (controller.userData.data && controller.userData.data.handedness === 'right') {
+        rig.inputs.leftGamepad.position.copy(controller.position);
+        rig.inputs.leftGamepad.quaternion.copy(controller.quaternion);
       }
     }
 

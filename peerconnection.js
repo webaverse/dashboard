@@ -34,22 +34,23 @@ export function updatePlayerCamera(camera) {
   }
 }
 export function updatePlayerXr(xr, camera) {
-  const {cameras} = xr.getCamera(camera);
-  console.log('got cameras', cameras);
-  rig.inputs.hmd.position
-    .copy(cameras[0].position)
-    .add(cameras[1].position)
-    .divideScalar(2);
-  rig.inputs.hmd.quaternion.copy(cameras[0].quaternion);
+  if (rig) {
+    const {cameras} = xr.getCamera(camera);
+    rig.inputs.hmd.position
+      .copy(cameras[0].position)
+      .add(cameras[1].position)
+      .divideScalar(2);
+    rig.inputs.hmd.quaternion.copy(cameras[0].quaternion);
 
-  for (let i = 0; i < 2; i++) {
-    const controller = xr.getController(i);
-    if (controller.userData.data && controller.userData.data.handedness === 'left') {
-      rig.inputs.leftGamepad.position.copy(controller.position);
-      rig.inputs.leftGamepad.quaternion.copy(controller.quaternion);
-    } else if (controller.userData.data && controller.userData.data.handedness === 'right') {
-      rig.inputs.rightGamepad.position.copy(controller.position);
-      rig.inputs.rightGamepad.quaternion.copy(controller.quaternion);
+    for (let i = 0; i < 2; i++) {
+      const controller = xr.getController(i);
+      if (controller.userData.data && controller.userData.data.handedness === 'left') {
+        rig.inputs.leftGamepad.position.copy(controller.position);
+        rig.inputs.leftGamepad.quaternion.copy(controller.quaternion);
+      } else if (controller.userData.data && controller.userData.data.handedness === 'right') {
+        rig.inputs.rightGamepad.position.copy(controller.position);
+        rig.inputs.rightGamepad.quaternion.copy(controller.quaternion);
+      }
     }
   }
 }

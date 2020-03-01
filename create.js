@@ -1660,7 +1660,7 @@ Array.from(tools).forEach((tool, i) => {
   tool.addEventListener('mousedown', e => {
     e.stopPropagation();
   });
-  tool.addEventListener('click', e => {
+  tool.addEventListener('click', async e => {
     const _cancel = () => {
       e.preventDefault();
       e.stopPropagation();
@@ -1706,8 +1706,6 @@ Array.from(tools).forEach((tool, i) => {
         
         uiMesh.update();
         
-        orbitControls.enabled = selectedTool === 'camera';
-        
         _commitMiningMeshes();
 
         if (!['camera', 'firstperson', 'thirdperson', 'scalpel'].includes(selectedTool)) {
@@ -1715,8 +1713,23 @@ Array.from(tools).forEach((tool, i) => {
           _setSelectedObjectMesh(null);
         }
       }
+
+      if (selectedTool === 'camera') {
+        orbitControls.enabled = true;
+      } else if (selectedTool === 'firstperson') {
+        await renderer.domElement.requestPointerLock();
+        orbitControls.enabled = false;
+      } else if (selectedTool === 'thirdperson') {
+        await renderer.domElement.requestPointerLock();
+        orbitControls.enabled = false;
+      }
     }
   });
+});
+document.addEventListener('pointerlockchange', e => {
+  if (!document.pointerLockElement) {
+    Array.from(tools).find(tool => tool.matches('.tool[tool=camera]')).click();
+  }
 });
 let selectedTool = tools[0].getAttribute('tool');
 tools[0].classList.add('selected');

@@ -1730,6 +1730,9 @@ const keys = {
   w.addEventListener('mousedown', _beginTool.bind(null, true, true));
   w.addEventListener('mouseup', _endTool.bind(null, true, true));
 });
+interfaceDocument.querySelector('.background').addEventListener('wheel', e => {
+  e.preventDefault();
+});
 const _updateControllers = () => {
   if (gripDowns.every(gripDown => gripDown)) {
     // XXX

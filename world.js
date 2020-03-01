@@ -339,6 +339,9 @@ background.addEventListener('drop', async e => {
     await p;
   }
 });
+background.addEventListener('wheel', e => {
+  e.preventDefault();
+});
 
 const localRaycaster = new THREE.Raycaster();
 const _updateRaycasterFromMouseEvent = (raycaster, e) => {

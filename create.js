@@ -1667,7 +1667,7 @@ Array.from(tools).forEach((tool, i) => {
   tool.addEventListener('mousedown', e => {
     e.stopPropagation();
   });
-  tool.addEventListener('click', async e => {
+  tool.addEventListener('click', e => {
     const _cancel = () => {
       e.preventDefault();
       e.stopPropagation();
@@ -1722,14 +1722,16 @@ Array.from(tools).forEach((tool, i) => {
       }
 
       if (selectedTool === 'camera') {
+        document.pointerLockElement && document.exitPointerLock();
         orbitControls.enabled = true;
       } else if (selectedTool === 'firstperson') {
-        await renderer.domElement.requestPointerLock();
+        renderer.domElement.requestPointerLock();
         orbitControls.enabled = false;
       } else if (selectedTool === 'thirdperson') {
-        await renderer.domElement.requestPointerLock();
+        renderer.domElement.requestPointerLock();
         orbitControls.enabled = false;
       } else {
+        document.pointerLockElement && document.exitPointerLock();
         orbitControls.enabled = false;
       }
     }

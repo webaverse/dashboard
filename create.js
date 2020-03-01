@@ -2381,7 +2381,7 @@ renderer.setAnimationLoop(animate);
 
 (async () => {
   const q = parseQuery(window.location.search);
-  const {o} = q;
+  const {o, r} = q;
   if (o) {
     const metadata = await fetch(`${apiHost}/metadata${o}`)
       .then(res => res.json());
@@ -2417,6 +2417,10 @@ renderer.setAnimationLoop(animate);
     if (vertex || fragment) {
       bindObjectShader(objectMeshes, vertex, fragment);
     } */
+  }
+  if (r) {
+    document.getElementById('room-code-input').value = r;
+    document.getElementById('connect-button').click();
   }
 })();
 

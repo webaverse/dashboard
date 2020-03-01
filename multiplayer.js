@@ -55,7 +55,6 @@ class DbSocket extends EventTarget {
     this.connect();
   }
   connect() {
-    const roomRef = database.ref('connections/' + this.roomId);
     const _childAdded = e => {
       const v = e.val();
       if (v) {
@@ -79,9 +78,16 @@ class DbSocket extends EventTarget {
         }
       }
     };
+    const roomRef = database.ref('connections/' + this.roomId);
     roomRef.once('value', _childAdded);
     roomRef.on('child_added', _childAdded);
-    this.cleanup = () => roomRef.off('child_added', _childAdded);
+    const messagesRef = database.ref('messages/' + this.roomId + '/' + this.connectionId);
+    messagesRef.once('value', _childAdded);
+    messagesRef.on('child_added', _childAdded);
+    this.cleanup = () => {
+      roomRef.off('child_added', _childAdded);
+      messagesRef.off('child_added', _childAdded);
+    };
 
     Promise.resolve().then(() => {
       this.dispatchEvent(new CustomEvent('open'));
@@ -93,9 +99,13 @@ class DbSocket extends EventTarget {
 
     this.dispatchEvent(new CustomEvent('close'));
   }
-  async send(data) {
+  async sendAll(data) {
     const roomRef = database.ref('connections/' + this.roomId);
     roomRef.remove();
+    await roomRef.push().set(JSON.stringify(data));
+  }
+  async send(dst, data) {
+    const roomRef = database.ref('messages/' + this.roomId + '/' + dst);
     await roomRef.push().set(JSON.stringify(data));
   }
 }
@@ -114,7 +124,7 @@ class XRChannelConnection extends EventTarget {
     this.rtcWs.onopen = () => {
       // console.log('presence socket open');
 
-      const _sendJoin = () => this.rtcWs.send({
+      const _sendJoin = () => this.rtcWs.sendAll({
         method: 'join',
         src: this.connectionId,
       });
@@ -179,7 +189,7 @@ class XRChannelConnection extends EventTarget {
         peerConnection.peerConnection.onicecandidate = e => {
           // console.log('ice candidate', e.candidate);
 
-          this.rtcWs.send({
+          this.rtcWs.send(peerConnectionId, {
             dst: peerConnectionId,
             src: this.connectionId,
             method: 'iceCandidate',
@@ -227,7 +237,7 @@ class XRChannelConnection extends EventTarget {
           return peerConnection.peerConnection.setLocalDescription(offer).then(() => offer);
         })
         .then(offer => {
-          this.rtcWs.send({
+          this.rtcWs.send(peerConnection.connectionId, {
             dst: peerConnection.connectionId,
             src: this.connectionId,
             method: 'offer',
@@ -258,7 +268,7 @@ class XRChannelConnection extends EventTarget {
           })
           .then(answer => peerConnection.peerConnection.setLocalDescription(answer).then(() => answer))
           .then(answer => {
-            this.rtcWs.send({
+            this.rtcWs.send(peerConnectionId, {
               dst: peerConnectionId,
               src: this.connectionId,
               method: 'answer',
@@ -286,7 +296,7 @@ class XRChannelConnection extends EventTarget {
               peerConnection.negotiating = false;
               peerConnection.token = 0;
 
-              this.rtcWs.send({
+              this.rtcWs.send(peerConnectionId, {
                 dst: peerConnectionId,
                 src: this.connectionId,
                 method: 'token',
@@ -322,7 +332,7 @@ class XRChannelConnection extends EventTarget {
             peerConnection.token = setTimeout(() => {
               peerConnection.token = 0;
 
-              this.rtcWs.send({
+              this.rtcWs.send(peerConnectionId, {
                 dst: peerConnectionId,
                 src: this.connectionId,
                 method: 'token',
@@ -358,7 +368,7 @@ class XRChannelConnection extends EventTarget {
   }
 
   disconnect() {
-    this.rtcWs.send({
+    this.rtcWs.send(this.connectionId, {
       src: this.connectionId,
       method: 'leave',
     });

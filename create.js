@@ -15,6 +15,7 @@ import {objectImage, objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshe
 import {createAction, execute, pushAction, undo, redo, clearHistory} from './actions.js';
 import {makeObjectState, bindObjectScript, tickObjectScript/*, bindObjectShader*/} from './runtime.js';
 import {makeId, XRChannelConnection} from './multiplayer.js';
+import {bindPeerConnection} from './peerconnection.js';
 
 const _load = () => {
 
@@ -2004,8 +2005,18 @@ const _connectMultiplayer = async rid => {
   document.getElementById('room-link').href = `${window.location.protocol}//${window.location.host}${window.location.pathname}?r=${roomId}`;
   channelConnection = new XRChannelConnection(roomId);
   channelConnection.addEventListener('peerconnection', e => {
-    peerConnections.push(e.detail);
-    document.getElementById('user-count-text').innerText = peerConnections.length + 1;
+    const peerConnection = e.detail;
+
+    bindPeerConnection(peerConnection);
+
+    peerConnection.addEventListener('open', () => {
+      peerConnections.push(peerConnection);
+      document.getElementById('user-count-text').innerText = peerConnections.length + 1;
+    });
+    peerConnection.addEventListener('close', () => {
+      peerConnections.splice(peerConnections.indexOf(peerConnection), 1);
+      document.getElementById('user-count-text').innerText = peerConnections.length + 1;
+    });
   });
 };
 const _disconnectMultiplayer = async () => {

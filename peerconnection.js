@@ -1,6 +1,8 @@
 const peerPoseUpdateRate = 50;
 
 export function bindPeerConnection(peerConnection) {
+  console.log('bind peer connection', peerConnection);
+
   peerConnection.username = 'Anonymous';
   peerConnection.rig = null;
   peerConnection.mediaStream = null;

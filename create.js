@@ -2388,6 +2388,11 @@ function animate() {
     updatePlayerCamera(camera);
   }
 
+  for (let i = 0; i < peerConnections.length; i++) {
+    const peerConnection = peerConnections[i];
+    peerConnection.rig && peerConnection.rig.update();
+  }
+
   tickObjectScript(objectState);
 
   if (ammo) {

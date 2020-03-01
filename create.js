@@ -1997,11 +1997,16 @@ interfaceDocument.getElementById('enable-physics-button').addEventListener('clic
 
 let roomId = null;
 let channelConnection = null;
+const peerConnections = [];
 const _connectMultiplayer = async rid => {
   roomId = rid || makeId();
   document.getElementById('room-code-text').innerText = roomId;
   document.getElementById('room-link').href = `${window.location.protocol}//${window.location.host}${window.location.pathname}?r=${roomId}`;
   channelConnection = new XRChannelConnection(roomId);
+  channelConnection.addEventListener('peerconnection', e => {
+    peerConnections.push(e.detail);
+    document.getElementById('user-count-text').innerText = peerConnections.length + 1;
+  });
 };
 const _disconnectMultiplayer = async () => {
   roomId = null;

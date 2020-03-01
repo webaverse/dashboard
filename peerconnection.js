@@ -36,11 +36,17 @@ export function updatePlayerCamera(camera) {
 export function updatePlayerXr(xr, camera) {
   if (rig) {
     const {cameras} = xr.getCamera(camera);
+    for (let i = 0; i < cameras.length; i++) {
+      const camera = cameras[i];
+      camera.decompose(camera.position, camera.quaternion, camera.scale);
+    }
     rig.inputs.hmd.position
       .copy(cameras[0].position)
       .add(cameras[1].position)
       .divideScalar(2);
-    rig.inputs.hmd.quaternion.copy(cameras[0].quaternion);
+    rig.inputs.hmd.quaternion
+      .copy(cameras[0].quaternion)
+      .slerp(cameras[1].quaternion, 0.5);
 
     for (let i = 0; i < 2; i++) {
       const controller = xr.getController(i);

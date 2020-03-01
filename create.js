@@ -2532,7 +2532,16 @@ function animate() {
     }
   }
 
+  const thirdperson = selectedTool === 'thirdperson';
+  let oldCameraPosition;
+  if (thirdperson) {
+    oldCameraPosition = camera.position.clone();
+    camera.position.add(new THREE.Vector3(0, 0, 2).applyQuaternion(camera.quaternion));
+  }
   renderer.render(scene, camera);
+  if (thirdperson) {
+    camera.position.copy(oldCameraPosition);
+  }
 }
 renderer.setAnimationLoop(animate);
 

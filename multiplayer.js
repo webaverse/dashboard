@@ -105,8 +105,8 @@ class DbSocket extends EventTarget {
     await roomRef.push().set(JSON.stringify(data));
   }
   async send(dst, data) {
-    const roomRef = database.ref('messages/' + this.roomId + '/' + dst);
-    await roomRef.push().set(JSON.stringify(data));
+    const messagesRef = database.ref('messages/' + this.roomId + '/' + dst);
+    await messagesRef.push().set(JSON.stringify(data));
   }
 }
 

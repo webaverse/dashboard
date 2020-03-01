@@ -1800,11 +1800,7 @@ Array.from(tools).forEach((tool, i) => {
       if (selectedTool === 'camera') {
         document.pointerLockElement && document.exitPointerLock();
         orbitControls.enabled = true;
-      } else if (selectedTool === 'firstperson') {
-        renderer.domElement.requestPointerLock();
-        camera.position.y = 1.2;
-        orbitControls.enabled = false;
-      } else if (selectedTool === 'thirdperson') {
+      } else if (selectedTool === 'firstperson' || selectedTool === 'thirdperson') {
         renderer.domElement.requestPointerLock();
         camera.position.y = 1.2;
         orbitControls.enabled = false;

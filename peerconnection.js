@@ -1,7 +1,12 @@
-const peerPoseUpdateRate = 50;
+import Avatar from 'https://avatars.exokit.org/avatars.js';
 
-export function bindPeerConnection(peerConnection) {
+const peerPoseUpdateRate = 50;
+const localVector = new THREE.Vector3();
+
+export function bindPeerConnection(peerConnection, container) {
   console.log('bind peer connection', peerConnection);
+  
+  const heightFactor = 1;//_getHeightFactor(peerConnection.rig.height);
 
   peerConnection.username = 'Anonymous';
   peerConnection.rig = null;
@@ -16,6 +21,7 @@ export function bindPeerConnection(peerConnection) {
     }));
 
     updateInterval = setInterval(() => {
+      const {rig} = peerConnection;
       if (rig) {
         const hmd = {
           position: localVector.copy(rig.inputs.hmd.position).divideScalar(heightFactor).toArray(),
@@ -48,7 +54,7 @@ export function bindPeerConnection(peerConnection) {
     clearInterval(updateInterval);
 
     if (peerConnection.rig) {
-      peerConnection.rig.destroy();
+      container.remove(peerConnection.rig.model);
     }
   }, {once: true});
   peerConnection.addEventListener('pose', e => {
@@ -93,16 +99,15 @@ export function bindPeerConnection(peerConnection) {
     }
   });
   peerConnection.addEventListener('message', async e => {
-    console.log('got message', e);
     const data = JSON.parse(e.data);
     const {method} = data;
     if (method === 'username') {
       const {name} = data;
       peerConnection.username = name;
 
-      if (peerConnection.rig && peerConnection.rig.nametagMesh) {
+      /* if (peerConnection.rig && peerConnection.rig.nametagMesh) {
         peerConnection.rig.nametagMesh.setName(name);
-      }
+      } */
     } else if (method === 'model') {
       const {url} = data;
       console.log('got peer model', {url});
@@ -113,14 +118,16 @@ export function bindPeerConnection(peerConnection) {
       }
 
       const model = url ? await _loadModelUrl(url) : null;
-      peerConnection.rig = _makeAvatar(model, {
+      peerConnection.rig = new Avatar(model, {
         fingers: true,
         hair: true,
         visemes: true,
         microphoneMediaStream: peerConnection.mediaStream,
         muted: false,
         // debug: !model,
-      }, peerConnection.username);
+        debug: true,
+      });
+      container.add(peerConnection.rig.model);
 
       peerConnection.rig.starts = {
         hmd: {
@@ -165,7 +172,6 @@ export function bindPeerConnection(peerConnection) {
         ],
         timestamp: Date.now(),
       };
-      const heightFactor = _getHeightFactor(peerConnection.rig.height);
       peerConnection.rig.update = (_update => function update() {
         const now = Date.now();
         const {timestamp} = peerConnection.rig.targets;

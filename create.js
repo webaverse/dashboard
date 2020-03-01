@@ -2005,7 +2005,7 @@ const _connectMultiplayer = async rid => {
   channelConnection.addEventListener('peerconnection', e => {
     const peerConnection = e.detail;
 
-    bindPeerConnection(peerConnection);
+    bindPeerConnection(peerConnection, container);
 
     peerConnection.addEventListener('open', () => {
       peerConnections.push(peerConnection);

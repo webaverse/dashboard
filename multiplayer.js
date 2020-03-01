@@ -94,7 +94,6 @@ class DbSocket extends EventTarget {
     this.dispatchEvent(new CustomEvent('close'));
   }
   async send(data) {
-    console.log('send', data);
     const roomRef = database.ref('connections/' + this.roomId);
     roomRef.remove();
     await roomRef.push().set(JSON.stringify(data));

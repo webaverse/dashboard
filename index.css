@@ -446,14 +446,16 @@ header .room.dialog,
 header .room.connected {
   display: none;
 }
-header .room.disconnected {
+header.connected .room.connected,
+header.dialog .room.dialog,
+header:not(.dialog):not(.connected) .room.disconnected {
   display: flex;
+
 }
 header .room .button {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 10px;
   padding: 5px 10px;
   background-color: #42a5f5;
   color: #FFF;
@@ -465,6 +467,28 @@ header .room .button:hover {
 }
 header .room .button:active {
   transform: translateY(1px);
+}
+header .room .button,
+header .room .room-code {
+  margin-left: 10px;
+}
+header .room .connect-status {
+  padding: 5px;
+  border-radius: 5px;
+}
+header .room .connect-status.disconnected {
+  /* background-color: #ffb74d;
+  background-color: #EEE; */
+}
+header .room .connect-status.connected {
+  color: #81c784;
+}
+header .room .room-code .room-code-text {
+  display: inline-flex;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #FFF;
+  user-select: all;
 }
 #interface-iframe {
   position: absolute;

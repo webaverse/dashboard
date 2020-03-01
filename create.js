@@ -1992,6 +1992,31 @@ interfaceDocument.getElementById('enable-physics-button').addEventListener('clic
   }
 });
 
+const header = document.getElementById('header');
+const _clearMultiplayerClasses = () => {
+  ['connected', 'dialog'].forEach(c => {
+    header.classList.remove(c);
+  });
+};
+document.getElementById('create-room-button').addEventListener('click', e => {
+  _clearMultiplayerClasses();
+  header.classList.add('connected');
+});
+document.getElementById('use-code-button').addEventListener('click', e => {
+  _clearMultiplayerClasses();
+  header.classList.add('dialog');
+});
+document.getElementById('connect-button').addEventListener('click', e => {
+  _clearMultiplayerClasses();
+  header.classList.add('connected');
+});
+document.getElementById('cancel-button').addEventListener('click', e => {
+  _clearMultiplayerClasses();
+});
+document.getElementById('disconnect-button').addEventListener('click', e => {
+  _clearMultiplayerClasses();
+});
+
 // xr
 
 const rayMesh = (() => {

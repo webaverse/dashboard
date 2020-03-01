@@ -18,7 +18,7 @@
     <script type="module" src="create.js"></script>
   </head>
   <body >
-    <header>
+    <header id=header>
       <!-- <a href="https://browser.exokit.org">
         <img class=icon src="logo.svg"/>
       </a> -->
@@ -27,20 +27,20 @@
       <a href="/create.html" class="nav open" id="explore-dropdown">Create</a>
       <a href="/gallery.html" class="nav" id="explore-dropdown">Gallery</a>
       <div class="room disconnected">
-        <div>Multiplayer disconnected</div>
-        <div class=button>Create room</div>
-        <div class=button>Use code</div>
+        <div class="connect-status disconnected">Multiplayer disconnected</div>
+        <div class=button id=create-room-button>Create room</div>
+        <div class=button id=use-code-button>Use code</div>
       </div>
       <div class="room dialog">
-        <div>Multiplayer disconnected</div>
-        <input type=text value="Enter room code">
-        <div class=button>Connect</div>
-        <div class=button>Cancel</div>
+        <div class="connect-status disconnected">Multiplayer disconnected</div>
+        <input type=text placeholder="Enter room code">
+        <div class=button id=connect-button>Connect</div>
+        <div class=button id=cancel-button>Cancel</div>
       </div>
       <div class="room connected">
-        <div>Multiplayer connected</div>
-        <div class=code>Room code: </div>
-        <div class=button>Disconnect</div>
+        <div class="connect-status connected">Multiplayer connected</div>
+        <div class=room-code>Room code: <span class=room-code-text id=room-code-text>VKGS</span></div>
+        <div class=button id=disconnect-button>Disconnect</div>
       </div>
     </header>
     <canvas id=canvas></canvas>

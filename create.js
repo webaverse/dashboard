@@ -74,6 +74,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xEEEEEE);
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0.5, 0.5, 2);
+camera.rotation.order = 'YXZ';
 renderer.render(scene, camera);
 
 const ambientLight = new THREE.AmbientLight(0xFFFFFF);
@@ -1641,8 +1642,14 @@ const _splitObjectMesh = (objectMesh, p = new THREE.Vector3(), q = new THREE.Qua
     }
   });
   w.addEventListener('mousemove', e => {
-    _updateRaycasterFromMouseEvent(localRaycaster, e);
-    _updateTool(localRaycaster);
+    if (!document.pointerLockElement) {
+      _updateRaycasterFromMouseEvent(localRaycaster, e);
+      _updateTool(localRaycaster);
+    } else {
+      const {movementX, movementY} = e;
+      camera.rotation.y -= movementX * Math.PI*2*0.001;
+      camera.rotation.x -= movementY * Math.PI*2*0.001;
+    }
   });
   w.addEventListener('mousedown', _beginTool.bind(null, true, true));
   w.addEventListener('mouseup', _endTool.bind(null, true, true));

@@ -1997,8 +1997,8 @@ interfaceDocument.getElementById('enable-physics-button').addEventListener('clic
 
 let roomId = null;
 let channelConnection = null;
-const _connectMultiplayer = async () => {
-  roomId = makeId();
+const _connectMultiplayer = async rid => {
+  roomId = rid || makeId();
   document.getElementById('room-code-text').innerText = roomId;
   document.getElementById('room-link').href = `${window.location.protocol}//${window.location.host}${window.location.pathname}?r=${roomId}`;
   channelConnection = new XRChannelConnection(roomId);
@@ -2025,8 +2025,11 @@ document.getElementById('create-room-button').addEventListener('click', async e 
 document.getElementById('use-code-button').addEventListener('click', e => {
   _clearMultiplayerClasses();
   header.classList.add('dialog');
+  document.getElementById('room-code-input').value = '';
 });
-document.getElementById('connect-button').addEventListener('click', e => {
+document.getElementById('connect-button').addEventListener('click', async e => {
+  await _connectMultiplayer(document.getElementById('room-code-input').value);
+
   _clearMultiplayerClasses();
   header.classList.add('connected');
 });

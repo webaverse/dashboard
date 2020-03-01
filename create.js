@@ -13,7 +13,7 @@ import {objectImage, objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshe
 import {createAction, execute, pushAction, undo, redo, clearHistory} from './actions.js';
 import {makeObjectState, bindObjectScript, tickObjectScript/*, bindObjectShader*/} from './runtime.js';
 import {makeId, XRChannelConnection} from './multiplayer.js';
-import {bindPeerConnection} from './peerconnection.js';
+import {initLocalRig, updatePlayerCamera, bindPeerConnection} from './peerconnection.js';
 
 const _load = () => {
 
@@ -1994,6 +1994,8 @@ interfaceDocument.getElementById('enable-physics-button').addEventListener('clic
 
 // multiplayer
 
+initLocalRig(container);
+
 let channelConnection = null;
 const peerConnections = [];
 const _connectMultiplayer = async rid => {
@@ -2358,7 +2360,6 @@ scene.add(uiMesh);
 
 function animate() {
   orbitControls.update();
-  renderer.render(scene, camera);
   
   if (currentSession) {
     for (let i = 0; i < 2; i++) {
@@ -2375,6 +2376,8 @@ function animate() {
     }
 
     _updateControllers();
+  } else {
+    updatePlayerCamera(camera);
   }
 
   tickObjectScript(objectState);
@@ -2385,6 +2388,8 @@ function animate() {
       ammo.updateObjectMesh(objectMeshes[i]);
     }
   }
+
+  renderer.render(scene, camera);
 }
 renderer.setAnimationLoop(animate);
 

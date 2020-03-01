@@ -1,8 +1,37 @@
 import Avatar from 'https://avatars.exokit.org/avatars.js';
+import avatarModels from 'https://avatar-models.exokit.org/avatar-models.js';
+import ModelLoader from 'https://model-loader.exokit.org/model-loader.js';
 
 const peerPoseUpdateRate = 50;
 const localVector = new THREE.Vector3();
 
+let rig = null;
+export async function initLocalRig(container) {
+  const {url} = avatarModels[0];
+  const src = `https://avatar-models.exokit.org/${url}`;
+  const model = await ModelLoader.loadModelUrl(src);
+  rig = new Avatar(model, {
+    fingers: true,
+    hair: true,
+    visemes: true,
+    decapitate: true,
+    microphoneMediaStream: null,
+    // debug: !newModel,
+  });
+  container.add(rig.model);
+}
+export function updatePlayerCamera(camera) {
+  if (rig) {
+    rig.inputs.hmd.position.copy(camera.position);
+    rig.inputs.hmd.quaternion.copy(camera.quaternion);
+    rig.inputs.leftGamepad.position.copy(camera.position).add(localVector.set(0.3, -0.15, -0.5).applyQuaternion(camera.quaternion));
+    rig.inputs.leftGamepad.quaternion.copy(camera.quaternion);
+    rig.inputs.rightGamepad.position.copy(camera.position).add(localVector.set(-0.3, -0.15, -0.5).applyQuaternion(camera.quaternion));
+    rig.inputs.rightGamepad.quaternion.copy(camera.quaternion);
+
+    rig.update();
+  }
+}
 export function bindPeerConnection(peerConnection, container) {
   console.log('bind peer connection', peerConnection);
   
@@ -21,7 +50,6 @@ export function bindPeerConnection(peerConnection, container) {
     }));
 
     updateInterval = setInterval(() => {
-      const {rig} = peerConnection;
       if (rig) {
         const hmd = {
           position: localVector.copy(rig.inputs.hmd.position).divideScalar(heightFactor).toArray(),

@@ -13,7 +13,7 @@ import {objectImage, objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshe
 import {createAction, execute, pushAction, undo, redo, clearHistory} from './actions.js';
 import {makeObjectState, bindObjectScript, tickObjectScript/*, bindObjectShader*/} from './runtime.js';
 import {makeId, XRChannelConnection} from './multiplayer.js';
-import {initLocalRig, updatePlayerCamera, bindPeerConnection} from './peerconnection.js';
+import {initLocalRig, updatePlayerCamera, updatePlayerXr, bindPeerConnection} from './peerconnection.js';
 
 const _load = () => {
 
@@ -2384,6 +2384,8 @@ function animate() {
     }
 
     _updateControllers();
+
+    updatePlayerXr(renderer.xr, camera);
   } else {
     updatePlayerCamera(camera);
   }

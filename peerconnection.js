@@ -33,6 +33,25 @@ export function updatePlayerCamera(camera) {
     rig.update();
   }
 }
+export function updatePlayerXr(xr, camera) {
+  const cameras = xr.getCamera();
+  rig.inputs.hmd.position
+    .copy(cameras[0].position)
+    .add(cameras[1].position)
+    .divideScalar(2);
+  rig.inputs.hmd.quaternion.copy(cameras[0].quaternion);
+
+  for (let i = 0; i < 2; i++) {
+    const controller = renderer.xr.getController(i);
+    if (controller.userData.data && controller.userData.data.handedness === 'left') {
+      rig.inputs.leftGamepad.position.copy(controller.position);
+      rig.inputs.leftGamepad.quaternion.copy(controller.quaternion);
+    } else if (controller.userData.data && controller.userData.data.handedness === 'right') {
+      rig.inputs.rightGamepad.position.copy(controller.position);
+      rig.inputs.rightGamepad.quaternion.copy(controller.quaternion);
+    }
+  }
+}
 export function bindPeerConnection(peerConnection, container) {
   console.log('bind peer connection', peerConnection);
   

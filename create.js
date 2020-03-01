@@ -1511,6 +1511,12 @@ const _splitObjectMesh = (objectMesh, p = new THREE.Vector3(), q = new THREE.Qua
     execute(action);
   });
 };
+const keys = {
+  up: false,
+  down: false,
+  left: false,
+  right: false,
+};
 [window, interfaceWindow].forEach(w => {
   w.addEventListener('keydown', e => {
     switch (e.which) {
@@ -1528,7 +1534,45 @@ const _splitObjectMesh = (objectMesh, p = new THREE.Vector3(), q = new THREE.Qua
         break;
       }
       case 87: { // W
-        selectedObjectMesh && selectedObjectMesh.control.setMode('translate');
+        if (!document.pointerLockElement) {
+          selectedObjectMesh && selectedObjectMesh.control.setMode('translate');
+        } else {
+          keys.up = true;
+        }
+        break;
+      }
+      case 65: { // A
+        if (!document.pointerLockElement) {
+          selectedObjectMesh && selectedObjectMesh.control.setMode('translate');
+        } else {
+          keys.left = true;
+        }
+        break;
+      }
+      case 83: { // S
+        if (!document.pointerLockElement) {
+          if (e.ctrlKey) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            interfaceDocument.getElementById('save-op').click();
+          }
+        } else {
+          keys.down = true;
+        }
+        break;
+      }
+      case 68: { // D
+        if (!document.pointerLockElement) {
+          if (e.ctrlKey) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            interfaceDocument.getElementById('save-op').click();
+          }
+        } else {
+          keys.right = true;
+        }
         break;
       }
       case 69: { // E
@@ -1537,15 +1581,6 @@ const _splitObjectMesh = (objectMesh, p = new THREE.Vector3(), q = new THREE.Qua
       }
       case 82: { // R
         selectedObjectMesh && selectedObjectMesh.control.setMode('scale');
-        break;
-      }
-      case 83: { // S
-        if (e.ctrlKey) {
-          e.preventDefault();
-          e.stopPropagation();
-
-          interfaceDocument.getElementById('save-op').click();
-        }
         break;
       }
       case 79: { // O
@@ -1641,6 +1676,34 @@ const _splitObjectMesh = (objectMesh, p = new THREE.Vector3(), q = new THREE.Qua
       }
     }
   });
+  w.addEventListener('keyup', e => {
+    switch (e.which) {
+      case 87: { // W
+        if (document.pointerLockElement) {
+          keys.up = false;
+        }
+        break;
+      }
+      case 65: { // A
+        if (document.pointerLockElement) {
+          keys.left = false;
+        }
+        break;
+      }
+      case 83: { // S
+        if (document.pointerLockElement) {
+          keys.down = false;
+        }
+        break;
+      }
+      case 68: { // D
+        if (document.pointerLockElement) {
+          keys.right = false;
+        }
+        break;
+      }
+    }
+  });
   w.addEventListener('mousemove', e => {
     if (!document.pointerLockElement) {
       _updateRaycasterFromMouseEvent(localRaycaster, e);
@@ -1726,9 +1789,11 @@ Array.from(tools).forEach((tool, i) => {
         orbitControls.enabled = true;
       } else if (selectedTool === 'firstperson') {
         renderer.domElement.requestPointerLock();
+        camera.position.y = 1.2;
         orbitControls.enabled = false;
       } else if (selectedTool === 'thirdperson') {
         renderer.domElement.requestPointerLock();
+        camera.position.y = 1.2;
         orbitControls.enabled = false;
       } else {
         document.pointerLockElement && document.exitPointerLock();
@@ -2393,6 +2458,7 @@ const uiMesh = (() => {
 uiMesh.position.set(0.5, 0.5, 1);
 scene.add(uiMesh);
 
+const velocity = new THREE.Vector3();
 function animate() {
   orbitControls.enabled && orbitControls.update();
   
@@ -2414,6 +2480,30 @@ function animate() {
 
     updatePlayerXr(renderer.xr, camera);
   } else {
+    const speed = 0.015;
+    const cameraEuler = camera.rotation.clone();
+    cameraEuler.x = 0;
+    cameraEuler.z = 0;
+    const extraVelocity = new THREE.Vector3();
+    if (keys.left) {
+      extraVelocity.add(new THREE.Vector3(-1, 0, 0).applyEuler(cameraEuler));
+    }
+    if (keys.right) {
+      extraVelocity.add(new THREE.Vector3(1, 0, 0).applyEuler(cameraEuler));
+    }
+    if (keys.up) {
+      extraVelocity.add(new THREE.Vector3(0, 0, -1).applyEuler(cameraEuler));
+    }
+    if (keys.down) {
+      extraVelocity.add(new THREE.Vector3(0, 0, 1).applyEuler(cameraEuler));
+    }
+    if (extraVelocity.length() > 0) {
+      extraVelocity.normalize().multiplyScalar(speed);
+    }
+    velocity.add(extraVelocity);
+    camera.position.add(velocity);
+    velocity.multiplyScalar(0.7);
+    
     updatePlayerCamera(camera);
   }
 

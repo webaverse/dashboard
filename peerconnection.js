@@ -38,7 +38,7 @@ export function updatePlayerXr(xr, camera) {
     const {cameras} = xr.getCamera(camera);
     for (let i = 0; i < cameras.length; i++) {
       const camera = cameras[i];
-      camera.decompose(camera.position, camera.quaternion, camera.scale);
+      camera.matrixWorld.decompose(camera.position, camera.quaternion, camera.scale);
     }
     rig.inputs.hmd.position
       .copy(cameras[0].position)

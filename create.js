@@ -1516,6 +1516,7 @@ const keys = {
   down: false,
   left: false,
   right: false,
+  shift: false,
 };
 [window, interfaceWindow].forEach(w => {
   w.addEventListener('keydown', e => {
@@ -1652,6 +1653,12 @@ const keys = {
         }
         break;
       }
+      case 16: { // shift
+        if (document.pointerLockElement) {
+          keys.shift = true;
+        }
+        break;
+      }
       case 27: { // esc
         _setSelectedObjectMesh(null);
         break;
@@ -1699,6 +1706,12 @@ const keys = {
       case 68: { // D
         if (document.pointerLockElement) {
           keys.right = false;
+        }
+        break;
+      }
+      case 16: { // shift
+        if (document.pointerLockElement) {
+          keys.shift = false;
         }
         break;
       }
@@ -2480,7 +2493,7 @@ function animate() {
 
     updatePlayerXr(renderer.xr, camera);
   } else {
-    const speed = 0.015;
+    const speed = 0.015 * (keys.shift ? 3 : 1);
     const cameraEuler = camera.rotation.clone();
     cameraEuler.x = 0;
     cameraEuler.z = 0;

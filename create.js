@@ -1794,6 +1794,9 @@ shaderInputF.addEventListener('input', e => {
 }); */
 
 const objectNameEl = interfaceDocument.getElementById('object-name');
+objectNameEl.addEventListener('mousedown', e => {
+  e.stopPropagation();
+});
 objectNameEl.addEventListener('keydown', e => {
   e.stopPropagation();
 });

@@ -1,5 +1,3 @@
-import * as THREE from './three.module.js';
-window.THREE = THREE;
 import {OrbitControls} from './OrbitControls.js';
 import {TransformControls} from './TransformControls.js';
 import {BufferGeometryUtils} from './BufferGeometryUtils.js';

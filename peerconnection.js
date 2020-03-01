@@ -43,7 +43,7 @@ export function updatePlayerXr(xr, camera) {
   rig.inputs.hmd.quaternion.copy(cameras[0].quaternion);
 
   for (let i = 0; i < 2; i++) {
-    const controller = renderer.xr.getController(i);
+    const controller = xr.getController(i);
     if (controller.userData.data && controller.userData.data.handedness === 'left') {
       rig.inputs.leftGamepad.position.copy(controller.position);
       rig.inputs.leftGamepad.quaternion.copy(controller.quaternion);

@@ -13,7 +13,7 @@ import {objectImage, objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshe
 import {createAction, execute, pushAction, undo, redo, clearHistory} from './actions.js';
 import {makeObjectState, bindObjectScript, tickObjectScript/*, bindObjectShader*/} from './runtime.js';
 import {makeId, XRChannelConnection} from './multiplayer.js';
-import {initLocalRig, updatePlayerCamera, updatePlayerXr, bindPeerConnection} from './peerconnection.js';
+import {initLocalRig, updatePlayerFromCamera, updatePlayerFromXr, bindPeerConnection} from './peerconnection.js';
 
 const _load = () => {
 
@@ -2487,7 +2487,7 @@ function animate() {
 
     _updateControllers();
 
-    updatePlayerXr(renderer.xr, camera);
+    updatePlayerFromXr(renderer.xr, camera);
   } else {
     const speed = 0.015 * (keys.shift ? 3 : 1);
     const cameraEuler = camera.rotation.clone();
@@ -2515,7 +2515,7 @@ function animate() {
     
     orbitControls.target.copy(camera.position).add(new THREE.Vector3(0, 0, -1.5).applyQuaternion(camera.quaternion));
     
-    updatePlayerCamera(camera);
+    updatePlayerFromCamera(camera);
   }
 
   for (let i = 0; i < peerConnections.length; i++) {

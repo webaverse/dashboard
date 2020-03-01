@@ -24,7 +24,7 @@ export async function initLocalRig(container) {
   });
   container.add(rig.model);
 }
-export function updatePlayerCamera(camera) {
+export function updatePlayerFromCamera(camera) {
   if (rig) {
     rig.inputs.hmd.position.copy(camera.position);
     rig.inputs.hmd.quaternion.copy(camera.quaternion);
@@ -36,7 +36,7 @@ export function updatePlayerCamera(camera) {
     rig.update();
   }
 }
-export function updatePlayerXr(xr, camera) {
+export function updatePlayerFromXr(xr, camera) {
   if (rig) {
     const {cameras} = xr.getCamera(camera);
     for (let i = 0; i < cameras.length; i++) {

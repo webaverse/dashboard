@@ -1715,7 +1715,7 @@ Array.from(tools).forEach((tool, i) => {
         
         _commitMiningMeshes();
 
-        if (!['camera', 'firstperson', 'thirdperson', 'scalpel'].includes(selectedTool)) {
+        if (!['camera', 'scalpel'].includes(selectedTool)) {
           _setHoveredObjectMesh(null);
           _setSelectedObjectMesh(null);
         }

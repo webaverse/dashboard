@@ -2517,6 +2517,8 @@ function animate() {
     camera.position.add(velocity);
     velocity.multiplyScalar(0.7);
     
+    orbitControls.target.copy(camera.position).add(new THREE.Vector3(0, 0, -1.5).applyQuaternion(camera.quaternion));
+    
     updatePlayerCamera(camera);
   }
 

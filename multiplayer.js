@@ -57,15 +57,29 @@ class DbSocket extends EventTarget {
   connect() {
     const roomRef = database.ref('connections/' + this.roomId);
     const _childAdded = e => {
-      const data = JSON.parse(e.val());
-      const {src, dst} = data;
-      if (src !== this.connectionId && (!dst || dst === this.connectionId)) {
-        this.dispatchEvent(new MessageEvent('message', {
-          data,
-        }));
-        e.ref.remove();
+      const v = e.val();
+      if (v) {
+        const _handleData = data => {
+          const {src, dst} = data;
+          if (src !== this.connectionId && (!dst || dst === this.connectionId)) {
+            this.dispatchEvent(new MessageEvent('message', {
+              data,
+            }));
+            e.ref.remove();
+          }
+        };
+        if (typeof v === 'string') {
+          const data = JSON.parse(v);
+          _handleData(data);
+        } else {
+          for (const k in v) {
+            const data = JSON.parse(v[k]);
+            _handleData(data);
+          }
+        }
       }
     };
+    roomRef.once('value', _childAdded);
     roomRef.on('child_added', _childAdded);
     this.cleanup = () => roomRef.off('child_added', _childAdded);
 
@@ -80,6 +94,7 @@ class DbSocket extends EventTarget {
     this.dispatchEvent(new CustomEvent('close'));
   }
   async send(data) {
+    console.log('send', data);
     const roomRef = database.ref('connections/' + this.roomId);
     roomRef.remove();
     await roomRef.push().set(JSON.stringify(data));

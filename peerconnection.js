@@ -34,7 +34,7 @@ export function updatePlayerCamera(camera) {
   }
 }
 export function updatePlayerXr(xr, camera) {
-  const cameras = xr.getCamera(camera);
+  const {cameras} = xr.getCamera(camera);
   console.log('got cameras', cameras);
   rig.inputs.hmd.position
     .copy(cameras[0].position)

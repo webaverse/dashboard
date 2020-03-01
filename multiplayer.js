@@ -63,8 +63,8 @@ class DbSocket extends EventTarget {
         this.dispatchEvent(new MessageEvent('message', {
           data,
         }));
+        e.ref.remove();
       }
-      e.ref.remove();
     };
     roomRef.on('child_added', _childAdded);
     this.cleanup = () => roomRef.off('child_added', _childAdded);

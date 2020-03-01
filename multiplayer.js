@@ -371,9 +371,9 @@ class XRChannelConnection extends EventTarget {
     this.peerConnections.length = 0;
   }
 
-  send(s) {
+  /* send(s) {
     this.rtcWs.send(s);
-  }
+  } */
 
   update(hmd, gamepads) {
     for (let i = 0; i < this.peerConnections.length; i++) {

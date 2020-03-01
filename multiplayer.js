@@ -375,7 +375,7 @@ class XRChannelConnection extends EventTarget {
     this.rtcWs.close();
     this.rtcWs = null;
 
-    for (let i = 0; i < this.peerConnections[i]; i++) {
+    for (let i = 0; i < this.peerConnections.length; i++) {
       this.peerConnections[i].close();
     }
     this.peerConnections.length = 0;

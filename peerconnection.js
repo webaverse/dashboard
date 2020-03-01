@@ -58,6 +58,8 @@ export function updatePlayerXr(xr, camera) {
         rig.inputs.rightGamepad.quaternion.copy(controller.quaternion);
       }
     }
+
+    rig.update();
   }
 }
 export function bindPeerConnection(peerConnection, container) {

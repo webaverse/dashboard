@@ -1994,11 +1994,10 @@ interfaceDocument.getElementById('enable-physics-button').addEventListener('clic
 
 // multiplayer
 
-let roomId = null;
 let channelConnection = null;
 const peerConnections = [];
 const _connectMultiplayer = async rid => {
-  roomId = rid || makeId();
+  const roomId = rid || makeId();
   document.getElementById('room-code-text').innerText = roomId;
   document.getElementById('room-link').href = `${window.location.protocol}//${window.location.host}${window.location.pathname}?r=${roomId}`;
   channelConnection = new XRChannelConnection(roomId);
@@ -2018,11 +2017,12 @@ const _connectMultiplayer = async rid => {
   });
 };
 const _disconnectMultiplayer = async () => {
-  roomId = null;
-
-  channelConnection.disconnect()
-  channelConnection = null;
+  if (channelConnection) {
+    channelConnection.disconnect()
+    channelConnection = null;
+  }
 };
+window.addEventListener('beforeunload', _disconnectMultiplayer);
 
 const header = document.getElementById('header');
 const _clearMultiplayerClasses = () => {

@@ -6,10 +6,11 @@ const peerPoseUpdateRate = 50;
 const localVector = new THREE.Vector3();
 
 let rig = null;
+let modelUrl = null;
 export async function initLocalRig(container) {
   const {url} = avatarModels[0];
-  const src = `https://avatar-models.exokit.org/${url}`;
-  const model = await ModelLoader.loadModelUrl(src);
+  modelUrl = `https://avatar-models.exokit.org/${url}`;
+  const model = await ModelLoader.loadModelUrl(modelUrl);
   rig = new Avatar(model, {
     fingers: true,
     hair: true,
@@ -46,7 +47,7 @@ export function bindPeerConnection(peerConnection, container) {
 
     peerConnection.send(JSON.stringify({
       method: 'model',
-      url: null,
+      url: modelUrl,
     }));
 
     updateInterval = setInterval(() => {
@@ -145,15 +146,14 @@ export function bindPeerConnection(peerConnection, container) {
         peerConnection.rig.destroy();
       }
 
-      const model = url ? await _loadModelUrl(url) : null;
+      const model = url ? await ModelLoader.loadModelUrl(url) : null;
       peerConnection.rig = new Avatar(model, {
         fingers: true,
         hair: true,
         visemes: true,
         microphoneMediaStream: peerConnection.mediaStream,
         muted: false,
-        // debug: !model,
-        debug: true,
+        debug: !model,
       });
       container.add(peerConnection.rig.model);
 

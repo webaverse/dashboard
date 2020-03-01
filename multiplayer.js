@@ -196,6 +196,11 @@ class XRChannelConnection extends EventTarget {
             candidate: e.candidate,
           });
         };
+        peerConnection.peerConnection.oniceconnectionstatechange = () => {
+          if (peerConnection.peerConnection.iceConnectionState == 'disconnected') {
+            peerConnection.close();
+          }
+        };
         peerConnection.onclose = () => {
           const index = this.peerConnections.indexOf(peerConnection);
           if (index !== -1) {

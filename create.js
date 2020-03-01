@@ -8,7 +8,7 @@ import {XRControllerModelFactory} from './XRControllerModelFactory.js';
 import {Ammo as AmmoLib} from './ammo.wasm.js';
 import './gif.js';
 import {makePromise} from './util.js';
-import {apiHost} from './config.js';
+import {apiHost, presenceHost} from './config.js';
 import contract from './contract.js';
 import screenshot from './screenshot.js';
 import {objectImage, objectMaterial, makeObjectMeshFromGeometry, loadObjectMeshes, saveObjectMeshes} from './object.js';
@@ -1992,13 +1992,42 @@ interfaceDocument.getElementById('enable-physics-button').addEventListener('clic
   }
 });
 
+const roomAlphabetStartIndex = 'A'.charCodeAt(0);
+const roomAlphabetEndIndex = 'Z'.charCodeAt(0)+1;
+const roomIdLength = 4;
+const _makeRoomId = () => {
+  let result = '';
+  for (let i = 0; i < roomIdLength; i++) {
+    result += String.fromCharCode(roomAlphabetStartIndex + Math.floor(Math.random() * (roomAlphabetEndIndex - roomAlphabetStartIndex)));
+  }
+  return result;
+};
+let roomId = null;
+const _connectMultiplayer = async () => {
+  roomId = _makeRoomId();
+  document.getElementById('room-code-text').innerText = roomId;
+  document.getElementById('room-link').href = `${window.location.pathname}?r=${roomId}`;
+  const res = await fetch(`${presenceHost}/join?id=${roomId}`);
+  if (res.ok) {
+    const j = await res.json();
+    console.log('got connection', j);
+  } else {
+    console.warn('connect got invalid status code: ' + res.status);
+  }
+};
+const _disconnectMultiplayer = async () => {
+  roomId = null;
+};
+
 const header = document.getElementById('header');
 const _clearMultiplayerClasses = () => {
   ['connected', 'dialog'].forEach(c => {
     header.classList.remove(c);
   });
 };
-document.getElementById('create-room-button').addEventListener('click', e => {
+document.getElementById('create-room-button').addEventListener('click', async e => {
+  await _connectMultiplayer();
+
   _clearMultiplayerClasses();
   header.classList.add('connected');
 });
@@ -2013,7 +2042,9 @@ document.getElementById('connect-button').addEventListener('click', e => {
 document.getElementById('cancel-button').addEventListener('click', e => {
   _clearMultiplayerClasses();
 });
-document.getElementById('disconnect-button').addEventListener('click', e => {
+document.getElementById('disconnect-button').addEventListener('click', async e => {
+  await _disconnectMultiplayer();
+
   _clearMultiplayerClasses();
 });
 

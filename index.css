@@ -486,9 +486,16 @@ header .room .connect-status.connected {
 header .room .room-code .room-code-text {
   display: inline-flex;
   padding: 5px;
+  margin: 0 5px;
   border-radius: 5px;
   background-color: #FFF;
   user-select: all;
+}
+header .room .room-code .room-link {
+  display: inline-flex;
+  padding: 5px;
+  color: #1e88e5;
+  font-size: 15px;
 }
 #interface-iframe {
   position: absolute;

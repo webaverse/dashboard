@@ -508,7 +508,7 @@ canvas {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #000;
+  /* background-color: #000; */
 }
 .grid {
   display: flex;
@@ -533,4 +533,23 @@ canvas {
 }
 .grid > .object:hover {
   border-color: #CCC;
+}
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50px;
+  min-width: 100vw;
+  min-height: calc(100vh - 50px);
+}
+.main .container {
+  display: flex;
+  width: 400px;
+}
+.main .container h1 {
+  padding: 20px 0;
+  border-bottom: 1px solid #000;
+  font-size: 30px;
+  font-weight: 400;
 }

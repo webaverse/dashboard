@@ -534,6 +534,8 @@ class XRPeerConnection extends EventTarget {
 
   close() {
     this.peerConnection.close();
+    this.peerConnection.sendChannel && this.peerConnection.sendChannel.close();
+    this.peerConnection.recvChannel && this.peerConnection.recvChannel.close();
   }
 
   send(s) {

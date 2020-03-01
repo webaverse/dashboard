@@ -368,7 +368,7 @@ class XRChannelConnection extends EventTarget {
   }
 
   disconnect() {
-    this.rtcWs.send(this.connectionId, {
+    this.rtcWs.sendAll({
       src: this.connectionId,
       method: 'leave',
     });

@@ -1722,6 +1722,8 @@ Array.from(tools).forEach((tool, i) => {
       } else if (selectedTool === 'thirdperson') {
         await renderer.domElement.requestPointerLock();
         orbitControls.enabled = false;
+      } else {
+        orbitControls.enabled = false;
       }
     }
   });

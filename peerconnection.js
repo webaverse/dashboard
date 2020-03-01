@@ -11,6 +11,9 @@ export async function initLocalRig(container) {
   const {url} = avatarModels[0];
   modelUrl = `https://avatar-models.exokit.org/${url}`;
   const model = await ModelLoader.loadModelUrl(modelUrl);
+  model.scene.traverse(o => {
+    o.frustumCulled = false;
+  });
   rig = new Avatar(model, {
     fingers: true,
     hair: true,
@@ -176,6 +179,9 @@ export function bindPeerConnection(peerConnection, container) {
       }
 
       const model = url ? await ModelLoader.loadModelUrl(url) : null;
+      model.scene.traverse(o => {
+        o.frustumCulled = false;
+      });
       peerConnection.rig = new Avatar(model, {
         fingers: true,
         hair: true,

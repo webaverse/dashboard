@@ -2219,7 +2219,7 @@ function onSessionStarted(session) {
     
     const controllerGrip = renderer.xr.getControllerGrip(i);
     controllerGrip.add(controllerModelFactory.createControllerModel(controllerGrip));
-    controllerGrip.addEventListener('selectstart', e => {
+    controllerGrip.addEventListener('squeezestart', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
         _beginTool(false, true);
       }
@@ -2242,7 +2242,7 @@ function onSessionStarted(session) {
         };
       }
     });
-    controllerGrip.addEventListener('selectend', e => {
+    controllerGrip.addEventListener('squeezeend', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
         _endTool(false, true);
       }

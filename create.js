@@ -1734,8 +1734,56 @@ interfaceDocument.querySelector('.background').addEventListener('wheel', e => {
   e.preventDefault();
 });
 const _updateControllers = () => {
-  if (gripDowns.every(gripDown => gripDown)) {
-    // XXX
+  for (let i = 0; i < 2; i++) {
+    const controller = renderer.xr.getController(i);
+    const controllerGrip = renderer.xr.getControllerGrip(i);
+    
+    if (controller.userData.data && controller.userData.data.handedness === 'left') {
+      const squeeze = controller.userData.data.gamepad.buttons[1].pressed;
+      const lastSqueeze = lastSqueezes[0];
+      if (squeeze && !lastSqueeze) {
+        console.log('left start');
+        controllerGrip.dispatchEvent({
+          type: 'squeezestart',
+        });
+      } else if (!squeeze && lastSqueeze) {
+        console.log('left end');
+        controllerGrip.dispatchEvent({
+          type: 'squeezeend',
+        });
+      }
+      lastSqueezes[0] = squeeze;
+    }
+    if (controller.userData.data && controller.userData.data.handedness === 'right') {
+      const squeeze = controller.userData.data.gamepad.buttons[1].pressed;
+      const lastSqueeze = lastSqueezes[1];
+      if (squeeze && !lastSqueeze) {
+        controllerGrip.dispatchEvent({
+          type: 'squeezestart',
+        });
+      } else if (!squeeze && lastSqueeze) {
+        controllerGrip.dispatchEvent({
+          type: 'squeezeend',
+        });
+      }
+      lastSqueezes[1] = squeeze;
+    }
+  }
+  
+  if (scaleState) {
+    const currentPosition = renderer.xr.getControllerGrip(0).position.clone()
+      .add(renderer.xr.getControllerGrip(1).position);
+    const currentQuaternion = new THREE.Quaternion().setFromUnitVectors(
+      new THREE.Vector3(1, 0, 0),
+      renderer.xr.getControllerGrip(0).position.clone()
+        .sub(renderer.xr.getControllerGrip(1).position)
+        .normalize()
+    );
+    const currentWorldWidth = renderer.xr.getControllerGrip(0).position
+      .distanceTo(renderer.xr.getControllerGrip(1).position);
+
+    container.position.copy(scaleState.containerStartPosition)
+      .add(currentPosition.clone().sub(scaleState.startPosition));
   }
 };
 
@@ -2191,6 +2239,7 @@ let currentSession = null;
 const triggerDowns = [false, false];
 const gripDowns = [false, false];
 let scaleState = null;
+const lastSqueezes = [false, false];
 function onSessionStarted(session) {
   session.addEventListener('end', onSessionEnded);
 
@@ -2216,7 +2265,7 @@ function onSessionStarted(session) {
       }
       triggerDowns[i] = false;
     });
-    
+
     const controllerGrip = renderer.xr.getControllerGrip(i);
     controllerGrip.add(controllerModelFactory.createControllerModel(controllerGrip));
     controllerGrip.addEventListener('squeezestart', e => {
@@ -2238,7 +2287,9 @@ function onSessionStarted(session) {
           ),
           startWorldWidth: renderer.xr.getControllerGrip(0).position
             .distanceTo(renderer.xr.getControllerGrip(1).position),
-          startScale: 1,
+          containerStartPosition: container.position.clone(),
+          containerStartQuaternion: container.quaternion.clone(),
+          containerStartScale: container.scale.clone(),
         };
       }
     });

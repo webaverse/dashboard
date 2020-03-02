@@ -533,22 +533,26 @@ canvas {
 .grid > .object:hover {
   border-color: #CCC;
 }
-.main {
+.body {
+  display: flex;
+  flex-direction: column;
+}
+.hero {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 50px;
   min-width: 100vw;
-  min-height: calc(100vh - 50px);
+  min-height: 100vh;
+  padding-top: 50px;
 }
-.main .container {
+.hero .container {
   display: flex;
   width: 400px;
 }
-.main .container h1 {
+.hero .container h1 {
   padding: 20px 0;
   border-bottom: 1px solid #000;
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 400;
 }

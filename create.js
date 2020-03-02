@@ -1594,7 +1594,7 @@ const keys = {
       }
       case 83: { // S
         if (!document.pointerLockElement) {
-          if (e.ctrlKey) {
+          if (e.ctrlKey || e.metaKey) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -1631,7 +1631,7 @@ const keys = {
         break;
       }
       case 79: { // O
-        if (e.ctrlKey) {
+        if (e.ctrlKey || e.metaKey) {
           e.preventDefault();
           e.stopPropagation();
 
@@ -1640,7 +1640,7 @@ const keys = {
         break;
       }
       case 88: { // X
-        if (e.ctrlKey) {
+        if (e.ctrlKey || e.metaKey) {
           if (selectedObjectMeshes.length > 0) {
             _clipboardCopy(selectedObjectMeshes);
             
@@ -1668,7 +1668,7 @@ const keys = {
         break;
       }
       case 67: { // C
-        if (e.ctrlKey) {
+        if (e.ctrlKey || e.metaKey) {
           if (selectedObjectMeshes.length) {
             _clipboardCopy(selectedObjectMeshes);
           }
@@ -1678,13 +1678,13 @@ const keys = {
         break;
       }
       case 86: { // V
-        if (e.ctrlKey) {
+        if (e.ctrlKey || e.metaKey) {
           _clipboardPaste();
         }
         break;
       }
       case 90: { // Z
-        if (e.ctrlKey) {
+        if (e.ctrlKey || e.metaKey) {
           if (e.shiftKey) {
             redo();
           } else {
@@ -1694,7 +1694,7 @@ const keys = {
         break;
       }
       case 89: { // Y
-        if (e.ctrlKey) {
+        if (e.ctrlKey || e.metaKey) {
           redo();
         }
         break;

@@ -1742,12 +1742,12 @@ const _updateControllers = () => {
       const squeeze = controller.userData.data.gamepad.buttons[1].pressed;
       const lastSqueeze = lastSqueezes[0];
       if (squeeze && !lastSqueeze) {
-        console.log('left start');
+        // console.log('left start');
         controllerGrip.dispatchEvent({
           type: 'squeezestart',
         });
       } else if (!squeeze && lastSqueeze) {
-        console.log('left end');
+        // console.log('left end');
         controllerGrip.dispatchEvent({
           type: 'squeezeend',
         });
@@ -1773,17 +1773,22 @@ const _updateControllers = () => {
   if (scaleState) {
     const currentPosition = renderer.xr.getControllerGrip(0).position.clone()
       .add(renderer.xr.getControllerGrip(1).position);
-    const currentQuaternion = new THREE.Quaternion().setFromUnitVectors(
-      new THREE.Vector3(1, 0, 0),
-      renderer.xr.getControllerGrip(0).position.clone()
-        .sub(renderer.xr.getControllerGrip(1).position)
-        .normalize()
-    );
+    const currentDirection = renderer.xr.getControllerGrip(0).position.clone()
+      .sub(renderer.xr.getControllerGrip(1).position)
+      .normalize();
     const currentWorldWidth = renderer.xr.getControllerGrip(0).position
       .distanceTo(renderer.xr.getControllerGrip(1).position);
+    const currentEuler = new THREE.Euler().setFromQuaternion(new THREE.Quaternion().setFromUnitVectors(scaleState.startDirection, currentDirection), 'YXZ');
+    currentEuler.x = 0;
+    currentEuler.z = 0;
+    const currentQuaternion = new THREE.Quaternion().setFromEuler(currentEuler);
 
     container.position.copy(scaleState.containerStartPosition)
       .add(currentPosition.clone().sub(scaleState.startPosition));
+    container.quaternion.copy(scaleState.containerStartQuaternion)
+      .premultiply(currentQuaternion);
+    container.scale.copy(scaleState.containerStartScale)
+      .multiplyScalar(currentWorldWidth/scaleState.startWorldWidth);
   }
 };
 
@@ -2279,12 +2284,9 @@ function onSessionStarted(session) {
         scaleState = {
           startPosition: renderer.xr.getControllerGrip(0).position.clone()
             .add(renderer.xr.getControllerGrip(1).position),
-          startQuaternion: new THREE.Quaternion().setFromUnitVectors(
-            new THREE.Vector3(1, 0, 0),
-            renderer.xr.getControllerGrip(0).position.clone()
-              .sub(renderer.xr.getControllerGrip(1).position)
-              .normalize()
-          ),
+          startDirection: renderer.xr.getControllerGrip(0).position.clone()
+            .sub(renderer.xr.getControllerGrip(1).position)
+            .normalize(),
           startWorldWidth: renderer.xr.getControllerGrip(0).position
             .distanceTo(renderer.xr.getControllerGrip(1).position),
           containerStartPosition: container.position.clone(),

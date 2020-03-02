@@ -2226,7 +2226,7 @@ function onSessionStarted(session) {
       const oldGripDownsAll = gripDowns.every(gripDown => gripDown);
       gripDowns[i] = true;
       const newGripDownsAll = gripDowns.every(gripDown => gripDown);
-      if (newGripDownsAll && oldGripDownsAll) {
+      if (newGripDownsAll && !oldGripDownsAll) {
         scaleState = {
           startPosition: renderer.xr.getControllerGrip(0).position.clone()
             .add(renderer.xr.getControllerGrip(1).position),

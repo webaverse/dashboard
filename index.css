@@ -3,7 +3,7 @@
 }
 body {
   width: 100vw;
-  height: 100vh;
+  /* height: 100vh; */
   margin: 0;
   font-family: 'Open Sans';
   font-size: 12px;
@@ -509,6 +509,9 @@ canvas {
   height: 100vh;
   /* background-color: #000; */
 }
+.body {
+  background-color: #ff5722;
+}
 .grid {
   display: flex;
   margin-top: 50px;
@@ -569,7 +572,6 @@ canvas {
 }
 .detail .container h2,
 .detail .container h3 {
-  font-size: 30px;
   font-weight: 400;
 }
 .detail .container h2 {
@@ -579,16 +581,19 @@ canvas {
   width: 50px;
   margin: 0;
   margin-right: 20px;
-  background-color: #000;
-  color: #FFF;
   padding-left: 100px;
   padding-right: 30px;
+  background-color: #000;
+  /* color: #FFF; */
+  color: #ff5722;
+  font-size: 40px;
 }
 .detail .container h3 {
   display: flex;
   align-items: center;
   margin: 0;
   margin-bottom: 10px;
+  font-size: 30px;
 }
 .detail .container p {
   margin: 0;

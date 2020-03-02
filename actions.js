@@ -19,7 +19,7 @@ export function createAction(method, args) {
           for (let i = 0; i < newObjectMeshes.length; i++) {
             const newObjectMesh = newObjectMeshes[i];
             container.remove(newObjectMesh);
-            objectMeshes.splice(objectMeshes.indexOf(objectMesh), 1);
+            objectMeshes.splice(objectMeshes.indexOf(newObjectMesh), 1);
           }
         },
       };

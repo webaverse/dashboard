@@ -767,7 +767,6 @@ const _commitMiningMeshes = async () => {
     if (visibleMiningMeshes.length) {
       const geometry = BufferGeometryUtils.mergeBufferGeometries(visibleMiningMeshes.map(miningMesh => miningMesh.geometry));
       const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
-      await _parameterizeObjectMesh(objectMesh);
       _centerObjectMesh(objectMesh);
       objectMesh.updateMatrix();
       objectMesh.matrix
@@ -781,6 +780,8 @@ const _commitMiningMeshes = async () => {
         objectMeshes,
       });
       execute(action);
+      
+      await _parameterizeObjectMesh(objectMesh);
     }
 
     committing = false;

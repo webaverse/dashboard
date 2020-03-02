@@ -711,7 +711,7 @@ const _findOrAddMiningMeshesByContainCoord = (x, y, z) => {
         let miningMesh = _findMiningMeshByIndex(ax, ay, az);
         if (!miningMesh) {
           miningMesh = _makeMiningMesh(ax, ay, az);
-          container.add(miningMesh);
+          scene.add(miningMesh);
           miningMeshes.push(miningMesh);
         }
         !result.includes(miningMesh) && result.push(miningMesh);
@@ -723,7 +723,7 @@ const _findOrAddMiningMeshesByContainCoord = (x, y, z) => {
 const _newMiningMeshes = () => {
   for (let i = 0; i < miningMeshes.length; i++) {
     const miningMesh = miningMeshes[i];
-    container.remove(miningMesh);
+    scene.remove(miningMesh);
     miningMesh.destroy();
   }
   miningMeshes.length = 0;
@@ -769,6 +769,10 @@ const _commitMiningMeshes = async () => {
       const objectMesh = makeObjectMeshFromGeometry(geometry, null, null);
       await _parameterizeObjectMesh(objectMesh);
       _centerObjectMesh(objectMesh);
+      objectMesh.updateMatrix();
+      objectMesh.matrix
+        .premultiply(new THREE.Matrix4().getInverse(container.matrix))
+        .decompose(objectMesh.position, objectMesh.quaternion, objectMesh.scale);
       _newMiningMeshes();
 
       const action = createAction('addObject', {

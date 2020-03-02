@@ -26,18 +26,18 @@ export function createAction(method, args) {
       break;
     }
     case 'removeObjects': {
-      const {container, oldObjectMesh, objectMeshes} = args;
+      const {container, oldObjectMeshes, objectMeshes} = args;
       return {
         forward() {
-          for (let i = 0; i < oldObjectMesh.length; i++) {
-            const oldObjectMesh = oldObjectMesh[i];
+          for (let i = 0; i < oldObjectMeshes.length; i++) {
+            const oldObjectMesh = oldObjectMeshes[i];
             container.remove(oldObjectMesh);
             objectMeshes.splice(objectMeshes.indexOf(oldObjectMesh), 1);
           }
         },
         back() {
-          for (let i = 0; i < oldObjectMesh.length; i++) {
-            const oldObjectMesh = oldObjectMesh[i];
+          for (let i = 0; i < oldObjectMeshes.length; i++) {
+            const oldObjectMesh = oldObjectMeshes[i];
             container.add(oldObjectMesh);
             objectMeshes.push(oldObjectMesh);
           }

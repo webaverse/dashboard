@@ -1607,12 +1607,7 @@ const keys = {
       }
       case 68: { // D
         if (!document.pointerLockElement) {
-          if (e.ctrlKey) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            interfaceDocument.getElementById('save-op').click();
-          }
+          // nothing
         } else {
           keys.right = true;
         }

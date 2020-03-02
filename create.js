@@ -1181,8 +1181,29 @@ const _updateTool = raycaster => {
       _refreshMiningMeshes();
     }
   } else if (selectedTool === 'select') {
-    if (!toolGrip || !hoveredObjectMesh) {
-      const intersections = raycaster.intersectObjects(objectMeshes);
+    if (!toolGrip) {
+      const intersections = (() => {
+        if (currentSession) {
+          return objectMeshes.map(objectMesh => {
+            if (geometry.boundingBox === null) {
+              geometry.computeBoundingBox();
+            }
+            const box = geometry.boundingBox.clone()
+              .applyMatrix4(objectMesh.matrixWorld);
+            if (box.containsPoint(raycaster.origin)) {
+              return {
+                objectMesh,
+                distance: box.getCenter(new THREE.Vector3())
+                  .distanceTo(objectMesh.origin),
+              };
+            } else {
+              return null;
+            }
+          }).filter(o => o !== null).sort((a, b) => a.distance - b.distance);
+        } else {
+          return raycaster.intersectObjects(objectMeshes);
+        }
+      })();
       if (intersections.length > 0) {
         _setHoveredObjectMesh(intersections[0].object);
       } else {

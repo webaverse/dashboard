@@ -1771,9 +1771,12 @@ const _updateControllers = () => {
   }
   
   if (scaleState) {
+    const startPosition = scaleState.startPosition.clone()
+      .applyMatrix4(new THREE.Matrix4().getInverse(scaleState.containerStartMatrix));
     const currentPosition = renderer.xr.getControllerGrip(0).position.clone()
       .add(renderer.xr.getControllerGrip(1).position)
-      .divideScalar(2);
+      .divideScalar(2)
+      .applyMatrix4(new THREE.Matrix4().getInverse(scaleState.containerStartMatrix));
     const currentDirection = renderer.xr.getControllerGrip(0).position.clone()
       .sub(renderer.xr.getControllerGrip(1).position)
       .normalize();
@@ -1784,7 +1787,7 @@ const _updateControllers = () => {
     currentEuler.z = 0;
     const currentQuaternion = new THREE.Quaternion().setFromEuler(currentEuler);
     const scaleFactor = currentWorldWidth/scaleState.startWorldWidth;
-    const positionDiff = currentPosition.clone().sub(scaleState.startPosition);
+    const positionDiff = currentPosition.clone().sub(startPosition);
 
     container.matrix
       .copy(scaleState.containerStartMatrix)

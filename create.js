@@ -1772,7 +1772,8 @@ const _updateControllers = () => {
   
   if (scaleState) {
     const currentPosition = renderer.xr.getControllerGrip(0).position.clone()
-      .add(renderer.xr.getControllerGrip(1).position);
+      .add(renderer.xr.getControllerGrip(1).position)
+      .divideScalar(2);
     const currentDirection = renderer.xr.getControllerGrip(0).position.clone()
       .sub(renderer.xr.getControllerGrip(1).position)
       .normalize();
@@ -1782,13 +1783,17 @@ const _updateControllers = () => {
     currentEuler.x = 0;
     currentEuler.z = 0;
     const currentQuaternion = new THREE.Quaternion().setFromEuler(currentEuler);
+    const scaleFactor = currentWorldWidth/scaleState.startWorldWidth;
+    const positionDiff = currentPosition.clone().sub(scaleState.startPosition);
 
-    container.position.copy(scaleState.containerStartPosition)
-      .add(currentPosition.clone().sub(scaleState.startPosition));
-    container.quaternion.copy(scaleState.containerStartQuaternion)
-      .premultiply(currentQuaternion);
-    container.scale.copy(scaleState.containerStartScale)
-      .multiplyScalar(currentWorldWidth/scaleState.startWorldWidth);
+    container.matrix
+      .copy(scaleState.containerStartMatrix)
+      .multiply(new THREE.Matrix4().makeTranslation(currentPosition.x, currentPosition.y, currentPosition.z))
+      .multiply(new THREE.Matrix4().makeScale(scaleFactor, scaleFactor, scaleFactor))
+      .multiply(new THREE.Matrix4().makeRotationFromQuaternion(currentQuaternion))
+      .multiply(new THREE.Matrix4().makeTranslation(-currentPosition.x, -currentPosition.y, -currentPosition.z))
+      .multiply(new THREE.Matrix4().makeTranslation(positionDiff.x, positionDiff.y, positionDiff.z))
+      .decompose(container.position, container.quaternion, container.scale);
   }
 };
 
@@ -2283,7 +2288,8 @@ function onSessionStarted(session) {
       if (newGripDownsAll && !oldGripDownsAll) {
         scaleState = {
           startPosition: renderer.xr.getControllerGrip(0).position.clone()
-            .add(renderer.xr.getControllerGrip(1).position),
+            .add(renderer.xr.getControllerGrip(1).position)
+            .divideScalar(2),
           startDirection: renderer.xr.getControllerGrip(0).position.clone()
             .sub(renderer.xr.getControllerGrip(1).position)
             .normalize(),
@@ -2292,6 +2298,7 @@ function onSessionStarted(session) {
           containerStartPosition: container.position.clone(),
           containerStartQuaternion: container.quaternion.clone(),
           containerStartScale: container.scale.clone(),
+          containerStartMatrix: container.matrix.clone(),
         };
       }
     });

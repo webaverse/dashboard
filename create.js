@@ -994,9 +994,7 @@ const _setHoveredObjectMesh = newHoveredObjectMesh => {
   hoveredObjectMesh = newHoveredObjectMesh;
 };
 const _setSelectedObjectMesh = (newSelectedObjectMesh, shiftKey) => {
-  /* if (!selectedObjectMesh && hoveredObjectMesh === selectedObjectMesh) {
-    hoveredObjectMesh = null;
-  } */
+  const oldIncludedHovered = selectedObjectMeshes.includes(hoveredObjectMesh);
   if (!newSelectedObjectMesh || !shiftKey) {
     for (let i = 0; i < selectedObjectMeshes.length; i++) {
       _unbindObjectMeshControls(selectedObjectMeshes[i]);
@@ -1015,6 +1013,9 @@ const _setSelectedObjectMesh = (newSelectedObjectMesh, shiftKey) => {
       _bindObjectMeshControls(newSelectedObjectMesh);
       selectedObjectMeshes = selectedObjectMeshes.concat(newSelectedObjectMesh);
     }
+  }
+  if (oldIncludedHovered && !selectedObjectMeshes.includes(hoveredObjectMesh)) {
+    hoveredObjectMesh = null;
   }
 };
 scene.onAfterRender = () => {

@@ -1654,14 +1654,14 @@ const keys = {
         }
         break;
       }
-      case 75: { // K
-        if (e.ctrlKey) {
+      /* case 75: { // K
+        if (e.ctrlKey || e.metaKey) {
           if (selectedObjectMesh) {
             _splitObjectMesh(selectedObjectMesh);
           }
         }
         break;
-      }
+      } */
       case 67: { // C
         if (e.ctrlKey || e.metaKey) {
           if (selectedObjectMeshes.length) {

@@ -537,22 +537,73 @@ canvas {
   display: flex;
   flex-direction: column;
 }
-.hero {
+.hero,
+.detail
+{
   position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
+}
+.hero {
   min-width: 100vw;
   min-height: 100vh;
   padding-top: 50px;
 }
-.hero .container {
+.container {
   display: flex;
-  width: 400px;
+  width: 600px;
+  margin-left: 100px;
 }
 .hero .container h1 {
   padding: 20px 0;
-  border-bottom: 1px solid #000;
-  font-size: 36px;
+  border-bottom: 2px solid #000;
+  font-size: 40px;
   font-weight: 400;
 }
+.detail {
+  margin-top: 100px;
+  margin-bottom: 200px;
+}
+.detail .container {
+  border-bottom: 2px solid #000;
+}
+.detail .container h2,
+.detail .container h3 {
+  font-size: 30px;
+  font-weight: 400;
+}
+.detail .container h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  margin: 0;
+  margin-right: 20px;
+  background-color: #000;
+  color: #FFF;
+  padding-left: 100px;
+  padding-right: 30px;
+}
+.detail .container h3 {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  margin-bottom: 10px;
+}
+.detail .container p {
+  margin: 0;
+  margin-bottom: 20px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+.detail .container .wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+/* section:nth-child(even) {
+  background-color: #333;
+}
+section:nth-child(odd) {
+  background-color: #EEE;
+} */

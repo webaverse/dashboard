@@ -2293,6 +2293,8 @@ function onSessionStarted(session) {
       gripDowns[i] = true;
       const newGripDownsAll = gripDowns.every(gripDown => gripDown);
       if (newGripDownsAll && !oldGripDownsAll) {
+        _commitMiningMeshes();
+        
         scaleState = {
           startPosition: renderer.xr.getControllerGrip(0).position.clone()
             .add(renderer.xr.getControllerGrip(1).position)

@@ -5,30 +5,42 @@ let redos = [];
 const maxHistoryLength = 20;
 export function createAction(method, args) {
   switch (method) {
-    case 'addObject': {
-      const {container, objectMesh, objectMeshes} = args;
+    case 'addObjects': {
+      const {container, newObjectMeshes, objectMeshes} = args;
       return {
         forward() {
-          container.add(objectMesh);
-          objectMeshes.push(objectMesh);
+          for (let i = 0; i < newObjectMeshes.length; i++) {
+            const newObjectMesh = newObjectMeshes[i];
+            container.add(newObjectMesh);
+            objectMeshes.push(newObjectMesh);
+          }
         },
         back() {
-          container.remove(objectMesh);
-          objectMeshes.splice(objectMeshes.indexOf(objectMesh), 1);
+          for (let i = 0; i < newObjectMeshes.length; i++) {
+            const newObjectMesh = newObjectMeshes[i];
+            container.remove(newObjectMesh);
+            objectMeshes.splice(objectMeshes.indexOf(objectMesh), 1);
+          }
         },
       };
       break;
     }
-    case 'removeObject': {
-      const {container, objectMesh, objectMeshes} = args;
+    case 'removeObjects': {
+      const {container, oldObjectMesh, objectMeshes} = args;
       return {
         forward() {
-          container.remove(objectMesh);
-          objectMeshes.splice(objectMeshes.indexOf(objectMesh), 1);
+          for (let i = 0; i < oldObjectMesh.length; i++) {
+            const oldObjectMesh = oldObjectMesh[i];
+            container.remove(oldObjectMesh);
+            objectMeshes.splice(objectMeshes.indexOf(oldObjectMesh), 1);
+          }
         },
         back() {
-          container.add(objectMesh);
-          objectMeshes.push(objectMesh);
+          for (let i = 0; i < oldObjectMesh.length; i++) {
+            const oldObjectMesh = oldObjectMesh[i];
+            container.add(oldObjectMesh);
+            objectMeshes.push(oldObjectMesh);
+          }
         },
       };
       break;

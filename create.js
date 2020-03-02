@@ -774,8 +774,8 @@ const _commitMiningMeshes = async () => {
         .decompose(objectMesh.position, objectMesh.quaternion, objectMesh.scale);
       _newMiningMeshes();
 
-      const action = createAction('addObject', {
-        objectMesh,
+      const action = createAction('addObjects', {
+        newObjectMeshes: [objectMesh],
         container,
         objectMeshes,
       });
@@ -989,20 +989,32 @@ const selectOutlineEffect = new OutlineEffect(renderer, {
 const outlineScene = new THREE.Scene();
 let renderingOutline = false;
 let hoveredObjectMesh = null;
-let selectedObjectMesh = null;
+let selectedObjectMeshes = [];
 const _setHoveredObjectMesh = newHoveredObjectMesh => {
   hoveredObjectMesh = newHoveredObjectMesh;
 };
-const _setSelectedObjectMesh = newSelectedObjectMesh => {
-  if (!selectedObjectMesh && hoveredObjectMesh === selectedObjectMesh) {
+const _setSelectedObjectMesh = (newSelectedObjectMesh, shiftKey) => {
+  /* if (!selectedObjectMesh && hoveredObjectMesh === selectedObjectMesh) {
     hoveredObjectMesh = null;
-  }
-  if (selectedObjectMesh) {
-    _unbindObjectMeshControls(selectedObjectMesh);
-  }
-  selectedObjectMesh = newSelectedObjectMesh;
-  if (selectedObjectMesh) {
-    _bindObjectMeshControls(selectedObjectMesh);
+  } */
+  if (!newSelectedObjectMesh || !shiftKey) {
+    for (let i = 0; i < selectedObjectMeshes.length; i++) {
+      _unbindObjectMeshControls(selectedObjectMeshes[i]);
+    }
+    selectedObjectMeshes = newSelectedObjectMesh ? [newSelectedObjectMesh] : [];
+    for (let i = 0; i < selectedObjectMeshes.length; i++) {
+      _bindObjectMeshControls(selectedObjectMeshes[i]);
+    }
+  } else {
+    const index = selectedObjectMeshes.indexOf(newSelectedObjectMesh);
+    if (index !== -1) {
+      _unbindObjectMeshControls(newSelectedObjectMesh);
+      selectedObjectMeshes = selectedObjectMeshes.slice();
+      selectedObjectMeshes.splice(index, 1);
+    } else {
+      _bindObjectMeshControls(newSelectedObjectMesh);
+      selectedObjectMeshes = selectedObjectMeshes.concat(newSelectedObjectMesh);
+    }
   }
 };
 scene.onAfterRender = () => {
@@ -1023,14 +1035,12 @@ scene.onAfterRender = () => {
     container.add(hoveredObjectMesh);
   }
 
-  let oldSelectedParent;
-  if (selectedObjectMesh) {
-    oldSelectedParent = selectedObjectMesh.parent;
-    outlineScene.add(selectedObjectMesh);
+  for (let i = 0; i < selectedObjectMeshes.length; i++) {
+    outlineScene.add(selectedObjectMeshes[i]);
   }
   selectOutlineEffect.renderOutline(outlineScene, camera);
-  if (oldSelectedParent) {
-    container.add(selectedObjectMesh);
+  for (let i = 0; i < selectedObjectMeshes.length; i++) {
+    container.add(selectedObjectMeshes[i]);
   }
 
   renderingOutline = false;
@@ -1367,7 +1377,7 @@ let scalpelMesh = (() => {
   return mesh;
 })();
 container.add(scalpelMesh);
-const _beginTool = (primary, secondary) => {
+const _beginTool = (primary, secondary, shiftKey) => {
   if (primary) {
     if (uiMesh.click()) {
       // nothing
@@ -1380,10 +1390,10 @@ const _beginTool = (primary, secondary) => {
         const v = pointerMesh.material.uniforms.targetPos.value;
         _eraseMiningMeshes(v.x+1, v.y+1, v.z+1);
         _refreshMiningMeshes();
-      } else if (selectedTool === 'select') {
+      /* } else if (selectedTool === 'select') {
         if (!transformControlsHovered) {
-          _setSelectedObjectMesh(hoveredObjectMesh);
-        }
+          _setSelectedObjectMesh(hoveredObjectMesh, shiftKey);
+        } */
       } else if (selectedTool === 'paint') {
         const intersections = localRaycaster.intersectObjects(objectMeshes);
         if (intersections.length > 0) {
@@ -1418,7 +1428,7 @@ const _beginTool = (primary, secondary) => {
   if (secondary) {
     if (selectedTool === 'select') {
       if (!transformControlsHovered) {
-        _setSelectedObjectMesh(hoveredObjectMesh);
+        _setSelectedObjectMesh(hoveredObjectMesh, shiftKey);
       }
     }
     toolGrip = true;
@@ -1437,7 +1447,8 @@ const _endTool = (primary, secondary) => {
     } else if (selectedTool === 'scalpel') {
       scalpelMesh.visible = false;
 
-      if (selectedObjectMesh) {
+      for (let i = 0; i < selectedObjectMeshes.length; i++) {
+        const selectedObjectMesh = selectedObjectMeshes[i];
         _splitObjectMesh(selectedObjectMesh, scalpelMesh.position.clone().sub(selectedObjectMesh.position), scalpelMesh.quaternion, scalpelMesh.scale);
       }
     }
@@ -1448,20 +1459,20 @@ const _endTool = (primary, secondary) => {
     toolGrip = false;
   }
 };
-let clipboardObjectMesh = null;
-const _clipboardCopy = objectMesh => {
-  clipboardObjectMesh = {
+let clipboardObjectMeshes = [];
+const _clipboardCopy = objectMeshes => {
+  clipboardObjectMeshes = objectMeshes.map(objectMesh => ({
     geometry: objectMesh.geometry.clone(),
     texture: objectMesh.map && objectMesh.map.clone(),
     matrix: objectMesh.matrix.clone(),
-  };
+  }));
 };
 const _clipboardPaste = () => {
   if (clipboardObjectMesh) {
     const objectMesh = makeObjectMeshFromGeometry(clipboardObjectMesh.geometry, clipboardObjectMesh.texture, clipboardObjectMesh.matrix);
 
-    const action = createAction('addObject', {
-      objectMesh,
+    const action = createAction('addObjects', {
+      newObjectMesh: [objectMesh],
       container,
       objectMeshes,
     });
@@ -1527,7 +1538,7 @@ const _splitObjectMesh = (objectMesh, p = new THREE.Vector3(), q = new THREE.Qua
     }
 
     _setHoveredObjectMesh(null);
-    _setSelectedObjectMesh(null);
+    _setSelectedObjectMesh(null, false);
 
     const action = createAction('swapObjects', {
       oldObjectMeshes: [objectMesh],
@@ -1563,7 +1574,9 @@ const keys = {
       }
       case 87: { // W
         if (!document.pointerLockElement) {
-          selectedObjectMesh && selectedObjectMesh.control.setMode('translate');
+          selectedObjectMeshes.forEach(selectedObjectMesh => {
+            selectedObjectMesh.control.setMode('translate');
+          });
         } else {
           keys.up = true;
         }
@@ -1571,7 +1584,9 @@ const keys = {
       }
       case 65: { // A
         if (!document.pointerLockElement) {
-          selectedObjectMesh && selectedObjectMesh.control.setMode('translate');
+          selectedObjectMeshes.forEach(selectedObjectMesh => {
+            selectedObjectMesh.control.setMode('translate');
+          });
         } else {
           keys.left = true;
         }
@@ -1604,11 +1619,15 @@ const keys = {
         break;
       }
       case 69: { // E
-        selectedObjectMesh && selectedObjectMesh.control.setMode('rotate');
+        selectedObjectMeshes.forEach(selectedObjectMesh => {
+          selectedObjectMesh.control.setMode('rotate');
+        });
         break;
       }
       case 82: { // R
-        selectedObjectMesh && selectedObjectMesh.control.setMode('scale');
+        selectedObjectMeshes.forEach(selectedObjectMesh => {
+          selectedObjectMesh.control.setMode('scale');
+        });
         break;
       }
       case 79: { // O
@@ -1622,16 +1641,16 @@ const keys = {
       }
       case 88: { // X
         if (e.ctrlKey) {
-          if (selectedObjectMesh) {
-            _clipboardCopy(selectedObjectMesh);
+          if (selectedObjectMeshes.length > 0) {
+            _clipboardCopy(selectedObjectMeshes);
             
-            const oldSelectedObjectMesh = selectedObjectMesh;
+            const oldSelectedObjectMeshes = selectedObjectMeshes;
 
             _setHoveredObjectMesh(null);
-            _setSelectedObjectMesh(null);
+            _setSelectedObjectMesh(null, false);
 
-            const action = createAction('removeObject', {
-              objectMesh: oldSelectedObjectMesh,
+            const action = createAction('removeObjects', {
+              oldObjectMeshes: oldSelectedObjectMeshes,
               container,
               objectMeshes,
             });
@@ -1650,8 +1669,8 @@ const keys = {
       }
       case 67: { // C
         if (e.ctrlKey) {
-          if (selectedObjectMesh) {
-            _clipboardCopy(selectedObjectMesh);
+          if (selectedObjectMeshes.length) {
+            _clipboardCopy(selectedObjectMeshes);
           }
         } else if (e.shiftKey) {
           _centerObjectMeshes();
@@ -1687,20 +1706,20 @@ const keys = {
         break;
       }
       case 27: { // esc
-        _setSelectedObjectMesh(null);
+        _setSelectedObjectMesh(null, false);
         break;
       }
       case 8: // backspace
       case 46: // del
       {
-        if (selectedObjectMesh) {
-          const oldSelectedObjectMesh = selectedObjectMesh;
+        if (selectedObjectMeshes.length > 0) {
+          const oldSelectedObjectMesh = selectedObjectMeshes;
 
           _setHoveredObjectMesh(null);
-          _setSelectedObjectMesh(null);
+          _setSelectedObjectMesh(null, false);
 
-          const action = createAction('removeObject', {
-            objectMesh: oldSelectedObjectMesh,
+          const action = createAction('removeObjects', {
+            oldObjectMeshes: oldSelectedObjectMeshes,
             container,
             objectMeshes,
           });
@@ -1754,8 +1773,12 @@ const keys = {
       camera.rotation.x -= movementY * Math.PI*2*0.001;
     }
   });
-  w.addEventListener('mousedown', _beginTool.bind(null, true, true));
-  w.addEventListener('mouseup', _endTool.bind(null, true, true));
+  w.addEventListener('mousedown', e => {
+    _beginTool(true, true, e.shiftKey);
+  });
+  w.addEventListener('mouseup', e => {
+    _endTool(true, true, e.shiftKey);
+  });
 });
 interfaceDocument.querySelector('.background').addEventListener('wheel', e => {
   e.preventDefault();
@@ -1884,7 +1907,7 @@ Array.from(tools).forEach((tool, i) => {
 
         if (!['camera', 'scalpel'].includes(selectedTool)) {
           _setHoveredObjectMesh(null);
-          _setSelectedObjectMesh(null);
+          _setSelectedObjectMesh(null, false);
         }
       }
 
@@ -2037,7 +2060,7 @@ interfaceDocument.getElementById('new-op').addEventListener('click', e => {
   objectNameEl.value = '';
   _newMiningMeshes();
   _setHoveredObjectMesh(null);
-  _setSelectedObjectMesh(null);
+  _setSelectedObjectMesh(null, false);
   for (let i = 0; i < objectMeshes.length; i++) {
     const objectMesh = objectMeshes[i];
     container.remove(objectMesh);
@@ -2295,13 +2318,13 @@ function onSessionStarted(session) {
     });
     controller.addEventListener('selectstart', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
-        _beginTool(true, false);
+        _beginTool(true, false, false);
       }
       triggerDowns[i] = true;
     });
     controller.addEventListener('selectend', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
-        _endTool(true, false);
+        _endTool(true, false, false);
       }
       triggerDowns[i] = false;
     });
@@ -2310,7 +2333,7 @@ function onSessionStarted(session) {
     controllerGrip.add(controllerModelFactory.createControllerModel(controllerGrip));
     controllerGrip.addEventListener('squeezestart', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
-        _beginTool(false, true);
+        _beginTool(false, true, false);
       }
       const oldGripDownsAll = gripDowns.every(gripDown => gripDown);
       gripDowns[i] = true;
@@ -2336,7 +2359,7 @@ function onSessionStarted(session) {
     });
     controllerGrip.addEventListener('squeezeend', e => {
       if (controller.userData.data && controller.userData.data.handedness === 'right') {
-        _endTool(false, true);
+        _endTool(false, true, false);
       }
       gripDowns[i] = false;
       const newGripDownsAll = gripDowns.every(gripDown => gripDown);

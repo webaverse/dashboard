@@ -258,6 +258,53 @@ const pointerMesh = (() => {
 })();
 container.add(pointerMesh);
 
+const _compileContract = (() => {
+  const compiler = wrapper(Module);
+  return source => {
+    const input = {
+      language: 'Solidity',
+      sources: {
+        'input.sol': {
+          content: source,
+        },
+      },
+      settings: {
+        outputSelection: {
+          '*': {
+            '*': ['*'],
+          },
+        },
+      },
+    };
+    const {contracts, errors} = JSON.parse(compiler.compile(JSON.stringify(input)))
+    let result = null;
+    if (contracts) {
+      for (const i in contracts) {
+        for (const j in contracts[i]) {
+          const contract = contracts[i][j];
+          const {abi, evm: {bytecode: {object}}} = contract;
+          result = {
+            bytecode: object,
+            abi,
+          };
+          break;
+        }
+      }
+    }
+    const error = errors.map(e => e.formattedMessage).join('\n');
+    /* for (let i = 0; i < errors.length; i++) {
+      const error = errors[i];
+      const {formattedMessage} = error;
+      console.log('got formatted message', formattedMessage);
+    } */
+    if (result) {
+      return result;
+    } else {
+      throw error;
+    }
+  };
+})();
+
 const _makeWasmWorker = () => {
   let cbs = [];
   const w = new Worker('mc-worker.js');
@@ -287,6 +334,7 @@ const uvWorker = _makeWasmWorker();
 let ammo = null;
 (async () => {
   const p = makePromise();
+  const oldModule = window.Module;
   window.Module = { TOTAL_MEMORY: 100*1024*1024 };
   AmmoLib().then(Ammo => {
     Ammo.then = null;
@@ -419,6 +467,7 @@ let ammo = null;
       }
     },
   };
+  window.Module = oldModule;
 })();
 
 const floorMesh = (() => {

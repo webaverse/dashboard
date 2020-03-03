@@ -165,7 +165,9 @@ export function makeObjectMeshFromGeometry(geometry, texture, matrix) {
 export async function saveObjectMeshes(objectMeshes, script/*, vertexShader, fragmentShader*/) {
   const exportScene = new THREE.Scene();
   exportScene.userData.gltfExtensions = {
-    script,
+    script: {
+      source: script,
+    },
     /* shader: {
       vertex: vertexShader,
       fragment: fragmentShader,
@@ -208,7 +210,7 @@ export async function loadObjectMeshes(s) {
   const {userData: {gltfExtensions}} = scene;
   return {
     objectMeshes: scene.children.map(child => makeObjectMeshFromGeometry(child.geometry, child.material.map, child.matrix)),
-    script: (gltfExtensions && typeof gltfExtensions.script === 'string') ? gltfExtensions.script : null,
+    script: (gltfExtensions && gltfExtensions.script.source && typeof gltfExtensions.script.source === 'string') ? gltfExtensions.script.source : null,
     /* shader: {
       vertex: (gltfExtensions && gltfExtensions.shader && typeof gltfExtensions.shader.vertex === 'string') ? gltfExtensions.shader.vertex : null,
       fragment: (gltfExtensions && gltfExtensions.shader && typeof gltfExtensions.shader.fragment === 'string') ? gltfExtensions.shader.fragment : null,

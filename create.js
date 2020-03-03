@@ -2119,7 +2119,7 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
   const p = makePromise();
   const instance = await contract.getInstance();
   const size = pointerMesh.getSize();
-  instance.mint([size[3] - size[0], size[4] - size[1], size[5] - size[2]], 'hash', metadataHash, (err, value) => {
+  instance.mint([size[3] - size[0], size[4] - size[1], size[5] - size[2]], `0x${compiledContract.bytecode}`, 'hash', metadataHash, (err, value) => {
     if (!err) {
       p.accept(value);
     } else {

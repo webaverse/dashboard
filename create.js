@@ -2073,8 +2073,8 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
   e.preventDefault();
   e.stopPropagation();
 
-  const compiledCntract = _compileContract(interfaceDocument.getElementById('contract-input-textarea').value);
-  console.log('got contract', compiledCntract);
+  const compiledContract = _compileContract(interfaceDocument.getElementById('contract-input-textarea').value);
+  console.log('got contract', compiledContract);
 
   await _commitMiningMeshes();
   _centerObjectMeshes();

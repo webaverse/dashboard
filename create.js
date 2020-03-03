@@ -1874,11 +1874,14 @@ Array.from(tools).forEach((tool, i) => {
         });
       [
         'script-input',
+        'contract-input',
         // 'shader-input',
       ].forEach(id => interfaceDocument.getElementById(id).classList.remove('open'));
 
       if (tool.matches('[tool=script]')) {
         interfaceDocument.getElementById('script-input').classList.toggle('open', !wasOpen);
+      } else if (tool.matches('[tool=contract]')) {
+        interfaceDocument.getElementById('contract-input').classList.toggle('open', !wasOpen);
       } /* else if (tool.matches('[tool=shader]')) {
         interfaceDocument.getElementById('shader-input').classList.toggle('open', !wasOpen);
       } */
@@ -1965,6 +1968,28 @@ scriptInputTextarea.addEventListener('input', e => {
   }
 });
 scriptInputTextarea.addEventListener('keydown', e => {
+  e.stopPropagation();
+});
+
+interfaceDocument.getElementById('contract-input').addEventListener('mousedown', e => {
+  e.stopPropagation();
+});
+const contractInputTextarea = interfaceDocument.getElementById('contract-input-textarea');
+contractInputTextarea.value = `
+  contract C {
+    uint256 id;
+    constructor() public {
+      id = 1;
+    }
+    function f() public {}
+  }
+`;
+/* contractInputTextarea.addEventListener('input', e => {
+  if (scriptsBound) {
+    bindObjectScript(objectState, e.target.value, objectMeshes);
+  }
+}); */
+contractInputTextarea.addEventListener('keydown', e => {
   e.stopPropagation();
 });
 

@@ -2027,10 +2027,12 @@ const contractInputTextarea = interfaceDocument.getElementById('contract-input-t
 contractInputTextarea.value = `
   contract C {
     uint256 id;
-    constructor() public {
-      id = 1;
+    constructor(uint256 _id) public {
+      id = _id;
     }
-    function f() public {}
+    function f() public view returns (uint256) {
+      return id;
+    }
   }
 `;
 /* contractInputTextarea.addEventListener('input', e => {

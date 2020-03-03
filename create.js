@@ -2052,15 +2052,15 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
       .then(j => j.hash),
   ]);
   const metadataHash = await fetch(`${apiHost}/metadata/`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        objectName: objectNameEl.value,
-        dataHash,
-        screenshotHash,
-      }),
-    })
-      .then(res => res.json())
-      .then(j => j.hash);
+    method: 'PUT',
+    body: JSON.stringify({
+      objectName: objectNameEl.value,
+      dataHash,
+      screenshotHash,
+    }),
+  })
+    .then(res => res.json())
+    .then(j => j.hash);
 
   const p = makePromise();
   const instance = await contract.getInstance();

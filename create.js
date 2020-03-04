@@ -54,8 +54,8 @@ function sq(n) { return n*n; }
 function hex2bytes(bytes) {
   const result = Array(bytes.length/2);
   for (let i = 0; i < bytes.length; i += 2) {
-    result[i/2] = parseInt(bytes.slice(i, i+2), 16);
-    // result[i/2] = `0x${bytes.slice(i, i+2)}`;
+    // result[i/2] = parseInt(bytes.slice(i, i+2), 16);
+    result[i/2] = `0x${bytes.slice(i, i+2)}`;
   }
   console.log('got hex2bytes', result);
   return result;
@@ -2223,7 +2223,7 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
   const p = makePromise();
   const instance = await contract.getInstance();
   const size = pointerMesh.getSize();
-  instance.mint([size[3] - size[0], size[4] - size[1], size[5] - size[2]], hex2bytes(compiledContract.bytecode), 'hash', metadataHash, (err, value) => {
+  instance.mint([size[3] - size[0], size[4] - size[1], size[5] - size[2]], '0x' + compiledContract.bytecode, 'hash', metadataHash, (err, value) => {
     if (!err) {
       p.accept(value);
     } else {

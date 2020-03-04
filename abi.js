@@ -224,43 +224,17 @@ export default [
     "constant": true,
     "inputs": [
       {
-        "internalType": "int256",
-        "name": "x",
-        "type": "int256"
-      },
-      {
-        "internalType": "int256",
-        "name": "z",
-        "type": "int256"
-      }
-    ],
-    "name": "getGrid",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "id",
         "type": "uint256"
       }
     ],
-    "name": "getGridBinding",
+    "name": "getContract",
     "outputs": [
       {
-        "internalType": "int256[]",
+        "internalType": "address",
         "name": "",
-        "type": "int256[]"
+        "type": "address"
       }
     ],
     "payable": false,
@@ -323,27 +297,6 @@ export default [
     "constant": true,
     "inputs": [
       {
-        "internalType": "address",
-        "name": "addr",
-        "type": "address"
-      }
-    ],
-    "name": "getInventory",
-    "outputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "_id",
         "type": "uint256"
@@ -396,6 +349,21 @@ export default [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "payable": false,
@@ -500,6 +468,11 @@ export default [
         "type": "int256[]"
       },
       {
+        "internalType": "bytes",
+        "name": "bytecode",
+        "type": "bytes"
+      },
+      {
         "internalType": "string",
         "name": "_key",
         "type": "string"
@@ -518,8 +491,8 @@ export default [
         "type": "uint256"
       }
     ],
-    "payable": false,
-    "stateMutability": "nonpayable",
+    "payable": true,
+    "stateMutability": "payable",
     "type": "function"
   },
   {

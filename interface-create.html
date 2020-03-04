@@ -203,6 +203,7 @@ input[type=number]::-webkit-inner-spin-button {
   font-size: 12px;
 }
 .script-input,
+.contract-input
 /*.shader-input*/
 {
   display: flex;
@@ -220,6 +221,7 @@ input[type=number]::-webkit-inner-spin-button {
   resize: none;
 }
 .script-input > .label,
+.contract-input > .label
 /*.shader-input > .label*/
 {
   padding: 5px 0;
@@ -227,6 +229,7 @@ input[type=number]::-webkit-inner-spin-button {
   color: #FFF;
 }
 .script-input > textarea,
+.contract-input > textarea
 /*.shader-input > textarea*/
 {
   border: 0;
@@ -234,6 +237,7 @@ input[type=number]::-webkit-inner-spin-button {
   outline: none;
 }
 .script-input:not(.open),
+.contract-input:not(.open)
 /*.shader-input:not(.open)*/
 {
   display: none;
@@ -301,11 +305,15 @@ input[type=number]::-webkit-inner-spin-button {
           <i class="fal fa-scroll"></i>
           <div class=label>Edit script</div>
         </a>
+        <a id=tool-13 class="tool {{#tool13Selected}}selected{{/tool13Selected}}" sidebar tool="contract">
+          <i class="fal fa-lock"></i>
+          <div class=label>Edit contact</div>
+        </a>
         <!-- <a id=tool-11 class="tool {{#tool11Selected}}selected{{/tool11Selected}}" sidebar tool="shader">
           <i class="fal fa-sunglasses"></i>
           <div class=label>Edit shader</div>
         </a> -->
-        <a id=tool-13 class="tool {{#tool13Selected}}selected{{/tool13Selected}} hidden" tool="commit">
+        <a id=tool-14 class="tool {{#tool14Selected}}selected{{/tool14Selected}} hidden" tool="commit">
           <i class="fal fa-check"></i>
           <div class=label>Commit object</div>
         </a>
@@ -389,6 +397,10 @@ input[type=number]::-webkit-inner-spin-button {
     <div class=script-input id=script-input>
       <div class=label>Script</div>
       <textarea id=script-input-textarea></textarea>
+    </div>
+    <div class=contract-input id=contract-input>
+      <div class=label>Contract</div>
+      <textarea id=contract-input-textarea></textarea>
     </div>
     <!-- <div class=shader-input id=shader-input>
       <div class=label>Vertex</div>

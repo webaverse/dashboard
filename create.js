@@ -258,6 +258,57 @@ const pointerMesh = (() => {
 })();
 container.add(pointerMesh);
 
+const _compileContract = (() => {
+  const compiler = wrapper(Module);
+  return source => {
+    const input = {
+      language: 'Solidity',
+      sources: {
+        'input.sol': {
+          content: source,
+        },
+      },
+      settings: {
+        outputSelection: {
+          '*': {
+            '*': ['*'],
+          },
+        },
+      },
+    };
+    const o = JSON.parse(compiler.compile(JSON.stringify(input)));
+    // console.log('compiled', o);
+    const {contracts, errors} = o;
+    let result = null;
+    if (contracts) {
+      for (const i in contracts) {
+        // for (const j in contracts[i]) {
+          const contract = contracts[i]['RealityScript'];
+          if (contract) {
+            const {abi, evm: {bytecode: {object}}} = contract;
+            result = {
+              bytecode: object,
+              abi,
+            };
+            break;
+          }
+        // }
+      }
+    }
+    const error = errors.map(e => e.formattedMessage).join('\n');
+    /* for (let i = 0; i < errors.length; i++) {
+      const error = errors[i];
+      const {formattedMessage} = error;
+      console.log('got formatted message', formattedMessage);
+    } */
+    if (result) {
+      return result;
+    } else {
+      throw error;
+    }
+  };
+})();
+
 const _makeWasmWorker = () => {
   let cbs = [];
   const w = new Worker('mc-worker.js');
@@ -287,6 +338,7 @@ const uvWorker = _makeWasmWorker();
 let ammo = null;
 (async () => {
   const p = makePromise();
+  const oldModule = window.Module;
   window.Module = { TOTAL_MEMORY: 100*1024*1024 };
   AmmoLib().then(Ammo => {
     Ammo.then = null;
@@ -419,6 +471,7 @@ let ammo = null;
       }
     },
   };
+  window.Module = oldModule;
 })();
 
 const floorMesh = (() => {
@@ -1874,11 +1927,14 @@ Array.from(tools).forEach((tool, i) => {
         });
       [
         'script-input',
+        'contract-input',
         // 'shader-input',
       ].forEach(id => interfaceDocument.getElementById(id).classList.remove('open'));
 
       if (tool.matches('[tool=script]')) {
         interfaceDocument.getElementById('script-input').classList.toggle('open', !wasOpen);
+      } else if (tool.matches('[tool=contract]')) {
+        interfaceDocument.getElementById('contract-input').classList.toggle('open', !wasOpen);
       } /* else if (tool.matches('[tool=shader]')) {
         interfaceDocument.getElementById('shader-input').classList.toggle('open', !wasOpen);
       } */
@@ -1968,6 +2024,121 @@ scriptInputTextarea.addEventListener('keydown', e => {
   e.stopPropagation();
 });
 
+interfaceDocument.getElementById('contract-input').addEventListener('mousedown', e => {
+  e.stopPropagation();
+});
+const contractInputTextarea = interfaceDocument.getElementById('contract-input-textarea');
+contractInputTextarea.value = `
+pragma experimental ABIEncoderV2;
+
+interface IRealityScriptEngine {
+  function getOwner() external view returns (address);
+}
+interface IRealityScript {
+  struct Transform {
+      int256 x;
+      int256 y;
+      int256 z;
+  }
+  struct Object {
+      uint256 id;
+      Transform transform;
+  }
+}
+
+contract RealityScript is IRealityScript {
+  struct State {
+      address addr;
+      Transform transform;
+      uint256 hp;
+  }
+
+  function abs(int x) internal pure returns (uint) {
+      if (x < 0) {
+          x *= -1;
+      }
+      return uint(x);
+  }
+  function sqrt(uint x) internal pure returns (uint y) {
+        uint z = (x + 1) / 2;
+        y = x;
+        while (z < y) {
+            y = z;
+            z = (x / z + z) / 2;
+        }
+    }
+  /* function collides(Transform memory p1, Transform memory p2) internal pure returns (bool) {
+      return sqrt(abs(p1.x - p2.x)**2 + abs(p1.y - p2.y)**2 + abs(p1.z - p2.z)**2) <= 1;
+  } */
+  function stringEquals(string memory a, string memory b) internal pure returns (bool) {
+      return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))) );
+  }
+  function transformEquals(Transform memory a, Transform memory b) internal pure returns (bool) {
+      return a.x == b.x && a.y == b.y && a.z == b.z;
+  }
+  function someTransformEquals(Transform memory t, Object[] memory os) internal pure returns (bool) {
+      for (uint256 i = 0; i < os.length; i++) {
+          if (transformEquals(t, os[i].transform)) {
+              return true;
+          }
+      }
+      return false;
+  }
+
+  IRealityScriptEngine parent;
+  uint256 id;
+  uint256 hp;
+  constructor(IRealityScriptEngine _parent, uint256 _id) public payable {
+      parent = _parent;
+      id = _id;
+      hp = 100;
+  }
+  function initState(address a, Transform memory t) public view returns (State memory) {
+      return State(a, t, hp);
+  }
+  function update(Transform memory t, Object[] memory os, State memory state) public pure returns (bool, State memory) {
+      bool doApply = false;
+      if (
+        state.hp > 0 &&
+        !transformEquals(t, state.transform) &&
+        someTransformEquals(t, os)
+      ) {
+          state.hp--;
+          doApply = true;
+      }
+      state.transform = t;
+      return (doApply, state);
+  }
+  function applyState(State memory state) public {
+      require(msg.sender == parent.getOwner());
+      
+      hp = state.hp;
+  }
+  function getHp() public view returns (uint256) {
+      return hp;
+  }
+}
+`;
+/* contractInputTextarea.value = `
+contract RealityScript {
+  uint256 id;
+  constructor(uint256 _id) public {
+    id = _id;
+  }
+  function f() public view returns (uint256) {
+    return id;
+  }
+}
+`; */
+/* contractInputTextarea.addEventListener('input', e => {
+  if (scriptsBound) {
+    bindObjectScript(objectState, e.target.value, objectMeshes);
+  }
+}); */
+contractInputTextarea.addEventListener('keydown', e => {
+  e.stopPropagation();
+});
+
 /* interfaceDocument.getElementById('shader-input').addEventListener('mousedown', e => {
   e.stopPropagation();
 });
@@ -1999,6 +2170,9 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
   e.preventDefault();
   e.stopPropagation();
 
+  const compiledContract = _compileContract(interfaceDocument.getElementById('contract-input-textarea').value);
+  console.log('got contract', compiledContract);
+
   await _commitMiningMeshes();
   _centerObjectMeshes();
   const [
@@ -2027,20 +2201,25 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
       .then(j => j.hash),
   ]);
   const metadataHash = await fetch(`${apiHost}/metadata/`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        objectName: objectNameEl.value,
-        dataHash,
-        screenshotHash,
-      }),
-    })
-      .then(res => res.json())
-      .then(j => j.hash);
+    method: 'PUT',
+    body: JSON.stringify({
+      objectName: objectNameEl.value,
+      dataHash,
+      screenshotHash,
+    }),
+  })
+    .then(res => res.json())
+    .then(j => j.hash);
 
   const p = makePromise();
   const instance = await contract.getInstance();
+  const account = await contract.getAccount();
   const size = pointerMesh.getSize();
-  instance.mint([size[3] - size[0], size[4] - size[1], size[5] - size[2]], 'hash', metadataHash, (err, value) => {
+  instance.mint([size[3] - size[0], size[4] - size[1], size[5] - size[2]], '0x' + compiledContract.bytecode, 'hash', metadataHash, {
+    from: account,
+ // value: '1000000000000000000', // 1 ETH
+    value: '10000000000000000', // 0.01 ETH
+  }, (err, value) => {
     if (!err) {
       p.accept(value);
     } else {
@@ -2048,6 +2227,7 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
     }
   });
   await p;
+  // s = new WebSocket('ws://127.0.0.1:3001'); s.onopen = () => { s.send(JSON.stringify({method: 'initState', args: {id: 1, address: '0x5D4876215103302dB605F4259330f283AF2Cc1Db', transform: ['0x1', '0x0', '0x0'] }})); s.addEventListener('message', e => { console.log(e.data); const {result: {oid}} = JSON.parse(e.data); s.send(JSON.stringify({method: 'update', args: {oid, transform: ['0x0', '0x0', '0x0'] }})); s.addEventListener('message', e => { console.log(e.data); }, {once: true}); }, {once: true}); };
 });
 interfaceDocument.getElementById('new-op').addEventListener('click', e => {
   e.preventDefault();

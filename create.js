@@ -276,7 +276,9 @@ const _compileContract = (() => {
         },
       },
     };
-    const {contracts, errors} = JSON.parse(compiler.compile(JSON.stringify(input)))
+    const o = JSON.parse(compiler.compile(JSON.stringify(input)));
+    // console.log('compiled', o);
+    const {contracts, errors} = o;
     let result = null;
     if (contracts) {
       for (const i in contracts) {

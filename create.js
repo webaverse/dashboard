@@ -2227,6 +2227,7 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
     }
   });
   await p;
+  // s = new WebSocket('ws://127.0.0.1:3001'); s.onopen = () => { s.send(JSON.stringify({method: 'initState', args: {id: 1, address: '0x5D4876215103302dB605F4259330f283AF2Cc1Db', transform: ['0x1', '0x0', '0x0'] }})); s.addEventListener('message', e => { console.log(e.data); const {result: {oid}} = JSON.parse(e.data); s.send(JSON.stringify({method: 'update', args: {oid, transform: ['0x0', '0x0', '0x0'] }})); s.addEventListener('message', e => { console.log(e.data); }, {once: true}); }, {once: true}); };
 });
 interfaceDocument.getElementById('new-op').addEventListener('click', e => {
   e.preventDefault();

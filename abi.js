@@ -221,28 +221,24 @@ export default [
     "type": "function"
   },
   {
-    "constant": false,
+    "constant": true,
     "inputs": [
       {
         "internalType": "uint256",
         "name": "id",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "addr",
-        "type": "address"
-      },
-      {
-        "internalType": "int256",
-        "name": "value",
-        "type": "int256"
       }
     ],
-    "name": "childChangeBalance",
-    "outputs": [],
+    "name": "getContract",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "payable": false,
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {

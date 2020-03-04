@@ -51,15 +51,6 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 function sq(n) { return n*n; }
-function hex2bytes(bytes) {
-  const result = Array(bytes.length/2);
-  for (let i = 0; i < bytes.length; i += 2) {
-    // result[i/2] = parseInt(bytes.slice(i, i+2), 16);
-    result[i/2] = `0x${bytes.slice(i, i+2)}`;
-  }
-  console.log('got hex2bytes', result);
-  return result;
-}
 
 const PARCEL_SIZE = 10;
 const size = PARCEL_SIZE + 1;

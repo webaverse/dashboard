@@ -2039,16 +2039,11 @@ interface IRealityScript {
       int256 x;
       int256 y;
       int256 z;
-      /* bytes32[4] quaternion;
-      bytes32[3] scale; */
   }
   struct Object {
       uint256 id;
       Transform transform;
   }
-  /* function initState(address a, Transform memory t) public view returns (State memory);
-  function tickState(Transform memory t, Object[] memory os, State memory state) public pure returns (bool, State memory);
-  function applyState(State memory state) public; */
 }
 
 contract RealityScript is IRealityScript {
@@ -2101,7 +2096,7 @@ contract RealityScript is IRealityScript {
   function initState(address a, Transform memory t) public view returns (State memory) {
       return State(a, t, hp);
   }
-  function tickState(Transform memory t, Object[] memory os, State memory state) public pure returns (bool, State memory) {
+  function update(Transform memory t, Object[] memory os, State memory state) public pure returns (bool, State memory) {
       bool doApply = false;
       if (
         state.hp > 0 &&
@@ -2116,14 +2111,8 @@ contract RealityScript is IRealityScript {
   }
   function applyState(State memory state) public {
       require(msg.sender == parent.getOwner());
-      // require(hp > 0);
       
       hp = state.hp;
-      // parent.setChildMetadata();
-      // if (hp < 0) {
-          // parent.childChangeBalance(id, state.addr, -1);
-          // parent.safeTransferFrom(_from, address(0), uint256 _id, uint256 _value, data);
-      // }
   }
   function getHp() public view returns (uint256) {
       return hp;

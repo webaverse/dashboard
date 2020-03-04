@@ -30,6 +30,9 @@ const contract = {
   async getInstance() {
     return await this.promise;
   },
+  async getAccount() {
+    return await this.promise.then(() => this.account);
+  },
 };
 window.contract = contract;
 export default contract;

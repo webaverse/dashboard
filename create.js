@@ -282,15 +282,17 @@ const _compileContract = (() => {
     let result = null;
     if (contracts) {
       for (const i in contracts) {
-        for (const j in contracts[i]) {
-          const contract = contracts[i][j];
-          const {abi, evm: {bytecode: {object}}} = contract;
-          result = {
-            bytecode: object,
-            abi,
-          };
-          break;
-        }
+        // for (const j in contracts[i]) {
+          const contract = contracts[i]['RealityScript'];
+          if (contract) {
+            const {abi, evm: {bytecode: {object}}} = contract;
+            result = {
+              bytecode: object,
+              abi,
+            };
+            break;
+          }
+        // }
       }
     }
     const error = errors.map(e => e.formattedMessage).join('\n');
@@ -2027,16 +2029,118 @@ interfaceDocument.getElementById('contract-input').addEventListener('mousedown',
 });
 const contractInputTextarea = interfaceDocument.getElementById('contract-input-textarea');
 contractInputTextarea.value = `
-  contract C {
-    uint256 id;
-    constructor(uint256 _id) public {
-      id = _id;
-    }
-    function f() public view returns (uint256) {
-      return id;
-    }
+pragma experimental ABIEncoderV2;
+
+interface IRealityScriptEngine {
+  function getOwner() external view returns (address);
+}
+interface IRealityScript {
+  struct Transform {
+      int256 x;
+      int256 y;
+      int256 z;
+      /* bytes32[4] quaternion;
+      bytes32[3] scale; */
   }
+  struct Object {
+      uint256 id;
+      Transform transform;
+  }
+  /* function initState(address a, Transform memory t) public view returns (State memory);
+  function tickState(Transform memory t, Object[] memory os, State memory state) public pure returns (bool, State memory);
+  function applyState(State memory state) public; */
+}
+
+contract RealityScript is IRealityScript {
+  struct State {
+      address addr;
+      Transform transform;
+      uint256 hp;
+  }
+
+  function abs(int x) internal pure returns (uint) {
+      if (x < 0) {
+          x *= -1;
+      }
+      return uint(x);
+  }
+  function sqrt(uint x) internal pure returns (uint y) {
+        uint z = (x + 1) / 2;
+        y = x;
+        while (z < y) {
+            y = z;
+            z = (x / z + z) / 2;
+        }
+    }
+  /* function collides(Transform memory p1, Transform memory p2) internal pure returns (bool) {
+      return sqrt(abs(p1.x - p2.x)**2 + abs(p1.y - p2.y)**2 + abs(p1.z - p2.z)**2) <= 1;
+  } */
+  function stringEquals(string memory a, string memory b) internal pure returns (bool) {
+      return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))) );
+  }
+  function transformEquals(Transform memory a, Transform memory b) internal pure returns (bool) {
+      return a.x == b.x && a.y == b.y && a.z == b.z;
+  }
+  function someTransformEquals(Transform memory t, Object[] memory os) internal pure returns (bool) {
+      for (uint256 i = 0; i < os.length; i++) {
+          if (transformEquals(t, os[i].transform)) {
+              return true;
+          }
+      }
+      return false;
+  }
+
+  IRealityScriptEngine parent;
+  uint256 id;
+  uint256 hp;
+  constructor(IRealityScriptEngine _parent, uint256 _id) public payable {
+      parent = _parent;
+      id = _id;
+      hp = 100;
+  }
+  function initState(address a, Transform memory t) public view returns (State memory) {
+      return State(a, t, hp);
+  }
+  function tickState(Transform memory t, Object[] memory os, State memory state) public pure returns (bool, State memory) {
+      bool doApply = false;
+      if (
+        state.hp > 0 &&
+        !transformEquals(t, state.transform) &&
+        someTransformEquals(t, os)
+      ) {
+          state.hp--;
+          doApply = true;
+      }
+      state.transform = t;
+      return (doApply, state);
+  }
+  function applyState(State memory state) public {
+      require(msg.sender == parent.getOwner());
+      // require(hp > 0);
+      
+      hp = state.hp;
+      // parent.setChildMetadata();
+      // if (hp < 0) {
+          // parent.childChangeBalance(id, state.addr, -1);
+          // parent.safeTransferFrom(_from, address(0), uint256 _id, uint256 _value, data);
+      // }
+  }
+  function getHp() public view returns (uint256) {
+      return hp;
+  }
+}
 `;
+/* contractInputTextarea.value = `
+contract RealityScript {
+  uint256 id;
+  constructor(uint256 _id) public {
+    id = _id;
+  }
+  function f() public view returns (uint256) {
+    return id;
+  }
+}
+`; */
 /* contractInputTextarea.addEventListener('input', e => {
   if (scriptsBound) {
     bindObjectScript(objectState, e.target.value, objectMeshes);

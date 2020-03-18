@@ -196,6 +196,8 @@ export async function loadObjectMeshes(s) {
         type: 'model/gltf.binary',
       });
       return URL.createObjectURL(blob);
+    /* } else if (s.constructor.name === 'File') {
+      return URL.createObjectURL(s); */
     } else {
       console.warn('cannot load object', s);
       throw new Error('cannot load object');

@@ -14,6 +14,7 @@ import {createAction, execute, pushAction, undo, redo, clearHistory} from './act
 import {makeObjectState, bindObjectScript, tickObjectScript/*, bindObjectShader*/} from './runtime.js';
 import {makeId, XRChannelConnection} from './multiplayer.js';
 import {initLocalRig, updatePlayerFromCamera, updatePlayerFromXr, bindPeerConnection} from './peerconnection.js';
+import {GLTFLoader} from './GLTFLoader.js';
 
 const _load = () => {
 
@@ -1108,7 +1109,7 @@ window.addEventListener('resize', e => {
 interfaceDocument.addEventListener('dragover', e => {
   e.preventDefault();
 });
-const _handleUpload = file => {
+const _handleUpload = async file => {
   if (/^image\//.test(file.type)) {
     const objectMesh = (() => {
       // const geometry = new THREE.PlaneBufferGeometry(1, 1);
@@ -1146,6 +1147,27 @@ const _handleUpload = file => {
     objectMesh.quaternion.copy(camera.quaternion);
     container.add(objectMesh);
     objectMeshes.push(objectMesh);
+  } else if (/(?:\.gltf|\.glb)/.test(file.name)) {
+    const u = URL.createObjectURL(file);
+    const p = makePromise();
+    const loader = new GLTFLoader();
+    loader.load(u, p.accept, function onProgress() {}, p.reject);
+    const o = await p;
+    const {scene} = o;
+    const objectMesh = scene;
+    objectMesh.position.copy(camera.position)
+      .add(new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion));
+    objectMesh.quaternion.copy(camera.quaternion);
+    container.add(objectMesh);
+    objectMeshes.push(objectMesh);
+    // const {objectMeshes: newObjectMeshes, script/*, shader: {vertex, fragment}*/} = await loadObjectMeshes(file);
+    // objectMeshes.length = newObjectMeshes.length;
+    /* for (let i = 0; i < newObjectMeshes.length; i++) {
+      const newObjectMesh = newObjectMeshes[i];
+      objectMeshes[i] = newObjectMesh;
+      container.add(newObjectMesh);
+    } */
+    // console.log('got gltf', newObjectMeshes);
   }
 };
 interfaceDocument.addEventListener('drop', e => {

@@ -1252,6 +1252,7 @@ let hoveredObjectPaint = null;
 const _getObjectMeshIntersections = (raycaster, objectMeshes) => {
   if (currentSession) {
     return objectMeshes.map(objectMesh => {
+      const {geometry} = objectMesh;
       if (geometry.boundingBox === null) {
         geometry.computeBoundingBox();
       }

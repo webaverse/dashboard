@@ -55,18 +55,18 @@ const gridEl = document.getElementById('grid');
       }
     });
     const metadataHash = await p;
-    const metadata = await fetch(`${apiHost}/metadata/${metadataHash}`)
+    const metadata = await fetch(`${apiHost}/${metadataHash}`)
       .then(res => res.json());
     const {dataHash, screenshotHash} = metadata;
     /* const [
       data,
       screenshotImg,
     ] = await Promise.all([
-      fetch(`${apiHost}/data${dataHash}`)
+      fetch(`${apiHost}/${dataHash}`)
         .then(res => res.arrayBuffer()),
       new Promise((accept, reject) => {
         const img = new Image();
-        img.src = `${apiHost}/data${screenshotHash}`;
+        img.src = `${apiHost}/${screenshotHash}`;
         img.onload = () => {
           accept(img);
         };
@@ -77,7 +77,7 @@ const gridEl = document.getElementById('grid');
     a.href = `/create.html?o=${encodeURIComponent(metadataHash)}`;
     a.classList.add('object');
     a.innerHTML = `\
-      <img src="${apiHost}/data/${screenshotHash}" width=256 height=256>
+      <img src="${apiHost}/${screenshotHash}" width=256 height=256>
       <div class=name>${metadata.objectName}</div>
     `;
     grid.appendChild(a);

@@ -2210,20 +2210,20 @@ interfaceDocument.getElementById('ops-form').addEventListener('submit', async e 
     dataHash,
     screenshotHash,
   ] = await Promise.all([
-    fetch(`${apiHost}/data/`, {
+    fetch(`${apiHost}/`, {
       method: 'PUT',
       body: dataArrayBuffer,
     })
       .then(res => res.json())
       .then(j => j.hash),
-    fetch(`${apiHost}/data/`, {
+    fetch(`${apiHost}/`, {
       method: 'PUT',
       body: screenshotBlob,
     })
       .then(res => res.json())
       .then(j => j.hash),
   ]);
-  const metadataHash = await fetch(`${apiHost}/metadata/`, {
+  const metadataHash = await fetch(`${apiHost}/`, {
     method: 'PUT',
     body: JSON.stringify({
       objectName: objectNameEl.value,
@@ -2869,11 +2869,11 @@ renderer.setAnimationLoop(animate);
     document.getElementById('room-code-input').value = r;
     document.getElementById('connect-button').click();
   } else if (o) {
-    const metadata = await fetch(`${apiHost}/metadata/${o}`)
+    const metadata = await fetch(`${apiHost}/${o}`)
       .then(res => res.json());
     const {objectName, dataHash} = metadata;
     objectNameEl.value = objectName;
-    const arrayBuffer = await fetch(`${apiHost}/data/${dataHash}`)
+    const arrayBuffer = await fetch(`${apiHost}/${dataHash}`)
       .then(res => res.arrayBuffer());
     for (let i = 0; i < objectMeshes.length; i++) {
       const objectMesh = objectMeshes[i];

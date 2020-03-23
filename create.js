@@ -2869,11 +2869,11 @@ renderer.setAnimationLoop(animate);
     document.getElementById('room-code-input').value = r;
     document.getElementById('connect-button').click();
   } else if (o) {
-    const metadata = await fetch(`${apiHost}/metadata${o}`)
+    const metadata = await fetch(`${apiHost}/metadata/${o}`)
       .then(res => res.json());
     const {objectName, dataHash} = metadata;
     objectNameEl.value = objectName;
-    const arrayBuffer = await fetch(`${apiHost}/data${dataHash}`)
+    const arrayBuffer = await fetch(`${apiHost}/data/${dataHash}`)
       .then(res => res.arrayBuffer());
     for (let i = 0; i < objectMeshes.length; i++) {
       const objectMesh = objectMeshes[i];

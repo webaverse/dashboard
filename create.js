@@ -2410,7 +2410,7 @@ const peerConnections = [];
 const _connectMultiplayer = async rid => {
   const roomId = rid || makeId();
 
-  channelConnection = new XRChannelConnection(roomId);
+  channelConnection = new XRChannelConnection(`wss://presence.exokit.org/?c=${encodeURIComponent(roomId)}`);
   channelConnection.addEventListener('peerconnection', e => {
     const peerConnection = e.detail;
 

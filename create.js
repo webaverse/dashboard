@@ -1147,7 +1147,7 @@ const _handleUpload = async file => {
     objectMesh.quaternion.copy(camera.quaternion);
     container.add(objectMesh);
     objectMeshes.push(objectMesh);
-  } else if (/(?:\.gltf|\.glb)/.test(file.name)) {
+  } else if (/(?:\.gltf|\.glb|\.vrm)/.test(file.name)) {
     const u = URL.createObjectURL(file);
     const p = makePromise();
     const loader = new GLTFLoader();

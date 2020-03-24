@@ -1252,17 +1252,12 @@ let hoveredObjectPaint = null;
 const _getObjectMeshIntersections = (raycaster, objectMeshes) => {
   if (currentSession) {
     return objectMeshes.map(objectMesh => {
-      const {geometry} = objectMesh;
-      if (geometry.boundingBox === null) {
-        geometry.computeBoundingBox();
-      }
-      const box = geometry.boundingBox.clone()
-        .applyMatrix4(objectMesh.matrixWorld);
-      if (box.containsPoint(raycaster.origin)) {
+      const box = new THREE.Box3().setFromObject(objectMesh);
+      if (box.containsPoint(raycaster.ray.origin)) {
         return {
-          objectMesh,
+          object: objectMesh,
           distance: box.getCenter(new THREE.Vector3())
-            .distanceTo(objectMesh.origin),
+            .distanceTo(objectMesh.position),
         };
       } else {
         return null;

@@ -1249,9 +1249,10 @@ const _updateRaycasterFromObject = (raycaster, o) => {
 };
 let hoveredObjectFace = null;
 let hoveredObjectPaint = null;
-const _getObjectMeshIntersections = (raycaster, objectMeshes) => {
-  if (currentSession) {
-    return objectMeshes.map(objectMesh => {
+const _getObjectMeshIntersections = (raycaster, objectMeshes = [], {hoverMode = false} = {}) => {
+  let intersections;
+  if (hoverMode && currentSession) {
+    intersections = objectMeshes.map(objectMesh => {
       const box = new THREE.Box3().setFromObject(objectMesh);
       if (box.containsPoint(raycaster.ray.origin)) {
         return {
@@ -1264,8 +1265,23 @@ const _getObjectMeshIntersections = (raycaster, objectMeshes) => {
       }
     }).filter(o => o !== null).sort((a, b) => a.distance - b.distance);
   } else {
-    return raycaster.intersectObjects(objectMeshes);
+    intersections = raycaster.intersectObjects(objectMeshes, true);
   }
+  intersections = intersections.map(intersection => {
+    let object;
+    for (object = intersection.object; object; object = object.parent) {
+      if (objectMeshes.includes(object)) {
+        break;
+      }
+    }
+    if (object) {
+      intersection.object = object;
+      return intersection;
+    } else {
+      return null;
+    }
+  }).filter(o => o !== null);
+  return intersections;
 };
 const _updateTool = raycaster => {
   if (selectedTool === 'brush' || selectedTool === 'erase') {
@@ -1286,7 +1302,7 @@ const _updateTool = raycaster => {
     }
   } else if (selectedTool === 'select') {
     if (!toolGrip) {
-      const intersections = _getObjectMeshIntersections(raycaster, objectMeshes);
+      const intersections = _getObjectMeshIntersections(raycaster, objectMeshes, {hoverMode: true});
       if (intersections.length > 0) {
         _setHoveredObjectMesh(intersections[0].object);
       } else {
@@ -1298,7 +1314,7 @@ const _updateTool = raycaster => {
       }
     }
   } else if (selectedTool === 'paint') {
-    const intersections = _getObjectMeshIntersections(raycaster, objectMeshes);
+    const intersections = _getObjectMeshIntersections(raycaster, objectMeshes, {hoverMode: false});
     if (intersections.length > 0) {
       const [{point}] = intersections;
       collisionMesh.position.copy(point);
@@ -1307,7 +1323,7 @@ const _updateTool = raycaster => {
       collisionMesh.visible = false;
     }
   } else if (selectedTool === 'pencil') {
-    const intersections = raycaster.intersectObjects(objectMeshes);
+    const intersections = _getObjectMeshIntersections(raycaster, objectMeshes, {hoverMode: false});
     if (intersections.length > 0) {
       const [{object, point, faceIndex, uv}] = intersections;
 
@@ -1467,7 +1483,7 @@ const _beginTool = (primary, secondary, shiftKey) => {
           _setSelectedObjectMesh(hoveredObjectMesh, shiftKey);
         } */
       } else if (selectedTool === 'paint') {
-        const intersections = localRaycaster.intersectObjects(objectMeshes);
+        const intersections = _getObjectMeshIntersections(localRaycaster, objectMeshes, {hoverMode: false});
         if (intersections.length > 0) {
           const [{object}] = intersections;
 

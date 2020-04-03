@@ -99,6 +99,25 @@ header > .login-form.phase-3 > .phaseless-content
 .button.highlight:hover {
   background-color: #d32f2f;
 } */
+#dropdown {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  flex-direction: column;
+}
+.dropdown-placeholder:hover + #dropdown, #dropdown:hover {
+  display: flex;
+}
+#dropdown > .nav {
+  height: 50px;
+  background-color: #e64a19;
+  border: none;
+  color: #FFF;
+}
+#dropdown > .nav:hover {
+  background-color: #bf360c;
+}
 .login-form .phase-content {
   display: flex;
   align-items: center;

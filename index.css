@@ -73,13 +73,14 @@ header .nav .detail p {
   margin: 0;
   font-size: 13px;
 }
-/* header .nav i {
-  display: inline-block;
-  padding: 0 7px;
-  padding-top: 2px;
-} */
+header .nav:hover .text:not(.stylized),
+header .nav:not(:hover) .text.stylized
+{
+  display: none;
+}
 header .nav .text {
   flex: 1;
+  text-transform: none;
 }
 header .nav:not(:hover) .detail {
   display: none;

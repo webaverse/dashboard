@@ -682,6 +682,8 @@ header .room .room-code .room-link {
 }
 .explainer .row .icons {
   display: flex;
+  max-width: 350px;
+  margin-left: auto;
   padding: 0 10px;
   justify-content: space-between;
   align-items: center;

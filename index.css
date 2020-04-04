@@ -579,15 +579,39 @@ canvas {
   flex-direction: column;
 }
 .explainer .row {
+  display: flex;
+  margin: 3px 0;
   flex: 1;
+  background-color: #111;
+}
+.explainer .row .left {
+  width: 400px;
+}
+.explainer .row .left .label {
+  width: 200px;
+  border-bottom: 2px solid #FFF;
+  background-color: #222;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+.explainer .row .left .label,
+.explainer .row .left p
+{
+  padding: 10px;
 }
 .explainer .row i {
-  font-size: 100px;
+  font-size: 80px;
   color: #808080;
 }
 .explainer .row img {
-  height: 100px;
+  height: 80px;
   filter: grayscale(100%);
+}
+.explainer .row .icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
 }
 /* section:nth-child(even) {
   background-color: #333;

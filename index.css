@@ -7,8 +7,8 @@ body {
   margin: 0;
   font-family: 'Open Sans';
   font-size: 12px;
-  --fa-primary-color: #ff5722;
-  --fa-secondary-color: #4fc3f7;
+  /* --fa-primary-color: #ff5722;
+  --fa-secondary-color: #4fc3f7; */
 }
 a {
   color: inherit;
@@ -87,49 +87,6 @@ header .nav .text {
 header .nav:not(:hover) .detail {
   display: none;
 }
-/* input[type=email],
-input[type=text]
-{
-  margin-right: 10px;
-  padding: 7px 15px;
-  background-color: #f2f3f5;
-  border: 0;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: inherit;
-  outline: none;
-} */
-header > .login-form {
-  display: flex;
-  margin-left: auto;
-}
-body.logging-in .login-form,
-header > .login-form:not(.phase-1) > .phase-1-content,
-header > .login-form:not(.phase-2) > .phase-2-content,
-header > .login-form:not(.phase-3) > .phase-3-content,
-header > .login-form.phase-1 > .phaseless-content,
-header > .login-form.phase-2 > .phaseless-content,
-header > .login-form.phase-3 > .phaseless-content
-{
-  display: none;
-}
-/* .button {
-  display: inline-block;
-  margin-right: 15px;
-  padding: 7px 15px;
-  border: 0;
-  border-radius: 8px;
-  color: #FFF;
-  text-decoration: none;
-  cursor: pointer;
-  outline: none;
-}
-.button.highlight {
-  background-color: #ef5350;
-}
-.button.highlight:hover {
-  background-color: #d32f2f;
-} */
 #dropdown {
   display: none;
   position: absolute;
@@ -626,6 +583,7 @@ canvas {
 }
 .explainer .row i {
   font-size: 100px;
+  color: #808080;
 }
 .explainer .row img {
   height: 100px;

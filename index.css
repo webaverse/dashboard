@@ -7,6 +7,8 @@ body {
   margin: 0;
   font-family: 'Open Sans';
   font-size: 12px;
+  --fa-primary-color: #ff5722;
+  --fa-secondary-color: #4fc3f7;
 }
 a {
   color: inherit;
@@ -589,13 +591,13 @@ canvas {
 }
 .body {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
 }
 .hero {
   position: relative;
   display: flex;
   align-items: center;
-  min-width: 100vw;
+  /* min-width: 100vw; */
   min-height: 100vh;
   padding-top: 50px;
 }
@@ -609,6 +611,22 @@ canvas {
   border-bottom: 2px solid #000;
   font-size: 40px;
   font-weight: 400;
+}
+.explainer {
+  padding-top: 50px;
+  flex: 1;
+  background-color: #000;
+  color: #FFF;
+}
+.explainer .row {
+  
+}
+.explainer .row i {
+  font-size: 100px;
+}
+.explainer .row img {
+  height: 100px;
+  filter: grayscale(100%);
 }
 /* section:nth-child(even) {
   background-color: #333;

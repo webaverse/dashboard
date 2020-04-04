@@ -102,12 +102,12 @@ header .nav:not(:hover) .detail {
 }
 #dropdown > .nav {
   height: 50px;
-  background-color: #e64a19;
+  background-color: #f4511e;
   border: none;
   color: #FFF;
 }
 #dropdown > .nav:hover {
-  background-color: #bf360c;
+  background-color: #d84315;
 }
 .login-form .phase-content {
   display: flex;
@@ -584,13 +584,34 @@ canvas {
   flex: 1;
   background-color: #111;
 }
+.explainer .row,
+.explainer .row .label
+{
+  transition: all 0.3s cubic-bezier(0, 1, 0, 1);
+}
+.explainer .row .label {
+  border-left: 3px solid #42a5f5;
+}
+.explainer .row:hover {
+  background-color: #42a5f5;
+}
+.explainer .row:hover .label {
+  border-left-width: 30px;
+  border-left-color: #FFF;
+}
+.explainer .row:hover i {
+  color: #FFF;
+}
+.explainer .row:hover img {
+  filter: grayscale(100%) contrast(0) brightness(5);
+}
 .explainer .row .left {
   width: 400px;
 }
 .explainer .row .left .label {
   width: 200px;
   border-bottom: 2px solid #FFF;
-  background-color: #222;
+  background-color: rgba(255, 255, 255, 0.1);
   font-size: 20px;
   text-transform: uppercase;
 }
@@ -600,7 +621,7 @@ canvas {
   padding: 10px;
 }
 .explainer .row i {
-  font-size: 80px;
+  font-size: 60px;
   color: #808080;
 }
 .explainer .row img {

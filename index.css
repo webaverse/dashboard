@@ -589,7 +589,7 @@ header .room .room-code .room-link {
 }
 .explainer .row:hover .left {
   border-left-width: 30px;
-  border-left-color: #FFF;
+  border-left-color: #1976d2;
 }
 .explainer .row:hover i {
   color: #FFF;
@@ -602,16 +602,18 @@ header .room .room-code .room-link {
 }
 .explainer .row .left .label {
   width: 250px;
-  border-bottom: 2px solid #FFF;
-  background-color: rgba(255, 255, 255, 0.1);
+  /* background-color: #FFF;
+  color: #000; */
   font-size: 20px;
-  font-weight: 300;
   text-transform: lowercase;
 }
 .explainer .row .left .label,
 .explainer .row .left p
 {
   padding: 10px;
+}
+.explainer .row .left p {
+  font-size: 14px;
 }
 .explainer .row i {
   font-size: 60px;
@@ -623,6 +625,7 @@ header .room .room-code .room-link {
 }
 .explainer .row .icons {
   display: flex;
+  padding: 0 10px;
   justify-content: space-between;
   align-items: center;
   flex: 1;

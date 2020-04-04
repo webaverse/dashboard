@@ -552,19 +552,29 @@ header .room .room-code .room-link {
   color: #FFF;
   flex-direction: column;
 }
-.container, .stats {
+.hero .container, .hero .stats {
   z-index: 1;
 }
-.container {
+.hero .container {
   display: flex;
   width: 600px;
   margin-left: 100px;
+  flex-direction: column;
+}
+.hero .container h1,
+.hero .container p
+{
+  margin: 0;
+  margin-bottom: 15px;
 }
 .hero .container h1 {
   padding: 20px 0;
   border-bottom: 2px solid currentColor;
   font-size: 40px;
   font-weight: 400;
+}
+.hero .container p {
+  font-size: 15px;
 }
 .hero > video, .hero >img {
   position: absolute;
@@ -579,6 +589,7 @@ header .room .room-code .room-link {
 }
 .stats {
   width: 500px;
+  margin-top: 30px;
   margin-left: 100px;
 }
 .stats .stat {
@@ -656,7 +667,10 @@ header .room .room-code .room-link {
   padding: 10px;
 }
 .explainer .row .left p {
+  margin: 0;
+  /* margin-bottom: 10px; */
   font-size: 14px;
+  line-height: 2;
 }
 .explainer .row i {
   font-size: 60px;

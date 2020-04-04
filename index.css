@@ -511,14 +511,6 @@ header .room .room-code .room-link {
   width: 100vw;
   height: 100vh;
 }
-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  /* background-color: #000; */
-}
 .body {
   background-color: #000;
 }
@@ -585,17 +577,17 @@ canvas {
   background-color: #111;
 }
 .explainer .row,
-.explainer .row .label
+.explainer .row .left
 {
   transition: all 0.3s cubic-bezier(0, 1, 0, 1);
 }
-.explainer .row .label {
+.explainer .row .left {
   border-left: 3px solid #42a5f5;
 }
 .explainer .row:hover {
   background-color: #42a5f5;
 }
-.explainer .row:hover .label {
+.explainer .row:hover .left {
   border-left-width: 30px;
   border-left-color: #FFF;
 }
@@ -609,11 +601,12 @@ canvas {
   width: 400px;
 }
 .explainer .row .left .label {
-  width: 200px;
+  width: 250px;
   border-bottom: 2px solid #FFF;
   background-color: rgba(255, 255, 255, 0.1);
   font-size: 20px;
-  text-transform: uppercase;
+  font-weight: 300;
+  text-transform: lowercase;
 }
 .explainer .row .left .label,
 .explainer .row .left p

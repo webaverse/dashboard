@@ -578,12 +578,12 @@ header .room .room-code .room-link {
   background-image: url('img/nms.jpg');
 }
 .stats {
-  width: 400px;
+  width: 500px;
   margin-left: 100px;
 }
 .stats .stat {
   display: inline-flex;
-  width: 100px;
+  width: 130px;
   margin: 3px;
   background-color: rgba(255, 255, 255, 0.1);
   padding: 15px;
@@ -591,15 +591,19 @@ header .room .room-code .room-link {
 }
 .stats .stat .top {
   display: flex;
-  margin-bottom: 5px;
-  font-size: 20px;
+  margin-bottom: 10px;
+  font-size: 22px;
   line-height: 1;
   align-items: center;
 }
 .stats .stat .top i {
   margin-left: 10px;
 }
+.stats .stat .top i.small {
+  margin-left: 0;
+}
 .stats .stat .bottom {
+  font-size: 13px;
 }
 .explainer {
   display: flex;

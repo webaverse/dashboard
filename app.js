@@ -35,7 +35,7 @@ const localMatrix = new THREE.Matrix4();
     pe.add(p);
   }
 
-  const renderer = new THREE.WebGLRenderer({
+  /* const renderer = new THREE.WebGLRenderer({
     canvas: pe.domElement,
     context: pe.getContext('webgl'),
     // antialias: true,
@@ -56,18 +56,39 @@ const localMatrix = new THREE.Matrix4();
   camera.position.set(0, 0.5, 1);
 
   function animate(timestamp, frame) {
-    /* const timeFactor = 1000;
-    targetMesh.material.uniforms.uTime.value = (Date.now() % timeFactor) / timeFactor; */
-
-    /* window.dispatchEvent(new MessageEvent('animate', {
-      data: {
-        timestamp,
-        frame,
-      },
-    })); */
-
     renderer.render(scene, camera);
   }
-  renderer.setAnimationLoop(animate);
+  renderer.setAnimationLoop(animate); */
+
+  let currentSession = null;
+  function onSessionStarted(session) {
+    session.addEventListener('end', onSessionEnded);
+    
+    currentSession = session;
+
+    pe.setSession(session);
+  }
+  function onSessionEnded() {
+    currentSession.removeEventListener('end', onSessionEnded);
+
+    currentSession = null;
+
+    pe.setSession(null);
+  }
+  document.getElementById('enter-xr-button').addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (currentSession === null) {
+      navigator.xr.requestSession('immersive-vr', {
+        optionalFeatures: [
+          'local-floor',
+          'bounded-floor',
+        ],
+      }).then(onSessionStarted);
+    } else {
+      currentSession.end();
+    }
+  });
 
 })();

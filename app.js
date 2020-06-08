@@ -13,6 +13,7 @@ const localMatrix = new THREE.Matrix4();
     orbitControls: true,
   });
   document.body.appendChild(pe.domElement);
+  pe.domElement.style.backgroundColor = '#000';
   
   pe.camera.position.set(0, 0, 1);
   pe.camera.updateMatrixWorld();

@@ -21,8 +21,16 @@ const localMatrix = new THREE.Matrix4();
   
   pe.orbitControls.target.set(0, 1, 0);
 
-  {
+  /* {
     const res = await fetch('./doggo/a.wbn');
+    const ab = await res.arrayBuffer();
+    const uint8Array = new Uint8Array(ab);
+    const p = new XRPackage(uint8Array);
+    p.setMatrix(localMatrix.compose(localVector.set(0, 0, 0), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
+    pe.add(p);
+  }
+  {
+    const res = await fetch('./terrain/a.wbn');
     const ab = await res.arrayBuffer();
     const uint8Array = new Uint8Array(ab);
     const p = new XRPackage(uint8Array);
@@ -36,6 +44,46 @@ const localMatrix = new THREE.Matrix4();
     const p = new XRPackage(uint8Array);
     p.setMatrix(localMatrix.compose(localVector.set(0, -30, -31), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
     pe.add(p);
+  } */
+  {
+    const res = await fetch('./multitree/a.wbn');
+    const ab = await res.arrayBuffer();
+    const uint8Array = new Uint8Array(ab);
+    const p = new XRPackage(uint8Array);
+    p.setMatrix(localMatrix.compose(localVector.set(0, 0, 0), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
+    await pe.add(p);
+  }
+  {
+    const res = await fetch('./grass/a.wbn');
+    const ab = await res.arrayBuffer();
+    const uint8Array = new Uint8Array(ab);
+    const p = new XRPackage(uint8Array);
+    p.setMatrix(localMatrix.compose(localVector.set(0, -30, -31), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
+    await pe.add(p);
+  }
+  {
+    const res = await fetch('./chest/a.wbn');
+    const ab = await res.arrayBuffer();
+    const uint8Array = new Uint8Array(ab);
+    const p = new XRPackage(uint8Array);
+    p.setMatrix(localMatrix.compose(localVector.set(0, 0, 0), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
+    await pe.add(p);
+  }
+  {
+    const res = await fetch('./ocean/a.wbn');
+    const ab = await res.arrayBuffer();
+    const uint8Array = new Uint8Array(ab);
+    const p = new XRPackage(uint8Array);
+    p.setMatrix(localMatrix.compose(localVector.set(0, 0, 0), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
+    await pe.add(p);
+  }
+  {
+    const res = await fetch('./cloud/a.wbn');
+    const ab = await res.arrayBuffer();
+    const uint8Array = new Uint8Array(ab);
+    const p = new XRPackage(uint8Array);
+    p.setMatrix(localMatrix.compose(localVector.set(0, 0, 0), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
+    await pe.add(p);
   }
 
   /* const renderer = new THREE.WebGLRenderer({

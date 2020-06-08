@@ -15,9 +15,11 @@ const localMatrix = new THREE.Matrix4();
   document.body.appendChild(pe.domElement);
   pe.domElement.style.backgroundColor = '#000';
   
-  pe.camera.position.set(0, 0, 1);
+  pe.camera.position.set(0, 1, 2);
   pe.camera.updateMatrixWorld();
   pe.setCamera(pe.camera);
+  
+  pe.orbitControls.target.set(0, 1, 0);
 
   {
     const res = await fetch('./doggo/a.wbn');

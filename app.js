@@ -37,12 +37,13 @@ const _findObject = (o, name) => {
   const {scene: logoMesh} = await new Promise((accept, reject) => {
     new GLTFLoader().load('assets/logo.glb', accept, xhr => {}, reject);
   });
-  const wMesh = _findObject(logoMesh, 'W');
+  const wMesh = _findObject(logoMesh, 'Webaverse');
   wMesh.position
     .sub(new THREE.Box3().setFromObject(wMesh).getCenter(new THREE.Vector3()))
-    .add(new THREE.Vector3(0, 3, -3));
+    .add(new THREE.Vector3(-0.5, 3 + 1.5, -3));
+  wMesh.scale.multiplyScalar(2, 2, 2);
   pe.scene.add(wMesh);
-  const webaverseMesh = _findObject(logoMesh, 'Webaverse');
+  const webaverseMesh = _findObject(logoMesh, 'W');
   webaverseMesh.position
     .sub(new THREE.Box3().setFromObject(webaverseMesh).getCenter(new THREE.Vector3()))
     .add(new THREE.Vector3(0, 3, -3));

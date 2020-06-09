@@ -1439,7 +1439,8 @@ header.unlocking + .main .blocker .button
   pointer-events: all;
 }
 .hero h1,
-.hero p
+.hero p,
+.hero-buttons
 {
   margin: 0;
   padding: 10px;
@@ -1454,4 +1455,37 @@ header.unlocking + .main .blocker .button
 }
 .hero p {
   font-size: 20px;
+}
+.hero p .hi {
+  // font-family: 'Bangers';
+  font-weight: 600;
+}
+.hero-buttons {
+  display: flex;
+  margin-top: 10px;
+}
+.hero-button {
+  padding: 10px;
+  border: 3px solid;
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 600;
+}
+.hero-button.hi {
+  background-color: #29b6f6;
+  border-color: #29b6f6;
+  color: #000;
+}
+.hero-button:hover
+{
+  background-color: #ef5350;
+  border-color: #ef5350;
+  color: #000;
+}
+.hero-button:active {
+  background-color: #b71c1c;
+  border-color: #b71c1c;
+}
+.hero-button + .hero-button {
+  margin-left: 10px;
 }

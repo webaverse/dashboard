@@ -103,6 +103,14 @@ const _findObject = (o, name) => {
     await pe.add(p);
   }
   {
+    const res = await fetch('./miku/a.wbn');
+    const ab = await res.arrayBuffer();
+    const uint8Array = new Uint8Array(ab);
+    const p = new XRPackage(uint8Array);
+    p.setMatrix(localMatrix.compose(localVector.set(0, 0, 0), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
+    await pe.add(p);
+  }
+  {
     const res = await fetch('./ocean/a.wbn');
     const ab = await res.arrayBuffer();
     const uint8Array = new Uint8Array(ab);

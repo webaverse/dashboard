@@ -20,9 +20,11 @@ const _findObject = (o, name) => {
 };
 
 (async () => {
+  console.log('start engine 1');
   const pe = new XRPackageEngine({
     orbitControls: true,
   });
+  console.log('start engine 1');
   document.body.appendChild(pe.domElement);
   pe.domElement.style.backgroundColor = '#000';
   
@@ -71,7 +73,8 @@ const _findObject = (o, name) => {
     pe.add(p);
   } */
   {
-    const res = await fetch('./multitree/a.wbn');
+    console.log('load multitree');
+    const res = await fetch('./augs/multitree/a.wbn');
     const ab = await res.arrayBuffer();
     const uint8Array = new Uint8Array(ab);
     const p = new XRPackage(uint8Array);
@@ -79,7 +82,8 @@ const _findObject = (o, name) => {
     await pe.add(p);
   }
   {
-    const res = await fetch('./grass/a.wbn');
+    console.log('load grass');
+    const res = await fetch('./augs/grass/a.wbn');
     const ab = await res.arrayBuffer();
     const uint8Array = new Uint8Array(ab);
     const p = new XRPackage(uint8Array);
@@ -87,7 +91,8 @@ const _findObject = (o, name) => {
     await pe.add(p);
   }
   {
-    const res = await fetch('./chest/a.wbn');
+    console.log('load chest');
+    const res = await fetch('./augs/chest/a.wbn');
     const ab = await res.arrayBuffer();
     const uint8Array = new Uint8Array(ab);
     const p = new XRPackage(uint8Array);
@@ -95,7 +100,8 @@ const _findObject = (o, name) => {
     await pe.add(p);
   }
   {
-    const res = await fetch('./sprite/a.wbn');
+    console.log('load sprite');
+    const res = await fetch('./augs/sprite/a.wbn');
     const ab = await res.arrayBuffer();
     const uint8Array = new Uint8Array(ab);
     const p = new XRPackage(uint8Array);
@@ -103,7 +109,8 @@ const _findObject = (o, name) => {
     await pe.add(p);
   }
   {
-    const res = await fetch('./miku/a.wbn');
+    console.log('load miku');
+    const res = await fetch('./augs/miku/a.wbn');
     const ab = await res.arrayBuffer();
     const uint8Array = new Uint8Array(ab);
     const p = new XRPackage(uint8Array);
@@ -111,7 +118,8 @@ const _findObject = (o, name) => {
     await pe.add(p);
   }
   {
-    const res = await fetch('./skybox/a.wbn');
+    console.log('load skybox');
+    const res = await fetch('./augs/skybox/a.wbn');
     const ab = await res.arrayBuffer();
     const uint8Array = new Uint8Array(ab);
     const p = new XRPackage(uint8Array);
@@ -119,7 +127,8 @@ const _findObject = (o, name) => {
     await pe.add(p);
   }
   {
-    const res = await fetch('./ocean/a.wbn');
+    console.log('load ocean');
+    const res = await fetch('./augs/ocean/a.wbn');
     const ab = await res.arrayBuffer();
     const uint8Array = new Uint8Array(ab);
     const p = new XRPackage(uint8Array);
@@ -127,7 +136,8 @@ const _findObject = (o, name) => {
     await pe.add(p);
   }
   {
-    const res = await fetch('./cloud/a.wbn');
+    console.log('load cloud');
+    const res = await fetch('./augs/cloud/a.wbn');
     const ab = await res.arrayBuffer();
     const uint8Array = new Uint8Array(ab);
     const p = new XRPackage(uint8Array);

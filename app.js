@@ -2,11 +2,22 @@
 // import {XRPackageEngine, XRPackage} from 'https://xrpackage.org/xrpackage.js';
 import THREE from 'http://127.0.0.1:3000/xrpackage/three.module.js';
 import {XRPackageEngine, XRPackage} from 'http://127.0.0.1:3000/xrpackage.js';
+import {GLTFLoader} from 'http://127.0.0.1:3000/xrpackage/GLTFLoader.js';
 
 const localVector = new THREE.Vector3();
 const localVector2 = new THREE.Vector3();
 const localQuaternion = new THREE.Quaternion();
 const localMatrix = new THREE.Matrix4();
+
+const _findObject = (o, name) => {
+  let result = null;
+  o.traverse(o => {
+    if (!result && o.name === name) {
+      result = o;
+    }
+  });
+  return result;
+};
 
 (async () => {
   const pe = new XRPackageEngine({
@@ -20,6 +31,20 @@ const localMatrix = new THREE.Matrix4();
   pe.setCamera(pe.camera);
   
   pe.orbitControls.target.set(0, 1, 0);
+  
+  const {scene: logoMesh} = await new Promise((accept, reject) => {
+    new GLTFLoader().load('assets/logo.glb', accept, xhr => {}, reject);
+  });
+  const wMesh = _findObject(logoMesh, 'W');
+  wMesh.position
+    .sub(new THREE.Box3().setFromObject(wMesh).getCenter(new THREE.Vector3()))
+    .add(new THREE.Vector3(0, 3, -3));
+  pe.scene.add(wMesh);
+  const webaverseMesh = _findObject(logoMesh, 'Webaverse');
+  webaverseMesh.position
+    .sub(new THREE.Box3().setFromObject(webaverseMesh).getCenter(new THREE.Vector3()))
+    .add(new THREE.Vector3(0, 3, -3));
+  pe.scene.add(webaverseMesh);
 
   /* {
     const res = await fetch('./doggo/a.wbn');

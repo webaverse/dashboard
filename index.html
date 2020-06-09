@@ -16,131 +16,63 @@
     <script src="https://kit.fontawesome.com/0735724151.js" crossorigin="anonymous"></script>
     <!-- <script type="module" src="world.js"></script> -->
   </head>
-  <body class=body>
-    <header>
-      <a href="/" class="nav dropdown-placeholder">
-        <div class=text>山ヨヲムレヨマクヨ</div>
-        <i class="fa fa-chevron-down"></i>
-      </a>
-      <div class=dropdown id="dropdown">
-        <a href="/" class="nav">
-          <div class=text>Webaverse</div>
-          <div class="text stylized">山ヨヲムレヨマクヨ</div>
-        </a>
-        <a href="https://xrpackage.org" class="nav">
-          <div class=text>XRPackage</div>
-          <div class="text stylized">メマアムく匕ムウヨ</div>
-          <i class="fa fa-chevron-right"></i>
-          <div class=detail>
-            <i class="fa fa-box-alt"></i>
-            <p>Spatial app packages: browse, download, create, and try live</p>
-          </div>
-        </a>
-        <a href="https://cryptopolys.com" class="nav">
-          <div class=text>Cryptopolys</div>
-          <div class="text stylized">匸マソアイロアロレソら</div>
-          <i class="fa fa-chevron-right"></i>
-          <div class=detail>
-            <i class="fa fa-dice-d8"></i>
-            <p>Create spatial web objects visually in your browser</p>
-          </div>
-        </a>
-        <a href="https://metartc.com" class="nav">
-          <div class=text>MetaRTC</div>
-          <div class="text stylized">竹ヨナムマイコ</div>
-          <i class="fa fa-chevron-right"></i>
-          <div class=detail>
-            <i class="fa fa-user-headset"></i>
-            <p>Run spatial apps with friends in multiplayer rooms</p>
-          </div>
-        </a>
-        <a href="https://metassium.com" class="nav">
-          <div class=text>Metassium</div>
-          <div class="text stylized">竹ヨナムららエリ竹</div>
-          <i class="fa fa-chevron-right"></i>
-          <div class=detail>
-            <i class="fa fa-browser"></i>
-            <p>Run spatial apps in SteamVR or Chrome</p>
-          </div>
-        </a>
+  <body>
+    <header class=header id=header>
+      <a href="/" class="nav icon">山</a>
+      <nav class="selector nav bar" id=selector>
+        <i class="fa fa-planet-ringed head"></i>
+        <div class=header-label id=header-label>Choose a page...</div>
+        <i class="fa fa-chevron-down tail"></i>
+        <div class=selections id=selections>
+          <a href="run.html" class=selection id=run-mode>
+            <i class="fa fa-play"></i>
+            <div class=wrap>
+              <h3>Run mode</h3>
+              <p>Switch to run mode</p>
+            </div>
+          </a>
+          <a href="edit.html" class=selection id=edit-mode>
+            <i class="fa fa-pencil"></i>
+            <div class=wrap>
+              <h3>Edit mode</h3>
+              <p>You are currently editing this world</p>
+            </div>
+          </a>
+          <a href="browse.html" class=selection>
+            <i class="fa fa-solar-system"></i>
+            <div class=wrap>
+              <h3>Browse packages</h3>
+              <p>Explore the XRPackage registry</p>
+            </div>
+          </a>
+          <a href="help.html" class=selection>
+            <i class="fa fa-book"></i>
+            <div class=wrap>
+              <h3>Documentation</h3>
+              <p>Learn how to make packages and worlds</p>
+            </div>
+          </a>
+        </div>
+      </nav>
+      <div class="buttons right">
+        <nav class="nav full" id=enter-xr-button>
+          <i class="fa fa-vr-cardboard"></i>
+          <span>Enter</span>
+        </nav>
       </div>
-      <!-- <a href="/" class="nav">Hai</a> -->
-      <a href="guides.html" class="nav">Guides</a>
-      <a href="/" class="nav">Blog</a>
     </header>
-    <section class=hero>
-      <video src="https://rawcdn.githack.com/exokitxr/webaverse/9e46f51ec76ec0641fe55825addc4bda5a051e82/video/video.mp4" autoplay muted loop></video>
-      <div class=container>
-        <h1>We are standardizing<br>the web metaverse</h1>
-        <p>The future is spatial. It risks being owned by one or two companies.</p>
-        <p>Here is how to make spatial web objects you own.</p>
-        <p>Based on standards like WebXR.</p>
-      </div>
-      <div class=stats>
-        <div class=stat>
-          <div class=top>1 <i class="fa fa-heart"></i></div>
-          <div class=bottom>Workflow</div>
-        </div>
-        <div class=stat>
-          <div class=top>3 <i class="fa fa-file-invoice"></i></div>
-          <div class=bottom>Model Formats</div>
-        </div>
-        <div class=stat>
-          <div class=top>6 <i class="fa fa-user-tie"></i></div>
-          <div class=bottom>Sponsors</div>
-        </div>
-        <div class=stat>
-          <div class=top>100% <i class="fa fa-book"></i></div>
-          <div class=bottom>Standards</div>
-        </div>
-        <div class=stat>
-          <div class=top>100% <i class="fa fa-file-certificate"></i></div>
-          <div class=bottom>MIT License</div>
-        </div>
-        <div class=stat>
-          <div class=top>3 <i class="fa fa-window"></i></div>
-          <div class=bottom>Runtimes</div>
+    <div class=hero>
+      <div class=wrap>
+        <h1>A universe of augmentations</h1>
+        <p><span class=hi>Augs</span> are creative spatial apps that run everywhere.</p>
+        <p>Built and owned by awesome folks like you!</p>
+        <p>It's all open tech: IPFS, Ethereum, WebXR</p>
+        <div class=hero-buttons>
+          <a href="https://xrpackage.org/browse.html" class="hero-button hi">Get augs</a>
+          <a href="https://docs.webaverse.com/docs/creating-an-aug" class=hero-button>Create aug</a>
         </div>
       </div>
-    </section>
-    <section class=explainer>
-      <div class=row>
-        <div class=left>
-          <div class=label>Standards</div>
-          <p>Build apps for the future.<br>With the standards that already exist.</p>
-        </div>
-        <div class=icons>
-          <!-- <i class="fad fa-head-vr"></i> -->
-          <img src="/img/gltf.svg">
-          <img src="/img/vrm.png">
-          <img src="/img/webxr.png">
-        </div>
-      </div>
-      <div class=row>
-        <div class=left>
-          <div class=label>Infrastructure</div>
-          <p>Deploy to secure trustless infrastructure.<br>Move virtual objects like real objects.</p>
-        </div>
-        <div class=icons>
-          <!-- <i class="fad fa-box-heart"></i> -->
-          <img src="/img/eth.svg">
-          <img src="/img/ipfs.png">
-          <img src="/img/opensea.svg">
-        </div>
-      </div>
-      <div class=row>
-        <div class=left>
-          <div class=label>Runtime</div>
-          <p>Run any app in any app.<br>Multiplayer in any browser, any headset.</p>
-        </div>
-        <div class=icons>
-          <!-- <i class="fad fa-user-visor"></i> -->
-          <i class="fa fa-chrome"></i>
-          <i class="fa fa-firefox"></i>
-          <i class="fa fa-steam"></i>
-          <img src="/img/oculus.svg">
-        </div>
-      </div>
-    </section>
+    </div>
+    <script src="app.js" type=module></script>
   </body>
 </html>

@@ -1,0 +1,1 @@
+importScripts('https://xrpackage.org/sw.js');

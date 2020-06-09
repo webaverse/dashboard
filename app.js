@@ -28,11 +28,11 @@ const _findObject = (o, name) => {
   document.body.appendChild(pe.domElement);
   pe.domElement.style.backgroundColor = '#000';
   
-  pe.camera.position.set(0, 1, 2);
+  pe.camera.position.set(0, 3, 5);
   pe.camera.updateMatrixWorld();
   pe.setCamera(pe.camera);
   
-  pe.orbitControls.target.set(0, 1, 0);
+  pe.orbitControls.target.set(0, 3, 0);
   
   const {scene: logoMesh} = await new Promise((accept, reject) => {
     new GLTFLoader().load('assets/logo.glb', accept, xhr => {}, reject);
@@ -40,13 +40,13 @@ const _findObject = (o, name) => {
   const wMesh = _findObject(logoMesh, 'Webaverse');
   wMesh.position
     .sub(new THREE.Box3().setFromObject(wMesh).getCenter(new THREE.Vector3()))
-    .add(new THREE.Vector3(-0.5, 3 + 1.5, -3));
+    .add(new THREE.Vector3(-0.5, 3 + 1.5, -2));
   wMesh.scale.multiplyScalar(2, 2, 2);
   pe.scene.add(wMesh);
   const webaverseMesh = _findObject(logoMesh, 'W');
   webaverseMesh.position
     .sub(new THREE.Box3().setFromObject(webaverseMesh).getCenter(new THREE.Vector3()))
-    .add(new THREE.Vector3(0, 3, -3));
+    .add(new THREE.Vector3(0, 3, -2));
   pe.scene.add(webaverseMesh);
 
   /* {

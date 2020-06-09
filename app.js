@@ -1,7 +1,7 @@
-// import THREE from 'https://xrpackage.org/xrpackage/three.module.js';
-// import {XRPackageEngine, XRPackage} from 'https://xrpackage.org/xrpackage.js';
-import THREE from 'http://127.0.0.1:3000/xrpackage/three.module.js';
-import {XRPackageEngine, XRPackage} from 'http://127.0.0.1:3000/xrpackage.js';
+import THREE from 'https://xrpackage.org/xrpackage/three.module.js';
+import {XRPackageEngine, XRPackage} from 'https://xrpackage.org/xrpackage.js';
+// import THREE from 'http://127.0.0.1:3000/xrpackage/three.module.js';
+// import {XRPackageEngine, XRPackage} from 'http://127.0.0.1:3000/xrpackage.js';
 import {GLTFLoader} from 'http://127.0.0.1:3000/xrpackage/GLTFLoader.js';
 
 const localVector = new THREE.Vector3();

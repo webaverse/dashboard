@@ -1438,6 +1438,9 @@ header.unlocking + .main .blocker .button
   align-items: flex-start;
   pointer-events: all;
 }
+.hero .wrap p {
+  width: 100%;
+}
 .hero h1,
 .hero p,
 .hero-buttons
@@ -1457,7 +1460,6 @@ header.unlocking + .main .blocker .button
   font-size: 20px;
 }
 .hero p .hi {
-  // font-family: 'Bangers';
   font-weight: 600;
 }
 .hero-buttons {

@@ -31,23 +31,59 @@ const _findObject = (o, name) => {
   pe.camera.position.set(0, 3, 5);
   pe.camera.updateMatrixWorld();
   pe.setCamera(pe.camera);
-  
+
   pe.orbitControls.target.set(0, 3, 0);
-  
-  const {scene: logoMesh} = await new Promise((accept, reject) => {
-    new GLTFLoader().load('assets/logo.glb', accept, xhr => {}, reject);
-  });
-  const wMesh = _findObject(logoMesh, 'Webaverse');
-  wMesh.position
-    .sub(new THREE.Box3().setFromObject(wMesh).getCenter(new THREE.Vector3()))
-    .add(new THREE.Vector3(-0.5, 3 + 1.5, -2));
-  wMesh.scale.multiplyScalar(2, 2, 2);
-  pe.scene.add(wMesh);
-  const webaverseMesh = _findObject(logoMesh, 'W');
-  webaverseMesh.position
-    .sub(new THREE.Box3().setFromObject(webaverseMesh).getCenter(new THREE.Vector3()))
-    .add(new THREE.Vector3(0, 3, -2));
-  pe.scene.add(webaverseMesh);
+
+  {  
+    const renderer = new THREE.WebGLRenderer({
+      canvas: pe.domElement,
+      context: pe.getContext('webgl'),
+      // antialias: true,
+      // alpha: true,
+      // preserveDrawingBuffer: true,
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.autoClear = false;
+    renderer.sortObjects = false;
+    renderer.physicallyCorrectLights = true;
+    renderer.xr.enabled = true;
+    renderer.xr.setSession(pe.getProxySession());
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0.5, 1);
+
+    const {scene: logoMesh} = await new Promise((accept, reject) => {
+      new GLTFLoader().load('assets/logo.glb', accept, xhr => {}, reject);
+    });
+    const wMesh = _findObject(logoMesh, 'Webaverse');
+    wMesh.position.set(0, 3 + 1.5, -2);
+    // wMesh.rotation.order = 'YXZ';
+    wMesh.scale.multiplyScalar(1.5, 1.5, 1.5);
+    wMesh.originalPosition = wMesh.position.clone();
+    wMesh.originalQuaternion = wMesh.quaternion.clone();
+    scene.add(wMesh);
+    const webaverseMesh = _findObject(logoMesh, 'W');
+    webaverseMesh.position
+      .sub(new THREE.Box3().setFromObject(webaverseMesh).getCenter(new THREE.Vector3()))
+      .add(new THREE.Vector3(0, 3, -2));
+    // webaverseMesh.rotation.order = 'YXZ';
+    webaverseMesh.originalPosition = webaverseMesh.position.clone();
+    webaverseMesh.originalQuaternion = webaverseMesh.quaternion.clone();
+    scene.add(webaverseMesh);
+
+    function animate(timestamp, frame) {
+      wMesh.position.copy(wMesh.originalPosition).add(new THREE.Vector3(0, Math.sin((Date.now() % 3000) / 3000 * Math.PI * 2) * 0.8, 0));
+      wMesh.quaternion.copy(wMesh.originalQuaternion)
+        .premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.sin((Date.now() % 1500) / 1500 * Math.PI * 2) * 0.15));
+      webaverseMesh.position.copy(webaverseMesh.originalPosition).add(new THREE.Vector3(0, Math.sin((Date.now() % 3000) / 3000 * Math.PI * 2) * 0.5, 0));
+
+      renderer.render(scene, camera);
+    }
+    renderer.setAnimationLoop(animate);
+  }
 
   /* {
     const res = await fetch('./doggo/a.wbn');
@@ -145,31 +181,6 @@ const _findObject = (o, name) => {
     p.setMatrix(localMatrix.compose(localVector.set(0, 0, 0), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
     await pe.add(p);
   }
-
-  /* const renderer = new THREE.WebGLRenderer({
-    canvas: pe.domElement,
-    context: pe.getContext('webgl'),
-    // antialias: true,
-    // alpha: true,
-    // preserveDrawingBuffer: true,
-  });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.autoClear = false;
-  renderer.sortObjects = false;
-  renderer.physicallyCorrectLights = true;
-  renderer.xr.enabled = true;
-  // document.body.appendChild(renderer.domElement);
-
-  const scene = new THREE.Scene();
-
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 0.5, 1);
-
-  function animate(timestamp, frame) {
-    renderer.render(scene, camera);
-  }
-  renderer.setAnimationLoop(animate); */
 
   let currentSession = null;
   function onSessionStarted(session) {

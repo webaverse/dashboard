@@ -1441,15 +1441,14 @@ header.unlocking + .main .blocker .button
 .hero .wrap p {
   width: 100%;
 }
-.hero .icons {
+.hero .wrap .standards-icons {
   display: flex;
-  width: 400px;
+  width: 100%;
   flex-direction: row;
   align-items: flex-start;
-  pointer-events: all;
 }
-.hero .icons img {
-  max-width: 120px;
+.hero .wrap .standards-icons img {
+  max-width: 130px;
   margin: auto;
   filter: grayscale(100%);
 }

@@ -1441,6 +1441,18 @@ header.unlocking + .main .blocker .button
 .hero .wrap p {
   width: 100%;
 }
+.hero .icons {
+  display: flex;
+  width: 400px;
+  flex-direction: row;
+  align-items: flex-start;
+  pointer-events: all;
+}
+.hero .icons img {
+  max-width: 120px;
+  margin: auto;
+  filter: grayscale(100%);
+}
 .hero h1,
 .hero p,
 .hero-buttons

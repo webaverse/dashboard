@@ -13,7 +13,8 @@ const localMatrix = new THREE.Matrix4();
   const pe = new XRPackageEngine({
     orbitControls: true,
   });
-  console.log('start engine 1');
+
+  console.log('start engine 2');
   document.body.appendChild(pe.domElement);
   pe.domElement.style.backgroundColor = '#000';
 
@@ -23,30 +24,6 @@ const localMatrix = new THREE.Matrix4();
 
   pe.orbitControls.target.set(0, 3, 0);
 
-  /* { https://github.com/avaer/doggo
-    const res = await fetch('./doggo/a.wbn');
-    const ab = await res.arrayBuffer();
-    const uint8Array = new Uint8Array(ab);
-    const p = new XRPackage(uint8Array);
-    p.setMatrix(localMatrix.compose(localVector.set(0, 0, 0), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
-    pe.add(p);
-  }
-  { https://github.com/avaer/terrain
-    const res = await fetch('./terrain/a.wbn');
-    const ab = await res.arrayBuffer();
-    const uint8Array = new Uint8Array(ab);
-    const p = new XRPackage(uint8Array);
-    p.setMatrix(localMatrix.compose(localVector.set(0, 0, 0), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
-    pe.add(p);
-  }
-  { https://github.com/avaer/tree
-    const res = await fetch('./tree/a.wbn');
-    const ab = await res.arrayBuffer();
-    const uint8Array = new Uint8Array(ab);
-    const p = new XRPackage(uint8Array);
-    p.setMatrix(localMatrix.compose(localVector.set(0, -30, -31), localQuaternion.set(0, 0, 0, 1), localVector2.set(1, 1, 1)));
-    pe.add(p);
-  } */
   {
     console.log('load logo');
     const res = await fetch('./augs/webaverse-logo/a.wbn');
@@ -132,18 +109,16 @@ const localMatrix = new THREE.Matrix4();
   let currentSession = null;
   function onSessionStarted(session) {
     session.addEventListener('end', onSessionEnded);
-
     currentSession = session;
-
     pe.setSession(session);
   }
+
   function onSessionEnded() {
     currentSession.removeEventListener('end', onSessionEnded);
-
     currentSession = null;
-
     pe.setSession(null);
   }
+
   document.getElementById('enter-xr-button').addEventListener('click', e => {
     e.preventDefault();
     e.stopPropagation();
@@ -159,5 +134,4 @@ const localMatrix = new THREE.Matrix4();
       currentSession.end();
     }
   });
-
 })();

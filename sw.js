@@ -1,1 +1,1 @@
-importScripts('https://xrpackage.org/sw.js');
+importScripts('https://static.xrpackage.org/sw.js');

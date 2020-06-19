@@ -1470,6 +1470,7 @@ header.unlocking + .main .blocker .button
 .hero .aside .wrap {
   position: relative;
   display: flex;
+  width: 600px;
   /* background: #FFFFFF; */
   flex-direction: column;
   pointer-events: all;
@@ -1477,13 +1478,13 @@ header.unlocking + .main .blocker .button
 }
 .hero .aside .wrap > .label {
   position: absolute;
-  top: -30px;
-  left: -30px;
+  top: -40px;
+  left: -40px;
   padding: 5px;
   background-color: #5c6bc0;
   color: #FFF;
   font-family: 'Bangers';
-  font-size: 24px;
+  font-size: 30px;
   transform: rotatez(-10deg);
   z-index: 1;
 }
@@ -1495,6 +1496,17 @@ header.unlocking + .main .blocker .button
   padding-bottom: 20px;
   background-color: #FFF;
   justify-content: space-around;
+}
+.hero .aside .row.double {
+  padding-left: 10px;
+  padding-right: 10px;
+  flex-wrap: wrap;
+  z-index: -1;
+}
+.hero .aside .row.double .item {
+  width: calc(50% - 20px);
+  margin-bottom: 10px;
+  flex-direction: row;
 }
 .hero .aside .row > .label {
   position: absolute;
@@ -1521,6 +1533,22 @@ header.unlocking + .main .blocker .button
   height: 10px;
   background-color: #000;
 }
+.hero .aside .item .bar-down-long {
+  position: absolute;
+  bottom: -400px;
+  left: calc(50% - 3px);
+  width: 3px;
+  height: 400px;
+  background-color: #000;
+}
+.hero .aside .item:nth-child(even) .bar-right {
+  position: absolute;
+  right: -25px;
+  top: calc(50% - 3px);
+  width: 25px;
+  height: 3px;
+  background-color: #000;
+}
 .hero .aside .item .bar-up {
   position: absolute;
   top: -53px;
@@ -1529,17 +1557,28 @@ header.unlocking + .main .blocker .button
   height: 53px;
   background-color: #000;
 }
-.hero .aside .item img {
+.hero .aside .item img,
+.hero .aside .item i
+{
+  display: flex;
   width: 50px;
   height: 50px;
+  font-size: 36px;
+  justify-content: center;
+  align-items: center;
+}
+.hero .aside .row.double .item img,
+.hero .aside .row.double .item i
+{
+  margin-right: 10px;
 }
 .hero .aside .item .description {
 }
 .hero .bar.horizontal {
   position: absolute;
   bottom: 10px;
-  left: 51px;
-  right: 54px;
+  left: 57px;
+  right: 60px;
   height: 3px;
   background-color: #000;
 }

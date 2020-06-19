@@ -1475,6 +1475,18 @@ header.unlocking + .main .blocker .button
   pointer-events: all;
   z-index: 1;
 }
+.hero .aside .wrap > .label {
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  padding: 5px;
+  background-color: #5c6bc0;
+  color: #FFF;
+  font-family: 'Bangers';
+  font-size: 24px;
+  transform: rotatez(-10deg);
+  z-index: 1;
+}
 .hero .aside .row {
   position: relative;
   display: flex;
@@ -1484,7 +1496,7 @@ header.unlocking + .main .blocker .button
   background-color: #FFF;
   justify-content: space-around;
 }
-.hero .aside .label {
+.hero .aside .row > .label {
   position: absolute;
   top: 0;
   left: 0;
@@ -1495,16 +1507,41 @@ header.unlocking + .main .blocker .button
   color: #FFF;
 }
 .hero .aside .item {
+  position: relative;
   display: flex;
   padding: 5px;
   border: 3px solid;
   flex-direction: column;
+}
+.hero .aside .item .bar-down {
+  position: absolute;
+  bottom: -10px;
+  left: calc(50% - 3px);
+  width: 3px;
+  height: 10px;
+  background-color: #000;
+}
+.hero .aside .item .bar-up {
+  position: absolute;
+  top: -53px;
+  left: calc(50% - 3px);
+  width: 3px;
+  height: 53px;
+  background-color: #000;
 }
 .hero .aside .item img {
   width: 50px;
   height: 50px;
 }
 .hero .aside .item .description {
+}
+.hero .bar.horizontal {
+  position: absolute;
+  bottom: 10px;
+  left: 51px;
+  right: 54px;
+  height: 3px;
+  background-color: #000;
 }
 .hero h1,
 .hero p,

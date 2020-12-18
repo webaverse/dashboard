@@ -14,7 +14,7 @@ export default () => {
   const [ensAddress, setEnsAddress] = useState(null);
   const [ensName, setEnsName] = useState(null);
   const [ensContentHash, setContentHash] = useState(null);
-  const [contributor1729, setContributor1729] = useState(null);
+  const [inventory, setInventory] = useState(null);
 
   const ethEnabled = () => {
     if (window.ethereum) {
@@ -25,45 +25,33 @@ export default () => {
     return false;
   }
  
-  getInventoryForCreator(id, 0, true, state).then(console.log);
-
-  const check1729 = (address) => {
-    axios.get('https://api.i1729.com/check1729/' + address)
-    .then(res => {
-      if(res.data == true) {
-        setContributor1729(true);
-      } else {
-        setContributor1729(false);
-      }
-      setLoading(false);
-    })
-    .catch(error  => {
-      console.log(error);
-      setLoading(false);
-    });
-  }
-
   useEffect(() => {
+    getInventoryForCreator(id, 0, true, state).then(res => {
+      console.log(res);
+      console.log(id);
+      console.log(res.creatorInventories);
+      console.log(res.creatorInventories[id]);
+      console.log(res.creatorInventories[id][0]);
+      if (res.creatorInventories[id][0].length > 0) {
+        setInventory(res.creatorInventories[id][0]);
+        console.log(JSON.stringify(res.creatorInventories[id]));
+      }
+    });
+
     if (!ethEnabled()) {
-      alert("Please install an Ethereum-compatible browser or extension like MetaMask to use 1729!");
+      alert("Please install an Ethereum-compatible browser or extension like MetaMask to use Webaverse!");
     } else {
       const web3 = window.web3;
       if (web3.utils.isAddress(id)) { 
         setEnsAddress(id);
-        check1729(id);
         setEnsName("Ethereum Address");
+        setLoading(false);
       } else {
         const tempEnsName = id + ".eth";
         setEnsName(tempEnsName);
         web3.eth.ens.getAddress(tempEnsName).then((address) => {
           if (address) {
             setEnsAddress(address); 
-            check1729(address);
-          }
-        });
-        web3.eth.ens.getContenthash(tempEnsName).then((hash) => {
-          if (hash) {
-            setEnsContentHash(hash); 
             setLoading(false);
           }
         });
@@ -73,10 +61,6 @@ export default () => {
 
   return (
     <>
-      <h1>1729</h1>
-      <p>
-        This is <a href="/">1729</a> cryptoprofile. It resolves from <a href="https://ens.domains">ENS</a>.
-      </p>
         {loading ?
               <BounceLoader
                 css={"display: inline-block"}
@@ -85,16 +69,17 @@ export default () => {
                 loading={loading}
               />
         :
-          <Container>
-            <Row style={{ justifyContent: "center" }}>
-              <Col className="content" sm={12}>
-                <h3>{ensName}</h3>
-                { ensAddress ? <p>{ensAddress}</p> : null}
-                { contributor1729 ? <p>1729 Contributor: {contributor1729.toString()}</p> : null}
-                { ensContentHash ? <p>{ensContentHash}</p> : null}
-              </Col>
-            </Row>
-          </Container>
+          inventory ? inventory.map(item =>
+            <Container>
+              <Row style={{ justifyContent: "center" }}>
+                <Col className="content" sm={12}>
+                  <h3>{item.id} - {item.name}</h3>
+                  {item.description}
+                  <img src={item.image} />
+                </Col>
+              </Row>
+            </Container>
+          ) : null
         }
     </>
   )

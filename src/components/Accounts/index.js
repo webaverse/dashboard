@@ -5,16 +5,17 @@ import { useParams } from "react-router-dom"
 import Web3 from 'web3';
 import axios from "axios";
 import { useAppContext } from "../../libs/contextLib";
-import { getInventoryForCreator } from "../../functions/UIStateFunctions.js";
+import { getInventoryForCreator, getProfileForCreator } from "../../functions/UIStateFunctions.js";
 
 export default () => {
   const { id } = useParams();
-  const { state } = useAppContext();
+  const { state, setState } = useAppContext();
   const [loading, setLoading] = useState(true);
   const [ensAddress, setEnsAddress] = useState(null);
   const [ensName, setEnsName] = useState(null);
   const [ensContentHash, setContentHash] = useState(null);
   const [inventory, setInventory] = useState(null);
+  const [profile, setProfile] = useState(null);
 
   const ethEnabled = () => {
     if (window.ethereum) {
@@ -27,19 +28,20 @@ export default () => {
  
   useEffect(() => {
     getInventoryForCreator(id, 0, true, state).then(res => {
+      setInventory(res.creatorInventories[id][0]);
+//      setState(res);
       console.log(res);
-      console.log(id);
-      console.log(res.creatorInventories);
-      console.log(res.creatorInventories[id]);
-      console.log(res.creatorInventories[id][0]);
-      if (res.creatorInventories[id][0].length > 0) {
-        setInventory(res.creatorInventories[id][0]);
-        console.log(JSON.stringify(res.creatorInventories[id]));
-      }
+    });
+
+    getProfileForCreator(id, state).then(res => {
+      setProfile(res.creatorProfiles[id]);
+//      setState(res);
+      console.log(res);
     });
 
     if (!ethEnabled()) {
       alert("Please install an Ethereum-compatible browser or extension like MetaMask to use Webaverse!");
+      setLoading(false);
     } else {
       const web3 = window.web3;
       if (web3.utils.isAddress(id)) { 
@@ -59,8 +61,28 @@ export default () => {
     }
   }, []);
 
+  const Inventory = () => inventory ? inventory.map(item =>
+     <Col className="content" sm={4}>
+       <h3>#{item.id} - {item.name}</h3>
+       <img src={item.image} />
+     </Col>
+   ) : null
+
+  const Profile = () => profile ? 
+     <>
+       <Col sm={12}>
+         <h1>{profile.name}</h1>
+         <p>{profile.address}</p>
+         <img src={profile.avatarPreview} />
+       </Col>
+     </>
+  : null
+
+
   return (
     <>
+      <Container>
+       <Row style={{ justifyContent: "center" }}>
         {loading ?
               <BounceLoader
                 css={"display: inline-block"}
@@ -69,18 +91,13 @@ export default () => {
                 loading={loading}
               />
         :
-          inventory ? inventory.map(item =>
-            <Container>
-              <Row style={{ justifyContent: "center" }}>
-                <Col className="content" sm={12}>
-                  <h3>{item.id} - {item.name}</h3>
-                  {item.description}
-                  <img src={item.image} />
-                </Col>
-              </Row>
-            </Container>
-          ) : null
+          <>
+            <Profile />
+            <Inventory />
+          </>
         }
+        </Row>
+      </Container>
     </>
   )
 }

@@ -1,10 +1,12 @@
 body {
-  font-family: 'Roboto';
+  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   color: #fff;
   text-align: center;
   background-color: #18141a;
   margin: 0 auto !important;
   text-rendering: optimizeLegibility;
+  max-width: 60%;
+  overflow-x: hidden;
 }
 a {
   color: #c4005d !important;
@@ -18,19 +20,26 @@ a {
   border-radius: 8px;
   background-color: #242129;
   transition: transform .2s ease-in-out,box-shadow .2s ease-in-out;
+  font-size: .75em;
 }
 .content:hover {
   transform: translateY(-2.5px);
 }
 .content img {
   margin: auto;
-  min-height: 18em;
-  max-height: 18em;
+  min-height: 80%;
+  max-height: 80%;
   width: 100%;
   border-style: none;
 }
 .profileHeader {
   display: flex;
+  width: 80%;
+}
+.profileHeader img {
+  border-radius: 50%;
+  width: auto;
+  max-height: 300px;
 }
 .profileHeader .profileName {
   flex: 1 1 auto;

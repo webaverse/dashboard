@@ -2,8 +2,8 @@ import React from 'react'
 
 export default () => 
   <>
-    <h1>Webaverse</h1>
+    <h1>404</h1>
     <p>
-      text here
+      Not found
     </p>
   </>

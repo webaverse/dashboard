@@ -9,6 +9,7 @@ const Loader = () =>  <BounceLoader css={"display: inline-block"} size={50} colo
 const history = createHistory()
 
 const SignIn = React.lazy(() => import('./SignIn'));
+const Browse = React.lazy(() => import('./Browse'));
 const Mint = React.lazy(() => import('./Mint'));
 const Accounts = React.lazy(() => import('./Accounts'));
 const Account = React.lazy(() => import('./Account'));
@@ -52,11 +53,11 @@ const App = () => {
           <Switch>
             <Route path='/accounts/:id' component={() => <Suspense fallback={Loader}><Accounts /></Suspense>} />
             <Route path='/account' component={() => <Suspense fallback={Loader}><Account /></Suspense>} />
-            <Route path='/gallery' component={() => <Suspense fallback={Loader}><Gallery /></Suspense>} />
+            <Route path='/browse' component={() => <Suspense fallback={Loader}><Browse /></Suspense>} />
             <Route path='/mint' component={() => <Suspense fallback={Loader}><Mint /></Suspense>} />
             <Route path='/settings' component={() => <Suspense fallback={Loader}><Settings /></Suspense>} />
             <Route path='/sign-in' component={() => <Suspense fallback={Loader}><SignIn /></Suspense>} />
-            <Route path='/' component={() => <Suspense fallback={Loader}><Home /></Suspense>} />
+            <Route path='/' exact component={() => <Suspense fallback={Loader}><Home /></Suspense>} />
             <Route path='/*' component={() => <Suspense fallback={Loader}><NotFound /></Suspense>} />
           </Switch>
         </AppContext.Provider>

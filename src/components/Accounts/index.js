@@ -9,7 +9,7 @@ import { getInventoryForCreator, getProfileForCreator } from "../../functions/UI
 
 export default () => {
   const { id } = useParams();
-  const { state, setState } = useAppContext();
+  const { globalState, setGlobalState } = useAppContext();
   const [loading, setLoading] = useState(true);
   const [ensAddress, setEnsAddress] = useState(null);
   const [ensName, setEnsName] = useState(null);
@@ -27,16 +27,16 @@ export default () => {
   }
  
   useEffect(() => {
-    getInventoryForCreator(id, 0, true, state).then(res => {
+    getInventoryForCreator(id, 0, true, globalState).then(res => {
       setInventory(res.creatorInventories[id][0]);
-//      setState(res);
-      console.log(res);
+      //setGlobalState(res);
+      //console.log(globalState);
     });
 
-    getProfileForCreator(id, state).then(res => {
+    getProfileForCreator(id, globalState).then(res => {
       setProfile(res.creatorProfiles[id]);
-//      setState(res);
-      console.log(res);
+      //setGlobalState(res);
+      //console.log(globalState);
     });
 
     if (!ethEnabled()) {
@@ -62,18 +62,22 @@ export default () => {
   }, []);
 
   const Inventory = () => inventory ? inventory.map(item =>
-     <Col className="content" sm={4}>
-       <h3>#{item.id} - {item.name}</h3>
+     <Col className="content" sm={3}>
        <img src={item.image} />
+       <h3>{item.name}</h3>
      </Col>
    ) : null
 
   const Profile = () => profile ? 
      <>
        <Col sm={12}>
-         <h1>{profile.name}</h1>
-         <p>{profile.address}</p>
-         <img src={profile.avatarPreview} />
+         <div className="profileHeader">
+           <div className="profileName">
+             <h1>{profile.name}</h1>
+             <p>{profile.address}</p>
+           </div>
+           <img src={profile.avatarPreview} />
+         </div>
        </Col>
      </>
   : null

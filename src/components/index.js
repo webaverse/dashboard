@@ -19,7 +19,7 @@ const NotFound = React.lazy(() => import('./NotFound'));
 
 
 const App = () => {
-  const [state, setState] = useState({
+  const [globalState, setGlobalState] = useState({
     useWebXR: false,
     loginToken: null,
     name: null,
@@ -49,7 +49,7 @@ const App = () => {
     <>
       <NavBar />
       <Router history={history}>
-        <AppContext.Provider value={{ state, setState }}>
+        <AppContext.Provider value={{ globalState, setGlobalState }}>
           <Switch>
             <Route path='/accounts/:id' component={() => <Suspense fallback={Loader}><Accounts /></Suspense>} />
             <Route path='/account' component={() => <Suspense fallback={Loader}><Account /></Suspense>} />

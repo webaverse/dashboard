@@ -13,6 +13,13 @@ export const getAddress = (state) => {
   return { ...state, address };
 };
 
+export const getToken = async (id) => {
+  const res = await fetch(`https://tokens.webaverse.com/${id}`);
+  const token = await res.json();
+
+  return token;
+};
+
 export const clearInventroryForCreator = async (creatorAddress, state) => {
   let newState = { ...state }
   // Use cached page

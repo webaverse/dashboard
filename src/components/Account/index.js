@@ -6,9 +6,7 @@ import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator } from "../../functions/UIStateFunctions.js";
 
 export default () => {
-  const ENS_NAME = "webaverse" + ".eth";
   const [loading, setLoading] = useState(true);
-  const [ensAddress, setEnsAddress] = useState(null);
   const { state } = useAppContext();
 
   const ethEnabled = () => {
@@ -34,10 +32,6 @@ export default () => {
           window.location.href = '/accounts/' + account;
         }
       });
-      web3.eth.ens.getAddress(ENS_NAME).then((address) => {
-        setEnsAddress(address); 
-        setLoading(false);
-      });
       ethereum.on('accountsChanged', function (accounts) {
         if(!web3.utils.isAddress(accounts[0])) { 
           return; 
@@ -50,27 +44,12 @@ export default () => {
 
   return (
     <>
-      <h1>Webaverse</h1>
-      <p>
-        This is <a href="/">Webaverse</a> cryptoprofile. It resolves from <a href="https://ens.domains">ENS</a>.
-      </p>
-        {loading ?
-              <BounceLoader
-                css={"display: inline-block"}
-                size={50}
-                color={"#a00"}
-                loading={loading}
-              />
-        :
-          <Container>
-            <Row style={{ justifyContent: "center" }}>
-              <Col className="content" sm={12}>
-                <h3>{ENS_NAME}</h3>
-                { ensAddress ? <p>{ensAddress}</p> : null}
-              </Col>
-            </Row>
-          </Container>
-        }
+      <BounceLoader
+        css={"display: inline-block"}
+        size={50}
+        color={"#c4005d"}
+        loading={loading}
+      />
     </>
   )
 }

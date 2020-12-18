@@ -11,54 +11,18 @@ export default () => {
   const { id } = useParams();
   const { globalState, setGlobalState } = useAppContext();
   const [loading, setLoading] = useState(true);
-  const [ensAddress, setEnsAddress] = useState(null);
-  const [ensName, setEnsName] = useState(null);
-  const [ensContentHash, setContentHash] = useState(null);
   const [inventory, setInventory] = useState(null);
   const [profile, setProfile] = useState(null);
 
-  const ethEnabled = () => {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      window.ethereum.enable();
-      return true;
-    }
-    return false;
-  }
- 
   useEffect(() => {
     getInventoryForCreator(id, 0, true, globalState).then(res => {
       setInventory(res.creatorInventories[id][0]);
-      //setGlobalState(res);
-      //console.log(globalState);
     });
 
     getProfileForCreator(id, globalState).then(res => {
       setProfile(res.creatorProfiles[id]);
-      //setGlobalState(res);
-      //console.log(globalState);
-    });
-
-    if (!ethEnabled()) {
-      alert("Please install an Ethereum-compatible browser or extension like MetaMask to use Webaverse!");
       setLoading(false);
-    } else {
-      const web3 = window.web3;
-      if (web3.utils.isAddress(id)) { 
-        setEnsAddress(id);
-        setEnsName("Ethereum Address");
-        setLoading(false);
-      } else {
-        const tempEnsName = id + ".eth";
-        setEnsName(tempEnsName);
-        web3.eth.ens.getAddress(tempEnsName).then((address) => {
-          if (address) {
-            setEnsAddress(address); 
-            setLoading(false);
-          }
-        });
-      }
-    }
+    });
   }, []);
 
   const Inventory = () => inventory ? inventory.map(item =>
@@ -91,7 +55,7 @@ export default () => {
               <BounceLoader
                 css={"display: inline-block"}
                 size={50}
-                color={"#a00"}
+                color={"#c4005d"}
                 loading={loading}
               />
         :

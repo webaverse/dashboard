@@ -18,13 +18,37 @@ const NotFound = React.lazy(() => import('./NotFound'));
 
 
 const App = () => {
-  const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const [state, setState] = useState({
+    useWebXR: false,
+    loginToken: null,
+    name: null,
+    mainnetAddress: null,
+    mainnetFtBalance: null,
+    mainnetInventory: null,
+    showUserDropdown: false,
+    address: null,
+    avatarUrl: null,
+    avatarFileName: null,
+    avatarPreview: null,
+    homespaceUrl: null,
+    homespaceFileName: null,
+    homespacePreview: null,
+    ftu: true,
+    inventory: null,
+    creatorProfiles: {},
+    creatorInventories: {},
+    creatorBooths: {},
+    creators: {},
+    booths: {},
+    lastFileHash: null,
+    lastFileId: null
+  });
 
   return (
     <>
       <NavBar />
       <Router history={history}>
-        <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+        <AppContext.Provider value={{ state, setState }}>
           <Switch>
             <Route path='/accounts/:id' component={() => <Suspense fallback={Loader}><Accounts /></Suspense>} />
             <Route path='/account' component={() => <Suspense fallback={Loader}><Account /></Suspense>} />

@@ -6,8 +6,9 @@ import ethereumJsTx from '../libs/ethereumjs-tx.js';
 import {makePromise} from './util.js';
 import {storageHost, web3SidechainEndpoint} from './constants.js';
 const {Transaction, Common} = ethereumJsTx;
-import addresses from 'https://contracts.webaverse.com/ethereum/address.js';
-import abis from 'https://contracts.webaverse.com/ethereum/abi.js';
+import addresses from './address.js';
+import abis from './abi.js';
+
 let {
   main: {Account: AccountAddress, FT: FTAddress, NFT: NFTAddress, FTProxy: FTProxyAddress, NFTProxy: NFTProxyAddress, Trade: TradeAddress},
   sidechain: {Account: AccountAddressSidechain, FT: FTAddressSidechain, NFT: NFTAddressSidechain, FTProxy: FTProxyAddressSidechain, NFTProxy: NFTProxyAddressSidechain, Trade: TradeAddressSidechain},

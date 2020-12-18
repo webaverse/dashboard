@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react'
 import BounceLoader from "react-spinners/BounceLoader";
 import { Container, Row, Col } from 'react-grid-system';
 import Web3 from 'web3';
+import { useAppContext } from "../../libs/contextLib";
+import { getInventoryForCreator } from "../../functions/UIStateFunctions.js";
 
 export default () => {
   const ENS_NAME = "webaverse" + ".eth";
   const [loading, setLoading] = useState(true);
   const [ensAddress, setEnsAddress] = useState(null);
+  const { state } = useAppContext();
 
   const ethEnabled = () => {
     if (window.ethereum) {
@@ -28,7 +31,7 @@ export default () => {
         if (!web3.utils.isAddress(account)) { 
           return; 
         } else {
-          window.location.href = '/profile/' + account;
+          window.location.href = '/accounts/' + account;
         }
       });
       web3.eth.ens.getAddress(ENS_NAME).then((address) => {
@@ -39,7 +42,7 @@ export default () => {
         if(!web3.utils.isAddress(accounts[0])) { 
           return; 
         } else {
-          window.location.href = '/profile/' + accounts[0];
+          window.location.href = '/accounts/' + accounts[0];
         }
       });
     }

@@ -4,9 +4,12 @@ import { Container, Row, Col } from 'react-grid-system';
 import { useParams } from "react-router-dom"
 import Web3 from 'web3';
 import axios from "axios";
+import { useAppContext } from "../../libs/contextLib";
+import { getInventoryForCreator } from "../../functions/UIStateFunctions.js";
 
 export default () => {
   const { id } = useParams();
+  const { state } = useAppContext();
   const [loading, setLoading] = useState(true);
   const [ensAddress, setEnsAddress] = useState(null);
   const [ensName, setEnsName] = useState(null);
@@ -21,6 +24,8 @@ export default () => {
     }
     return false;
   }
+ 
+  getInventoryForCreator(id, 0, true, state).then(console.log);
 
   const check1729 = (address) => {
     axios.get('https://api.i1729.com/check1729/' + address)

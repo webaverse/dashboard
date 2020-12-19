@@ -23,7 +23,7 @@
   width: auto;
 }
 .profileHeader img {
-  border-radius: 50%;
+  border-radius: 10px;
   width: auto;
   max-height: 300px;
 }

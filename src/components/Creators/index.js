@@ -16,14 +16,13 @@ export default () => {
   useEffect(() => {
     getCreators(0, globalState).then(res => {
       setCreators(res.creators[0]);
-      console.log(res.creators[0]);
       setLoading(false);
     });
   }, []);
 
-  const Creators = () => creators ? creators.map(item =>
+  const Creators = () => creators ? creators.map((item, i) =>
      item.avatarPreview && item.name ?
-       <Col className="content" sm={2}>
+       <Col key={i} className="content" sm={2}>
          <a href={"/accounts/" + item.address}>
            <img src={item.avatarPreview} />
            <h3>{item.name}</h3>

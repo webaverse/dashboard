@@ -25,10 +25,12 @@ export default () => {
     });
   }, []);
 
-  const Inventory = () => inventory ? inventory.map(item =>
-     <Col className="content" sm={2}>
-       <img src={item.image} />
-       <h3>{item.name}</h3>
+  const Inventory = () => inventory ? inventory.map((item, i) =>
+     <Col key={i} className="content" sm={2}>
+       <a href={"/browse/" + item.id}>
+         <img src={item.image} />
+         <h3>{item.name}</h3>
+       </a>
      </Col>
    ) : null
 

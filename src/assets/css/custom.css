@@ -1,16 +1,43 @@
 body {
   font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   color: #fff;
-  text-align: center;
   background-color: #18141a;
-  margin: 0 auto !important;
   text-rendering: optimizeLegibility;
-  max-width: 60%;
   overflow-x: hidden;
 }
 a {
-  color: #c4005d !important;
+  color: #fff;
 }
+.navbar {
+  margin-bottom: 0;
+  border-bottom: none;
+  position: relative;
+  height: 64px;
+  margin-bottom: 44px;
+  border-bottom: 1px solid rgba(103,99,112,.2);
+  width: 100%;
+  box-sizing: content-box;
+  z-index: 20;
+  background-color: transparent;
+  border-color: transparent;
+  transition: background-color .5s ease,border-color .5s ease;
+}
+.navbar a {
+  text-shadow: 0 0 0.2em rgba(0,0,0,.5);
+  font-size: 13px;
+  line-height: 18px;
+  margin-left: 24px;
+}
+.navbar .logo {
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  margin-top: 2px;
+}
+
+
+
+/* factor this out into own file */
 .content {
   margin: .875em .5em;
   padding: 0 !important;

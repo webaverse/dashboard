@@ -13,7 +13,7 @@ a {
   border-bottom: none;
   position: relative;
   height: 64px;
-  margin-bottom: 44px;
+  padding-bottom: 10px;
   border-bottom: 1px solid rgba(103,99,112,.2);
   width: 100%;
   box-sizing: content-box;

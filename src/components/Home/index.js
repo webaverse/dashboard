@@ -1,20 +1,23 @@
 import React from 'react';
 import '../../assets/css/home.css';
-import logo from '../../assets/images/webaverse.png';
+import logo from '../../assets/images/hero.gif';
 
 const Hero = ({heroBg, headTitle, title, subtitle, callToAction}) => 
-  <div className="hero"
-       style={{ 
-         background: `url(${heroBg})`, 
-         backgroundRepeat: "no-repeat",
-         backgroundPosition: "calc(50% + 266px)",
-       }}
-   >
-    <div className="hero-copy">
-      <h1>{headTitle}</h1>
-      <h1>{title}</h1>
-      <p>{subtitle}</p>
-      <p>{callToAction}</p>
+  <div className="hero-container">
+    <div className="hero-bg"
+      style={{ 
+        background: `url(${heroBg})`, 
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+    />
+    <div className="hero">
+      <div className="hero-copy">
+        <h1>{headTitle}</h1>
+        <h1>{title}</h1>
+        <p>{subtitle}</p>
+        <p>{callToAction}</p>
+      </div>
     </div>
   </div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import { Container, Row, Col } from 'react-grid-system';
 import '../../assets/css/home.css';
 import logo from '../../assets/images/hero.gif';
 
@@ -21,7 +22,7 @@ const Hero = ({heroBg, title, subtitle, callToAction, ctaUrl}) =>
     </div>
   </div>
 
-const SecondaryHero = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl}) => 
+const SecondSection = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl}) => 
   <div className="hero-container">
     <div className="hero-bg"
       style={{ 
@@ -31,16 +32,25 @@ const SecondaryHero = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl
       }}
     />
     <div className="hero-secondary">
-      <div className="hero-copy">
-        <h1 className="head-title">{headTitle}</h1>
-        <h1 className="secondary">{title}</h1>
-        <p className="secondary">{subtitle}</p>
-        <a href={ctaUrl} className="button">{callToAction}</a>
-      </div>
+      <Container>
+        <Row style={{ justifyContent: "center" }}>
+          <Col sm={6}>
+            <div className="hero-copy">
+              <h1 className="head-title">{headTitle}</h1>
+              <h1 className="secondary">{title}</h1>
+              <p className="secondary">{subtitle}</p>
+              <a href={ctaUrl} className="button">{callToAction}</a>
+            </div>
+          </Col>
+          <Col sm={6}>
+            <img src={logo} style={{ height: "250px", width: "250px" }} />
+          </Col>
+        </Row>
+      </Container>
     </div>
   </div>
 
-const TertiaryHero = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl}) => 
+const ThirdSection = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl}) => 
   <div className="hero-container">
     <div className="hero-bg"
       style={{ 
@@ -50,12 +60,49 @@ const TertiaryHero = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl}
       }}
     />
     <div className="hero-secondary">
-      <div className="hero-copy">
-        <h1 className="head-title">{headTitle}</h1>
-        <h1 className="secondary">{title}</h1>
-        <p className="secondary">{subtitle}</p>
-        <Link to={ctaUrl} className="button">{callToAction}</Link>
-      </div>
+      <Container>
+        <Row style={{ justifyContent: "center" }}>
+          <Col sm={6}>
+            <img src={logo} style={{ height: "250px", width: "250px" }} />
+          </Col>
+          <Col sm={6}>
+            <div className="hero-copy">
+              <h1 className="head-title">{headTitle}</h1>
+              <h1 className="secondary">{title}</h1>
+              <p className="secondary">{subtitle}</p>
+              <a href={ctaUrl} className="button">{callToAction}</a>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  </div>
+
+const FourthSection = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl}) => 
+  <div className="hero-container">
+    <div className="hero-bg"
+      style={{ 
+        background: `url(${heroBg})`, 
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+    />
+    <div className="hero-secondary">
+      <Container>
+        <Row style={{ justifyContent: "center" }}>
+          <Col sm={6}>
+            <div className="hero-copy">
+              <h1 className="head-title">{headTitle}</h1>
+              <h1 className="secondary">{title}</h1>
+              <p className="secondary">{subtitle}</p>
+              <Link to={ctaUrl} className="button">{callToAction}</Link>
+            </div>
+          </Col>
+          <Col sm={6}>
+            <img src={logo} style={{ height: "250px", width: "250px" }} />
+          </Col>
+        </Row>
+      </Container>
     </div>
   </div>
 
@@ -70,7 +117,7 @@ export default () =>
       callToAction="GET STARTED"
       ctaUrl="https://app.webaverse.com/edit.html"
     />
-    <SecondaryHero
+    <SecondSection
       heroBg=""
       headTitle="Explore"
       title="Lose yourself in an expansive, evolving world"
@@ -78,7 +125,7 @@ export default () =>
       callToAction="START EXPLORING"
       ctaUrl="https://app.webaverse.com/edit.html"
     />
-    <SecondaryHero
+    <ThirdSection
       heroBg=""
       headTitle="Create"
       title="Express yourself with your full capabilities"
@@ -86,7 +133,7 @@ export default () =>
       callToAction="START CREATING"
       ctaUrl="https://docs.webaverse.com/docs/create/overview"
     />
-    <TertiaryHero
+    <FourthSection
       heroBg=""
       headTitle="Market"
       title="Digital assets from the best creators"

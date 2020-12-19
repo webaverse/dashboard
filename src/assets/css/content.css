@@ -8,6 +8,7 @@
   background-color: #242129;
   transition: transform .2s ease-in-out,box-shadow .2s ease-in-out;
   font-size: .75em;
+  text-align: center;
 }
 .content:hover {
   transform: translateY(-2.5px);

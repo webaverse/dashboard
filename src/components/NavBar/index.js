@@ -22,7 +22,7 @@ export default () =>
           </div>
 
           <div className="right-menu-container">
-            <a href="/account">
+            <a href="/settings">
               <img className="accountPicture" src={preview} />
             </a>
           </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAppContext } from "../../libs/contextLib";
 import { loginWithEmailOrPrivateKey, getAddress } from "../../functions/UIStateFunctions.js";
 
@@ -45,10 +45,7 @@ export default () => {
 
   return (
     <>
-      <h1>Webaverse</h1>
-      <p>
-        text here
-      </p>
+      <h1>Settings</h1>
     </>
   )
 }

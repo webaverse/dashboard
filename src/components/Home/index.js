@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
 import '../../assets/css/home.css';
 import logo from '../../assets/images/hero.gif';
+import image2 from '../../assets/images/landingImage2.png';
 import image3 from '../../assets/images/landingImage3.png';
 import image4 from '../../assets/images/landingImage4.png';
 
@@ -45,7 +46,7 @@ const SecondSection = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl
             </div>
           </Col>
           <Col sm={6}>
-            <img src={image3} />
+            <img src={image2} />
           </Col>
         </Row>
       </Container>

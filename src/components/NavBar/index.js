@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../../assets/images/webaverse.png';
+import preview from '../../assets/images/preview.png';
 
 export default () => 
   <div className="navbar">
@@ -22,7 +23,7 @@ export default () =>
 
           <div className="right-menu-container">
             <a href="/account">
-              <img className="logo" src={logo} />
+              <img className="accountPicture" src={preview} />
             </a>
           </div>
 

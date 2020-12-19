@@ -45,8 +45,8 @@ export default () =>
   <>
     <Hero 
       heroBg={logo}
-      title="Webaverse"
-      subtitle="The open metaverse"
+      title="Welcome To Webaverse"
+      subtitle="The open, interoperable metaverse built with existing communities."
       callToAction="GET STARTED"
       ctaUrl="https://docs.webaverse.com"
     />

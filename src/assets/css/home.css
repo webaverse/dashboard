@@ -76,8 +76,8 @@
   bottom: 0;
   width: 120vw;
   height: 100%;
-  -webkit-filter: blur(2px);
-  filter: blur(2px);
-  opacity: .5;
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+  opacity: .2;
   z-index: -9999;
 }

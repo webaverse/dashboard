@@ -9,6 +9,7 @@ export default () =>
           <a href="/">
             <img className="logo" src={logo} />
           </a>
+          <a className="item" href="/browse">Browse</a>
           <a className="item" href="/creators">Creators</a>
           <a className="item" href="https://docs.webaverse.com">Docs</a>
           <a className="item" href="https://blog.webaverse.com">Blog</a>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Web3 from 'web3';
+import { Container, Row, Col } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
 import { loginWithEmailOrPrivateKey, getAddress, pullUser } from "../../functions/UIStateFunctions.js";
 
@@ -62,31 +63,26 @@ export default () => {
   const handleChange = (e) => setKey(e.target.value);
 
   return (
-    <>
-      <h1>Settings</h1>
-      <div>
-        <input
-          type="text"
-          value={key}
-          onChange={(e) => handleChange(e)}
-        /> 
-      </div>
-
-      <br /><br />
-
-      <div>
-        <a className="button" onClick={() => loginWithKey() }>
-          Login With Key 
-        </a>
-      </div>
-
-      <br /><br />
-
-      <div>
-        <a className="button" onClick={() => loginWithMetaMask() }>
-          Login With MetaMask
-        </a>
-      </div>
-    </>
+    <Container>
+      <Row style={{ justifyContent: "center" }}>
+        <Col sm={7}>
+          <h1>Private Key</h1>
+          <input
+            type="text"
+            value={key}
+            onChange={(e) => handleChange(e)}
+          /> 
+          <a className="button" onClick={() => loginWithKey() }>
+            Login With Key 
+          </a>
+        </Col>
+        <Col sm={7}>
+          <h1>MetaMask</h1>
+          <a className="button" onClick={() => loginWithMetaMask() }>
+            Login With MetaMask
+          </a>
+        </Col>
+      </Row>
+    </Container>
   )
 }

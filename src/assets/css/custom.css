@@ -109,3 +109,8 @@ a {
   transform: translateY(-2.5px);
   background-color: #d4055a;
 }
+input {
+  height: 30px;
+  margin: 25px 0px;
+  width: 100%;
+}

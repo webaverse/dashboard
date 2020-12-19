@@ -2,10 +2,11 @@ import React, { Suspense, useState } from 'react'
 import createHistory from 'history/createBrowserHistory'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import { AppContext } from "../libs/contextLib";
+import MoonLoader from "react-spinners/MoonLoader";
 import NavBar from './NavBar';
 import '../assets/css/custom.css';
 
-const Loader = () =>  <BounceLoader css={"display: inline-block"} size={50} color={"#c4005d"} />
+const Loader = () =>  <MoonLoader css={"display: inline-block"} size={50} color={"#c4005d"} />
 const history = createHistory()
 
 const SignIn = React.lazy(() => import('./SignIn'));

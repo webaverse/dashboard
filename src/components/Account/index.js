@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import BounceLoader from "react-spinners/BounceLoader";
+import MoonLoader from "react-spinners/MoonLoader";
 import { Container, Row, Col } from 'react-grid-system';
 import Web3 from 'web3';
 import { useAppContext } from "../../libs/contextLib";
@@ -44,7 +44,7 @@ export default () => {
 
   return (
     <>
-      <BounceLoader
+      <MoonLoader
         css={"display: inline-block"}
         size={50}
         color={"#c4005d"}

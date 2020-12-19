@@ -33,17 +33,15 @@ export default () => {
    ) : null
 
   const Profile = () => profile ? 
-     <>
-       <Col sm={12}>
-         <div className="profileHeader">
-           <div className="profileName">
-             <h1>{profile.name}</h1>
-             <p>{profile.address}</p>
-           </div>
-           <img src={profile.avatarPreview} />
-         </div>
-       </Col>
-     </>
+    <Col sm={10}>
+      <div className="profileHeader">
+        <div className="profileName">
+          <h1>{profile.name}</h1>
+          <p>{profile.address}</p>
+        </div>
+        <img src={profile.avatarPreview} />
+      </div>
+    </Col>
   : null
 
 

@@ -19,7 +19,7 @@
 }
 .profileHeader {
   display: flex;
-  width: 80%;
+  width: auto;
 }
 .profileHeader img {
   border-radius: 50%;

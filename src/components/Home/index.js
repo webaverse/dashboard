@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import '../../assets/css/home.css';
 import logo from '../../assets/images/hero.gif';
 
@@ -15,7 +16,7 @@ const Hero = ({heroBg, title, subtitle, callToAction, ctaUrl}) =>
       <div className="hero-copy">
         <h1 className="primary">{title}</h1>
         <p className="primary">{subtitle}</p>
-        <a href={ctaUrl} className="button">{callToAction}</a>
+        <Link to={ctaUrl} className="button">{callToAction}</Link>
       </div>
     </div>
   </div>
@@ -34,7 +35,7 @@ const SecondaryHero = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl
         <h1 className="head-title">{headTitle}</h1>
         <h1 className="secondary">{title}</h1>
         <p className="secondary">{subtitle}</p>
-        <a href={ctaUrl} className="button">{callToAction}</a>
+        <Link to={ctaUrl} className="button">{callToAction}</Link>
       </div>
     </div>
   </div>

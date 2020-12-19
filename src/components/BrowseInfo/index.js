@@ -17,8 +17,6 @@ export default () => {
   useEffect(() => {
     getInventoryForCreator(id, 0, true, globalState).then(res => {
       setItem(res.creatorInventories[id][0]);
-      console.log(res.creatorInventories[id][0]);
-      console.log("id", id);
       setLoading(false);
     });
 

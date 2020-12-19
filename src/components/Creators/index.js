@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import MoonLoader from "react-spinners/MoonLoader";
 import { Container, Row, Col } from 'react-grid-system';
 import { useParams } from "react-router-dom"
@@ -23,10 +24,10 @@ export default () => {
   const Creators = () => creators ? creators.map((item, i) =>
      item.avatarPreview && item.name ?
        <Col key={i} className="content" sm={2}>
-         <a href={"/accounts/" + item.address}>
+         <Link to={"/accounts/" + item.address}>
            <img src={item.avatarPreview} />
            <h3>{item.name}</h3>
-         </a>
+         </Link>
        </Col>
      : null
    ) : null

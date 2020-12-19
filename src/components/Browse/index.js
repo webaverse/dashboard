@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import MoonLoader from "react-spinners/MoonLoader";
 import { Container, Row, Col } from 'react-grid-system';
 import { useParams } from "react-router-dom"
@@ -24,10 +25,10 @@ export default () => {
     seller.entries.map((entry, i) =>
       entry.image && entry.name ?
         <Col key={i} className="content" sm={2}>
-          <a href={"/browse/" + entry.id}>
+          <Link to={"/browse/" + entry.id}>
             <img src={entry.image} />
             <h3>{entry.name}</h3>
-          </a>
+          </Link>
         </Col>
       : null
     )

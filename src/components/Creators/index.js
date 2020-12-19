@@ -23,7 +23,7 @@ export default () => {
 
   const Creators = () => creators ? creators.map(item =>
      item.avatarPreview && item.name ?
-       <Col className="content" sm={3}>
+       <Col className="content" sm={2}>
          <a href={"/accounts/" + item.address}>
            <img src={item.avatarPreview} />
            <h3>{item.name}</h3>

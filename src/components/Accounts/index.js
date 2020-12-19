@@ -26,7 +26,7 @@ export default () => {
   }, []);
 
   const Inventory = () => inventory ? inventory.map(item =>
-     <Col className="content" sm={3}>
+     <Col className="content" sm={2}>
        <img src={item.image} />
        <h3>{item.name}</h3>
      </Col>

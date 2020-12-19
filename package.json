@@ -37,7 +37,8 @@
     "start": "webpack-dev-server --mode development --open --hot --port 8042",
     "start:prod": "webpack-dev-server --mode production --open --hot --port 8042",
     "prebuild": "webpack --mode production",
-    "build": "npm run prebuild && cp dist/index.html dist/404.html",
+    "build": "npm run prebuild && cp CNAME dist/CNAME && cp dist/index.html dist/404.html",
+    "deploy": "npm run build && gh-pages -d dist",
     "lint": "eslint './src/**/*.js'",
     "lint:ci": "npm run lint -- -o lint-results.json -f json",
     "lint-fix": "eslint './src/**/*.js' --fix"

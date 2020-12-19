@@ -16,12 +16,31 @@ const Hero = ({heroBg, title, subtitle, callToAction, ctaUrl}) =>
       <div className="hero-copy">
         <h1 className="primary">{title}</h1>
         <p className="primary">{subtitle}</p>
-        <Link to={ctaUrl} className="button">{callToAction}</Link>
+        <a href={ctaUrl} className="button">{callToAction}</a>
       </div>
     </div>
   </div>
 
 const SecondaryHero = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl}) => 
+  <div className="hero-container">
+    <div className="hero-bg"
+      style={{ 
+        background: `url(${heroBg})`, 
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+    />
+    <div className="hero-secondary">
+      <div className="hero-copy">
+        <h1 className="head-title">{headTitle}</h1>
+        <h1 className="secondary">{title}</h1>
+        <p className="secondary">{subtitle}</p>
+        <a href={ctaUrl} className="button">{callToAction}</a>
+      </div>
+    </div>
+  </div>
+
+const TertiaryHero = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl}) => 
   <div className="hero-container">
     <div className="hero-bg"
       style={{ 
@@ -67,7 +86,7 @@ export default () =>
       callToAction="START CREATING"
       ctaUrl="https://docs.webaverse.com/docs/create/overview"
     />
-    <SecondaryHero
+    <TertiaryHero
       heroBg=""
       headTitle="Market"
       title="Digital assets from the best creators"

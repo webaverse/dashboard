@@ -21,7 +21,7 @@ export default () => {
             <div className="secondary-menu">
               <Link className="item" to="/browse">Browse</Link>
               <Link className="item" to="/creators">Creators</Link>
-              <Link className="item" to="/creators">Mint</Link>
+              <Link className="item" to="/mint">Mint</Link>
               <Link className="item" to="https://docs.webaverse.com">Docs</Link>
               <Link className="item" to="https://blog.webaverse.com">Blog</Link>
             </div>

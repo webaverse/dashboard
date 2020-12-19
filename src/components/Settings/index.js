@@ -70,11 +70,18 @@ export default () => {
           value={key}
           onChange={(e) => handleChange(e)}
         /> 
+      </div>
+
+      <br /><br />
+
+      <div>
         <a className="button" onClick={() => loginWithKey() }>
           Login With Key 
         </a>
       </div>
+
       <br /><br />
+
       <div>
         <a className="button" onClick={() => loginWithMetaMask() }>
           Login With MetaMask

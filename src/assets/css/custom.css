@@ -7,6 +7,7 @@ body {
 }
 a {
   color: #fff;
+  text-decoration: none;
 }
 .navbar {
   margin-bottom: 0;

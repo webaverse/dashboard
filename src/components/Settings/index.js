@@ -66,6 +66,12 @@ export default () => {
     <Container>
       <Row style={{ justifyContent: "center" }}>
         <Col sm={7}>
+          <h1>Account Information</h1>
+          <p>{globalState.name ? `Name: ${globalState.name}` : null}</p> 
+          <p>{globalState.address ? `Address: ${globalState.address}` : null}</p> 
+          <img className="accountPicture" src={globalState.avatarPreview ? globalState.avatarPreview : null} />
+        </Col>
+        <Col sm={7}>
           <h1>Private Key</h1>
           <input
             type="text"

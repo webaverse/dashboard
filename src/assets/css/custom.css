@@ -76,13 +76,13 @@ a {
   margin: 0;
 }
 .navbar .logo,
-.navbar .accountPicture {
+.accountPicture {
   cursor: pointer;
   width: 36px;
   height: 36px;
   margin-top: 2px;
 }
-.navbar .accountPicture {
+.accountPicture {
   border: 2px solid #312936;    
   border-radius: 10px;
   -moz-border-radius: 10px;

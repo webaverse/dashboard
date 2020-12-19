@@ -113,6 +113,18 @@ export const getCreators = async (page, state) => {
   return newState;
 };
 
+export const pullUser = async (state) => {
+
+  const address = state.address;
+  const res = await fetch(`https://accounts.webaverse.com/${address}`);
+  const result = await res.json();
+  const newState = {
+    ...state,
+    address,
+    ...result
+  };
+  return newState;
+};
 
 export const pullUserObject = async (state) => {
 

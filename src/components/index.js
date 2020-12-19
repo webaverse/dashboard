@@ -49,9 +49,9 @@ const App = () => {
 
   return (
     <>
-      <NavBar />
       <Router history={history}>
         <AppContext.Provider value={{ globalState, setGlobalState }}>
+          <NavBar />
           <Switch>
             <Route path='/accounts/:id' component={() => <Suspense fallback={Loader}><Accounts /></Suspense>} />
             <Route path='/creators' component={() => <Suspense fallback={Loader}><Creators /></Suspense>} />

@@ -1,10 +1,20 @@
 import React, { useState } from 'react'
+import Web3 from 'web3';
 import { useAppContext } from "../../libs/contextLib";
-import { loginWithEmailOrPrivateKey, getAddress } from "../../functions/UIStateFunctions.js";
+import { loginWithEmailOrPrivateKey, getAddress, pullUser } from "../../functions/UIStateFunctions.js";
 
 export default () => {
   const { globalState, setGlobalState } = useAppContext();
   const [loading, setLoading] = useState(true);
+
+  const ethEnabled = () => {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      window.ethereum.enable();
+      return true;
+    }
+    return false;
+  }
 
   const loginWithKey = (pKey) => {
     loginWithEmailOrPrivateKey(pKey, globalState)
@@ -30,14 +40,22 @@ export default () => {
         if (!web3.utils.isAddress(account)) {
           return;
         } else {
-          window.location.href = '/accounts/' + account;
+          setGlobalState({ ...globalState, address: account[0] });
+          pullUser({ ...globalState, address: account[0] })
+          .then(res => {
+            setGlobalState(res);
+          });
         }
       });
       ethereum.on('accountsChanged', function (accounts) {
         if(!web3.utils.isAddress(accounts[0])) {
           return;
         } else {
-          window.location.href = '/accounts/' + accounts[0];
+          setGlobalState({ ...globalState, address: accounts[0] });
+          pullUser({ ...globalState, address: account[0] })
+          .then(res => {
+            setGlobalState(res);
+          });
         }
       });
     }
@@ -46,6 +64,9 @@ export default () => {
   return (
     <>
       <h1>Settings</h1>
+      <a onClick={() => loginWithMetaMask() }>
+        <h1>Login With MetaMask</h1>
+      </a>
     </>
   )
 }

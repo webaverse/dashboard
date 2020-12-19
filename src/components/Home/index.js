@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
 import '../../assets/css/home.css';
 import logo from '../../assets/images/hero.gif';
+import image3 from '../../assets/images/landingImage3.png';
+import image4 from '../../assets/images/landingImage4.png';
 
 const Hero = ({heroBg, title, subtitle, callToAction, ctaUrl}) => 
   <div className="hero-container">
@@ -43,7 +45,7 @@ const SecondSection = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl
             </div>
           </Col>
           <Col sm={6}>
-            <img src={logo} style={{ height: "250px", width: "250px" }} />
+            <img src={image3} />
           </Col>
         </Row>
       </Container>
@@ -63,7 +65,7 @@ const ThirdSection = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl}
       <Container>
         <Row style={{ justifyContent: "center" }}>
           <Col sm={6}>
-            <img src={logo} style={{ height: "250px", width: "250px" }} />
+            <img src={image3} />
           </Col>
           <Col sm={6}>
             <div className="hero-copy">
@@ -99,7 +101,7 @@ const FourthSection = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl
             </div>
           </Col>
           <Col sm={6}>
-            <img src={logo} style={{ height: "250px", width: "250px" }} />
+            <img src={image4} />
           </Col>
         </Row>
       </Container>

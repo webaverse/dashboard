@@ -85,3 +85,8 @@
   opacity: .2;
   z-index: -9999;
 }
+.hero-secondary img {
+  height: 270px; 
+  width: 480px;
+  padding-top: 25px;
+}

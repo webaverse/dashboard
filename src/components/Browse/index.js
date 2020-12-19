@@ -5,32 +5,33 @@ import { useParams } from "react-router-dom"
 import Web3 from 'web3';
 import axios from "axios";
 import { useAppContext } from "../../libs/contextLib";
-import { getCreators } from "../../functions/UIStateFunctions.js";
+import { getBooths } from "../../functions/UIStateFunctions.js";
 
 export default () => {
   const { id } = useParams();
   const { globalState, setGlobalState } = useAppContext();
   const [loading, setLoading] = useState(true);
-  const [creators, setCreators] = useState(null);
+  const [sales, setSales] = useState(null);
 
   useEffect(() => {
-    getCreators(0, globalState).then(res => {
-      setCreators(res.creators[0]);
-      console.log(res.creators[0]);
+    getBooths(0, globalState).then(res => {
+      setSales(res.booths[0]);
       setLoading(false);
     });
   }, []);
 
-  const Creators = () => creators ? creators.map(item =>
-     item.avatarPreview && item.name ?
-       <Col className="content" sm={2}>
-         <a href={"/accounts/" + item.address}>
-           <img src={item.avatarPreview} />
-           <h3>{item.name}</h3>
-         </a>
-       </Col>
-     : null
-   ) : null
+  const Sales = () => sales ? sales.map(seller =>
+    seller.entries.map((entry, i) =>
+      entry.image && entry.name ?
+        <Col key={i} className="content" sm={2}>
+          <a href={"/browse/" + entry.id}>
+            <img src={entry.image} />
+            <h3>{entry.name}</h3>
+          </a>
+        </Col>
+      : null
+    )
+  ) : null
 
   return (
     <>
@@ -44,9 +45,7 @@ export default () => {
                 loading={loading}
               />
         :
-          <>
-            <Creators />
-          </>
+          <Sales />
         }
         </Row>
       </Container>

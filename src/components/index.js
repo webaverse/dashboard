@@ -12,6 +12,7 @@ const history = createHistory()
 
 const SignIn = React.lazy(() => import('./SignIn'));
 const Browse = React.lazy(() => import('./Browse'));
+const BrowseInfo = React.lazy(() => import('./BrowseInfo'));
 const Mint = React.lazy(() => import('./Mint'));
 const Creators = React.lazy(() => import('./Creators'));
 const Accounts = React.lazy(() => import('./Accounts'));
@@ -57,6 +58,7 @@ const App = () => {
             <Route path='/accounts/:id' component={() => <Suspense fallback={Loader}><Accounts /></Suspense>} />
             <Route path='/account' component={() => <Suspense fallback={Loader}><Account /></Suspense>} />
             <Route path='/creators' component={() => <Suspense fallback={Loader}><Creators /></Suspense>} />
+            <Route path='/browse/:id' component={() => <Suspense fallback={Loader}><BrowseInfo /></Suspense>} />
             <Route path='/browse' component={() => <Suspense fallback={Loader}><Browse /></Suspense>} />
             <Route path='/mint' component={() => <Suspense fallback={Loader}><Mint /></Suspense>} />
             <Route path='/settings' component={() => <Suspense fallback={Loader}><Settings /></Suspense>} />

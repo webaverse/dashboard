@@ -1,7 +1,8 @@
 .hero-container {
   position: relative;
 }
-.hero {
+.hero,
+.hero-secondary {
   height: 100vh;
   min-height: 790px;
   width: 100%;
@@ -18,7 +19,10 @@
   padding: 64px;
   margin-bottom: 44px;
 }
-.hero .hero-copy h1.primary {
+.hero-secondary {
+  min-height: 300px;
+}
+.hero-container .hero-copy h1.primary {
   font-size: 64px;
   font-weight: 700;
   font-stretch: normal;
@@ -27,7 +31,7 @@
   letter-spacing: normal;
   text-shadow: 0 0 0.1em rgba(0,0,0,.5);
 }
-.hero .hero-copy p.primary {
+.hero-container .hero-copy p.primary {
   font-size: 28px;
   font-weight: 300;
   font-stretch: normal;
@@ -35,22 +39,22 @@
   line-height: 1.81;
   letter-spacing: .3px;
 }
-.hero .hero-copy .head-title {
+.hero-container .hero-copy .head-title {
   color: #c4005d;
 }
-.hero .hero-copy h1.secondary {
-  font-size: 48px;
+.hero-container .hero-copy h1.secondary {
+  font-size: 2.5em;
   font-weight: 600;
   line-height: 1.21;
   letter-spacing: .3px;
 }
-.hero .hero-copy p.secondary {
-  font-size: 17px;
+.hero-container .hero-copy p.secondary {
+  font-size: 1.1em;
   font-weight: 300;
   line-height: 1.81;
   letter-spacing: .3px;
 }
-.hero .hero-copy .button {
+.hero-container .hero-copy .button {
   background-color: #c4005d;
   border-radius: 6px;
   text-decoration: none;
@@ -67,7 +71,7 @@
   text-align: center;
   font-weight: 600;
 }
-.hero .hero-copy .button:hover {
+.hero-container .hero-copy .button:hover {
   transform: translateY(-2.5px);
   background-color: #d4055a;
 }

@@ -5,7 +5,7 @@ import { loginWithEmailOrPrivateKey, getAddress, pullUser } from "../../function
 
 export default () => {
   const { globalState, setGlobalState } = useAppContext();
-  const [loading, setLoading] = useState(true);
+  const [key, setKey] = useState(null);
 
   const ethEnabled = () => {
     if (window.ethereum) {
@@ -16,17 +16,17 @@ export default () => {
     return false;
   }
 
-  const loginWithKey = (pKey) => {
-    loginWithEmailOrPrivateKey(pKey, globalState)
+  const loginWithKey = () => {
+    loginWithEmailOrPrivateKey(key, globalState)
     .then(res => {
-      console.log(res);
-      const address = getAddress(res);
-      console.log(address);
+      pullUser(res)
+      .then(res => {
+        setGlobalState(res);
+      });
 
     })
     .catch(err => {
-        // alert err here
-        // redirect here
+      console.log(err);
     });
   }
   const loginWithMetaMask = () => {
@@ -40,7 +40,6 @@ export default () => {
         if (!web3.utils.isAddress(account)) {
           return;
         } else {
-          setGlobalState({ ...globalState, address: account[0] });
           pullUser({ ...globalState, address: account[0] })
           .then(res => {
             setGlobalState(res);
@@ -51,7 +50,6 @@ export default () => {
         if(!web3.utils.isAddress(accounts[0])) {
           return;
         } else {
-          setGlobalState({ ...globalState, address: accounts[0] });
           pullUser({ ...globalState, address: account[0] })
           .then(res => {
             setGlobalState(res);
@@ -61,12 +59,27 @@ export default () => {
     }
   }
 
+  const handleChange = (e) => setKey(e.target.value);
+
   return (
     <>
       <h1>Settings</h1>
-      <a onClick={() => loginWithMetaMask() }>
-        <h1>Login With MetaMask</h1>
-      </a>
+      <div>
+        <input
+          type="text"
+          value={key}
+          onChange={(e) => handleChange(e)}
+        /> 
+        <a className="button" onClick={() => loginWithKey() }>
+          Login With Key 
+        </a>
+      </div>
+      <br /><br />
+      <div>
+        <a className="button" onClick={() => loginWithMetaMask() }>
+          Login With MetaMask
+        </a>
+      </div>
     </>
   )
 }

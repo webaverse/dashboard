@@ -32,7 +32,7 @@ export default () => {
   
             <div className="right-menu-container">
               <a href="/settings">
-                <img className="accountPicture" src={accountPicture ? accountPicture : null} />
+                <img className="accountPicture" src={accountPicture ? accountPicture : preview} />
               </a>
             </div>
   

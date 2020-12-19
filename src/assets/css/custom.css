@@ -88,3 +88,24 @@ a {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
+.button {
+  background-color: #c4005d;
+  border-radius: 6px;
+  text-decoration: none;
+  width: calc(50% - 1em);
+  max-width: 250px;
+  padding: .85em 4em;
+  font-size: 15px;
+  margin: 1em 1em 1em 0;
+  white-space: nowrap;
+  font-style: normal;
+  font-stretch: expanded;
+  letter-spacing: normal;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 600;
+}
+.button:hover {
+  transform: translateY(-2.5px);
+  background-color: #d4055a;
+}

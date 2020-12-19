@@ -1,32 +1,37 @@
 import React from 'react';
 import '../../assets/css/home.css';
+import logo from '../../assets/images/webaverse.png';
+
+const Hero = ({heroBg, headTitle, title, subtitle, callToAction}) => 
+  <div className="hero"
+       style={{ 
+         background: `url(${heroBg})`, 
+         backgroundRepeat: "no-repeat",
+         backgroundPosition: "calc(50% + 266px)",
+       }}
+   >
+    <div className="hero-copy">
+      <h1>{headTitle}</h1>
+      <h1>{title}</h1>
+      <p>{subtitle}</p>
+      <p>{callToAction}</p>
+    </div>
+  </div>
 
 export default () => 
   <>
-    <div className="hero">
-      <div className="hero-copy">
-        <h1>Welcome to Webaverse</h1>
-        <p>Explore here</p>
-        <p>GET STARTED</p>
-      </div>
-    </div>
-    <div>
-      <h1>Webaverse</h1>
-      <div>
-        <h2>Explore</h2>
-        <h4>Lose yourself in an amazing, evolving world</h4>
-        <button>START EXPLORING</button>
-      </div>
-      <div>
-        <h2>Create</h2>
-        <h4>Test the limits of your imagination</h4>
-        <button>START BUILDING</button>
-        <button>START DEVELOPING</button>
-      </div>
-      <div>
-        <h2>Trade</h2>
-        <h4>The virtual destination for digital assets</h4>
-        <button>START BROWSING</button>
-      </div>
-    </div>
+    <Hero 
+      heroBg={logo}
+      headTitle=""
+      title="Webaverse"
+      subtitle="The open metaverse"
+      callToAction="GET STARTED"
+    />
+    <Hero 
+      heroBg={logo}
+      headTitle="Explore"
+      title="Lose yourself in the music, the moment"
+      subtitle="Look. If you had one shot, or one opportunity, to sieze everything you ever wanted."
+      callToAction="START EXPLORING"
+    />
   </>

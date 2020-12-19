@@ -5,6 +5,7 @@ import { AppContext } from "../libs/contextLib";
 import MoonLoader from "react-spinners/MoonLoader";
 import NavBar from './NavBar';
 import '../assets/css/custom.css';
+import '../assets/css/content.css';
 
 const Loader = () =>  <MoonLoader css={"display: inline-block"} size={50} color={"#c4005d"} />
 const history = createHistory()

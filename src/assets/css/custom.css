@@ -22,59 +22,50 @@ a {
   border-color: transparent;
   transition: background-color .5s ease,border-color .5s ease;
 }
-.navbar a {
+.navbar .container {
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  height: 100%;
+  background-color: transparent;
+  transition: background-color .25s ease;
+  width: 933px;
+  margin-left: auto!important;
+  margin-right: auto!important;
+  display: block;
+  max-width: 100%!important;
+}
+.navbar .container .navbar-menu {
+  position: relative;
+}
+.navbar .container .navbar-menu .secondary-menu .item {
   text-shadow: 0 0 0.2em rgba(0,0,0,.5);
+  font-weight: 400;
+  color: #676370;
+  border-radius: 6px;
+  text-transform: uppercase;
+  padding: 0;
   font-size: 13px;
-  line-height: 18px;
-  margin-left: 24px;
+  box-shadow: none;
+  border: none;
+  margin: 0 .85714286em;
+  background: 0 0;
+  transition: color .1s ease;
+  vertical-align: middle;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  flex: 0 0 auto;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.navbar .navbar-menu .secondary-menu {
+  margin: 0;
 }
 .navbar .logo {
   cursor: pointer;
   width: 36px;
   height: 36px;
   margin-top: 2px;
-}
-
-
-
-/* factor this out into own file */
-.content {
-  margin: .875em .5em;
-  padding: 0 !important;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
-  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.16);
-  border: 1px solid rgba(0,0,0,.02);
-  border-radius: 8px;
-  background-color: #242129;
-  transition: transform .2s ease-in-out,box-shadow .2s ease-in-out;
-  font-size: .75em;
-}
-.content:hover {
-  transform: translateY(-2.5px);
-}
-.content img {
-  margin: auto;
-  min-height: 80%;
-  max-height: 80%;
-  width: 100%;
-  border-style: none;
-}
-.profileHeader {
-  display: flex;
-  width: 80%;
-}
-.profileHeader img {
-  border-radius: 50%;
-  width: auto;
-  max-height: 300px;
-}
-.profileHeader .profileName {
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.profileHeader .profileName * {
-  width: 100%;
 }

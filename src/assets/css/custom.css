@@ -13,7 +13,7 @@ a {
   border-bottom: none;
   position: relative;
   height: 64px;
-  padding-bottom: 10px;
+  padding: 10px 0;
   border-bottom: 1px solid rgba(103,99,112,.2);
   width: 100%;
   box-sizing: content-box;
@@ -38,6 +38,17 @@ a {
 }
 .navbar .container .navbar-menu {
   position: relative;
+  display: flex;
+}
+.navbar .container .navbar-menu div {
+  display: inline;
+}
+.navbar .container .navbar-menu .secondary-menu {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+.navbar .container .navbar-menu .right-menu-container {
+  margin-left: auto;
 }
 .navbar .container .navbar-menu .secondary-menu .item {
   text-shadow: 0 0 0.2em rgba(0,0,0,.5);

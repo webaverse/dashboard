@@ -5,16 +5,27 @@ export default () =>
   <div className="navbar">
     <div className="container">
       <div className="navbar-menu">
-        <div className="secondary-menu">
-          <a href="/">
-            <img className="logo" src={logo} />
-          </a>
-          <a className="item" href="/browse">Browse</a>
-          <a className="item" href="/creators">Creators</a>
-          <a className="item" href="https://docs.webaverse.com">Docs</a>
-          <a className="item" href="https://blog.webaverse.com">Blog</a>
-          <a className="item" href="/account">My Account</a>
-        </div>
+
+          <div className="left-menu-container">
+            <a href="/">
+              <img className="logo" src={logo} />
+            </a>
+          </div>
+
+          <div className="secondary-menu">
+            <a className="item" href="/browse">Browse</a>
+            <a className="item" href="/creators">Creators</a>
+            <a className="item" href="/creators">Mint</a>
+            <a className="item" href="https://docs.webaverse.com">Docs</a>
+            <a className="item" href="https://blog.webaverse.com">Blog</a>
+          </div>
+
+          <div className="right-menu-container">
+            <a href="/account">
+              <img className="logo" src={logo} />
+            </a>
+          </div>
+
       </div>
     </div>
   </div>

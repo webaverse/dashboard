@@ -37,6 +37,19 @@ const App = () => {
     lastFileId: null
   });
 
+  React.useEffect(() => {
+    if (globalState.address) {
+      localStorage.setItem('globalState', JSON.stringify(globalState));
+    }
+  }, [globalState]);
+
+  React.useEffect(() => {
+    if (!globalState.address && localStorage.getItem('globalState')) {
+     setGlobalState(JSON.parse(localStorage.getItem('globalState')));
+    }
+  }, []);
+
+
   return (
         <AppContext.Provider value={{ globalState, setGlobalState }}>
           <NavBar />

@@ -22,8 +22,8 @@ export default () => {
               <Link className="item" to="/browse">Browse</Link>
               <Link className="item" to="/creators">Creators</Link>
               <Link className="item" to="/mint">Mint</Link>
-              <Link className="item" to="https://docs.webaverse.com">Docs</Link>
-              <Link className="item" to="https://blog.webaverse.com">Blog</Link>
+              <a className="item" href="https://docs.webaverse.com">Docs</a>
+              <a className="item" href="https://blog.webaverse.com">Blog</a>
             </div>
   
             <div className="right-menu-container">

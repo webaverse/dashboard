@@ -61,7 +61,7 @@ export default () => {
     }
   }
 
-  const handleChange = (e) => setKey(e.target.value);
+  const handleChange = e => setKey(e.target.value);
 
   return (
     <Container>
@@ -76,8 +76,7 @@ export default () => {
           <h1>Private Key</h1>
           <input
             type="text"
-            value={key}
-            onChange={(e) => handleChange(e)}
+            onChange={handleChange}
           /> 
           <a className="button" onClick={() => loginWithKey() }>
             Login With Key 

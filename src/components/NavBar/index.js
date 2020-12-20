@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import logo from '../../assets/images/webaverse.png';
 import preview from '../../assets/images/preview.png';
 import { useAppContext } from "../../libs/contextLib";
+import '../../assets/css/navbar.css';
 
 export default () => {
   const { globalState, setGlobalState } = useAppContext();

@@ -23,6 +23,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.4",
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.13",
     "axios": "^0.21.0",
     "brotli-webpack-plugin": "^1.1.0",
     "react": "^16.13.1",

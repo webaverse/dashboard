@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import createHistory from 'history/createBrowserHistory'
 import { AppContext } from "../libs/contextLib";
 import MoonLoader from "react-spinners/MoonLoader";
+
 import Routes from "./Routes";
 import NavBar from "./NavBar";
+import Footer from "./Footer";
+
 import '../assets/css/custom.css';
 import '../assets/css/content.css';
 
@@ -54,6 +57,7 @@ const App = () => {
         <AppContext.Provider value={{ globalState, setGlobalState }}>
           <NavBar />
           <Routes />
+          <Footer />
         </AppContext.Provider>
   )
 }

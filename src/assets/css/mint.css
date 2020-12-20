@@ -7,16 +7,16 @@
 }
 .file-drop-container {
   border: 1px solid #c4005d;
-  width: 100%;
-  height: auto;
+  width: 50%;
+  height: 50vh;
   vertical-align: center;
   text-align: center;
-  padding: 50;
+  margin: 0 auto;
 }
 .file-drop {
   /* relatively position the container bc the contents are absolute */
   position: relative;
-  height: 100px;
+  height: 100%;
   width: 100%;
 }
 

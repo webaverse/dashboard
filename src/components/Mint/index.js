@@ -53,9 +53,7 @@ export default () => {
   };
 
   return (
-    <Container>
-      <Row style={{ justifyContent: "center" }}>
-        <Col sm={7}>
+    <>
           { !file ?
             <div className="file-drop-container">
               <FileDrop
@@ -65,22 +63,26 @@ export default () => {
               </FileDrop>
             </div>
           :
-            <div>
-              <img className="nft-preview" src={imagePreview ? imagePreview : null} />
-              <label>Name</label>
-              <input type="text" onChange={handleNameChange} />
-              <label>Description</label>
-              <input type="text" onChange={handleDescriptionChange} />
-              <label>Quantity</label>
-              <input type="number" onChange={handleQuantityChange} />
+            <Container>
+              <Row style={{ justifyContent: "center" }}>
+                <Col sm={12}>
+                  <div>
+                    <img className="nft-preview" src={imagePreview ? imagePreview : null} />
+                    <label>Name</label>
+                    <input type="text" onChange={handleNameChange} />
+                    <label>Description</label>
+                    <input type="text" onChange={handleDescriptionChange} />
+                    <label>Quantity</label>
+                    <input type="number" onChange={handleQuantityChange} />
 
-              <a className="button" onClick={handleMintNftButton}>
-                Mint NFT
-              </a>
-            </div>
+                    <a className="button" onClick={handleMintNftButton}>
+                      Mint NFT
+                    </a>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
           }
-        </Col>
-      </Row>
-    </Container>
+    </>
   )
 }

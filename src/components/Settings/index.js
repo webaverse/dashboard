@@ -67,13 +67,13 @@ export default () => {
     <Container>
       <Row style={{ justifyContent: "center" }}>
         <Col sm={7}>
-          <h1>Account Information</h1>
+          <h2>Account Information</h2>
           <p>{globalState.name ? `Name: ${globalState.name}` : null}</p> 
           <p>{globalState.address ? `Address: ${globalState.address}` : null}</p> 
           <img className="accountPicture" src={globalState.avatarPreview ? globalState.avatarPreview : null} />
         </Col>
         <Col sm={7}>
-          <h1>Private Key</h1>
+          <h2>Private Key</h2>
           <input
             type="text"
             onChange={handleChange}
@@ -83,7 +83,7 @@ export default () => {
           </a>
         </Col>
         <Col sm={7}>
-          <h1>MetaMask</h1>
+          <h2>MetaMask</h2>
           <a className="button" onClick={() => loginWithMetaMask() }>
             Login With MetaMask
           </a>

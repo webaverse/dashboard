@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Web3 from 'web3';
 import { Container, Row, Col } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
-import { loginWithEmailOrPrivateKey, getAddress, pullUser } from "../../functions/UIStateFunctions.js";
+import { loginWithEmailOrPrivateKey, getAddress, getInventoryForCreator, pullUser } from "../../functions/UIStateFunctions.js";
 
 export default () => {
   const { globalState, setGlobalState } = useAppContext();
@@ -18,14 +18,18 @@ export default () => {
     return false;
   }
 
+  const setInitialState = (address) => {
+    pullUser({ ...globalState, address })
+    .then(async res => {
+      const newState = await getInventoryForCreator(res.address, 0, true, res);
+      setGlobalState(newState);
+    });
+  }
+
   const loginWithKey = () => {
     loginWithEmailOrPrivateKey(key, globalState)
     .then(res => {
-      pullUser(res)
-      .then(res => {
-        setGlobalState(res);
-      });
-
+      setInitialState(res.address);
     })
     .catch(err => {
       console.log(err);
@@ -42,24 +46,31 @@ export default () => {
         if (!web3.utils.isAddress(account)) {
           return;
         } else {
-          pullUser({ ...globalState, address: account[0] })
-          .then(res => {
-            setGlobalState(res);
-          });
+          console.log(account[0]);
+          setInitialState(account[0]);
         }
       });
       ethereum.on('accountsChanged', function (accounts) {
         if(!web3.utils.isAddress(accounts[0])) {
           return;
         } else {
-          pullUser({ ...globalState, address: account[0] })
-          .then(res => {
-            setGlobalState(res);
-          });
+          console.log(accounts[0]);
+          setInitialState(accounts[0]);
         }
       });
     }
   }
+
+  console.log(globalState);
+  const Inventory = () => globalState.address && globalState.creatorInventories && globalState.creatorInventories[globalState.address] && globalState.creatorInventories[globalState.address][0] ? 
+    globalState.creatorInventories[globalState.address][0].map((item, i) =>
+      <Col key={i} className="content" sm={2}>
+        <Link to={"/browse/" + item.id}>
+          <img src={item.image} />
+          <h3>{item.name}</h3>
+        </Link>
+      </Col>
+   ) : null
 
   const handleChange = e => setKey(e.target.value);
 
@@ -88,6 +99,7 @@ export default () => {
             Login With MetaMask
           </a>
         </Col>
+        <Inventory />
       </Row>
     </Container>
   )

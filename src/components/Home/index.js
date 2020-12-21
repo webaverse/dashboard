@@ -118,7 +118,7 @@ export default () =>
       title="Webaverse"
       subtitle="An open virtual world built with existing communities."
       callToAction="GET STARTED"
-      ctaUrl="https://app.webaverse.com/edit.html"
+      ctaUrl="https://discord.gg/R5wqYhvv53"
     />
     <SecondSection
       heroBg=""
@@ -126,7 +126,7 @@ export default () =>
       title="Lose yourself in an expansive, evolving world"
       subtitle="Explore the Webaverse with your friends or go on a solo adventure."
       callToAction="START EXPLORING"
-      ctaUrl="https://app.webaverse.com/edit.html"
+      ctaUrl="https://discord.gg/R5wqYhvv53"
     />
     <ThirdSection
       heroBg=""
@@ -142,6 +142,6 @@ export default () =>
       title="Digital assets from the best creators"
       subtitle="Buy, sell, trade your creations. Owners get micropayment as people use their items or avatars in Webaverse."
       callToAction="START BROWSING"
-      ctaUrl="/browse"
+      ctaUrl="https://docs.webaverse.com/docs/market"
     />
   </>

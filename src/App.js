@@ -16,15 +16,12 @@ const App = () => {
   const [globalState, setGlobalState] = useState(InitialStateValues);
 
   const updateLocalStorage = async (globalState) => {
-    console.log("globalState changed");
     if (globalState.logout === "true") {
        setGlobalState({ ...globalState, logout: "false", address: "", name: "", avatarUrl: "", avatarPreview: "", avatarFileName: "" });
       await storage.set('globalState', JSON.stringify(globalState));
-      console.log("globalState changed logged out");
     }
     if (globalState.address) {
       await storage.set('globalState', JSON.stringify(globalState));
-      console.log("globalState changed with address");
     }
   }
 
@@ -32,7 +29,7 @@ const App = () => {
     const storageState = await storage.get('globalState');
 
     if (storageState) {
-      setGlobalState(JSON.parse(storage.get('globalState')));
+      setGlobalState(JSON.parse(storageState));
     }
   } 
 

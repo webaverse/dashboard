@@ -19,7 +19,6 @@ export default () => {
               </Link>
             </div>
   
-{/*
             <div className="secondary-menu">
               <Link className="item" to="/browse">Browse</Link>
               <Link className="item" to="/creators">Creators</Link>
@@ -33,7 +32,6 @@ export default () => {
                 <img className="accountPicture" src={globalState.avatarPreview ? globalState.avatarPreview : preview} />
               </Link>
             </div>
-*/}
   
         </div>
       </div>

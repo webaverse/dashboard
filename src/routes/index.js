@@ -1,15 +1,15 @@
 import React from 'react'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 
-import Browse from '../Browse';
-import BrowseInfo from '../BrowseInfo';
-import Mint from '../Mint';
-import Creators from '../Creators';
-import Accounts from '../Accounts';
-import Settings from '../Settings';
-import Login from '../Login';
-import Home from '../Home';
-import NotFound from '../NotFound';
+import Browse from './Browse';
+import BrowseInfo from './BrowseInfo';
+import Mint from './Mint';
+import Creators from './Creators';
+import Accounts from './Accounts';
+import Settings from './Settings';
+import Login from './Login';
+import Home from './Home';
+import NotFound from './NotFound';
 
 export default () => 
   <>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import createHistory from 'history/createBrowserHistory'
 import { AppContext } from "./libs/contextLib";
 import { InitialStateValues } from "./constants/InitialStateValues";
+import storage from "./functions/Storage";
 
 import Routes from "./routes";
 import NavBar from "./components/NavBar";
@@ -14,24 +15,33 @@ import './assets/css/content.css';
 const App = () => {
   const [globalState, setGlobalState] = useState(InitialStateValues);
 
-
-  React.useEffect(() => {
+  const updateLocalStorage = async (globalState) => {
     console.log("globalState changed");
     if (globalState.logout === "true") {
        setGlobalState({ ...globalState, logout: "false", address: "", name: "", avatarUrl: "", avatarPreview: "", avatarFileName: "" });
-      localStorage.setItem('globalState', JSON.stringify(globalState));
+      await storage.set('globalState', JSON.stringify(globalState));
       console.log("globalState changed logged out");
     }
     if (globalState.address) {
-      localStorage.setItem('globalState', JSON.stringify(globalState));
+      await storage.set('globalState', JSON.stringify(globalState));
       console.log("globalState changed with address");
     }
+  }
+
+  const getLocalStorage = async () => {
+    const storageState = await storage.get('globalState');
+
+    if (storageState) {
+      setGlobalState(JSON.parse(storage.get('globalState')));
+    }
+  } 
+
+  React.useEffect(() => {
+    updateLocalStorage(globalState);
   }, [globalState]);
 
   React.useEffect(() => {
-    if (!globalState.address && localStorage.getItem('globalState')) {
-     setGlobalState(JSON.parse(localStorage.getItem('globalState')));
-    }
+    getLocalStorage(); 
   }, []);
 
 

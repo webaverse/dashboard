@@ -33,7 +33,6 @@ const siteUrl = "app.webaverse.com";
 
 export const discordOauthUrl = `https://discord.com/api/oauth2/authorize?client_id=684141574808272937&redirect_uri=https%3A%2F%2Fapp.webaverse.com%2Fdiscordlogin.html&response_type=code&scope=identify`;
 
-
 export const colors = [
   'ef5350',
   'ec407a',
@@ -67,3 +66,4 @@ export const presenceHost = 'worlds.webaverse.com';
 export const localstorageHost = 'https://localstorage.webaverse.com';
 export const loginEndpoint = 'https://login.exokit.org';
 export const web3SidechainEndpoint = 'http://54.177.106.180:8545';
+//export const web3SidechainEndpoint = 'http://ethereum.exokit.org:8545'; 

@@ -10,15 +10,14 @@
   font-size: .75em;
   text-align: center;
   filter: drop-shadow(0px 0px .25px #c4005d);
-  height: 200px;
 }
 .content:hover {
   transform: translateY(-2.5px);
   filter: drop-shadow(0px 0px 4px #c4005d);
 }
 .content-inner {
-  width: 100%;
-  height: 100%;
+  width: 250px;
+  height: 250px;
 }
 .content .contentText {
   filter: drop-shadow(0px 0px 5px #c4005d);

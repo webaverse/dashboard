@@ -21,7 +21,7 @@ export default ({ inventory }) => {
     }
 
     return (
-      <Col key={i} className="content" sm={4} md={2} style={{
+      <Col key={i} className="content" sm={12} md={3} style={{
         backgroundImage: `url("${image}")`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",

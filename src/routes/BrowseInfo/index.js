@@ -28,20 +28,24 @@ export default () => {
   }
 
   const Item = () => item ? 
-    <Col sm={10}>
-      <div className="profileHeader">
-        <div className="profileName">
-          <h1>{item.name}</h1>
-          <p>Total Supply: {item.totalSupply}</p>
-          { globalState.address ?
-            <a className="button" onClick={e => handleTransfer(e)}>
-              Transfer
-            </a>
-          : null}
+    <>
+      <Col sm={12} md={6}>
+        <div className="profileHeader">
+          <div className="profileName">
+            <h1>{item.name}</h1>
+            <p>Total Supply: {item.totalSupply}</p>
+            { globalState.address ?
+              <a className="button" onClick={e => handleTransfer(e)}>
+                Transfer
+              </a>
+            : null}
+          </div>
         </div>
-        <img src={item.image} />
-      </div>
-    </Col>
+      </Col>
+      <Col sm={12} md={6}>
+        <img className="itemImage" src={item.image} />
+      </Col>
+    </>
   : null
 
   return (

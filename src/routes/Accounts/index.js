@@ -26,13 +26,13 @@ export default () => {
       setForSale(res.creatorBooths[id.toLowerCase()][0]);
     });
   
-    getBalance(globalState).then(res => {
-      setBalance(res);
-    });
+    getBalance(id).then(balanceRes => {
+      setBalance(balanceRes);
 
-    getProfileForCreator(id, globalState).then(res => {
-      setProfile({ ...res.creatorProfiles[id], balance });
-      setLoading(false);
+      getProfileForCreator(id, globalState).then(res => {
+        setProfile({ ...res.creatorProfiles[id], balance: balanceRes });
+        setLoading(false);
+      });
     });
   }, []);
 

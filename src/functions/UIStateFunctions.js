@@ -5,15 +5,15 @@ import storage from '../webaverse/storage.js';
 
 const hdkey = hdkeySpec.default;
 
-export const getBalance = async (state) => {
+export const getBalance = async (address) => {
   try {
-    const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
-    const address = wallet.getAddressString();
+    console.log("address", address);
     const result = await contracts["sidechain"]["FT"].methods.balanceOf(address).call();
     return result;
   } catch (error) {
+    console.log("ERRRRRRRRRRRRROOOOOOOOOOOORRRRRRRR");
     console.warn(error);
-    return;
+    return 0;
   }
 }
 

@@ -68,4 +68,4 @@ export const localstorageHost = 'https://practical-almeida-25193e.netlify.app';
 export const loginEndpoint = 'https://login.exokit.org';
 //export const web3SidechainEndpoint = 'http://54.177.106.180:8545';
 //export const web3SidechainEndpoint = 'http://ethereum.exokit.org:8545'; 
-export const web3SidechainEndpoint = 'http://ethereum.exokit.org:8545'; 
+export const web3SidechainEndpoint = 'https://ethereum.exokit.org:8545'; 

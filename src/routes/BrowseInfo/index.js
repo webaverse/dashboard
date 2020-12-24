@@ -24,7 +24,7 @@ export default () => {
     e.preventDefault();
     console.log("handling transfer");
     console.log(globalState);
-    depositAsset(id, 'webaverse', globalState.address);
+    depositAsset(id, 'webaverse', globalState.address, globalState);
   }
 
   const Item = () => item ? 

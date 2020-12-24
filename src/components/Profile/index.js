@@ -17,7 +17,9 @@ export default ({ profile }) => {
       <div className="profileHeader">
         <div className="profileName">
           <h1 className="profileText">{profile.name ? profile.name : "Anonymous"}</h1>
-          <h1 className="profileText">GREASE Balance: {profile.balance ? profile.balance : "0"}</h1>
+          {profile.balance && profile.balance > 0 ?
+            <h1 className="profileText">GREASE Balance: {profile.balance ? profile.balance : "0"}</h1>
+          : null}
           <div className="profileLoadout">
             {profile.loadout ?
                 JSON.parse(profile.loadout).map((item, i) =>

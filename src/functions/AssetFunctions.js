@@ -1,11 +1,33 @@
 import { contracts, runSidechainTransaction, web3, getTransactionSignature } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
+import bip39 from '../libs/bip39.js';
+import hdkeySpec from '../libs/hdkey.js';
+const hdkey = hdkeySpec.default;
 
 export const buyAsset = async (id, networkType, mnemonic, successCallback, errorCallback) => {
+  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+  const address = wallet.getAddressString();
+
+  const fullAmount = {
+    t: 'uint256',
+    v: new web3['sidechain'].utils.BN(1e9)
+      .mul(new web3['sidechain'].utils.BN(1e9))
+      .mul(new web3['sidechain'].utils.BN(1e9)),
+  };
+  const fullAmountD2 = {
+    t: 'uint256',
+    v: fullAmount.v.div(new web3['sidechain'].utils.BN(2)),
+  };
+
   try {
-    const network = networkType.toLowerCase() === 'mainnet' ? 'mainnet' : 'sidechain';
-    await runSidechainTransaction(mnemonic)('NFT', 'setApprovalForAll', contracts[network]['Trade']._address, true);
+    {
+      let allowance = await contracts['sidechain']['FT'].methods.allowance(address, contracts['sidechain']['Trade']._address).call();
+      allowance = new web3['sidechain'].utils.BN(allowance, 10);
+      if (allowance.lt(fullAmountD2.v)) {
+        await runSidechainTransaction(mnemonic)('FT', 'approve', contracts['sidechain']['Trade']._address, fullAmount.v);
+      }
+    }
 
     const result = await runSidechainTransaction(mnemonic)('Trade', 'buy', id);
     if(result) console.log("Result of buy transaction:", result);

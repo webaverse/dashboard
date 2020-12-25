@@ -198,6 +198,12 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
       };
       console.log('got filename hash', hash, filename);
 
+      const descriptionSpec = await contracts.sidechain.NFT.methods.getMetadata(hashSpec, 'description').call() || '';
+      const description = {
+        t: 'string',
+        v: descriptionSpec,
+      };
+
       console.log("loginToken", state.loginToken);
       await runSidechainTransaction(state.loginToken)('NFT', 'setApprovalForAll', contracts['sidechain'].NFTProxy._address, true);
 
@@ -210,7 +216,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
       };
       const { r, s, v } = signature;
 
-      await contracts.main.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, hash.v, filename.v, timestamp.v, r, s, v).send({
+      await contracts.main.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, hash.v, filename.v, description.v, timestamp.v, r, s, v).send({
         from: mainnetAddress,
       });
 
@@ -218,8 +224,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
     } else {
       console.log('failed to parse', JSON.stringify(ethNftIdInput.value));
     }
-  }
-  else {
+  }  else {
     const id = parseInt(tokenId, 10);
     const tokenId = {
       t: 'uint256',
@@ -237,6 +242,13 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
       v: filenameSpec,
     };
 
+    const descriptionSpec = await contracts.main.NFT.methods.getMetadata(hashSpec, 'description').call();
+    const description = {
+      t: 'string',
+      v: descriptionSpec,
+    };
+
+
     await _checkMainNftApproved();
 
     const receipt = await contracts.main.NFTProxy.methods.deposit(myAddress, tokenId.v).send({
@@ -247,7 +259,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
 
     const { timestamp, r, s, v } = signature;
 
-    await runSidechainTransaction('NFTProxy', 'withdraw', myAddress, tokenId.v, hash.v, filename.v, timestamp, r, s, v);
+    await runSidechainTransaction('NFTProxy', 'withdraw', myAddress, tokenId.v, hash.v, filename.v, description.v, timestamp, r, s, v);
 
   }
 }

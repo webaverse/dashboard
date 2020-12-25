@@ -16,6 +16,7 @@ export const InitialStateValues = {
   homespacePreview: null,
   ftu: true,
   inventory: null,
+  loadout: null,
   creatorProfiles: {},
   creatorInventories: {},
   creatorBooths: {},

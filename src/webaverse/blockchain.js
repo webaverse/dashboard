@@ -19,6 +19,7 @@ const web3 = {
   main: new Web3(window.ethereum),
   sidechain: new Web3(new Web3.providers.HttpProvider(web3SidechainEndpoint)),
 };
+web3['sidechain'].eth.transactionConfirmationBlocks = 1;
 
 const contracts = {
   main: {
@@ -62,7 +63,6 @@ const transactionQueue = {
 const runSidechainTransaction = mnemonic => async (contractName, method, ...args) => {
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
-  // console.log('got mnem', mnemonic, address);
   const privateKey = wallet.getPrivateKeyString();
   const privateKeyBytes = Uint8Array.from(web3['sidechain'].utils.hexToBytes(privateKey));
 
@@ -95,16 +95,17 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
     ),
   }).sign(privateKeyBytes);
   const rawTx = '0x' + tx.serialize().toString('hex');
-  // console.log('signed tx', tx, rawTx);
   const receipt = await web3['sidechain'].eth.sendSignedTransaction(rawTx);
   transactionQueue.unlock();
   return receipt;
 };
 const getTransactionSignature = async (chainName, contractName, transactionHash) => {
+  console.log("chainName", chainName);
+  console.log("contractName", contractName);
+  console.log("transactionHash", transactionHash);
   const u = `https://sign.exokit.org/${chainName}/${contractName}/${transactionHash}`;
   for (let i = 0; i < 10; i++) {
     const signature = await fetch(u).then(res => res.json());
-    // console.log('got sig', u, signature);
     if (signature) {
       return signature;
     } else {
@@ -119,6 +120,7 @@ const getTransactionSignature = async (chainName, contractName, transactionHash)
 const _getWalletFromMnemonic = mnemonic => hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic))
   .derivePath(`m/44'/60'/0'/0/0`)
   .getWallet();
+
 const getAddressFromMnemonic = mnemonic => _getWalletFromMnemonic(mnemonic)
   .getAddressString();
 

@@ -33,7 +33,7 @@ module.exports = {
           compress: {
             arrows: true,
             arguments: true,
-            booleans_as_integers: true,
+            booleans_as_integers: false,
             dead_code: true, // big one--strip code that will never execute
             warnings: false, // good for prod apps so users can't peek behind curtain
             drop_debugger: true,

@@ -30,21 +30,18 @@ export default () => {
 
   const handleBuy = (e) => {
     e.preventDefault();
-    console.log("handling buy");
     console.log(globalState);
     buyAsset(5, 'sidechain', globalState.loginToken, handleSuccess, handleError);
   }
 
   const handleSell = (e) => {
     e.preventDefault();
-    console.log("handling sell");
     console.log(globalState);
     sellAsset(id, 69, 'sidechain', globalState.loginToken, handleSuccess, handleError);
   }
 
   const handleTransfer = (e) => {
     e.preventDefault();
-    console.log("handling transfer");
     console.log(globalState);
     depositAsset(id, 'webaverse', globalState.address, globalState);
   }

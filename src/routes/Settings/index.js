@@ -29,10 +29,6 @@ export default () => {
     });
   }
 
-  const logout = () => {
-    setGlobalState({ ...globalState, logout: "true" });
-  }
-
   const loginWithKey = () => {
     loginWithPrivateKey(key, globalState)
     .then(res => {
@@ -89,7 +85,6 @@ export default () => {
           </Col>
         :
           <Col sm={12}>
-{/*
             <Col sm={7}>
               <h2>MetaMask</h2>
               <br />
@@ -98,7 +93,6 @@ export default () => {
               </a>
             </Col>
             <br />
-*/}
             <Col sm={7}>
               <a className="button" href={discordOauthUrl}>
                 Login With Discord

@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
 import preview from "../../assets/images/preview.png";
+import { useAppContext } from "../../libs/contextLib";
 
 export default ({ profile }) => {
   if (!profile) { return null; }
+
+  const { globalState, setGlobalState } = useAppContext();
+
+  const logout = () => {
+    setGlobalState({ ...globalState, logout: "true" });
+  }
 
   return (
     <Col sm={12} className="profileHeaderContainer">
@@ -19,6 +26,11 @@ export default ({ profile }) => {
           <h1 className="profileText">{profile.name ? profile.name : "Anonymous"}</h1>
           {profile.balance && profile.balance > 0 ?
             <h1 className="profileText">GREASE Balance: {profile.balance ? profile.balance : "0"}</h1>
+          : null}
+          {globalState.address == profile.address.toLowerCase() ?
+            <a className="button" onClick={() => logout()}>
+              Logout
+            </a>
           : null}
           <div className="profileLoadout">
             {profile.loadout ?

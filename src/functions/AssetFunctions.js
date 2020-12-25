@@ -1,11 +1,33 @@
 import { contracts, runSidechainTransaction, web3, getTransactionSignature } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
+import bip39 from '../libs/bip39.js';
+import hdkeySpec from '../libs/hdkey.js';
+const hdkey = hdkeySpec.default;
 
 export const buyAsset = async (id, networkType, mnemonic, successCallback, errorCallback) => {
+  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+  const address = wallet.getAddressString();
+
+  const fullAmount = {
+    t: 'uint256',
+    v: new web3['sidechain'].utils.BN(1e9)
+      .mul(new web3['sidechain'].utils.BN(1e9))
+      .mul(new web3['sidechain'].utils.BN(1e9)),
+  };
+  const fullAmountD2 = {
+    t: 'uint256',
+    v: fullAmount.v.div(new web3['sidechain'].utils.BN(2)),
+  };
+
   try {
-    const network = networkType.toLowerCase() === 'mainnet' ? 'mainnet' : 'sidechain';
-    await runSidechainTransaction(mnemonic)('NFT', 'setApprovalForAll', contracts[network]['Trade']._address, true);
+    {
+      let allowance = await contracts['sidechain']['FT'].methods.allowance(address, contracts['sidechain']['Trade']._address).call();
+      allowance = new web3['sidechain'].utils.BN(allowance, 10);
+      if (allowance.lt(fullAmountD2.v)) {
+        await runSidechainTransaction(mnemonic)('FT', 'approve', contracts['sidechain']['Trade']._address, fullAmount.v);
+      }
+    }
 
     const result = await runSidechainTransaction(mnemonic)('Trade', 'buy', id);
     if(result) console.log("Result of buy transaction:", result);
@@ -176,6 +198,12 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
       };
       console.log('got filename hash', hash, filename);
 
+      const descriptionSpec = await contracts.sidechain.NFT.methods.getMetadata(hashSpec, 'description').call() || '';
+      const description = {
+        t: 'string',
+        v: descriptionSpec,
+      };
+
       console.log("loginToken", state.loginToken);
       await runSidechainTransaction(state.loginToken)('NFT', 'setApprovalForAll', contracts['sidechain'].NFTProxy._address, true);
 
@@ -188,7 +216,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
       };
       const { r, s, v } = signature;
 
-      await contracts.main.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, hash.v, filename.v, timestamp.v, r, s, v).send({
+      await contracts.main.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, hash.v, filename.v, description.v, timestamp.v, r, s, v).send({
         from: mainnetAddress,
       });
 
@@ -196,8 +224,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
     } else {
       console.log('failed to parse', JSON.stringify(ethNftIdInput.value));
     }
-  }
-  else {
+  }  else {
     const id = parseInt(tokenId, 10);
     const tokenId = {
       t: 'uint256',
@@ -215,6 +242,13 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
       v: filenameSpec,
     };
 
+    const descriptionSpec = await contracts.main.NFT.methods.getMetadata(hashSpec, 'description').call();
+    const description = {
+      t: 'string',
+      v: descriptionSpec,
+    };
+
+
     await _checkMainNftApproved();
 
     const receipt = await contracts.main.NFTProxy.methods.deposit(myAddress, tokenId.v).send({
@@ -225,7 +259,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
 
     const { timestamp, r, s, v } = signature;
 
-    await runSidechainTransaction('NFTProxy', 'withdraw', myAddress, tokenId.v, hash.v, filename.v, timestamp, r, s, v);
+    await runSidechainTransaction('NFTProxy', 'withdraw', myAddress, tokenId.v, hash.v, filename.v, description.v, timestamp, r, s, v);
 
   }
 }

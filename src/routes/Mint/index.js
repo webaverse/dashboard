@@ -74,7 +74,7 @@ export default () => {
                 <input type="number" onChange={handleQuantityChange} />
 
                 <a className="button" onClick={handleMintNftButton}>
-                  Mint NFT for 10 GREASE
+                  Mint NFT for 10 FLUX 
                 </a>
               </div>
             </Col>

@@ -99,7 +99,7 @@ const FourthSection = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl
               <h1 className="head-title">{headTitle}</h1>
               <h1 className="secondary">{title}</h1>
               <p className="secondary">{subtitle}</p>
-              <Link to={ctaUrl} className="button">{callToAction}</Link>
+              <a href={ctaUrl} className="button">{callToAction}</a>
             </div>
           </Col>
           <Col sm={6}>

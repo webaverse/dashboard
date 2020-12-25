@@ -10,7 +10,7 @@ export default ({ inventory }) => {
     let url, name;
     const image = item.image || item.avatarPreview;
 
-    if (!image && !item.name) { return; } // blank card
+    if (!image || !item.name) { return; } // blank card
     
     if (item.id) {
       url = "/browse/" + item.id;

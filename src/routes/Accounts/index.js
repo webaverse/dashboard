@@ -17,23 +17,21 @@ export default () => {
   const [forSale, setForSale] = useState(null);
   const [inventory, setInventory] = useState(null);
 
+  const init = async () => {
+    const creatorInventory = await getInventoryForCreator(id, 0, true, globalState);
+    const creatorBooth = await getBoothForCreator(id, 0, true, globalState);
+    const balanceRes = await getBalance(id);
+    const creatorProfile = await getProfileForCreator(id, globalState);
+
+    setInventory(creatorInventory.creatorInventories[id][0]);
+    setForSale(creatorBooth.creatorBooths[id.toLowerCase()][0]);
+    setBalance(balanceRes);
+    setProfile({ ...creatorProfile.creatorProfiles[id], balance: balanceRes });
+    setLoading(false);
+  }
+
   useEffect(() => {
-    getInventoryForCreator(id, 0, true, globalState).then(res => {
-      setInventory(res.creatorInventories[id][0]);
-    });
-
-    getBoothForCreator(id, 0, true, globalState).then(res => {
-      setForSale(res.creatorBooths[id.toLowerCase()][0]);
-    });
-  
-    getBalance(id).then(balanceRes => {
-      setBalance(balanceRes);
-
-      getProfileForCreator(id, globalState).then(res => {
-        setProfile({ ...res.creatorProfiles[id], balance: balanceRes });
-        setLoading(false);
-      });
-    });
+    init();
   }, []);
 
   return (
@@ -41,13 +39,7 @@ export default () => {
       <Row sm={8} md={10} lg={10} style={{ justifyContent: "center" }}>
         <Loader loading={loading} />
         <ProfileHeader profile={profile} />
-        <Col sm={12}>
-          <h1>For Sale</h1>
-        </Col>
         <Cards inventory={forSale} />
-        <Col sm={12}>
-          <h1>Inventory</h1>
-        </Col>
         <Cards inventory={inventory} />
       </Row>
     </Container>

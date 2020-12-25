@@ -19,7 +19,7 @@ export const getBalance = async (address) => {
 
 export const getAddress = (state) => {
   if (!state.loginToken) return state;
-  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
 
   return { ...state, address };
@@ -135,7 +135,7 @@ export const pullUser = async (state) => {
 };
 
 export const pullUserObject = async (state) => {
-  const address = getAddressFromMnemonic(state.loginToken);
+  const address = getAddressFromMnemonic(state.loginToken.mnemonic);
   const res = await fetch(`https://accounts.webaverse.com/${address}`);
   const result = await res.json();
   const newState = {
@@ -190,8 +190,8 @@ export const loginWithEmailOrPrivateKey = async (emailOrPrivateKey, state) => {
 };
 
 export const setNewLoginToken = async (newLoginToken, state) => {
-  await storage.set('loginToken', newLoginToken);
-  const newState = await pullUserObject({ ...state, loginToken: newLoginToken });
+  await storage.set('loginToken', { mnemonic: newLoginToken });
+  const newState = await pullUserObject({ ...state, loginToken: { mnemonic: newLoginToken } });
   return newState;
 };
 

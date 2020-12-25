@@ -19,13 +19,10 @@ const App = () => {
     if (globalState.logout === "true") {
        setGlobalState({ ...globalState, logout: "false", address: "", name: "", avatarUrl: "", avatarPreview: "", avatarFileName: "" });
       await storage.set('globalState', JSON.stringify(globalState));
-      await storage.set('loginToken', JSON.stringify({}));
+      await storage.set('loginToken', null);
     }
     if (globalState.address) {
       await storage.set('globalState', JSON.stringify(globalState));
-    }
-    if (globalState.loginToken) {
-      await storage.set('loginToken', JSON.stringify({ mnemonic: globalState.loginToken }));
     }
   }
 

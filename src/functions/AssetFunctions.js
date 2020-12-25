@@ -98,7 +98,7 @@ export const setAvatar = async (id, successCallback, errorCallback) => {
 };
 
 export const mintNft = async (file, name, description, quantity, successCallback, errorCallback, state) => {
-  const  mnemonic = state.loginToken;
+  const  mnemonic = state.loginToken.mnemonic;
   const address = state.address;
   const res = await fetch(storageHost, { method: 'POST', body: file });
   const { hash } = await res.json();
@@ -205,9 +205,9 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
       };
 
       console.log("loginToken", state.loginToken);
-      await runSidechainTransaction(state.loginToken)('NFT', 'setApprovalForAll', contracts['sidechain'].NFTProxy._address, true);
+      await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts['sidechain'].NFTProxy._address, true);
 
-      const receipt = await runSidechainTransaction(state.loginToken)('NFTProxy', 'deposit', mainnetAddress, tokenId.v);
+      const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'deposit', mainnetAddress, tokenId.v);
 
       const signature = await getTransactionSignature('sidechain', 'NFT', receipt.transactionHash);
       const timestamp = {

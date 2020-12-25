@@ -31,13 +31,13 @@ export default () => {
   const handleBuy = (e) => {
     e.preventDefault();
     console.log(globalState);
-    buyAsset(5, 'sidechain', globalState.loginToken, handleSuccess, handleError);
+    buyAsset(5, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
   const handleSell = (e) => {
     e.preventDefault();
     console.log(globalState);
-    sellAsset(id, 69, 'sidechain', globalState.loginToken, handleSuccess, handleError);
+    sellAsset(id, 69, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
   const handleTransfer = (e) => {

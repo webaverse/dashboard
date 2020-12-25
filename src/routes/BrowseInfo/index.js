@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { useParams } from "react-router-dom"
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator } from "../../functions/UIStateFunctions.js";
-import { depositAsset } from "../../functions/AssetFunctions.js";
+import { sellAsset, depositAsset } from "../../functions/AssetFunctions.js";
 import Loader from "../../components/Loader";
 
 export default () => {
@@ -20,6 +20,21 @@ export default () => {
     });
   }, []);
 
+  const handleSuccess = (res) => {
+    console.log("HANDLING SUCCESS", res);
+  }
+
+  const handleError = (err) => {
+    console.log("HANDLING ERROR", err);
+  }
+
+  const handleSell = (e) => {
+    e.preventDefault();
+    console.log("handling sell");
+    console.log(globalState);
+    sellAsset(id, 69, 'sidechain', globalState.loginToken, handleSuccess, handleError);
+  }
+
   const handleTransfer = (e) => {
     e.preventDefault();
     console.log("handling transfer");
@@ -35,9 +50,14 @@ export default () => {
             <h1>{item.name}</h1>
             <p>Total Supply: {item.totalSupply}</p>
             { globalState.address ?
-              <a className="button" onClick={e => handleTransfer(e)}>
-                Transfer
-              </a>
+              <>
+                <a className="button" onClick={e => handleSell(e)}>
+                  Sell
+                </a>
+                <a className="button" onClick={e => handleTransfer(e)}>
+                  Transfer
+                </a>
+              </>
             : null}
           </div>
         </div>

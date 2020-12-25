@@ -100,6 +100,9 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
   return receipt;
 };
 const getTransactionSignature = async (chainName, contractName, transactionHash) => {
+  console.log("chainName", chainName);
+  console.log("contractName", contractName);
+  console.log("transactionHash", transactionHash);
   const u = `https://sign.exokit.org/${chainName}/${contractName}/${transactionHash}`;
   for (let i = 0; i < 10; i++) {
     const signature = await fetch(u).then(res => res.json());

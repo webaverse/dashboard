@@ -25,7 +25,7 @@ export default ({ profile }) => {
         <div className="profileName">
           <h1 className="profileText">{profile.name ? profile.name : "Anonymous"}</h1>
           {profile.balance && profile.balance > 0 ?
-            <h1 className="profileText">GREASE Balance: {profile.balance ? profile.balance : "0"}</h1>
+            <h1 className="profileText">FLUX Balance: {profile.balance ? profile.balance : "0"}</h1>
           : null}
           {globalState.address == profile.address.toLowerCase() ?
             <a className="button" onClick={() => logout()}>

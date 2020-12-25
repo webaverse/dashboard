@@ -22,6 +22,7 @@ export const InitialStateValues = {
   creatorBooths: {},
   creators: {},
   booths: {},
+  tokens: [],
   lastFileHash: null,
   lastFileId: null
 };

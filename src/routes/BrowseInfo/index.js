@@ -55,7 +55,7 @@ export default () => {
             Sell
           </a>
           <a className="button" onClick={e => handleTransfer(e)}>
-            Transfer
+            Transfer To Mainnet
           </a>
         </>
       );

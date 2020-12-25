@@ -9,25 +9,68 @@
   transition: transform .2s ease-in-out,box-shadow .2s ease-in-out;
   font-size: .75em;
   text-align: center;
-  filter: drop-shadow(0px 0px 1px #c4005d);
+  filter: drop-shadow(0px 0px .25px #c4005d);
+  width: unset !important;
+  max-width: unset !important;
 }
 .content:hover {
   transform: translateY(-2.5px);
   filter: drop-shadow(0px 0px 4px #c4005d);
+}
+.content-inner {
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+}
+.content .contentText {
+  filter: drop-shadow(0px 0px 5px black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+  margin: 0 auto;
 }
 .content img {
   margin: auto;
   max-width: 100%;
   border-style: none;
 }
+.profileHeaderContainer {
+  padding: 25px 25px 0px 25px;
+}
+.profileHeaderBackground {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-filter: blur(1px);
+  filter: blur(1px);
+  opacity: .5;
+  z-index: -9999;
+}
 .profileHeader {
   display: flex;
   width: auto;
 }
-.profileHeader img {
+.itemImage {
+  filter: drop-shadow(0px 0px 5px black);
+  height: 250px;
+  width: auto;
+  border-radius: 10px;
+}
+.profileHeader .profileLoadout {
+  padding: 25px;
+}
+.profileHeader .profileLoadoutPicture {
+  width: 50px;
+  height: 50px;
+  filter: drop-shadow(0px 0px 5px black);
+}
+.profileHeader .profilePicture {
   border-radius: 10px;
   width: auto;
   max-height: 300px;
+  filter: drop-shadow(0px 0px 5px black);
 }
 .profileHeader .profileName {
   flex: 1 1 auto;
@@ -35,7 +78,16 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  flex-direction: column;
+  margin-right: 50px;
 }
-.profileHeader .profileName * {
-  width: 100%;
+.profileHeader .profileText {
+  font-size: 1em;
+  padding: 10px;
+  background-color: rgba(196, 0, 93, .70);
+  border-radius: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 35vw;
 }

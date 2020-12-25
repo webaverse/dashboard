@@ -1,4 +1,4 @@
-import { contracts, runSidechainTransaction, web3 } from '../webaverse/blockchain.js';
+import { contracts, runSidechainTransaction, web3, getTransactionSignature } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
 
@@ -76,7 +76,7 @@ export const setAvatar = async (id, successCallback, errorCallback) => {
 };
 
 export const mintNft = async (file, name, description, quantity, successCallback, errorCallback, state) => {
-  const { mnemonic } = state.loginToken;
+  const  mnemonic = state.loginToken;
   const address = state.address;
   const res = await fetch(storageHost, { method: 'POST', body: file });
   const { hash } = await res.json();
@@ -91,19 +91,25 @@ export const mintNft = async (file, name, description, quantity, successCallback
         .mul(new web3['sidechain'].utils.BN(1e9))
         .mul(new web3['sidechain'].utils.BN(1e9)),
     };
+    const fullAmountD2 = {
+      t: 'uint256',
+      v: fullAmount.v.div(new web3['sidechain'].utils.BN(2)),
+    };
 
-    const result = await runSidechainTransaction(mnemonic)('FT', 'approve', contracts['sidechain']['NFT']._address, fullAmount.v);
-    status = result.status;
-    transactionHash = '0x0';
-    tokenIds = [];
-
-    console.log("File is", file);
-    console.log("Description is", description);
+    let allowance = await contracts.sidechain.FT.methods.allowance(address, contracts['sidechain']['NFT']._address).call();
+    allowance = new web3.utils.BN(allowance, 10);
+    if (allowance.lt(fullAmountD2.v)) {
+      const result = await runSidechainTransaction(mnemonic)('FT', 'approve', contracts['sidechain']['NFT']._address, fullAmount.v);
+      status = result.status;
+    } else {
+      status = true;
+//      transactionHash = '0x0';
+//      tokenIds = [];
+    }
 
     if (status) {
-      console.log("Status is", status)
       const result = await runSidechainTransaction(mnemonic)('NFT', 'mint', address, '0x' + hash, file.name, description, quantity);
-      console.log("Result is ", result.json());
+
       status = result.status;
       transactionHash = result.transactionHash;
       const tokenId = new web3['sidechain'].utils.BN(result.logs[0].topics[3].slice(2), 16).toNumber();
@@ -147,7 +153,8 @@ export const setHomespace = async (id, successCallback, errorCallback) => {
   }
 };
 
-export const depositAsset = async (tokenId, networkType, mainnetAddress) => {
+export const depositAsset = async (tokenId, networkType, mainnetAddress, state) => {
+  console.log("mainnetAddress", mainnetAddress);
   // Deposit to mainnet
   if (networkType === 'webaverse') {
     const id = parseInt(tokenId, 10);
@@ -169,9 +176,10 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress) => {
       };
       console.log('got filename hash', hash, filename);
 
-      await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts['sidechain'].NFTProxy._address, true);
+      console.log("loginToken", state.loginToken);
+      await runSidechainTransaction(state.loginToken)('NFT', 'setApprovalForAll', contracts['sidechain'].NFTProxy._address, true);
 
-      const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'deposit', mainnetAddress, tokenId.v);
+      const receipt = await runSidechainTransaction(state.loginToken)('NFTProxy', 'deposit', mainnetAddress, tokenId.v);
 
       const signature = await getTransactionSignature('sidechain', 'NFT', receipt.transactionHash);
       const timestamp = {

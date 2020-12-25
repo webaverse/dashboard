@@ -25,13 +25,6 @@ export const PLANET_OBJECT_SIZE = (
   Float32Array.BYTES_PER_ELEMENT * 4 // build.quaternion
 );
 
-
-// const localUrl = "localhost%3A8080%2Fdiscord";
-// const siteUrl = "app.webaverse.com"
-
-// export const discordOauthUrl = `https://discord.com/api/oauth2/authorize?client_id=684141574808272937&redirect_uri=https%3A%2F%2F${location.href.indexOf("localhost") !== -1 ? localUrl : siteUrl}%2Fdiscord&response_type=code&scope=identify`;
-
-
 export const discordOauthUrl = `https://discord.com/api/oauth2/authorize?client_id=684141574808272937&redirect_uri=https%3A%2F%2Fapp.webaverse.com%2Fdiscordlogin.html&response_type=code&scope=identify`;
 
 export const colors = [
@@ -66,4 +59,4 @@ export const contractsHost = 'https://contracts.webaverse.com';
 export const presenceHost = 'worlds.webaverse.com';
 export const localstorageHost = 'https://localstorage.webaverse.com';
 export const loginEndpoint = 'https://login.exokit.org';
-export const web3SidechainEndpoint = 'https://ethereum.exokit.org';
+export const web3SidechainEndpoint = 'https://ethereums.exokit.org';

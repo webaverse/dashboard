@@ -46,6 +46,32 @@ export default () => {
     depositAsset(id, 'webaverse', globalState.address, globalState);
   }
 
+  const Buttons = () => {
+    console.log(globalState)
+    if (globalState.address && globalState.creatorInventories[id][0].owner.address.toLowerCase() == globalState.address) {
+      return (
+        <>
+          <a className="button" onClick={e => handleSell(e)}>
+            Sell
+          </a>
+          <a className="button" onClick={e => handleTransfer(e)}>
+            Transfer
+          </a>
+        </>
+      );
+    } else if (globalState.address) {
+      return (
+        <>
+          <a className="button" onClick={e => handleBuy(e)}>
+            Buy 
+          </a>
+        </>
+      );
+    } else {
+      return null;
+    }
+  }
+
   const Item = () => item ? 
     <>
       <Col sm={12} md={6}>
@@ -53,19 +79,7 @@ export default () => {
           <div className="profileName">
             <h1>{item.name}</h1>
             <p>Total Supply: {item.totalSupply}</p>
-            { globalState.address ?
-              <>
-                <a className="button" onClick={e => handleBuy(e)}>
-                  Buy 
-                </a>
-                <a className="button" onClick={e => handleSell(e)}>
-                  Sell
-                </a>
-                <a className="button" onClick={e => handleTransfer(e)}>
-                  Transfer
-                </a>
-              </>
-            : null}
+            <Buttons />
           </div>
         </div>
       </Col>

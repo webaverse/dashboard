@@ -3,7 +3,7 @@ import createHistory from 'history/createBrowserHistory'
 import { AppContext } from "./libs/contextLib";
 import { InitialStateValues } from "./constants/InitialStateValues";
 import storage from "./functions/Storage";
-import { getCreators, getBooths, getInventoryForCreator, getProfileForCreator, getBalance } from "./functions/UIStateFunctions.js";
+import { getCreators, getBooths, getStores, getInventoryForCreator, getProfileForCreator, getBalance } from "./functions/UIStateFunctions.js";
 
 import Routes from "./routes";
 import NavBar from "./components/NavBar";
@@ -17,8 +17,14 @@ const App = () => {
   const [globalState, setGlobalState] = useState(InitialStateValues);
 
   const init = async () => {
+    const localStorageState = await getLocalStorage();
+    if (localStorageState) {
+      setGlobalState(localStorageState);
+    }
+
     const creators = await getCreators(0, globalState);
     const booths = await getBooths(0, globalState);
+    const stores = await getStores();
 
     const tokens = [];
     const creatorProfiles = {};
@@ -32,13 +38,13 @@ const App = () => {
     }));
 
     const sortedTokens = tokens.sort((a, b) => a.id - b.id);
-    const localStorageState = await getLocalStorage();
 
     setGlobalState({
                   ...localStorageState,
                   creatorInventories: creators.creatorInventories,
                   creatorBooths: booths.creatorBooths,
                   creatorProfiles: creatorProfiles,
+                  stores: stores,
                   tokens: sortedTokens
                 });
   }
@@ -48,6 +54,8 @@ const App = () => {
        setGlobalState({ ...globalState, logout: "false", address: "", name: "", avatarUrl: "", avatarPreview: "", avatarFileName: "" });
       await storage.set('globalState', JSON.stringify(globalState));
       await storage.set('loginToken', null);
+    } else if (globalState.refresh === "true") {
+      init();
     } else if (globalState.address) {
       const localStorageState = await getLocalStorage();
       await storage.set('globalState', globalState);
@@ -64,19 +72,11 @@ const App = () => {
     }
   } 
 
-  const initLocalStorageState = async () => {
-    const localStorageState = await getLocalStorage();
-    if (localStorageState) {
-      setGlobalState(localStorageState);
-    }
-  }
-
   React.useEffect(() => {
     updateLocalStorage(globalState);
   }, [globalState]);
 
   React.useEffect(() => {
-    initLocalStorageState();
     init();
   }, []);
 

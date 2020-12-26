@@ -11,6 +11,7 @@ export default ({ inventory }) => {
 
     return inventoryKeys.map((item, i) => {
       let url, name;
+      const address = item;
       item = inventory[item];
       const image = item.image || item.avatarPreview;
   
@@ -20,7 +21,7 @@ export default ({ inventory }) => {
         url = "/browse/" + item.id;
         name = item.name.replace(/\.[^/\\.]+$/, "");
       } else if (item.address) {
-        url = "/accounts/" + item.address;
+        url = "/accounts/" + address;
         name = item.name ? item.name : "Anonymous";
       }
   

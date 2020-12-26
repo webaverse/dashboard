@@ -23,12 +23,12 @@ const App = () => {
     const tokens = [];
     const creatorProfiles = {};
     const tokensPromise = await Promise.all(creators.creators[0].map(async creator => {
-      const inventory = await getInventoryForCreator(creator.address, 0, true, globalState);
+      const inventory = await getInventoryForCreator(creator.address.toLowerCase(), 0, true, globalState);
       const profile = await getProfileForCreator(creator.address, globalState);
       const balance = await getBalance(creator.address);
 
-      creatorProfiles[creator.address] = profile.creatorProfiles[creator.address];
-      return tokens.push(...inventory.creatorInventories[creator.address][0]);
+      creatorProfiles[creator.address.toLowerCase()] = profile.creatorProfiles[creator.address];
+      return tokens.push(...inventory.creatorInventories[creator.address.toLowerCase()][0]);
     }));
 
     const sortedTokens = tokens.sort((a, b) => a.id - b.id);

@@ -1,6 +1,6 @@
 import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
-import { contracts, getAddressFromMnemonic } from '../webaverse/blockchain.js';
+import { web3, contracts, getAddressFromMnemonic } from '../webaverse/blockchain.js';
 import storage from '../webaverse/storage.js';
 
 const hdkey = hdkeySpec.default;
@@ -107,6 +107,42 @@ export const getBooths = async (page, state) => {
   const newState = { ...state };
   newState.booths[page] = booths;
   return newState;
+};
+
+export const getStores = async () => {
+  const numStores = await contracts["sidechain"]["Trade"].methods.numStores().call();
+  const booths = [];
+  const sales = {};
+  for (let i = 0; i < numStores; i++) {
+    const store = await contracts["sidechain"]["Trade"].methods.getStoreByIndex(i + 1).call();
+    if (store.live) {
+      const id = parseInt(store.id, 10);
+      const seller = store.seller.toLowerCase();
+      const tokenId = parseInt(store.tokenId, 10);
+      const price = new web3["sidechain"].utils.BN(store.price);
+      sales[tokenId] = id;
+      const entry = {
+        id,
+        seller,
+        tokenId,
+        price,
+      };
+
+      console.log('got store', store, entry);
+
+      let booth = booths.find(booth => booth.seller === seller);
+      if (!booth) {
+        booth = {
+          seller,
+          entries: [],
+        };
+        booths.push(booth);
+      }
+      booth.entries.push(entry);
+    }
+  }
+  console.log('got stores', sales);
+  return sales;
 };
 
 export const getCreators = async (page, state) => {

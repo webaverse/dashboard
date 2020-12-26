@@ -21,22 +21,8 @@ export default () => {
     return false;
   }
 
-  const setInitialState = (state) => {
-    pullUser({ ...state })
-    .then(async res => {
-      const newState = await getInventoryForCreator(res.address, 0, true, res);
-      setGlobalState(newState);
-    });
-  }
-
   const loginWithKey = () => {
-    loginWithPrivateKey(key, globalState)
-    .then(res => {
-      setInitialState(res);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    loginWithPrivateKey(key, globalState);
   }
 
   const loginWithMetaMask = () => {
@@ -51,7 +37,6 @@ export default () => {
           return;
         } else {
           console.log(account[0]);
-          setInitialState(account[0]);
         }
       });
       ethereum.on('accountsChanged', function (accounts) {
@@ -59,7 +44,6 @@ export default () => {
           return;
         } else {
           console.log(accounts[0]);
-          setInitialState(accounts[0]);
         }
       });
     }

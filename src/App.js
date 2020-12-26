@@ -3,7 +3,7 @@ import createHistory from 'history/createBrowserHistory'
 import { AppContext } from "./libs/contextLib";
 import { InitialStateValues } from "./constants/InitialStateValues";
 import storage from "./functions/Storage";
-import { getCreators, getBooths, getInventoryForCreator } from "./functions/UIStateFunctions.js";
+import { getCreators, getBooths, getInventoryForCreator, getProfileForCreator, getBalance } from "./functions/UIStateFunctions.js";
 
 import Routes from "./routes";
 import NavBar from "./components/NavBar";
@@ -18,16 +18,36 @@ const App = () => {
 
   const init = async () => {
     const creators = await getCreators(0, globalState);
-
     const booths = await getBooths(0, globalState);
 
     const tokens = [];
+    const creatorProfiles = {};
     const tokensPromise = await Promise.all(creators.creators[0].map(async creator => {
       const inventory = await getInventoryForCreator(creator.address, 0, true, globalState);
+      const profile = await getProfileForCreator(creator.address, globalState);
+      const balance = await getBalance(creator.address);
+
+      creatorProfiles[creator.address] = profile;
       return tokens.push(...inventory.creatorInventories[creator.address][0]);
     }));
+
     const sortedTokens = tokens.sort((a, b) => a.id - b.id);
-    setGlobalState({ ...globalState, ...creators, ...booths, tokens: sortedTokens });
+    const localStorageState = await getLocalStorage();
+
+    setGlobalState({ ...globalState,
+                  ...localStorageState,
+                  creatorInventories: creators.creatorInventories,
+                  creatorBooths: booths.creatorBooths,
+                  creatorProfiles: creatorProfiles,
+                  tokens: sortedTokens
+                });
+    console.log({ ...globalState,
+                  ...localStorageState,
+                  creatorInventories: creators.creatorInventories,
+                  creatorBooths: booths.creatorBooths,
+                  creatorProfiles: creatorProfiles,
+                  tokens: sortedTokens
+                });
   }
 
   const updateLocalStorage = async (globalState) => {
@@ -45,7 +65,9 @@ const App = () => {
     const storageState = await storage.get('globalState');
 
     if (storageState) {
-      setGlobalState(JSON.parse(storageState));
+      return JSON.parse(storageState);
+    } else {
+      return;
     }
   } 
 
@@ -54,7 +76,6 @@ const App = () => {
   }, [globalState]);
 
   React.useEffect(() => {
-    getLocalStorage(); 
     init();
   }, []);
 

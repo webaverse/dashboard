@@ -12,8 +12,8 @@ export default () => {
   return (
     <Container>
       <Row style={{ justifyContent: "center" }}>
-        <Loader loading={globalState.creators[0] ? false : true} />
-        <Inventory inventory={globalState.creators[0]} />
+        <Loader loading={globalState.creatorProfiles ? false : true} />
+        <Inventory inventory={globalState.creatorProfiles} />
       </Row>
     </Container>
   )

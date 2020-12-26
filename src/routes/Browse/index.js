@@ -9,14 +9,14 @@ import Inventory from "../../components/Inventory";
 export default () => {
   const { globalState, setGlobalState } = useAppContext();
 
-  const Sales = () => globalState.booths[0] ? globalState.booths[0].map((seller, i) =>
-    <Inventory key={i} inventory={seller.entries} />
+  const Sales = () => globalState.creatorBooths ? Object.keys(globalState.creatorBooths).map((seller, i) =>
+    <Inventory key={i} inventory={globalState.creatorBooths[seller][1]} />
   ) : null
 
   return (
     <Container>
       <Row style={{ justifyContent: "center" }}>
-        <Loader loading={globalState.booths[0] ? false : true} />
+        <Loader loading={Object.keys(globalState.creatorBooths).length > 0 ? false : true} />
         <Sales />
       </Row>
     </Container>

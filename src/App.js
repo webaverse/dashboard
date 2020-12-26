@@ -34,15 +34,7 @@ const App = () => {
     const sortedTokens = tokens.sort((a, b) => a.id - b.id);
     const localStorageState = await getLocalStorage();
 
-
-    setGlobalState({ ...globalState,
-                  ...localStorageState,
-                  creatorInventories: creators.creatorInventories,
-                  creatorBooths: booths.creatorBooths,
-                  creatorProfiles: creatorProfiles,
-                  tokens: sortedTokens
-                });
-    console.log({ ...globalState,
+    setGlobalState({
                   ...localStorageState,
                   creatorInventories: creators.creatorInventories,
                   creatorBooths: booths.creatorBooths,
@@ -56,8 +48,8 @@ const App = () => {
        setGlobalState({ ...globalState, logout: "false", address: "", name: "", avatarUrl: "", avatarPreview: "", avatarFileName: "" });
       await storage.set('globalState', JSON.stringify(globalState));
       await storage.set('loginToken', null);
-    }
-    if (globalState) {
+    } else if (globalState.address) {
+      const localStorageState = await getLocalStorage();
       await storage.set('globalState', globalState);
     }
   }
@@ -72,12 +64,19 @@ const App = () => {
     }
   } 
 
+  const initLocalStorageState = async () => {
+    const localStorageState = await getLocalStorage();
+    if (localStorageState) {
+      setGlobalState(localStorageState);
+    }
+  }
+
   React.useEffect(() => {
-    console.log("updated globalState", globalState);
     updateLocalStorage(globalState);
   }, [globalState]);
 
   React.useEffect(() => {
+    initLocalStorageState();
     init();
   }, []);
 

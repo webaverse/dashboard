@@ -49,7 +49,6 @@ export default () => {
           return;
         } else {
           console.log(account[0]);
-          setInitialState(account[0]);
         }
       });
       ethereum.on('accountsChanged', function (accounts) {
@@ -57,7 +56,6 @@ export default () => {
           return;
          } else {
           console.log(accounts[0]);
-          setInitialState(accounts[0]);
         }
       });
     }

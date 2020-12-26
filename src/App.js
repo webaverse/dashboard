@@ -56,8 +56,8 @@ const App = () => {
       await storage.set('globalState', JSON.stringify(globalState));
       await storage.set('loginToken', null);
     }
-    if (globalState.address) {
-      await storage.set('globalState', JSON.stringify(globalState));
+    if (globalState) {
+      await storage.set('globalState', globalState);
     }
   }
 
@@ -65,13 +65,14 @@ const App = () => {
     const storageState = await storage.get('globalState');
 
     if (storageState) {
-      return JSON.parse(storageState);
+      return storageState;
     } else {
       return;
     }
   } 
 
   React.useEffect(() => {
+    console.log("updated globalState", globalState);
     updateLocalStorage(globalState);
   }, [globalState]);
 

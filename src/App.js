@@ -27,12 +27,13 @@ const App = () => {
       const profile = await getProfileForCreator(creator.address, globalState);
       const balance = await getBalance(creator.address);
 
-      creatorProfiles[creator.address] = profile;
+      creatorProfiles[creator.address] = profile.creatorProfiles[creator.address];
       return tokens.push(...inventory.creatorInventories[creator.address][0]);
     }));
 
     const sortedTokens = tokens.sort((a, b) => a.id - b.id);
     const localStorageState = await getLocalStorage();
+
 
     setGlobalState({ ...globalState,
                   ...localStorageState,

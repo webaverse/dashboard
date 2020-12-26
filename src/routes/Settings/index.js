@@ -21,8 +21,9 @@ export default () => {
     return false;
   }
 
-  const loginWithKey = () => {
-    loginWithPrivateKey(key, globalState);
+  const loginWithKey = async () => {
+    const newState = await loginWithPrivateKey(key, globalState);
+    setGlobalState({ ...globalState, newState });
   }
 
   const loginWithMetaMask = () => {

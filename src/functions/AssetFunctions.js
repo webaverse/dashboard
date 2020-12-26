@@ -220,6 +220,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
         from: mainnetAddress,
       });
 
+      return;
       console.log('OK');
     } else {
       console.log('failed to parse', JSON.stringify(ethNftIdInput.value));
@@ -261,6 +262,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
 
     await runSidechainTransaction('NFTProxy', 'withdraw', myAddress, tokenId.v, hash.v, filename.v, description.v, timestamp, r, s, v);
 
+    return;
   }
 }
 

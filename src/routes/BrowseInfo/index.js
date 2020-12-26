@@ -22,28 +22,35 @@ export default () => {
 
   const handleSuccess = (res) => {
     console.log("HANDLING SUCCESS", res);
+    setGlobalState({ ...globalState, refresh: "true" });
+    setLoading(false);
   }
 
   const handleError = (err) => {
     console.log("HANDLING ERROR", err);
+    setLoading(false);
   }
 
   const handleBuy = (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log(globalState);
-    buyAsset(5, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
+    buyAsset(globalState.stores[id], 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
   const handleSell = (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log(globalState);
     sellAsset(id, 69, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
-  const handleTransfer = (e) => {
+  const handleTransfer = async (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log(globalState);
-    depositAsset(id, 'webaverse', globalState.address, globalState);
+    await depositAsset(id, 'webaverse', globalState.address, globalState);
+    handleSuccess();
   }
 
   const Buttons = () => {
@@ -78,6 +85,9 @@ export default () => {
         <div className="profileHeader">
           <div className="profileName">
             <h1>{item.name}</h1>
+            <a href={"/accounts/" + item.owner.address.toLowerCase()}>
+              <p>Owner: {item.owner.username}</p>
+            </a>
             <p>Total Supply: {item.totalSupply}</p>
             <Buttons />
           </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-grid-system';
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator } from "../../functions/UIStateFunctions.js";
 import { buyAsset, sellAsset, depositAsset } from "../../functions/AssetFunctions.js";
@@ -85,9 +85,9 @@ export default () => {
         <div className="profileHeader">
           <div className="profileName">
             <h1>{item.name}</h1>
-            <a href={"/accounts/" + item.owner.address.toLowerCase()}>
+            <Link to={"/accounts/" + item.owner.address.toLowerCase()}>
               <p>Owner: {item.owner.username}</p>
-            </a>
+            </Link>
             <p>Total Supply: {item.totalSupply}</p>
             <Buttons />
           </div>

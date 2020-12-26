@@ -27,7 +27,7 @@ const App = () => {
       const profile = await getProfileForCreator(creator.address, globalState);
       const balance = await getBalance(creator.address);
 
-      creatorProfiles[creator.address.toLowerCase()] = profile.creatorProfiles[creator.address];
+      creatorProfiles[creator.address.toLowerCase()] = { ...profile.creatorProfiles[creator.address], balance };
       return tokens.push(...inventory.creatorInventories[creator.address.toLowerCase()][0]);
     }));
 

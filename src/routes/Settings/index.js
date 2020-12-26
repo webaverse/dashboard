@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
-import { loginWithPrivateKey, getAddress, getInventoryForCreator, pullUser } from "../../functions/UIStateFunctions.js";
+import { loginWithPrivateKey, pullUser, getBalance } from "../../functions/UIStateFunctions.js";
 import preview from "../../assets/images/preview.png";
 import { discordOauthUrl } from '../../webaverse/constants.js';
 import Profile from '../../components/Profile';
@@ -22,8 +22,9 @@ export default () => {
   }
 
   const setInitialState = async (state) => {
+    const balance = await getBalance(state.address);
     const newState = await pullUser({ ...state });
-    setGlobalState({ ...globalState, ...newState });
+    setGlobalState({ balance, ...globalState, ...newState });
   }
 
   const loginWithKey = () => {
@@ -54,7 +55,7 @@ export default () => {
       ethereum.on('accountsChanged', function (accounts) {
         if(!web3.utils.isAddress(accounts[0])) {
           return;
-        } else {
+         } else {
           console.log(accounts[0]);
           setInitialState(accounts[0]);
         }

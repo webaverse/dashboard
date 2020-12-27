@@ -12,6 +12,8 @@ export default () => {
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [sellPrice, setSellPrice] = useState(0);
+  const [mainnetAddress, setMainnetAddress] = useState("");
 
   useEffect(() => {
     getInventoryForCreator(id, 0, true, globalState).then(res => {
@@ -42,15 +44,24 @@ export default () => {
     e.preventDefault();
     setLoading(true);
     console.log(globalState);
-    sellAsset(id, 69, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
+    sellAsset(id, sellPrice, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
   const handleTransfer = async (e) => {
     e.preventDefault();
     setLoading(true);
     console.log(globalState);
-    await depositAsset(id, 'webaverse', globalState.address, globalState);
+    await depositAsset(id, 'webaverse', mainnetAddress, globalState);
     handleSuccess();
+  }
+
+  const handleSellPriceChange = (e) => {
+    console.log(e.target.value);
+    setSellPrice(e.target.value);
+  }
+  const handleMainnetAddressChange = (e) => {
+    console.log(e.target.value);
+    setMainnetAddress(e.target.value);
   }
 
   const Buttons = () => {
@@ -58,9 +69,11 @@ export default () => {
     if (globalState.address && globalState.creatorInventories[id][0].owner.address.toLowerCase() == globalState.address) {
       return (
         <>
+          <input type="number" onChange={handleSellPriceChange} />
           <a className="button" onClick={e => handleSell(e)}>
             Sell
           </a>
+          <input type="text" onChange={handleMainnetAddressChange} />
           <a className="button" onClick={e => handleTransfer(e)}>
             Transfer To Mainnet
           </a>

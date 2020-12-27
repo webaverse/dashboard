@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
-
+import { setAvatar, setHomespace, setLoadoutState } from "../../functions/AssetFunctions";
 
 export default ({ inventory }) => {
   if (!inventory) { return null; }
@@ -12,6 +12,7 @@ export default ({ inventory }) => {
   if (typeof inventory === 'object') {
     const inventoryKeys = Object.keys(inventory);
 
+      console.log("globalState", globalState);
     return inventoryKeys.map((item, i) => {
       let url, name;
       const address = item;
@@ -45,30 +46,83 @@ export default ({ inventory }) => {
           }
         };
 
-        const AddToLayoutOptions = () => {
-          // wtf
-          return [1,2,3,4,5,6,7,8].map((num, i) => {
+        const AvatarOption = ({ item }) => {
+          let equal = false;
+          if (item) {
+            console.log("item.preview", item.image);
+            console.log("globalState.avatarPreview", globalState.avatarPreview);
+            equal = item.image === globalState.avatarPreview;
+          }
 
-            return (
-              <div key={i} className="popoutMenuOptions" onClick={(e) => { e.preventDefault(); alert("test avatar") }}>
+          return (
+            equal ?
+              <div className="popoutMenuOptions" onClick={(e) => { e.preventDefault(); alert(`test avatar ${item.id}`) }}>
+                Remove from avatar
+              </div >
+            :
+              <div className="popoutMenuOptions" onClick={(e) => { e.preventDefault(); alert(`test avatar ${item.id}`) }}>
+                Set as avatar
+              </div >
+          )
+        }
+
+        const HomeSpaceOption = ({ item }) => {
+          let equal = false;
+          if (item) {
+            console.log("item.preview", item.image);
+            console.log("globalState.homeSpacePreview", globalState.homeSpacePreview);
+            equal = item.image === globalState.homeSpacePreview;
+          }
+
+          return (
+            equal ?
+              <div className="popoutMenuOptions" onClick={(e) => { e.preventDefault(); alert(`test avatar ${item.id}`) }}>
+                Remove from homespace
+              </div >
+            :
+              <div className="popoutMenuOptions" onClick={(e) => { e.preventDefault(); alert(`test avatar ${item.id}`) }}>
+                Set as homespace
+              </div >
+          )
+        }
+
+        const AddToLayoutOptions = ({ item }) => [1,2,3,4,5,6,7,8].map((num, i) => {
+          let equal = false;
+          const parsedLoadout = JSON.parse(globalState.loadout);
+          if (item && item.properties && parsedLoadout[num]) {
+            equal = item.properties.hash === "0x" + parsedLoadout[num][1].replace(/\.[^/\\.]+$/, "");
+          }
+
+          return (
+            equal ?
+              <div key={i} className="popoutMenuOptions" onClick={async (e) => {
+                e.preventDefault();
+                const newState = await setLoadoutState(item.id, num, globalState);
+                console.log("newState", newState);
+                setGlobalState(newState);
+              }}>
+               Remove from loadout {num}
+              </div>
+            :
+              <div key={i} className="popoutMenuOptions" onClick={async (e) => {
+                e.preventDefault();
+                const newState = await setLoadoutState(item.id, num, globalState);
+                console.log("newState", newState);
+                setGlobalState(newState);
+              }}>
                Add to loadout {num}
               </div>
-            )
-          });
-        }
+          )
+        });
 
         return (
           <>
             <div ref={wrapperRef} onClick={(e) => { e.preventDefault(); setIsVisible(!isVisible); }} className="tripleDot"></div>
             { isVisible ?
               <div className="popoutMenu">
-                <div className="popoutMenuOptions" onClick={(e) => { e.preventDefault(); alert(`test avatar ${item.id}`) }}>
-                  Set as avatar
-                </div >
-                <div className="popoutMenuOptions" onClick={(e) => { e.preventDefault(); alert("test avatar") }}>
-                  Set as homespace
-                </div>
-                <AddToLayoutOptions />
+                <AvatarOption item={item} />
+                <HomeSpaceOption item={item} />
+                <AddToLayoutOptions item={item} />
               </div>
             : null }
           </>

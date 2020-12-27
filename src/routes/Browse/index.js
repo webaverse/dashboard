@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Row } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
 import { getBooths } from "../../functions/UIStateFunctions.js";
@@ -8,15 +8,23 @@ import Inventory from "../../components/Inventory";
 
 export default () => {
   const { globalState, setGlobalState } = useAppContext();
+  const [booths, setBooths] = useState(null);
 
-  const Sales = () => globalState.creatorBooths ? Object.keys(globalState.creatorBooths).map((seller, i) =>
-    <Inventory key={i} inventory={globalState.creatorBooths[seller][1]} />
+  useEffect(() => {
+    (async () => {
+      const booths = await getBooths(0, globalState);
+      setBooths(booths.booths[0]);
+    })();
+  }, []);
+
+  const Sales = () => booths && booths.length > 0? booths.map((seller, i) =>
+    <Inventory key={i} inventory={seller.entries} />
   ) : null
 
   return (
     <Container>
       <Row style={{ justifyContent: "center" }}>
-        <Loader loading={Object.keys(globalState.creatorBooths).length > 0 ? false : true} />
+        <Loader loading={booths && booths.length > 0 ? false : true} />
         <Sales />
       </Row>
     </Container>

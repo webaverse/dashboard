@@ -1,3 +1,4 @@
+import { getAddress } from './UIStateFunctions';
 import { contracts, runSidechainTransaction, web3, getTransactionSignature } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
@@ -266,16 +267,40 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
   }
 }
 
-export const setLoadoutState = async (id, isInLoadout, state) => {
+const getLoadout = async (address) => {
+  const loadoutString = await contracts.sidechain.Account.methods.getMetadata(address, 'loadout').call();
+  let loadout = JSON.parse(loadoutString);
+  if (!Array.isArray(loadout)) {
+    loadout = [];
+  }
+  while (loadout.length < 8) {
+    loadout.push(null);
+  }
+  return loadout;
+}
+
+export const setLoadoutState = async (id, index, state) => {
   if (!state.loginToken)
     throw new Error('not logged in');
-  const res = await fetch(`https://tokens.webaverse.com/${id}`);
-  const token = await res.json();
-  const { filename, hash } = token.properties;
-  const url = `${storageHost}/${hash.slice(2)}`;
-  const ext = getExt(filename);
-  const preview = `${previewHost}/${hash.slice(2)}.${ext}/preview.${previewExt}`;
-  const address = state.getAddress();
-  await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'isInLoadout', isInLoadout);
-  return { ...state, avatarUrl: url, avatarFileName: filename, avatarPreview: preview };
+
+  const hashNumberString = await contracts.sidechain.NFT.methods.getHash(id).call();
+  const hash = '0x' + web3.sidechain.utils.padLeft(new web3.sidechain.utils.BN(hashNumberString, 10).toString(16), 64);
+  const filename = await contracts.sidechain.NFT.methods.getMetadata(hash, 'filename').call();
+  const match = filename.match(/^(.+)\.([^\.]+)$/);
+  const ext = match ? match[2] : '';
+
+  const itemUrl = `${storageHost}/${hash.slice(2)}${ext ? ('.' + ext) : ''}`;
+  const itemFileName = itemUrl.replace(/.*\/([^\/]+)$/, '$1');
+  const itemPreview = `${previewHost}/${hash.slice(2)}${ext ? ('.' + ext) : ''}/preview.${previewExt}`;
+
+  const loadout = await getLoadout(state.address);
+  loadout.splice(index - 1, 1, [
+    itemUrl,
+    itemFileName,
+    itemPreview
+  ]);
+
+  await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'loadout', JSON.stringify(loadout));
+
+  return { ...state, loadout: JSON.stringify(loadout) };
 };

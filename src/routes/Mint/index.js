@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
 import { FileDrop } from 'react-file-drop';
 import { useAppContext } from "../../libs/contextLib";
-import { mintNft } from '../../functions/AssetFunctions.js';
+import { mintNft, setAvatar, setHomespace } from '../../functions/AssetFunctions.js';
 import Loader from '../../components/Loader';
 import "../../assets/css/mint.css";
 
@@ -14,6 +14,8 @@ export default () => {
   const [name, setName] = useState(null);
   const [description, setDescription] = useState(null);
   const [quantity, setQuantity] = useState(null);
+  const [avatar, setAvatar] = useState(false);
+  const [homeSpace, setHomeSpace] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [mintedState, setMintedState] = useState(null);
   const [mintedMessage, setMintedMessage] = useState(null);
@@ -21,6 +23,15 @@ export default () => {
   const handleNameChange = (e) => setName(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
   const handleQuantityChange = (e) => setQuantity(e.target.value);
+  const handleSetAvatarChange = (e) => setAvatar(e.target.checked);
+  const handleSetHomeSpaceChange = (e) => setHomeSpace(e.target.checked);
+
+  const handleSuccess = (e) => {
+    setMintedMessage(e.toString());
+  }
+  const handleError = (e) => {
+    setMintedMessage(e.toString());
+  }
 
   const handleMintNftButton = (e) => {
     e.preventDefault();
@@ -34,6 +45,12 @@ export default () => {
         console.log("Success callback!", "/browse/" + tokenId);
         setMintedState('success')
         setMintedMessage(tokenId)
+        if (avatar) {
+          setAvatar(tokenId, handleSuccess, handleError);
+        }
+        if (homeSpace) {
+          setHomespace(tokenId, handleSuccess, handleError);
+        }
       },
       (err) => {
         console.log("Minting failed", err);
@@ -88,6 +105,10 @@ export default () => {
           <input type="text" onChange={handleDescriptionChange} />
           <label>Quantity</label>
           <input type="number" onChange={handleQuantityChange} />
+          <label>Set as avatar</label>
+          <input type="checkbox" checked={avatar} onChange={handleSetAvatarChange} />
+          <label>Set as homespace</label>
+          <input type="checkbox" checked={homeSpace} onChange={handleSetHomeSpaceChange} />
 
           <a className="button" onClick={handleMintNftButton}>
             Mint NFT for 10 FLUX
@@ -113,22 +134,7 @@ export default () => {
         <Container>
           <Row style={{ justifyContent: "center" }}>
             <Col sm={12}>
-              { !mintedState ?
-                <div>
-                  <img className="nft-preview" src={imagePreview ? imagePreview : null} />
-                  <label>Name</label>
-                  <input type="text" onChange={handleNameChange} />
-                  <label>Description</label>
-                  <input type="text" onChange={handleDescriptionChange} />
-                  <label>Quantity</label>
-                  <input type="number" onChange={handleQuantityChange} />
-                  <a className="button" onClick={handleMintNftButton}>
-                    Mint NFT for 10 FLUX
-                  </a>
-                </div>
-              :
-                <MintSteps />
-              }
+              <MintSteps />
             </Col>
           </Row>
         </Container>

@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { FileDrop } from 'react-file-drop';
 import { useAppContext } from "../../libs/contextLib";
 import { mintNft } from '../../functions/AssetFunctions.js';
+import Loader from '../../components/Loader';
 import "../../assets/css/mint.css";
 
 
@@ -22,19 +23,22 @@ export default () => {
 
   const handleMintNftButton = (e) => {
     e.preventDefault();
+    setMintedState('loading');
+
     mintNft(file,
-       name,
-       description,
-       quantity,
-       (err) => {
-         console.log("Minting failed", err);
-         setMintedState('error')},
-       () => {
-         console.log("Success callback!"); 
-         setMintedState('success')
-       },
-       globalState
-     );
+      name,
+      description,
+      quantity,
+      (tokenId) => {
+        console.log("Success callback!", "/browse/" + tokenId);
+        setMintedState('success')
+      },
+      (err) => {
+        console.log("Minting failed", err);
+        setMintedState('error')
+      },
+      globalState
+    );
   }
 
   const handleFileUpload = file => {
@@ -50,6 +54,42 @@ export default () => {
     else console.warn("Didnt upload file");
   };
 
+  const MintSteps = () => {
+    if (mintedState === "loading") {
+      return (
+        <Loader loading={true} />
+      )
+    } else if (mintedState === "success") {
+      return (
+        <div>
+          <h1>Success</h1>
+        </div>
+      )
+    } else if (mintedState === "error") {
+      return (
+        <div>
+          <h1>Error</h1>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <img className="nft-preview" src={imagePreview ? imagePreview : null} />
+          <label>Name</label>
+          <input type="text" onChange={handleNameChange} />
+          <label>Description</label>
+          <input type="text" onChange={handleDescriptionChange} />
+          <label>Quantity</label>
+          <input type="number" onChange={handleQuantityChange} />
+
+          <a className="button" onClick={handleMintNftButton}>
+            Mint NFT for 10 FLUX
+          </a>
+        </div>
+      )
+    }
+  }
+
   return (
     <>
       { !file ?
@@ -64,19 +104,22 @@ export default () => {
         <Container>
           <Row style={{ justifyContent: "center" }}>
             <Col sm={12}>
-              <div>
-                <img className="nft-preview" src={imagePreview ? imagePreview : null} />
-                <label>Name</label>
-                <input type="text" onChange={handleNameChange} />
-                <label>Description</label>
-                <input type="text" onChange={handleDescriptionChange} />
-                <label>Quantity</label>
-                <input type="number" onChange={handleQuantityChange} />
-
-                <a className="button" onClick={handleMintNftButton}>
-                  Mint NFT for 10 FLUX 
-                </a>
-              </div>
+              { !mintedState ?
+                <div>
+                  <img className="nft-preview" src={imagePreview ? imagePreview : null} />
+                  <label>Name</label>
+                  <input type="text" onChange={handleNameChange} />
+                  <label>Description</label>
+                  <input type="text" onChange={handleDescriptionChange} />
+                  <label>Quantity</label>
+                  <input type="number" onChange={handleQuantityChange} />
+                  <a className="button" onClick={handleMintNftButton}>
+                    Mint NFT for 10 FLUX
+                  </a>
+                </div>
+              :
+                <MintSteps />
+              }
             </Col>
           </Row>
         </Container>

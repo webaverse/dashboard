@@ -11,6 +11,11 @@ export default {
 				"internalType": "string",
 				"name": "symbol",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "cap",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -491,9 +496,9 @@ export default {
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "hash",
-				"type": "uint256"
+				"type": "string"
 			},
 			{
 				"internalType": "address",
@@ -551,9 +556,9 @@ export default {
 				"type": "address"
 			},
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "hash",
-				"type": "uint256"
+				"type": "string"
 			}
 		],
 		"name": "balanceOfHash",
@@ -610,9 +615,9 @@ export default {
 		"name": "getHash",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "",
-				"type": "uint256"
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -621,9 +626,9 @@ export default {
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "hash",
-				"type": "uint256"
+				"type": "string"
 			},
 			{
 				"internalType": "string",
@@ -745,9 +750,9 @@ export default {
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "hash",
-				"type": "uint256"
+				"type": "string"
 			},
 			{
 				"internalType": "address",
@@ -774,13 +779,18 @@ export default {
 				"type": "address"
 			},
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "hash",
-				"type": "uint256"
+				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "filename",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "ext",
 				"type": "string"
 			},
 			{
@@ -810,21 +820,6 @@ export default {
 				"internalType": "uint256",
 				"name": "tokenId",
 				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "hash",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "filename",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "description",
-				"type": "string"
 			}
 		],
 		"name": "mintTokenId",
@@ -903,9 +898,9 @@ export default {
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "hash",
-				"type": "uint256"
+				"type": "string"
 			},
 			{
 				"internalType": "address",
@@ -972,9 +967,9 @@ export default {
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "hash",
-				"type": "uint256"
+				"type": "string"
 			}
 		],
 		"name": "seal",
@@ -1016,9 +1011,9 @@ export default {
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "hash",
-				"type": "uint256"
+				"type": "string"
 			},
 			{
 				"internalType": "string",
@@ -1112,13 +1107,18 @@ export default {
 						"type": "uint256"
 					},
 					{
-						"internalType": "uint256",
+						"internalType": "string",
 						"name": "hash",
-						"type": "uint256"
+						"type": "string"
 					},
 					{
 						"internalType": "string",
-						"name": "filename",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "ext",
 						"type": "string"
 					},
 					{
@@ -1235,13 +1235,18 @@ export default {
 						"type": "uint256"
 					},
 					{
-						"internalType": "uint256",
+						"internalType": "string",
 						"name": "hash",
-						"type": "uint256"
+						"type": "string"
 					},
 					{
 						"internalType": "string",
-						"name": "filename",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "ext",
 						"type": "string"
 					},
 					{
@@ -1308,9 +1313,9 @@ export default {
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "hash",
-				"type": "uint256"
+				"type": "string"
 			}
 		],
 		"name": "totalSupplyOfHash",
@@ -1373,14 +1378,14 @@ export default {
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "oldHash",
-				"type": "uint256"
+				"type": "string"
 			},
 			{
-				"internalType": "uint256",
+				"internalType": "string",
 				"name": "newHash",
-				"type": "uint256"
+				"type": "string"
 			}
 		],
 		"name": "updateHash",
@@ -1394,6 +1399,31 @@ export default {
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "key",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "value",
+				"type": "string"
+			}
+		],
+		"name": "MetadataSet",
+		"type": "event"
 	},
 	{
 		"inputs": [
@@ -1523,6 +1553,19 @@ export default {
 			}
 		],
 		"name": "deposit",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newParent",
+				"type": "address"
+			}
+		],
+		"name": "setERC20Parent",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -1696,6 +1739,19 @@ export default {
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "newParent",
+				"type": "address"
+			}
+		],
+		"name": "setERC721Parent",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "newSigner",
 				"type": "address"
 			}
@@ -1716,21 +1772,6 @@ export default {
 				"internalType": "uint256",
 				"name": "tokenId",
 				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "hash",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "filename",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "description",
-				"type": "string"
 			},
 			{
 				"internalType": "uint256",
@@ -1786,6 +1827,11 @@ export default {
 				"type": "string"
 			},
 			{
+				"internalType": "string",
+				"name": "ext",
+				"type": "string"
+			},
+			{
 				"internalType": "uint256",
 				"name": "timestamp",
 				"type": "uint256"
@@ -1824,6 +1870,19 @@ export default {
 		],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "Buy",
+		"type": "event"
 	},
 	{
 		"anonymous": false,
@@ -1968,6 +2027,32 @@ export default {
 			}
 		],
 		"name": "removeStore",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newParentERC20",
+				"type": "address"
+			}
+		],
+		"name": "setERC20Parent",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newParentERC721Address",
+				"type": "address"
+			}
+		],
+		"name": "setERC721Parent",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

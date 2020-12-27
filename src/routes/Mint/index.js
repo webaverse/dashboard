@@ -16,6 +16,7 @@ export default () => {
   const [quantity, setQuantity] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [mintedState, setMintedState] = useState(null);
+  const [mintedMessage, setMintedMessage] = useState(null);
 
   const handleNameChange = (e) => setName(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
@@ -32,10 +33,12 @@ export default () => {
       (tokenId) => {
         console.log("Success callback!", "/browse/" + tokenId);
         setMintedState('success')
+        setMintedMessage(tokenId)
       },
       (err) => {
         console.log("Minting failed", err);
         setMintedState('error')
+        setMintedMessage(err.toString())
       },
       globalState
     );
@@ -63,12 +66,16 @@ export default () => {
       return (
         <div>
           <h1>Success</h1>
+          <Link to={"/browse/" + mintedMessage}>
+            Your token is now minted as #{mintedMessage}.
+          </Link>
         </div>
       )
     } else if (mintedState === "error") {
       return (
         <div>
           <h1>Error</h1>
+          Minting failed: {mintedMessage}.
         </div>
       )
     } else {
@@ -98,6 +105,8 @@ export default () => {
             onDrop={(files, e) => handleFileUpload(files[0])}
           >
             Drop the file you want to mint here!
+            <label htmlFor="input-file" className="button">Or choose file</label>
+            <input type="file" id="input-file" onChange={(e) => handleFileUpload(e.target.files[0])} multiple={false} style={{display: 'none'}} />
           </FileDrop>
         </div>
       :

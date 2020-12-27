@@ -1,16 +1,42 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
-import { loginWithPrivateKey, pullUser, getBalance } from "../../functions/UIStateFunctions.js";
+import { loginWithPrivateKey, pullUser, getBalance, getInventoryForCreator, getProfileForCreator } from "../../functions/UIStateFunctions.js";
+import { getLoadout } from "../../functions/AssetFunctions.js";
 import preview from "../../assets/images/preview.png";
 import { discordOauthUrl } from '../../webaverse/constants.js';
+import Loader from '../../components/Loader';
 import Profile from '../../components/Profile';
 import Cards from '../../components/Inventory';
 
 export default () => {
   const { globalState, setGlobalState } = useAppContext();
+  const [loading, setLoading] = useState(true);
   const [key, setKey] = useState(null);
+  const [inventory, setInventory] = useState(null);
+  const [balance, setBalance] = useState(null);
+  const [loadout, setLoadout] = useState(null);
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    if (globalState.address) {
+      console.log(globalState);
+      (async () => {
+        const balance = await getBalance(globalState.address);
+        const loadout = await getLoadout(globalState.address);
+        const profile = await getProfileForCreator(globalState.address, globalState);
+        const inventory = await getInventoryForCreator(globalState.address, 0, true, globalState);
+
+        setBalance(balance);
+        setLoadout(loadout);
+        setProfile(profile);
+        setInventory(inventory.creatorInventories[globalState.address][0]);
+        setLoading(false);
+      })();
+    }
+  }, [globalState.address]);
+
 
   const ethEnabled = () => {
     if (window.ethereum) {
@@ -61,10 +87,6 @@ export default () => {
     }
   }
 
-  const Inventory = () => globalState.address && globalState.creatorInventories && globalState.creatorInventories[globalState.address] && globalState.creatorInventories[globalState.address][0] ? 
-     <Cards inventory={globalState.creatorInventories[globalState.address][0]} />
-   : null
-
   const handleChange = e => {
     setKey(e.target.value);
   }
@@ -72,38 +94,44 @@ export default () => {
   return (
     <Container>
       <Row style={{ justifyContent: "center" }}>
-        { globalState.address ?
-          <Col sm={12}>
-            <Profile profile={globalState} />
-            <Row style={{ justifyContent: "center" }}>
-              <Inventory />
-            </Row>
-          </Col>
+        { loading ?
+          <Loader loading={loading} />
         :
-          <Col sm={12}>
-            <Col sm={7}>
-              <h2>MetaMask</h2>
+          <>
+          { globalState.address ?
+            <Col sm={12}>
+              <Loader loading={loading} />
+              <Profile balance={balance} loadout={loadout} profile={profile} />
+              <Row style={{ justifyContent: "center" }}>
+                <Cards loadout={loadout} inventory={inventory} />
+              </Row>
+            </Col>
+          :
+            <Col sm={12}>
+              <Col sm={7}>
+                <h2>MetaMask</h2>
+                <br />
+                <a className="button" onClick={() => loginWithMetaMask() }>
+                  Login With MetaMask
+                </a>
+              </Col>
               <br />
-              <a className="button" onClick={() => loginWithMetaMask() }>
-                Login With MetaMask
-              </a>
+              <Col sm={7}>
+                <a className="button" href={discordOauthUrl}>
+                  Login With Discord
+                </a>
+                <h2>Private Key</h2>
+                <input
+                  type="text"
+                  onChange={handleChange}
+                />
+                <a className="button" onClick={() => loginWithKey() }>
+                  Login With Key
+                </a>
+              </Col>
             </Col>
-            <br />
-            <Col sm={7}>
-              <a className="button" href={discordOauthUrl}>
-                Login With Discord
-              </a>
-              <h2>Private Key</h2>
-              <input
-                type="text"
-                onChange={handleChange}
-              /> 
-              <a className="button" onClick={() => loginWithKey() }>
-                Login With Key 
-              </a>
-            </Col>
-            <Inventory />
-          </Col>
+          }
+          </>
         }
       </Row>
     </Container>

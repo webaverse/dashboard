@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import preview from "../../assets/images/preview.png";
 import { useAppContext } from "../../libs/contextLib";
 
-export default ({ profile }) => {
+export default ({ loadout, balance, profile }) => {
   if (!profile) { return null; }
 
   const { globalState, setGlobalState } = useAppContext();
@@ -24,8 +24,8 @@ export default ({ profile }) => {
       <div className="profileHeader">
         <div className="profileName">
           <h1 className="profileText">{profile.name ? profile.name : "Anonymous"}</h1>
-          {profile.balance && profile.balance > 0 ?
-            <h1 className="profileText">FLUX Balance: {profile.balance ? profile.balance : "0"}</h1>
+          {balance && balance > 0 ?
+            <h1 className="profileText">FLUX Balance: {balance ? balance : "0"}</h1>
           : null}
           {globalState.address == profile.address.toLowerCase() ?
             <a className="button" onClick={() => logout()}>
@@ -33,8 +33,8 @@ export default ({ profile }) => {
             </a>
           : null}
           <div className="profileLoadout">
-            {profile.loadout ?
-                JSON.parse(profile.loadout).map((item, i) =>
+            {loadout ?
+                loadout.map((item, i) =>
                   item && item[2] ?
                     <img key={i} className="profileLoadoutPicture" src={item[2]} />
                   : null

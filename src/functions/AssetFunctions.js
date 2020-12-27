@@ -98,7 +98,7 @@ export const setAvatar = async (id, successCallback, errorCallback) => {
   }
 };
 
-export const mintNft = async (file, name, description, quantity, successCallback, errorCallback, state) => {
+export const mintNft = async (file, name, ext, description, quantity, successCallback, errorCallback, state) => {
   const  mnemonic = state.loginToken.mnemonic;
   const address = state.address;
   const res = await fetch(storageHost, { method: 'POST', body: file });
@@ -131,7 +131,7 @@ export const mintNft = async (file, name, description, quantity, successCallback
     }
 
     if (status) {
-      const result = await runSidechainTransaction(mnemonic)('NFT', 'mint', address, '0x' + hash, file.name, description, quantity);
+      const result = await runSidechainTransaction(mnemonic)('NFT', 'mint', address, '0x' + hash, name, ext, description, quantity);
 
       status = result.status;
       transactionHash = result.transactionHash;
@@ -267,7 +267,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
   }
 }
 
-const getLoadout = async (address) => {
+export const getLoadout = async (address) => {
   const loadoutString = await contracts.sidechain.Account.methods.getMetadata(address, 'loadout').call();
   let loadout = JSON.parse(loadoutString);
   if (!Array.isArray(loadout)) {

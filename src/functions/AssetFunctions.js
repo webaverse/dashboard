@@ -119,7 +119,7 @@ export const mintNft = async (file, name, description, quantity, successCallback
     };
 
     let allowance = await contracts.sidechain.FT.methods.allowance(address, contracts['sidechain']['NFT']._address).call();
-    allowance = new web3.utils.BN(allowance, 10);
+    allowance = new web3['sidechain'].utils.BN(allowance, 10);
     if (allowance.lt(fullAmountD2.v)) {
       const result = await runSidechainTransaction(mnemonic)('FT', 'approve', contracts['sidechain']['NFT']._address, fullAmount.v);
       status = result.status;
@@ -137,7 +137,7 @@ export const mintNft = async (file, name, description, quantity, successCallback
       const tokenId = new web3['sidechain'].utils.BN(result.logs[0].topics[3].slice(2), 16).toNumber();
       tokenIds = [tokenId, tokenId + quantity - 1];
       console.log("Token id is", tokenId);
-      successCallback();
+      successCallback(tokenId);
     }
   } catch (err) {
     console.warn(err);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Row } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
 import { getCreators } from "../../functions/UIStateFunctions.js";
@@ -8,12 +8,24 @@ import Inventory from "../../components/Inventory";
 
 export default () => {
   const { globalState, setGlobalState } = useAppContext();
+  const [creatorProfiles, setCreatorProfiles] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const creators = await getCreators(0, globalState);
+
+      if (creators.creators && creators.creators[0].length > 0) {
+        setCreatorProfiles(creators.creators[0]);
+      }
+    })();
+  }, []);
+
 
   return (
     <Container>
       <Row style={{ justifyContent: "center" }}>
-        <Loader loading={globalState.creatorProfiles ? false : true} />
-        <Inventory inventory={globalState.creatorProfiles} />
+        <Loader loading={creatorProfiles ? false : true} />
+        <Inventory inventory={creatorProfiles} />
       </Row>
     </Container>
   )

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-grid-system';
 import { Link, useParams } from "react-router-dom"
+import MetaTags from 'react-meta-tags';
 import { useAppContext } from "../../libs/contextLib";
 import { getStores, getInventoryForCreator, getProfileForCreator } from "../../functions/UIStateFunctions.js";
 import { buyAsset, sellAsset, depositAsset } from "../../functions/AssetFunctions.js";
@@ -178,6 +179,14 @@ export default () => {
           store && ( <Buttons /> )
         ]}
       </Row>
+      { item && (
+        <MetaTags>
+          <title>{item.name}</title>
+          <meta name="description" content={item.description} />
+          <meta property="og:title" content={item.name} />
+          <meta property="og:image" content={item.image} />
+        </MetaTags>
+      )}
     </Container>
   )
 }

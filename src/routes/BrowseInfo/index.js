@@ -13,8 +13,6 @@ export default () => {
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState(null);
   const [profile, setProfile] = useState(null);
-  const [sellPrice, setSellPrice] = useState(0);
-  const [mainnetAddress, setMainnetAddress] = useState("");
   const [store, setStore] = useState(null);
   const [price, setPrice] = useState(null);
   const [pending, setPending] = useState(null);
@@ -46,14 +44,18 @@ export default () => {
       return "Please install MetaMask to use Webaverse!";
     } else {
       const web3 = window.web3;
-      const eth = await window.ethereum.request({ method: 'eth_accounts' });
-      if (eth && eth[0]) {
-        return eth[0];
-      } else {
-        ethereum.on('accountsChanged', (accounts) => {
-          handleTransfer();
-        });
-        return false;
+      try {
+        const eth = await window.ethereum.request({ method: 'eth_accounts' });
+        if (eth && eth[0]) {
+          return eth[0];
+        } else {
+          ethereum.on('accountsChanged', (accounts) => {
+            handleTransfer();
+          });
+          return false;
+        }
+      } catch(err) {
+        handleError(err);
       }
     }
   }
@@ -80,6 +82,7 @@ export default () => {
   const handleSell = (e) => {
     e.preventDefault();
     setLoading(true);
+    const sellPrice = prompt("How much would you like to sell this for?", "10");
     sellAsset(id, sellPrice, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
@@ -93,8 +96,8 @@ export default () => {
     try {
       const ethAccount = await loginWithMetaMask();
       if (ethAccount) {
-        console.log(id, 'webaverse', mainnetAddress, globalState);
-        await depositAsset(id, 'webaverse', mainnetAddress, mainnetAddress, globalState);
+        const mainnetAddress = prompt("What mainnet address do you want to send to?", "0x0");
+        await depositAsset(id, 'webaverse', mainnetAddress, globalState.address, globalState);
         handleSuccess();
       } if (ethEnabled()) {
         setPending(true);
@@ -104,13 +107,6 @@ export default () => {
     } catch (err) {
       handleError(err.toString());
     }
-  }
-
-  const handleSellPriceChange = (e) => {
-    setSellPrice(e.target.value);
-  }
-  const handleMainnetAddressChange = (e) => {
-    setMainnetAddress(e.target.value);
   }
 
   const Buttons = () => {
@@ -161,14 +157,12 @@ export default () => {
           <Item />,
           globalState.address && item && item.owner.address.toLowerCase() == globalState.address && (
             <Row style={{ justifyContent: "center" }}>
-              <Col sm={12} md={8}>
-                <input className="infoInput" type="number" onChange={handleSellPriceChange} placeholder="Sale price" />
+              <Col sm={12} md={6}>
                 <a className="button" onClick={e => handleSell(e)}>
                   Sell
                 </a>
               </Col>
-              <Col sm={12} md={8}>
-                <input className="infoInput" type="text" onChange={handleMainnetAddressChange} placeholder="Mainnet address" />
+              <Col sm={12} md={6}>
                 <a className="button" onClick={e => handleTransfer(e)}>
                   Transfer
                 </a>

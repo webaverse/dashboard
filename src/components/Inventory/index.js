@@ -95,7 +95,7 @@ export default ({ globalState, setGlobalState, inventory, loadout }) => {
         let equal = false;
         console.log("loadout:", loadout);
         console.log("item:", item);
-        if (item && item.id && loadout && loadout[num]) {
+        if (item && item.id && loadout && loadout[num-1]) {
           equal = item.id == loadout[num-1][0];
           console.log(equal);
         }

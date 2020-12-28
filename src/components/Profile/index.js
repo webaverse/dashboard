@@ -50,7 +50,7 @@ export default ({ loadout, balance, profile }) => {
         </div>
         <Col className="profilePicture" sm={12} md={3} style={{
           backgroundImage: `url("${profile.avatarPreview ? profile.avatarPreview : preview}")`,
-          backgroundSize: "cover",
+          backgroundSize: "contain",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
         }} />

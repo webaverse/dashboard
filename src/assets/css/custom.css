@@ -9,6 +9,9 @@ a {
   color: #fff;
   text-decoration: none;
 }
+div {
+  max-width: 100%;
+}
 .accountPicture {
   border: 2px solid #312936;    
   border-radius: 10px;

@@ -18,6 +18,10 @@ export default () =>
         window.location.href = "https://discord.gg/R5wqYhvv53";
         return null;
       }}/>
+      <Route exact path="/discordlogin" component={() => {
+        window.location.href = "https://discord.com/api/oauth2/authorize?client_id=684141574808272937&redirect_uri=https%3A%2F%2Fwebaverse.com%2Flogin&response_type=code&scope=identify";
+        return null;
+      }}/>
       <Route path='/accounts/:id' component={() => <Accounts />} />
       <Route path='/creators' component={() => <Creators />} />
       <Route path='/browse/:id' component={() => <BrowseInfo />} />

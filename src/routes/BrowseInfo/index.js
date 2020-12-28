@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-grid-system';
 import { Link, useParams } from "react-router-dom"
-import MetaTags from 'react-meta-tags';
 import { useAppContext } from "../../libs/contextLib";
 import { getStores, getInventoryForCreator, getProfileForCreator } from "../../functions/UIStateFunctions.js";
 import { buyAsset, sellAsset, depositAsset } from "../../functions/AssetFunctions.js";
@@ -179,12 +178,6 @@ export default () => {
           store && ( <Buttons /> )
         ]}
       </Row>
-      <MetaTags>
-        <title>"Webaverse"</title>
-        <meta name="description" content="Webaverse" />
-        <meta property="og:title" content="Webaverse" />
-        <meta property="og:image" content="https://preview.exokit.org/QmeCn2rLPVe8sjTYr36dcmbNP2jyMZUajfTU7LxoRC8NEG.png/preview.png" />
-      </MetaTags>
     </Container>
   )
 }

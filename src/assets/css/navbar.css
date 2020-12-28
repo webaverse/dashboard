@@ -38,9 +38,10 @@
   margin-top: 10px;
 }
 .navbar .container .navbar-menu .right-menu-container {
+  margin-top: 10px;
   margin-left: auto;
 }
-.navbar .container .navbar-menu .secondary-menu .item {
+.navbar .container .item {
   text-shadow: 0 0 0.2em rgba(0,0,0,.5);
   font-weight: 400;
   color: #676370;

@@ -6,7 +6,7 @@ import storage from "../../functions/Storage";
 import Loader from "../../components/Loader";
 
 export default () => {
-  const { code } = useParams();
+  const code = new URLSearchParams(window.location.search).get("code");
   const { globalState, setGlobalState } = useAppContext();
 
   useEffect(async () => {

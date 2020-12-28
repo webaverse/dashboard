@@ -19,7 +19,7 @@ export default () =>
       <Route path='/browse/:id' component={() => <BrowseInfo />} />
       <Route path='/browse' component={() => <Browse />} />
       <Route path='/mint' component={() => <Mint />} />
-      <Route path='/login/:code' component={() => <Login />} />
+      <Route path='/login' component={() => <Login />} />
       <Route path='/settings' component={() => <Settings />} />
       <Route path='/' exact component={() => <Home />} />
       <Route path='/*' component={() => <NotFound />} />

@@ -21,6 +21,10 @@ export default () => {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
+    if (globalState.loginToken && globalState.loginToken.mnemonic && !globalState.address) {
+      setKey(globalState.loginToken.mnemonic);
+      loginWithKey();
+    }
     if (globalState.address) {
       (async () => {
         const balance = await getBalance(globalState.address);

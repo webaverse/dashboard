@@ -61,9 +61,11 @@ export const getInventoryForCreator = async (creatorAddress, page, forceUpdate, 
 
 export const getBoothForCreator = async (creatorAddress, page, forceUpdate, state) => {
   // Use cached page
+/*
   if (forceUpdate !== true && state.creatorBooths[creatorAddress] !== undefined) {
     return state;
   }
+*/
 
   creatorAddress = creatorAddress.toLowerCase();
   const address = `https://store.webaverse.com/${creatorAddress}?page=`;
@@ -83,10 +85,12 @@ export const getBoothForCreator = async (creatorAddress, page, forceUpdate, stat
 export const getProfileForCreator = async (creatorAddress, state) => {
   console.log("Getting profile for creator")
   // Use cached page
+/*
   if (state.creatorProfiles[creatorAddress] !== undefined &&
     state.creatorInventories[creatorAddress] !== undefined &&
     state.creatorBooths[creatorAddress] !== undefined)
     return state;
+*/
 
   const res = await fetch(`https://accounts.webaverse.com/${creatorAddress}`);
   const creatorProfile = await res.json();
@@ -99,13 +103,16 @@ export const getProfileForCreator = async (creatorAddress, state) => {
 
 export const getBooths = async (page, state) => {
   // Use cached page
-  if (state.booths[page] !== undefined)
+/*
+  if (state.booths && state.booths[page] !== undefined)
     return state;
+*/
 
   const res = await fetch(`https://store.webaverse.com`);
   const booths = await res.json();
   const newState = { ...state };
   newState.booths[page] = booths;
+
   return newState;
 };
 
@@ -119,14 +126,14 @@ export const getStores = async () => {
       const id = parseInt(store.id, 10);
       const seller = store.seller.toLowerCase();
       const tokenId = parseInt(store.tokenId, 10);
-      const price = new web3["sidechain"].utils.BN(store.price);
-      sales[tokenId] = id;
+      const price = store.price;
       const entry = {
         id,
         seller,
         tokenId,
         price,
       };
+      sales[tokenId] = entry;
 
       console.log('got store', store, entry);
 
@@ -141,14 +148,15 @@ export const getStores = async () => {
       booth.entries.push(entry);
     }
   }
-  console.log('got stores', sales);
   return sales;
 };
 
 export const getCreators = async (page, state) => {
   // Use cached page
+/*
   if (state.creators[page] !== undefined)
     return state;
+*/
 
   const res = await fetch(`https://accounts.webaverse.com/`);
   const creators = await res.json();

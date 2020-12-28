@@ -142,7 +142,7 @@ export default () => {
         </div>
       </Col>
       <Col sm={12} md={6}>
-        <img className="itemImage" style={{
+        <div className="itemImage" style={{
           backgroundImage: `url("${item.image}")`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",

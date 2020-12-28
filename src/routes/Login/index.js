@@ -14,11 +14,17 @@ export default () => {
       const res = await fetch(`https://login.exokit.org/?discordcode=${code}`, {method: 'POST'});
       const j = await res.json();
       const {mnemonic} = j;
-      await setGlobalState({...globalState, loginToken: { mnemonic } });
-      await storage.set('loginToken', { mnemonic });
-      location.href = '/settings';
+      if (mnemonic) {
+        await storage.set('loginToken', { mnemonic });
+        await storage.set('globalState', {...globalState, loginToken: { mnemonic } });
+        location.href = '/settings';
+        await setGlobalState({...globalState, loginToken: { mnemonic } });
+      } else {
+        console.warn('no mnemonic returned');
+        location.href = '/settings';
+      }
     } else {
-      console.warn('no discord code provided', q);
+      console.warn('no discord code provided');
       location.href = '/settings';
     }
   }, []);

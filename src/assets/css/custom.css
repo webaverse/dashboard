@@ -4,6 +4,7 @@ body {
   background-color: #18141a;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  text-align: center;
 }
 a {
   color: #fff;

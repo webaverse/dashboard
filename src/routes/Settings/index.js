@@ -101,7 +101,7 @@ export default () => {
 
   return (
     <Row style={{ justifyContent: "center" }}>
-      { loading || !globalState.address ?
+      { loading ?
         <Loader loading={loading} />
       :
         globalState.address ?
@@ -117,6 +117,7 @@ export default () => {
               <a className="button" href={discordOauthUrl}>
                 Login With Discord
               </a>
+{/*
               <h2>Private Key</h2>
               <input
                 type="text"
@@ -125,6 +126,7 @@ export default () => {
               <a className="button" onClick={() => loginWithKey(key) }>
                 Login With Key
               </a>
+*/}
             </Col>
           </Col>
       }

@@ -74,6 +74,28 @@ export const cancelSale = async (id, networkType, successCallback, errorCallback
   }
 };
 
+export const setName = async (name, state, successCallback, errorCallback) => {
+  if (!state.loginToken)
+    throw new Error('not logged in');
+  try {
+    const address = state.address;
+    await Promise.all([
+      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'name', name),
+    ]);
+    if (successCallback)
+      successCallback();
+
+    const newState = {...state, name };
+    return newState;
+  } catch (error) {
+    if (errorCallback) {
+      errorCallback(error);
+      return state;
+    }
+  }
+};
+
+
 export const setAvatar = async (id, state, successCallback, errorCallback) => {
   if (!state.loginToken)
     throw new Error('not logged in');

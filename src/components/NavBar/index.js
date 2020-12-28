@@ -28,6 +28,9 @@ export default () => {
             </div>
   
             <div className="right-menu-container">
+              <a className="item" href="https://discord.gg/R5wqYhvv53">Join Our Discord</a>
+            </div>
+            <div>
               <Link to="/settings">
                 <img className="accountPicture" src={globalState.avatarPreview ? globalState.avatarPreview : preview} />
               </Link>

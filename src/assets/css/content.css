@@ -83,7 +83,7 @@
 .itemImage {
   filter: drop-shadow(0px 0px 5px black);
   height: 250px;
-  width: auto;
+  width: 250px;
   border-radius: 10px;
 }
 .profileHeader .profileLoadout {

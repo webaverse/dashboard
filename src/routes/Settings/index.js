@@ -36,7 +36,7 @@ export default () => {
         setInventory(inventory.creatorInventories[globalState.address][0]);
         setLoading(false);
       })();
-    } else {
+    } else if (!globalState.loginToken && !globalState.address) {
       setLoading(false);
     }
   }, [globalState.address]);
@@ -101,7 +101,7 @@ export default () => {
 
   return (
     <Row style={{ justifyContent: "center" }}>
-      { loading ?
+      { loading || !globalState.address ?
         <Loader loading={loading} />
       :
         globalState.address ?

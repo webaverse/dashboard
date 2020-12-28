@@ -179,14 +179,12 @@ export default () => {
           store && ( <Buttons /> )
         ]}
       </Row>
-      { item && (
-        <MetaTags>
-          <title>{item.name}</title>
-          <meta name="description" content={item.description} />
-          <meta property="og:title" content={item.name} />
-          <meta property="og:image" content={item.image} />
-        </MetaTags>
-      )}
+      <MetaTags>
+        <title>"Webaverse"</title>
+        <meta name="description" content="Webaverse" />
+        <meta property="og:title" content="Webaverse" />
+        <meta property="og:image" content="https://preview.exokit.org/QmeCn2rLPVe8sjTYr36dcmbNP2jyMZUajfTU7LxoRC8NEG.png/preview.png" />
+      </MetaTags>
     </Container>
   )
 }

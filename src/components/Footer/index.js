@@ -28,7 +28,7 @@ export default () =>
             <FontAwesomeIcon icon={faDiscord} />
           </i>
         </a>
-        <a href="https://twitter.com/webmixedreality">
+        <a href="https://twitter.com/webaverse">
           <i className="social-icon twitter">
             <FontAwesomeIcon icon={faTwitter} />
           </i>

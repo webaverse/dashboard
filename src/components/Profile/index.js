@@ -35,14 +35,25 @@ export default ({ loadout, balance, profile }) => {
           <div className="profileLoadout">
             {loadout ?
                 loadout.map((item, i) =>
-                  item && item[2] ?
-                    <img key={i} className="profileLoadoutPicture" src={item[2]} />
+                  item && item[3] ?
+                    <div key={i} className="profileLoadoutPicture" style={{
+                      display: "inline-block",
+                      backgroundImage: `url(${item[3]})`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center center",
+                    }} />
                   : null
                 )
             : null}
           </div>
         </div>
-        <img className="profilePicture" src={profile.avatarPreview ? profile.avatarPreview : preview} />
+        <Col className="profilePicture" sm={12} md={3} style={{
+          backgroundImage: `url("${profile.avatarPreview ? profile.avatarPreview : preview}")`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+        }} />
       </div>
     </Col>
   )

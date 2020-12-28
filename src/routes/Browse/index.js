@@ -22,11 +22,12 @@ export default () => {
   ) : null
 
   return (
-    <Container>
-      <Row style={{ justifyContent: "center" }}>
-        <Loader loading={booths && booths.length > 0 ? false : true} />
+    <Row style={{ justifyContent: "center" }}>
+      { booths && booths.length > 0 ?
         <Sales />
-      </Row>
-    </Container>
+      :
+        <Loader loading={true} />
+      }
+    </Row>
   )
 }

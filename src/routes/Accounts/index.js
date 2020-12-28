@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import MetaTags from 'react-meta-tags';
 import { Container, Row, Col } from 'react-grid-system';
 import { useParams } from "react-router-dom"
 import { useAppContext } from "../../libs/contextLib";
@@ -43,6 +44,14 @@ export default () => {
       <ProfileHeader loadout={loadout} balance={balance} profile={profile} />
       <Cards inventory={store} />
       <Cards inventory={inventory} />
+      { profile && (
+        <MetaTags>
+          <title>{profile.name}</title>
+          <meta name="description" content={profile.address} />
+          <meta property="og:title" content={profile.name} />
+          <meta property="og:image" content={profile.avatarPreview || profile.homeSpacePreview || ""} />
+        </MetaTags>
+      )}
     </Row>
   )
 }

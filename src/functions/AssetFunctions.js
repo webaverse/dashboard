@@ -74,27 +74,32 @@ export const cancelSale = async (id, networkType, successCallback, errorCallback
   }
 };
 
-export const setAvatar = async (id, successCallback, errorCallback) => {
+export const setAvatar = async (id, state, successCallback, errorCallback) => {
   if (!state.loginToken)
     throw new Error('not logged in');
   try {
     const res = await fetch(`https://tokens.webaverse.com/${id}`);
     const token = await res.json();
-    const { filename, hash } = token.properties;
+    const { name, ext, hash } = token.properties;
     const url = `${storageHost}/${hash.slice(2)}`;
-    const ext = getExt(filename);
-    const preview = `${previewHost}/${hash.slice(2)}.${ext}/preview.${previewExt}`;
+    const preview = `${previewHost}/${hash}${ext ? ('.' + ext) : ''}/preview.${previewExt}`;
     const address = state.address;
     await Promise.all([
-      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'avatarUrl', url),
-      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'avatarFileName', filename),
+      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'avatarId', id + ''),
+      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'avatarName', name),
+      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'avatarExt', ext),
       runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'avatarPreview', preview),
     ]);
     if (successCallback)
       successCallback();
+
+    const newState = {...state, avatarPreview: preview };
+    return newState;
   } catch (error) {
-    if (errorCallback)
+    if (errorCallback) {
       errorCallback(error);
+      return state;
+    }
   }
 };
 
@@ -149,7 +154,7 @@ export const mintNft = async (file, name, ext, description, quantity, successCal
   }
 };
 
-export const setHomespace = async (id, successCallback, errorCallback) => {
+export const setHomespace = async (id, state, successCallback, errorCallback) => {
   if (!state.loginToken)
     throw new Error('not logged in');
   console.log("Setting homespace");
@@ -157,67 +162,58 @@ export const setHomespace = async (id, successCallback, errorCallback) => {
 
     const res = await fetch(`https://tokens.webaverse.com/${id}`);
     const token = await res.json();
-    const { filename, hash } = token.properties;
+    const { name, ext, hash } = token.properties;
     const url = `${storageHost}/${hash.slice(2)}`;
-    const ext = getExt(filename);
-    const preview = `${previewHost}/${hash.slice(2)}.${ext}/preview.${previewExt}`;
+    const preview = `${previewHost}/${hash}${ext ? ('.' + ext) : ''}/preview.${previewExt}`;
     const address = state.address;
     await Promise.all([
-      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'homespaceUrl', url),
-      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'homespaceFileName', filename),
-      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'homespacePreview', preview),
+      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'homeSpaceId', id + ''),
+      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'homeSpaceName', name),
+      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'homeSpaceExt', ext),
+      runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'homeSpacePreview', preview),
     ]);
     if (successCallback !== undefined)
       successCallback();
+
+    const newState = {...state, homeSpacePreview: preview };
+    return newState;
   } catch (err) {
     console.log("ERROR: ", err);
     if (errorCallback !== undefined)
       errorCallback();
+
+    return state;
   }
 };
 
-export const depositAsset = async (tokenId, networkType, mainnetAddress, state) => {
-  console.log("mainnetAddress", mainnetAddress);
+export const depositAsset = async (tokenId, networkType, mainnetAddress, address, state) => {
   // Deposit to mainnet
   if (networkType === 'webaverse') {
     const id = parseInt(tokenId, 10);
     if (!isNaN(id)) {
+      console.log("setting tokenId");
       const tokenId = {
         t: 'uint256',
         v: new web3['sidechain'].utils.BN(id),
       };
 
-      const hashSpec = await contracts.sidechain.NFT.methods.getHash(tokenId.v).call();
-      const hash = {
-        t: 'uint256',
-        v: new web3['sidechain'].utils.BN(hashSpec),
-      };
-      const filenameSpec = await contracts.sidechain.NFT.methods.getMetadata(hashSpec, 'filename').call();
-      const filename = {
-        t: 'string',
-        v: filenameSpec,
-      };
-      console.log('got filename hash', hash, filename);
-
-      const descriptionSpec = await contracts.sidechain.NFT.methods.getMetadata(hashSpec, 'description').call() || '';
-      const description = {
-        t: 'string',
-        v: descriptionSpec,
-      };
-
-      console.log("loginToken", state.loginToken);
       await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts['sidechain'].NFTProxy._address, true);
 
       const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'deposit', mainnetAddress, tokenId.v);
 
       const signature = await getTransactionSignature('sidechain', 'NFT', receipt.transactionHash);
+      console.log("setting tmestamp");
       const timestamp = {
         t: 'uint256',
         v: signature.timestamp,
       };
+
       const { r, s, v } = signature;
 
-      await contracts.main.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, hash.v, filename.v, description.v, timestamp.v, r, s, v).send({
+      console.log("mainnetAddress", mainnetAddress);
+      console.log("tokenId", tokenId.v);
+      console.log("timestamp", timestamp.v);
+      await contracts.main.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
         from: mainnetAddress,
       });
 
@@ -269,7 +265,8 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, state) 
 
 export const getLoadout = async (address) => {
   const loadoutString = await contracts.sidechain.Account.methods.getMetadata(address, 'loadout').call();
-  let loadout = JSON.parse(loadoutString);
+  console.log("loadoutString", loadoutString);
+  let loadout = loadoutString ? JSON.parse(loadoutString) : null;
   if (!Array.isArray(loadout)) {
     loadout = [];
   }
@@ -280,23 +277,30 @@ export const getLoadout = async (address) => {
 }
 
 export const setLoadoutState = async (id, index, state) => {
-  if (!state.loginToken)
+  if (!state.loginToken) {
+    console.log("state", state);
     throw new Error('not logged in');
+    return state;
+  }
 
-  const hashNumberString = await contracts.sidechain.NFT.methods.getHash(id).call();
-  const hash = '0x' + web3.sidechain.utils.padLeft(new web3.sidechain.utils.BN(hashNumberString, 10).toString(16), 64);
-  const filename = await contracts.sidechain.NFT.methods.getMetadata(hash, 'filename').call();
-  const match = filename.match(/^(.+)\.([^\.]+)$/);
-  const ext = match ? match[2] : '';
+  const hash = await contracts.sidechain.NFT.methods.getHash(id).call();
+  const [
+    name,
+    ext,
+  ] = await Promise.all([
+    contracts.sidechain.NFT.methods.getMetadata(hash, 'name').call(),
+    contracts.sidechain.NFT.methods.getMetadata(hash, 'ext').call(),
+  ]);
 
-  const itemUrl = `${storageHost}/${hash.slice(2)}${ext ? ('.' + ext) : ''}`;
-  const itemFileName = itemUrl.replace(/.*\/([^\/]+)$/, '$1');
-  const itemPreview = `${previewHost}/${hash.slice(2)}${ext ? ('.' + ext) : ''}/preview.${previewExt}`;
+  // const itemUrl = `${storageHost}/${hash.slice(2)}${ext ? ('.' + ext) : ''}`;
+  // const itemFileName = itemUrl.replace(/.*\/([^\/]+)$/, '$1');
+  const itemPreview = `${previewHost}/${hash}${ext ? ('.' + ext) : ''}/preview.${previewExt}`;
 
   const loadout = await getLoadout(state.address);
   loadout.splice(index - 1, 1, [
-    itemUrl,
-    itemFileName,
+    id + '',
+    name,
+    ext,
     itemPreview
   ]);
 

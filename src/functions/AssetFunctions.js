@@ -136,7 +136,7 @@ export const mintNft = async (file, name, ext, description, quantity, successCal
     }
 
     if (status) {
-      const result = await runSidechainTransaction(mnemonic)('NFT', 'mint', address, '0x' + hash, name, ext, description, quantity);
+      const result = await runSidechainTransaction(mnemonic)('NFT', 'mint', address, hash, name, ext, description, quantity);
 
       status = result.status;
       transactionHash = result.transactionHash;

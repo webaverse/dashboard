@@ -102,44 +102,49 @@ export default () => {
 
   return (
     <>
-      { !file ?
-        <div className="file-drop-container">
-          <FileDrop
-            onDrop={(files, e) => handleFileUpload(files[0])}
-          >
-            Drop the file you want to mint here!
-            <label htmlFor="input-file" className="button">Or choose file</label>
-            <input type="file" id="input-file" onChange={(e) => handleFileUpload(e.target.files[0])} multiple={false} style={{display: 'none'}} />
-          </FileDrop>
-        </div>
-      :
-        <Container>
-          <Row style={{ justifyContent: "center" }}>
-            <Col sm={12}>
-              { mintedState === null ?
-                <div>
-                  <img className="nft-preview" src={imagePreview ? imagePreview : null} />
-                  <label>Name</label>
-                  <input type="text" value={name} onChange={handleNameChange} />
-                  <label>Description</label>
-                  <input type="text" value={description} onChange={handleDescriptionChange} />
-                  <label>Quantity</label>
-                  <input type="number" value={quantity} onChange={handleQuantityChange} />
-                  <label>Set as avatar</label>
-                  <input type="checkbox" checked={avatar} onChange={handleSetAvatarChange} />
-                  <label>Set as homespace</label>
-                  <input type="checkbox" checked={homeSpace} onChange={handleSetHomeSpaceChange} />
-                  <a className="button" onClick={handleMintNftButton}>
-                    Mint NFT for 10 FLUX
-                  </a>
-                </div>
-              :
-                <MintSteps />
-              }
-            </Col>
-          </Row>
-        </Container>
-      }
+      {[
+       !globalState.loginToken && (
+          <h1>You need to login to Mint.</h1>
+        ),
+        globalState.loginToken && ( !file ?
+          <div className="file-drop-container">
+            <FileDrop
+              onDrop={(files, e) => handleFileUpload(files[0])}
+            >
+              Drop the file you want to mint here!
+              <label htmlFor="input-file" className="button">Or choose file</label>
+              <input type="file" id="input-file" onChange={(e) => handleFileUpload(e.target.files[0])} multiple={false} style={{display: 'none'}} />
+            </FileDrop>
+          </div>
+        :
+          <Container>
+            <Row style={{ justifyContent: "center" }}>
+              <Col sm={12}>
+                { mintedState === null ?
+                  <div>
+                    <img className="nft-preview" src={imagePreview ? imagePreview : null} />
+                    <label>Name</label>
+                    <input type="text" value={name} onChange={handleNameChange} />
+                    <label>Description</label>
+                    <input type="text" value={description} onChange={handleDescriptionChange} />
+                    <label>Quantity</label>
+                    <input type="number" value={quantity} onChange={handleQuantityChange} />
+                    <label>Set as avatar</label>
+                    <input type="checkbox" checked={avatar} onChange={handleSetAvatarChange} />
+                    <label>Set as homespace</label>
+                    <input type="checkbox" checked={homeSpace} onChange={handleSetHomeSpaceChange} />
+                    <a className="button" onClick={handleMintNftButton}>
+                      Mint NFT for 10 FLUX
+                    </a>
+                  </div>
+                :
+                  <MintSteps />
+                }
+              </Col>
+            </Row>
+          </Container>
+        )
+      ]}
     </>
   )
 }

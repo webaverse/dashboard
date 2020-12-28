@@ -25,7 +25,7 @@ const App = () => {
 
   const updateLocalStorage = async (globalState) => {
     if (globalState.logout === "true") {
-       setGlobalState({ ...globalState, logout: "false", address: "", name: "", avatarUrl: "", avatarPreview: "", avatarFileName: "" });
+       setGlobalState({ ...globalState, logout: "false", loginToken: null, address: "", name: "", avatarUrl: "", avatarPreview: "", avatarFileName: "" });
       await storage.set('globalState', globalState);
       await storage.set('loginToken', null);
     } else if (globalState.refresh === "true") {

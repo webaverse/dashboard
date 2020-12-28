@@ -22,11 +22,12 @@ export default () => {
 
 
   return (
-    <Container>
-      <Row style={{ justifyContent: "center" }}>
-        <Loader loading={creatorProfiles ? false : true} />
+    <Row style={{ justifyContent: "center" }}>
+      { creatorProfiles ?
         <Inventory inventory={creatorProfiles} />
-      </Row>
-    </Container>
+      :
+        <Loader loading={true} />
+      }
+    </Row>
   )
 }

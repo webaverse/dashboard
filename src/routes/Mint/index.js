@@ -11,9 +11,9 @@ import "../../assets/css/mint.css";
 export default () => {
   const { globalState, setGlobalState } = useAppContext();
   const [file, setFile] = useState(null);
-  const [name, setName] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [quantity, setQuantity] = useState(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const [avatar, setAvatar] = useState(false);
   const [homeSpace, setHomeSpace] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
@@ -37,8 +37,10 @@ export default () => {
     e.preventDefault();
     setMintedState('loading');
 
+    const ext = file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2);;
     mintNft(file,
       name,
+      ext,
       description,
       quantity,
       (tokenId) => {
@@ -95,26 +97,6 @@ export default () => {
           Minting failed: {mintedMessage}.
         </div>
       )
-    } else {
-      return (
-        <div>
-          <img className="nft-preview" src={imagePreview ? imagePreview : null} />
-          <label>Name</label>
-          <input type="text" onChange={handleNameChange} />
-          <label>Description</label>
-          <input type="text" onChange={handleDescriptionChange} />
-          <label>Quantity</label>
-          <input type="number" onChange={handleQuantityChange} />
-          <label>Set as avatar</label>
-          <input type="checkbox" checked={avatar} onChange={handleSetAvatarChange} />
-          <label>Set as homespace</label>
-          <input type="checkbox" checked={homeSpace} onChange={handleSetHomeSpaceChange} />
-
-          <a className="button" onClick={handleMintNftButton}>
-            Mint NFT for 10 FLUX
-          </a>
-        </div>
-      )
     }
   }
 
@@ -134,7 +116,26 @@ export default () => {
         <Container>
           <Row style={{ justifyContent: "center" }}>
             <Col sm={12}>
-              <MintSteps />
+              { mintedState === null ?
+                <div>
+                  <img className="nft-preview" src={imagePreview ? imagePreview : null} />
+                  <label>Name</label>
+                  <input type="text" value={name} onChange={handleNameChange} />
+                  <label>Description</label>
+                  <input type="text" value={description} onChange={handleDescriptionChange} />
+                  <label>Quantity</label>
+                  <input type="number" value={quantity} onChange={handleQuantityChange} />
+                  <label>Set as avatar</label>
+                  <input type="checkbox" checked={avatar} onChange={handleSetAvatarChange} />
+                  <label>Set as homespace</label>
+                  <input type="checkbox" checked={homeSpace} onChange={handleSetHomeSpaceChange} />
+                  <a className="button" onClick={handleMintNftButton}>
+                    Mint NFT for 10 FLUX
+                  </a>
+                </div>
+              :
+                <MintSteps />
+              }
             </Col>
           </Row>
         </Container>

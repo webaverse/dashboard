@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
 import { loginWithPrivateKey, pullUser, getBalance, getInventoryForCreator, getProfileForCreator } from "../../functions/UIStateFunctions.js";
+import bip39 from '../../libs/bip39.js';
 import { getLoadout } from "../../functions/AssetFunctions.js";
 import preview from "../../assets/images/preview.png";
 import { discordOauthUrl } from '../../webaverse/constants.js';
@@ -21,7 +22,6 @@ export default () => {
 
   useEffect(() => {
     if (globalState.address) {
-      console.log(globalState);
       (async () => {
         const balance = await getBalance(globalState.address);
         const loadout = await getLoadout(globalState.address);
@@ -34,6 +34,8 @@ export default () => {
         setInventory(inventory.creatorInventories[globalState.address][0]);
         setLoading(false);
       })();
+    } else {
+      setLoading(false);
     }
   }, [globalState.address]);
 
@@ -54,13 +56,17 @@ export default () => {
   }
 
   const loginWithKey = () => {
-    loginWithPrivateKey(key, globalState)
-    .then(res => {
-      setInitialState(res);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    if (bip39.validateMnemonic(key)) {
+      loginWithPrivateKey(key, globalState)
+      .then(res => {
+        setInitialState(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    } else {
+      alert("not a valid private key!");
+    }
   }
 
   const loginWithMetaMask = () => {
@@ -92,48 +98,34 @@ export default () => {
   }
 
   return (
-    <Container>
-      <Row style={{ justifyContent: "center" }}>
-        { loading ?
-          <Loader loading={loading} />
-        :
-          <>
-          { globalState.address ?
-            <Col sm={12}>
-              <Loader loading={loading} />
+    <Row style={{ justifyContent: "center" }}>
+      { loading ?
+        <Loader loading={loading} />
+      :
+        globalState.address ?
+            <>
               <Profile balance={balance} loadout={loadout} profile={profile} />
-              <Row style={{ justifyContent: "center" }}>
-                <Cards loadout={loadout} inventory={inventory} />
-              </Row>
-            </Col>
-          :
-            <Col sm={12}>
-              <Col sm={7}>
-                <h2>MetaMask</h2>
-                <br />
-                <a className="button" onClick={() => loginWithMetaMask() }>
-                  Login With MetaMask
-                </a>
-              </Col>
+              <Cards globalState={globalState} setGlobalState={setGlobalState} loadout={loadout} inventory={inventory} />
+            </>
+        :
+          <Col sm={12}>
+            <Col sm={7}>
+              <h2>Discord</h2>
               <br />
-              <Col sm={7}>
-                <a className="button" href={discordOauthUrl}>
-                  Login With Discord
-                </a>
-                <h2>Private Key</h2>
-                <input
-                  type="text"
-                  onChange={handleChange}
-                />
-                <a className="button" onClick={() => loginWithKey() }>
-                  Login With Key
-                </a>
-              </Col>
+              <a className="button" href={discordOauthUrl}>
+                Login With Discord
+              </a>
+              <h2>Private Key</h2>
+              <input
+                type="text"
+                onChange={handleChange}
+              />
+              <a className="button" onClick={() => loginWithKey() }>
+                Login With Key
+              </a>
             </Col>
-          }
-          </>
-        }
-      </Row>
-    </Container>
+          </Col>
+      }
+    </Row>
   )
 }

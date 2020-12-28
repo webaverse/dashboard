@@ -14,7 +14,8 @@ export default () => {
       const res = await fetch(`https://login.exokit.org/?discordcode=${code}`, {method: 'POST'});
       const j = await res.json();
       const {mnemonic} = j;
-      await storage.set('globalState', JSON.stringify({...globalState, loginToken: { mnemonic } }));
+      await setGlobalState({...globalState, loginToken: { mnemonic } });
+      await storage.set('loginToken', { mnemonic });
       location.href = '/settings';
     } else {
       console.warn('no discord code provided', q);

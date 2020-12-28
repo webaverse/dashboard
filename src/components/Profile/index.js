@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
+import { setName } from "../../functions/AssetFunctions";
 import preview from "../../assets/images/preview.png";
 import { useAppContext } from "../../libs/contextLib";
 
@@ -12,6 +13,12 @@ export default ({ loadout, balance, profile }) => {
   const logout = () => {
     setGlobalState({ ...globalState, logout: "true" });
   }
+
+  const handleSuccess = () => {
+    console.log("success");
+    setGlobalState({ ...globalState, refresh: "true" });
+  }
+  const handleError = (err) => console.log("error");
 
   return (
     <Col sm={12} className="profileHeaderContainer">
@@ -27,11 +34,17 @@ export default ({ loadout, balance, profile }) => {
           {balance && balance > 0 ?
             <h1 className="profileText">FLUX Balance: {balance ? balance : "0"}</h1>
           : null}
-          {globalState.address == profile.address.toLowerCase() ?
-            <a className="button" onClick={() => logout()}>
+          {globalState.address == profile.address.toLowerCase() && ([
+            (<a className="button" onClick={() => {
+              const name = prompt("What is your name?", "Satoshi");
+              setName(name, globalState, handleSuccess, handleError)
+            }}>
+              Change Name
+            </a>),
+            (<a className="button" onClick={() => logout()}>
               Logout
-            </a>
-          : null}
+            </a>)
+          ])}
           <div className="profileLoadout">
             {loadout ?
                 loadout.map((item, i) =>

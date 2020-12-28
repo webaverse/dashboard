@@ -22,8 +22,7 @@ export default () => {
 
   useEffect(() => {
     if (globalState.loginToken && globalState.loginToken.mnemonic && !globalState.address) {
-      setKey(globalState.loginToken.mnemonic);
-      loginWithKey();
+      loginWithKey(globalState.loginToken.mnemonic);
     }
     if (globalState.address) {
       (async () => {
@@ -59,7 +58,7 @@ export default () => {
     setGlobalState({ balance, ...globalState, ...newState });
   }
 
-  const loginWithKey = () => {
+  const loginWithKey = (key) => {
     if (bip39.validateMnemonic(key)) {
       loginWithPrivateKey(key, globalState)
       .then(res => {
@@ -124,7 +123,7 @@ export default () => {
                 type="text"
                 onChange={handleChange}
               />
-              <a className="button" onClick={() => loginWithKey() }>
+              <a className="button" onClick={() => loginWithKey(key) }>
                 Login With Key
               </a>
             </Col>

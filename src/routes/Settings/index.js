@@ -109,7 +109,7 @@ export default () => {
             </>
         :
           <Col sm={12}>
-            <Col sm={7}>
+            <Col sm={7} style={{ margin: "0 auto" }}>
               <h2>Discord</h2>
               <br />
               <a className="button" href={discordOauthUrl}>

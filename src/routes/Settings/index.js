@@ -23,8 +23,7 @@ export default () => {
   useEffect(() => {
     if (globalState.loginToken && globalState.loginToken.mnemonic && !globalState.address) {
       loginWithKey(globalState.loginToken.mnemonic);
-    }
-    if (globalState.address) {
+    } else if (globalState.address) {
       (async () => {
         const balance = await getBalance(globalState.address);
         const loadout = await getLoadout(globalState.address);

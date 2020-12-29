@@ -23,6 +23,9 @@ export default () => {
   useEffect(() => {
     if (globalState.loginToken && globalState.loginToken.mnemonic && !globalState.address) {
       loginWithKey(globalState.loginToken.mnemonic);
+      setLoading(false);
+    } else {
+      setLoading(false);
     }
   }, []);
 

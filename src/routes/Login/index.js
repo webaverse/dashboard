@@ -12,7 +12,7 @@ export default () => {
 
   useEffect(async () => {
     if (code) {
-      const res = await fetch(`https://login.exokit.org/?discordcode=${code}&${id}`, {method: 'POST'});
+      const res = await fetch(`https://login.exokit.org/?discordcode=${code}&id=${id}`, {method: 'POST'});
       const j = await res.json();
       const {mnemonic} = j;
       if (mnemonic) {

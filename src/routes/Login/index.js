@@ -6,12 +6,13 @@ import storage from "../../functions/Storage";
 import Loader from "../../components/Loader";
 
 export default () => {
-  const code = new URLSearchParams(window.location.search).get("code");
+  const code = new URLSearchParams(window.location.search).get("code") || "";
+  const id = new URLSearchParams(window.location.search).get("id") || "";
   const { globalState, setGlobalState } = useAppContext();
 
   useEffect(async () => {
     if (code) {
-      const res = await fetch(`https://login.exokit.org/?discordcode=${code}`, {method: 'POST'});
+      const res = await fetch(`https://login.exokit.org/?discordcode=${code}&${id}`, {method: 'POST'});
       const j = await res.json();
       const {mnemonic} = j;
       if (mnemonic) {

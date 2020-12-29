@@ -9,7 +9,7 @@ export default () => {
   const code = new URLSearchParams(window.location.search).get("code") || "";
   const id = new URLSearchParams(window.location.search).get("id") || "";
   const { globalState, setGlobalState } = useAppContext();
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null);
 
   useEffect(async () => {
     if (code || login) {
@@ -34,7 +34,7 @@ export default () => {
     }
   }, []);
 
-  return loading ?
+  return !message ?
     <Loader loading={true} />
   :
     <div>

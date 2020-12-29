@@ -128,7 +128,7 @@ export default ({ globalState, setGlobalState, inventory, loadout }) => {
     }
 
     return (
-      <Col key={i} className="content" sm={12} md={3} style={{
+      <div key={i} className="content" style={{
         backgroundImage: `url("${image}")`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
@@ -144,7 +144,7 @@ export default ({ globalState, setGlobalState, inventory, loadout }) => {
             }
           </div>
         </Link>
-      </Col>
+      </div>
     )
   })
 }

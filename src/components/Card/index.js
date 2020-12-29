@@ -58,12 +58,11 @@ export default ({
         className={`card cardItem`} 
           onClick={onClickFunction}
       >
-        <div className={`upperCardInfo upperCardInfo ${cardSize} upperCardInfo scheme-${id} upperCardInfo_${(ext ?? "").replace('.','')}`}>
+        <div className={`upperCardInfo upperCardInfo ${cardSize} upperCardInfo upperCardInfo_${(ext ?? "").replace('.','')}`}>
           <div className={`upperCardInfoLeft upperCardInfoLeft ${cardSize}`}>
             <span className={`cardAssetName cardName ${cardSize}`}>{assetName}</span>
           </div>
           <div className={`upperCardInfoRight upperCardInfoRight ${cardSize}`}>
-            <img className={`networkType networkType ${cardSize}`} src={networkIcon} />
             <div className={`itemType ext ${cardSize} ext_${ext}`}>
               <img className={`itemTypeIcon itemTypeIcon ${cardSize}`} src={extIcon} />
               <span className={`itemTypeExt itemTypeExt ${cardSize}`}>.{ext}</span> 
@@ -72,7 +71,7 @@ export default ({
         </div>
         <div className={`assetImage assetImage ${cardSize}`}><img src={image} /></div>
         <div className={`lowerCardInfo lowerCardInfo ${cardSize}`}>
-          <div className={`lowerCardInfoTop lowerCardInfoTop ${cardSize} lowerCardInfoTop scheme-${id}`}>
+          <div className={`lowerCardInfoTop lowerCardInfoTop ${cardSize} lowerCardInfoTop`}>
             <div className={`lowerCardInfoTopLeft lowerCardInfoTopLeft ${cardSize}`}>
               <div className={`lowerCardInfoTopLeftGroup`}>
                 <span className={`creator creator ${cardSize}`}>
@@ -81,18 +80,11 @@ export default ({
                     <span className={`creatorName creatorName tooltiptext ${cardSize}`}>{minterUsername}</span>
                   </span>
                 </span>
-                <span className={`owner owner ${cardSize}`}>
-                  <span className={`ownerIcon ownerIcon tooltip ${cardSize}`}>
-                    <img src={ownerAvatarPreview} />
-                    <span className={`ownerName ownerName tooltiptext ${cardSize}`}>{ownerUsername}</span>
-                  </span>
-                </span>
                 <span className={`arrow-down arrow-down ${cardSize}`}></span>
               </div>
               <div className="lowerCardInfoTopClear"></div>
-              <span className={`edition edition ${cardSize}`}>{totalSupply} available</span>
             </div>
-            <span className={`greaseLoadedIntoAsset greaseLoadedIntoAsset ${cardSize}`}> {balance}Ψ</span>
+            <span className={`greaseLoadedIntoAsset greaseLoadedIntoAsset ${cardSize}`}> {balance} FLUX</span>
           </div>
           <div className={`lowerCardInfoMiddle lowerCardInfoMiddle ${cardSize}`}>
             <span className={`assetDescription assetDescription ${cardSize}`}>{description}</span>

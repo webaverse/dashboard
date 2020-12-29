@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
 import { setName } from "../../functions/AssetFunctions";
 import preview from "../../assets/images/preview.png";
+import defaulthomespace from "../../assets/images/defaulthomespace.svg";
 import { useAppContext } from "../../libs/contextLib";
 
 export default ({ loadout, balance, profile }) => {
@@ -23,7 +24,7 @@ export default ({ loadout, balance, profile }) => {
   return (
     <Col sm={12} className="profileHeaderContainer">
       <div className="profileHeaderBackground" style={{
-        backgroundImage: `url(${profile.homeSpacePreview})`,
+        backgroundImage: `url(${profile.homeSpacePreview ? profile.homeSpacePreview : defaulthomespace})`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",

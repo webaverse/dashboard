@@ -24,7 +24,6 @@ export default () =>
       }}/>
       <Route path='/accounts/:id' component={() => <Accounts />} />
       <Route path='/creators' component={() => <Creators />} />
-      <Route path='/browse/:id' component={() => <BrowseInfo />} />
       <Route path='/browse' component={() => <Browse />} />
       <Route path='/mint' component={() => <Mint />} />
       <Route path='/login' component={() => <Login />} />

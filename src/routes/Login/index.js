@@ -13,25 +13,25 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      if (code || login) {
+      const storageState = await storage.get('globalState') || globalState;
+
+      if (!storageState.loginToken) {
         const res = await fetch(`https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
         const j = await res.json();
         const {mnemonic} = j;
         if (mnemonic) {
-          await storage.set('loginToken', { mnemonic });
-          await storage.set('globalState', {...globalState, loginToken: { mnemonic } });
-  //        location.href = '/settings';
-          await setGlobalState({...globalState, loginToken: { mnemonic } });
-          setMessage('got mnemonic, logging in');
+          await setGlobalState({...storageState, loginToken: { mnemonic } });
+          await storage.set("globalState", {...storageState, loginToken: { mnemonic } });
+          location.href = '/settings';
         } else {
           console.warn('no mnemonic returned from api');
           setMessage('no mnemonic returned from api: ', j);
-  //        location.href = '/settings';
         }
+      } else if (storageState.loginToken) {
+        location.href = '/settings';
       } else {
         console.warn('no discord code or id provided');
         setMessage('no discord code or id provided');
-  //      location.href = '/settings';
       }
     })();
   }, []);

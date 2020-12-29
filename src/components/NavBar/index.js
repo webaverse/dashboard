@@ -31,7 +31,7 @@ export default () => {
               <a className="item" href="https://discord.gg/R5wqYhvv53">Join Our Discord</a>
             </div>
             <div>
-              <Link to="/settings">
+              <Link to={globalState.address ? "/accounts/" + globalState.address : "/settings"}>
                 <img className="accountPicture" src={globalState.avatarPreview ? globalState.avatarPreview : preview} />
               </Link>
             </div>

@@ -7,7 +7,7 @@
     top: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    height: 100%;
+    height: 101%;
 }
 
 .assetDetails {
@@ -41,10 +41,12 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background-color: #c4005d;
+    background-color: black;
     padding-left: 0.5em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    border-radius: 5px;
+    filter: drop-shadow(2px 5px 4px black);
 }
 
 .assetDetailsButton {
@@ -62,7 +64,7 @@
 .assetSubmitButton {
     width: 11em;
     height: 2.5em;
-    background-color: #525252;
+    background-color: #c4005d;
     padding: 0px;
     border-radius: 5px;
     color: white;
@@ -97,6 +99,7 @@
     display: flex;
     flex-direction: column;
     width: 13.5em;
+    align-items: center;
 }
 
 .sellInputLine {
@@ -124,7 +127,6 @@
 }
 
 .sellConfirmLine {
-    margin-top: 1.5em;
     display: flex;
     justify-content: space-between;
     padding-left: 1em;
@@ -230,8 +232,8 @@
 
 .assetDetailsCloseButton {
     position: absolute;
-    top: -3em;
-    right: -1.5em;
+    top: 2em;
+    right: -0.5em;
     background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z' fill='white'/%3E%3C/svg%3E ");
     background-repeat: no-repeat;
     background-position: center;
@@ -239,6 +241,10 @@
     height: 2em;
     background-color: #c4005d;
 }
+.assetDetailsRightColumn {
+    padding-top: 6em;
+}
+
 
 @media (max-width: 749px) {
 

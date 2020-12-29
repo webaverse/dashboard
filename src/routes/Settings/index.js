@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Container, Row, Col } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
 import { loginWithPrivateKey, pullUser, getBalance, getInventoryForCreator, getProfileForCreator } from "../../functions/UIStateFunctions.js";
@@ -24,18 +24,7 @@ export default () => {
     if (globalState.loginToken && globalState.loginToken.mnemonic && !globalState.address) {
       loginWithKey(globalState.loginToken.mnemonic);
     } else if (globalState.address) {
-      (async () => {
-        const balance = await getBalance(globalState.address);
-        const loadout = await getLoadout(globalState.address);
-        const profile = await getProfileForCreator(globalState.address, globalState);
-        const inventory = await getInventoryForCreator(globalState.address, 0, true, globalState);
-
-        setBalance(balance);
-        setLoadout(loadout);
-        setProfile(profile);
-        setInventory(inventory.creatorInventories[globalState.address][0]);
-        setLoading(false);
-      })();
+      setLoading(false);
     } else if (!globalState.loginToken && !globalState.address) {
       setLoading(false);
     }
@@ -105,10 +94,7 @@ export default () => {
         <Loader loading={loading} />
       :
         globalState.address ?
-            <>
-              <Profile balance={balance} loadout={loadout} profile={profile} />
-              <Cards globalState={globalState} setGlobalState={setGlobalState} loadout={loadout} inventory={inventory} />
-            </>
+          <Redirect to={"/accounts/" + globalState.address} />
         :
           <Col sm={12}>
             <Col sm={7} style={{ margin: "0 auto" }}>

@@ -19,7 +19,7 @@ export default () => {
       if (mnemonic) {
         await setGlobalState({...globalState, loginToken: { mnemonic } });
         await storage.set("globalState", {...globalState, loginToken: { mnemonic } });
-        location.href = '/settings';
+        location.href = '/save';
       } else {
         console.warn('no mnemonic returned from api');
         setMessage('no mnemonic returned from api: ', j);

@@ -7,6 +7,7 @@ import Mint from './Mint';
 import Creators from './Creators';
 import Accounts from './Accounts';
 import Settings from './Settings';
+import Save from './Save';
 import Login from './Login';
 import Home from './Home';
 import NotFound from './NotFound';
@@ -28,6 +29,7 @@ export default () =>
       <Route path='/mint' component={() => <Mint />} />
       <Route path='/login' component={() => <Login />} />
       <Route path='/settings' component={() => <Settings />} />
+      <Route path='/save' component={() => <Save />} />
       <Route path='/' exact component={() => <Home />} />
       <Route path='/*' component={() => <NotFound />} />
     </Switch>

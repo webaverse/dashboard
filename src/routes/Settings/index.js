@@ -23,10 +23,6 @@ export default () => {
   useEffect(() => {
     if (globalState.loginToken && globalState.loginToken.mnemonic && !globalState.address) {
       loginWithKey(globalState.loginToken.mnemonic);
-    } else {
-      setTimeout(() => {
-        setLoading(false);
-      }, 10);
     }
   }, []);
 

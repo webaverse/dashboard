@@ -23,12 +23,12 @@ export default () => {
   useEffect(() => {
     if (globalState.loginToken && globalState.loginToken.mnemonic && !globalState.address) {
       loginWithKey(globalState.loginToken.mnemonic);
-    } else if (globalState.address) {
-      setLoading(false);
-    } else if (!globalState.loginToken && !globalState.address) {
-      setLoading(false);
+    } else {
+      setTimeout(() => {
+        setLoading(false);
+      }, 10);
     }
-  }, [globalState.address]);
+  }, []);
 
 
   const ethEnabled = () => {

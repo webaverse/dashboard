@@ -3,6 +3,7 @@ import AssetCard from '../Card';
 import CardSize from '../../constants/CardSize.js';
 import { setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../../functions/AssetFunctions.js'
 import { getStores } from '../../functions/UIStateFunctions.js'
+import Loader from '../Loader';
 import './style.css';
 
 export default ({
@@ -43,7 +44,7 @@ export default ({
   const [toggleDropdownConfirmOpen, setToggleDropdownConfirmOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [calculatedCardSize, setCalculatedCardSize] = useState(CardSize.Large)
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(false);
   const [store, setStore] = useState(null);
   const [price, setPrice] = useState(null);
@@ -60,6 +61,7 @@ export default ({
         setStore(res[id].id);
         setPrice(res[id].price);
       }
+      setLoading(false);
     });
   }, []);
 
@@ -109,24 +111,34 @@ export default ({
     }
   }
 
-  const handleSuccess = () => console.log("success!");
-  const handleError = (err) => console.log("error", err);
+  const handleSuccess = () => {
+    console.log("success!");
+    setLoading(false);
+  }
+  const handleError = (err) => {
+    console.log("error", err);
+    setLoading(false);
+  }
 
   const handleSetAvatar = (e) => {
       e.preventDefault();
       console.log("Setting avatar, id is", id);
+      setLoading(true);
       setAvatar(id, globalState, handleSuccess, handleError)
   }
 
   const handleSetHomespace = (e) => {
       e.preventDefault();
+      setLoading(true);
       setHomespace(id, globalState, handleSuccess, handleError);
   }
 
   const addToLoadout = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const loadoutNum = prompt("What loadout number do you want to add this to?", "1");
     await setLoadoutState(id, loadoutNum, globalState);
+    setLoading(false);
   }
 
   // const removeFromLoadout = (e) => {
@@ -248,10 +260,13 @@ export default ({
       setToggleOnSaleOpen(!toggleOnSaleOpen)
   }
 
-  return ( 
+  return (
     <div className="assetDetailsContainer">
       <div className="assetDetails">
-        <div className="assetDetailsLeftColumn">
+        { loading ?
+          <Loader loading={loading} />
+        : [
+        (<div className="assetDetailsLeftColumn">
           <AssetCard
             key={id}
             assetName={name}
@@ -274,8 +289,8 @@ export default ({
             cardSize={""}
             networkType='webaverse'
           /> 
-        </div>
-        <div className="assetDetailsRightColumn">
+        </div>),
+        (<div className="assetDetailsRightColumn">
           {[
             userOwnsThisAsset && (
             <div className="detailsBlock detailsBlockSet">
@@ -404,7 +419,8 @@ export default ({
               : null)]}   
 
         <button className="assetDetailsButton assetDetailsCloseButton" onClick={hideDetails}></button>
-      </div>
+      </div>)
+    ]}
     </div>
   </div>
   );

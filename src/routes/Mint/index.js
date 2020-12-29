@@ -5,7 +5,7 @@ import { FileDrop } from 'react-file-drop';
 import { useAppContext } from "../../libs/contextLib";
 import { mintNft, setAvatar, setHomespace } from '../../functions/AssetFunctions.js';
 import Loader from '../../components/Loader';
-import "../../assets/css/mint.css";
+import "./style.css";
 
 
 export default () => {
@@ -14,8 +14,6 @@ export default () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [avatar, setAvatar] = useState(false);
-  const [homeSpace, setHomeSpace] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [mintedState, setMintedState] = useState(null);
   const [mintedMessage, setMintedMessage] = useState(null);
@@ -23,8 +21,6 @@ export default () => {
   const handleNameChange = (e) => setName(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
   const handleQuantityChange = (e) => setQuantity(e.target.value);
-  const handleSetAvatarChange = (e) => setAvatar(e.target.checked);
-  const handleSetHomeSpaceChange = (e) => setHomeSpace(e.target.checked);
 
   const handleSuccess = (e) => {
     setMintedMessage(e.toString());
@@ -47,12 +43,6 @@ export default () => {
         console.log("Success callback!", "/browse/" + tokenId);
         setMintedState('success')
         setMintedMessage(tokenId)
-        if (avatar) {
-          setAvatar(tokenId, handleSuccess, handleError);
-        }
-        if (homeSpace) {
-          setHomespace(tokenId, handleSuccess, handleError);
-        }
       },
       (err) => {
         console.log("Minting failed", err);
@@ -85,9 +75,7 @@ export default () => {
       return (
         <div>
           <h1>Success</h1>
-          <Link to={"/browse/" + mintedMessage}>
-            Your token is now minted as #{mintedMessage}.
-          </Link>
+          Your token is now minted as #{mintedMessage}.
         </div>
       )
     } else if (mintedState === "error") {
@@ -123,19 +111,29 @@ export default () => {
                 { mintedState === null ?
                   <div>
                     <img className="nft-preview" src={imagePreview ? imagePreview : null} />
-                    <label>Name</label>
-                    <input type="text" value={name} onChange={handleNameChange} />
-                    <label>Description</label>
-                    <input type="text" value={description} onChange={handleDescriptionChange} />
-                    <label>Quantity</label>
-                    <input type="number" value={quantity} onChange={handleQuantityChange} />
-                    <label>Set as avatar</label>
-                    <input type="checkbox" checked={avatar} onChange={handleSetAvatarChange} />
-                    <label>Set as homespace</label>
-                    <input type="checkbox" checked={homeSpace} onChange={handleSetHomeSpaceChange} />
-                    <a className="button" onClick={handleMintNftButton}>
-                      Mint NFT for 10 FLUX
-                    </a>
+                    <div>
+                        <label>Name</label>
+                    </div>
+                    <div>
+                        <input type="text" value={name} onChange={handleNameChange} />
+                    </div>
+                    <div>
+                        <label>Description</label>
+                    </div>
+                    <div>
+                        <input type="text" value={description} onChange={handleDescriptionChange} />
+                    </div>
+                    <div>
+                        <label>Quantity</label>
+                    </div>
+                    <div>
+                        <input type="number" value={quantity} onChange={handleQuantityChange} />
+                    </div>
+                    <div>
+                        <a className="button" onClick={handleMintNftButton}>
+                          Mint NFT for 10 FLUX
+                        </a>
+                    </div>
                   </div>
                 :
                   <MintSteps />

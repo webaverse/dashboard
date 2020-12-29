@@ -12,6 +12,12 @@ img {
     flex-direction: column;
     margin: 2em;
     color: black;
+    transition: transform .1s ease-in-out,box-shadow .1s ease-in-out;
+    filter: drop-shadow(0px 0px 4px #000000);
+}
+.card:hover {
+    transform: translateY(-2.5px);
+    filter: drop-shadow(0px 0px 10px #db0269);
 }
 
 .upperCardInfo {
@@ -50,8 +56,9 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 2.5em;
+    height: 2.2em;
     padding-left: 0.3em;
+    padding: 3px 0;
 }
 
 .itemTypeIcon {
@@ -191,6 +198,7 @@ img {
 
 .greaseLoadedIntoAsset {
     color: white;
+    font-size: 0.8em;
 }
 
 .lowerCardInfoMiddle {

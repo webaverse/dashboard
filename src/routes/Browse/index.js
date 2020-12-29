@@ -4,30 +4,35 @@ import { useAppContext } from "../../libs/contextLib";
 import { getBooths } from "../../functions/UIStateFunctions.js";
 
 import Loader from "../../components/Loader";
-import Inventory from "../../components/Inventory";
+import CardGrid from "../../components/CardGrid";
 
 export default () => {
   const { globalState, setGlobalState } = useAppContext();
   const [booths, setBooths] = useState(null);
+  const [loading, setLoading] = useState(null);
 
   useEffect(() => {
     (async () => {
       const booths = await getBooths(0, globalState);
       setBooths(booths.booths[0]);
+      setLoading(false);
     })();
   }, []);
 
   const Sales = () => booths && booths.length > 0? booths.map((seller, i) =>
-    <Inventory key={i} inventory={seller.entries} />
+    <CardGrid key={i} data={seller.entries} globalState={globalState} cardSize="" />
   ) : null
 
   return (
-    <Row style={{ justifyContent: "center" }}>
-      { booths && booths.length > 0 ?
-        <Sales />
-      :
-        <Loader loading={true} />
-      }
-    </Row>
+    <div>
+      {[
+        loading && (
+        <Loader loading={loading} />),
+        !loading && (
+        <div className="profileBodyAssets">
+          <Sales />
+        </div>)
+      ]}
+    </div>
   )
 }

@@ -30,10 +30,13 @@ export default ({ loadout, balance, profile }) => {
       }} />
       <div className="profileHeader">
         <div className="profileName">
-          <h1 className="profileText">{profile.name ? profile.name : "Anonymous"}</h1>
-          {balance && balance > 0 ?
-            <h1 className="profileText">FLUX Balance: {balance ? balance : "0"}</h1>
-          : null}
+          <div>
+            <h1 className="profileText">{profile.name ? profile.name : "Anonymous"}</h1>
+            <p className="profileText">{profile.address ? profile.address : ""}</p>
+            {balance && balance > 0 ?
+              <p className="profileText">FLUX Balance: {balance ? balance : "0"}</p>
+            : null}
+          </div>
           {globalState.address == profile.address.toLowerCase() && ([
             (<a className="button" onClick={() => {
               const name = prompt("What is your name?", "Satoshi");

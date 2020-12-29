@@ -6,8 +6,10 @@ import { getInventoryForCreator, getProfileForCreator, getBoothForCreator, getBa
 import { getLoadout } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
-import Cards from "../../components/Inventory";
+import CardGrid from "../../components/CardGrid";
 import ProfileHeader from "../../components/Profile";
+
+import './style.css';
 
 export default () => {
   const { id } = useParams();
@@ -18,6 +20,9 @@ export default () => {
   const [loadout, setLoadout] = useState(null);
   const [profile, setProfile] = useState(null);
   const [store, setStore] = useState(null);
+  const [selectedView, setSelectedView] = useState("inventory");
+
+  const handleViewToggle = (view) => setSelectedView(view);
 
   useEffect(() => {
     (async () => {
@@ -38,11 +43,34 @@ export default () => {
   }, []);
 
   return (
-    <Row style={{ justifyContent: "center" }}>
-      <Loader loading={loading} />
-      <ProfileHeader loadout={loadout} balance={balance} profile={profile} />
-      <Cards inventory={store} />
-      <Cards inventory={inventory} />
-    </Row>
+    <div>
+      {[
+        loading && (
+        <Loader loading={loading} />),
+        !loading && (
+        <ProfileHeader loadout={loadout} balance={balance} profile={profile} />),
+        !loading && (
+        <div className="profileBodyNav">
+          <div className="profileBodyNavContainer">
+            <a className={`profileNavLink ${selectedView === "store" ? "active disable" : ""}`} onClick={() => handleViewToggle("store")}>
+              Store
+            </a>
+            <a className={`profileNavLink ${selectedView === "inventory" ? "active disable" : ""}`} onClick={() => handleViewToggle("inventory")}>
+              Inventory
+            </a>
+          </div>
+        </div>),
+        !loading && (
+        <div className="profileBodyAssets">
+          {selectedView === "store" ?
+            store && (
+            <CardGrid data={store} globalState={globalState} cardSize="" />)
+          :
+            inventory && (
+            <CardGrid data={inventory} globalState={globalState} cardSize="" />)
+          }
+        </div>)
+      ]}
+    </div>
   )
 }

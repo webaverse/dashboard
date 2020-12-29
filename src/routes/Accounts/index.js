@@ -26,19 +26,21 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      const balance = await getBalance(id);
-      const loadout = await getLoadout(id);
-      const profile = await getProfileForCreator(id, globalState);
-      const inventory = await getInventoryForCreator(id, 0, true, globalState);
-      const store = await getBoothForCreator(id, 0, true, globalState);
-      console.log(store);
+      if (id) {
+        const balance = await getBalance(id);
+        const loadout = await getLoadout(id);
+        const profile = await getProfileForCreator(id, globalState);
+        const inventory = await getInventoryForCreator(id, 0, true, globalState);
+        const store = await getBoothForCreator(id, 0, true, globalState);
+        console.log(store);
 
-      setBalance(balance);
-      setLoadout(loadout);
-      setProfile(profile.creatorProfiles[id]);
-      setInventory(inventory.creatorInventories[id][0]);
-      setStore(store.creatorBooths[id.toLowerCase()][0]);
-      setLoading(false);
+        setBalance(balance);
+        setLoadout(loadout);
+        setProfile(profile.creatorProfiles[id]);
+        setInventory(inventory.creatorInventories[id][0]);
+        setStore(store.creatorBooths[id.toLowerCase()][0]);
+        setLoading(false);
+      }
     })();
   }, []);
 

@@ -4,6 +4,7 @@
    justify-content: flex-end;
    flex: .5 .5 auto;
    align-items: center;
+   padding-right: 5vw;
 }
 .content-inner {
   width: 250px;
@@ -93,7 +94,7 @@
   filter: drop-shadow(0px 0px 5px black);
 }
 .profileHeader .profilePicture {
-  border-radius: 10px;
+  border-radius: 0;
   width: 25em;
   height: 25em;
   filter: drop-shadow(0px 0px 5px black);

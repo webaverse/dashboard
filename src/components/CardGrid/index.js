@@ -38,6 +38,7 @@ export default ({
             description={currentAsset.description}
             image={currentAsset.image}
             buyPrice={currentAsset.buyPrice}
+            saleId={currentAsset.saleId}
             hash={currentAsset.properties.hash}
             external_url={currentAsset.external_url}
             filename={currentAsset.properties.filename}
@@ -69,6 +70,7 @@ export default ({
              totalSupply={asset.totalSupply}
              balance={asset.balance}
              buyPrice={asset.buyPrice}
+             saleId={asset.saleId}
              ownerAvatarPreview={asset.owner.avatarPreview}
              ownerUsername={asset.owner.username}
              ownerAddress={asset.owner.address}

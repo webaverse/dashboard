@@ -45,3 +45,6 @@
     pointer-events: none;
     cursor: default;
 }
+.settingsButtonsContainer {
+  margin-top: 100px;
+}

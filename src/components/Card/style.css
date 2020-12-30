@@ -15,10 +15,6 @@ img {
     transition: transform .1s ease-in-out,box-shadow .1s ease-in-out;
     filter: drop-shadow(0px 0px 4px #000000);
 }
-.card:hover {
-    filter: drop-shadow(0px 0px 10px #db0269);
-}
-
 .upperCardInfo {
     background: linear-gradient(90deg, #C4008B 34.8%, #c4005d 100%);
     border-radius: 10px 10px 0px 0px;
@@ -589,97 +585,79 @@ img {
 }
 
 /* color schemes */
-.upperCardInfo.scheme-1 {
-    background: linear-gradient(90deg, #E10000 34.8%, #7A0101 100%);
-}
 
-.upperCardInfo.scheme-2 {
-    background: linear-gradient(90deg, #0500FF 34.8%, #010041 100%);
-}
-
-.upperCardInfo.scheme-3 {
-    background: linear-gradient(90deg, #00CE21 34.8%, #00560E 100%);
-}
-
-.upperCardInfo.scheme-4 {
+.upperCardInfo.unique,
+.lowerCardInfoTop.unique {
     background: linear-gradient(90deg, #FFC700 34.8%, #665000 100%);
 }
-
-.upperCardInfo.scheme-5 {
-    background: linear-gradient(90deg, #00B3DB 34.8%, #003743 100%);
+.card.unique:hover {
+   filter: drop-shadow(0px 0px 10px #FFC700);
 }
 
-.upperCardInfo.scheme-6 {
-    background: linear-gradient(90deg, #AD00EA 34.8%, #32002D 100%);
+
+.upperCardInfo.mythic,
+.lowerCardInfoTop.mythic {
+   background: linear-gradient(90deg, #ef00ff 34.8%, #790971 100%);
+}
+.card.mythic:hover {
+   filter: drop-shadow(0px 0px 10px #ef00ff);
 }
 
-.upperCardInfo.scheme-7 {
-    background: linear-gradient(90deg, #FF7043 34.8%, #532212 100%);
+
+.upperCardInfo.legendary,
+.lowerCardInfoTop.legendary {
+   background: linear-gradient(90deg, #AD00EA 34.8%, #32002D 100%);
+}
+.card.legendary:hover {
+   filter: drop-shadow(0px 0px 10px #AD00EA);
 }
 
+
+.upperCardInfo.epic,
+.lowerCardInfoTop.epic {
+   background: linear-gradient(90deg, #00B3DB 34.8%, #003743 100%);
+}
+.card.epic:hover {
+   filter: drop-shadow(0px 0px 10px #00B3DB);
+}
+
+
+.upperCardInfo.rare,
+.lowerCardInfoTop.rare {
+   background: linear-gradient(90deg, #00CE21 34.8%, #00560E 100%);
+}
+.card.rare:hover {
+   filter: drop-shadow(0px 0px 10px #00CE21);
+}
+
+
+.upperCardInfo.uncommon,
+.lowerCardInfoTop.uncommon {
+   background: linear-gradient(90deg, #ff8400 34.8%, #875806 100%);
+}
+.card.uncommon:hover {
+   filter: drop-shadow(0px 0px 10px #ff8400);
+}
+
+
+.upperCardInfo.common,
+.lowerCardInfoTop.common {
+   background: linear-gradient(90deg, #DCDCDC 34.8%, #373737 100%);
+}
+.card.common:hover {
+   filter: drop-shadow(0px 0px 10px #DCDCDC);
+}
+
+
+
+/* color schemes */
+
+/* GREEN MAYBE */
 .upperCardInfo.scheme-8 {
     background: linear-gradient(90deg, #00FFC2 34.8%, #00372A 100%);
 }
-
+/* PURPLE MAYBE */
 .upperCardInfo.scheme-9 {
     background: linear-gradient(90deg, #EFC1FF 34.8%, #5D3B69 100%);
 }
 
-.upperCardInfo.scheme-10 {
-    background: linear-gradient(90deg, #83B4FF 34.8%, #002459 100%);
-}
-
-.upperCardInfo.scheme-11 {
-    background: linear-gradient(90deg, #FFD9A0 34.8%, #645134 100%);
-}
-.upperCardInfo.scheme-12 {
-    background: linear-gradient(90deg, #DCDCDC 34.8%, #373737 100%);
-}
-
-.lowerCardInfoTop.scheme-1 {
-    background: linear-gradient(90deg, #E10000 34.8%, #7A0101 100%);
-}
-
-.lowerCardInfoTop.scheme-2 {
-    background: linear-gradient(90deg, #0500FF 34.8%, #010041 100%);
-}
-
-.lowerCardInfoTop.scheme-3 {
-    background: linear-gradient(90deg, #00CE21 34.8%, #00560E 100%);
-}
-
-.lowerCardInfoTop.scheme-4 {
-    background: linear-gradient(90deg, #FFC700 34.8%, #665000 100%);
-}
-
-.lowerCardInfoTop.scheme-5 {
-    background: linear-gradient(90deg, #00B3DB 34.8%, #003743 100%);
-}
-
-.lowerCardInfoTop.scheme-6 {
-    background: linear-gradient(90deg, #AD00EA 34.8%, #32002D 100%);
-}
-
-.lowerCardInfoTop.scheme-7 {
-    background: linear-gradient(90deg, #FF7043 34.8%, #532212 100%);
-}
-
-.lowerCardInfoTop.scheme-8 {
-    background: linear-gradient(90deg, #00FFC2 34.8%, #00372A 100%);
-}
-
-.lowerCardInfoTop.scheme-9 {
-    background: linear-gradient(90deg, #EFC1FF 34.8%, #5D3B69 100%);
-}
-
-.lowerCardInfoTop.scheme-10 {
-    background: linear-gradient(90deg, #83B4FF 34.8%, #002459 100%);
-}
-
-.lowerCardInfoTop.scheme-11 {
-    background: linear-gradient(90deg, #FFD9A0 34.8%, #645134 100%);
-}
-
-.lowerCardInfoTop.scheme-12 {
-    background: linear-gradient(90deg, #DCDCDC 34.8%, #373737 100%);
-}

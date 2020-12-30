@@ -52,13 +52,30 @@ export default ({
   } else if (ext.toLowerCase() === "gif") {
     extIcon = iconGif;
   }
+
+  let rarity;
+  if (totalSupply < 2) {
+    rarity = "unique";
+  } else if (totalSupply < 3) {
+    rarity = "mythic";
+  } else if (totalSupply < 8) {
+    rarity = "legendary";
+  } else if (totalSupply < 15) {
+    rarity = "epic";
+  } else if (totalSupply < 30) {
+    rarity = "rare";
+  } else if (totalSupply < 50) {
+    rarity = "uncommon";
+  } else if (totalSupply > 50) {
+    rarity = "common";
+  }
   
   return (
       <div
-        className={`card cardItem`} 
+        className={`card cardItem ${rarity}`}
           onClick={onClickFunction}
       >
-        <div className={`upperCardInfo upperCardInfo ${cardSize} upperCardInfo upperCardInfo_${(ext ?? "").replace('.','')}`}>
+        <div className={`${rarity} upperCardInfo upperCardInfo ${cardSize} upperCardInfo upperCardInfo_${(ext ?? "").replace('.','')}`}>
           <div className={`upperCardInfoLeft upperCardInfoLeft ${cardSize}`}>
             <span className={`cardAssetName cardName ${cardSize}`}>{assetName}</span>
           </div>
@@ -71,7 +88,7 @@ export default ({
         </div>
         <div className={`assetImage assetImage ${cardSize}`}><img src={image} /></div>
         <div className={`lowerCardInfo lowerCardInfo ${cardSize}`}>
-          <div className={`lowerCardInfoTop lowerCardInfoTop ${cardSize} lowerCardInfoTop`}>
+          <div className={`lowerCardInfoTop ${rarity} lowerCardInfoTop ${cardSize} lowerCardInfoTop`}>
             <div className={`lowerCardInfoTopLeft lowerCardInfoTopLeft ${cardSize}`}>
               <div className={`lowerCardInfoTopLeftGroup`}>
                 <span className={`creator creator ${cardSize}`}>

@@ -34,11 +34,6 @@ export default () => {
   const logout = () => {
     setGlobalState({ ...globalState, logout: "true" });
   }
-  const loadStore = async () => {
-    const store = await getBoothForCreator(id, 0, true, globalState);
-    setStore(store.creatorBooths[id.toLowerCase()][0]);
-    setLoading(false);
-  }
 
   useEffect(() => {
     if (id) {
@@ -53,7 +48,9 @@ export default () => {
       (async () => {
         const profile = await getProfileForCreator(id, globalState);
         setProfile(profile.creatorProfiles[id]);
-        setLoading(false);
+        if (currentTab === "inventory") {
+          setLoading(false);
+        }
       })();
       (async () => {
         const inventory = await getInventoryForCreator(id, 0, true, globalState);
@@ -61,10 +58,18 @@ export default () => {
           setInventory(inventory.creatorInventories[id][0]);
         }
       })();
+      (async () => {
+        const store = await getBoothForCreator(id, 0, true, globalState);
+        setStore(store.creatorBooths[id.toLowerCase()][0]);
+        if (currentTab === "inventory" || currentTab === undefined) {
+          setLoading(false);
+        }
+      })();
     }
 
     if (globalState && id.toLowerCase() === globalState.address) {
       handleViewToggle("settings");
+      setLoading(false);
     } else if (currentTab) {
       handleViewToggle(currentTab);
     } else {
@@ -84,10 +89,8 @@ export default () => {
         !loading && (
         <div className="profileBodyNav">
           <div className="profileBodyNavContainer">
-            {(
+            {store && store.length > 0 && (
             <a className={`profileNavLink ${currentTab === "store" ? "active disable" : ""}`} onClick={() => {
-              setLoading("true");
-              loadStore();
               handleViewToggle("store");
             }}>
               Store

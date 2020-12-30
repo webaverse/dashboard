@@ -27,25 +27,32 @@ export default () => {
   const logout = () => {
     setGlobalState({ ...globalState, logout: "true" });
   }
+  const loadStore = async () => {
+    const store = await getBoothForCreator(id, 0, true, globalState);
+    setStore(store.creatorBooths[id.toLowerCase()][0]);
+    setLoading("false");
+  }
 
   useEffect(() => {
-    (async () => {
-      if (id) {
+    if (id) {
+      (async () => {
         const balance = await getBalance(id);
-        const loadout = await getLoadout(id);
-        const profile = await getProfileForCreator(id, globalState);
-        const inventory = await getInventoryForCreator(id, 0, true, globalState);
-        const store = await getBoothForCreator(id, 0, true, globalState);
-        console.log(store);
-
         setBalance(balance);
+      })();
+      (async () => {
+        const loadout = await getLoadout(id);
         setLoadout(loadout);
+      })();
+      (async () => {
+        const profile = await getProfileForCreator(id, globalState);
         setProfile(profile.creatorProfiles[id]);
-        setInventory(inventory.creatorInventories[id][0]);
-        setStore(store.creatorBooths[id.toLowerCase()][0]);
         setLoading(false);
-      }
-    })();
+      })();
+      (async () => {
+        const inventory = await getInventoryForCreator(id, 0, true, globalState);
+        setInventory(inventory.creatorInventories[id][0]);
+      })();
+    }
 
     if (globalState && id.toLowerCase() === globalState.address) {
       handleViewToggle("settings");
@@ -62,11 +69,15 @@ export default () => {
         !loading && (
         <div className="profileBodyNav">
           <div className="profileBodyNavContainer">
-            {store.length > 0 && (
-            <a className={`profileNavLink ${selectedView === "store" ? "active disable" : ""}`} onClick={() => handleViewToggle("store")}>
+            {(
+            <a className={`profileNavLink ${selectedView === "store" ? "active disable" : ""}`} onClick={() => {
+              setLoading("true");
+              loadStore();
+              handleViewToggle("store");
+            }}>
               Store
             </a>)}
-            {inventory.length > 0 && (
+            {inventory && inventory.length > 0 && (
             <a className={`profileNavLink ${selectedView === "inventory" ? "active disable" : ""}`} onClick={() => handleViewToggle("inventory")}>
               Inventory
             </a>)}

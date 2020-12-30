@@ -11,7 +11,6 @@ export const getBalance = async (address) => {
     const result = await contracts["sidechain"]["FT"].methods.balanceOf(address).call();
     return result;
   } catch (error) {
-    console.log("ERRRRRRRRRRRRROOOOOOOOOOOORRRRRRRR");
     console.warn(error);
     return 0;
   }

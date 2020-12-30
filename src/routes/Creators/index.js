@@ -3,7 +3,7 @@ import { Container, Row } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
 import { getCreators } from "../../functions/UIStateFunctions.js";
 import Loader from "../../components/Loader";
-import Inventory from "../../components/Inventory";
+import AccountCards from "../../components/AccountCards";
 
 
 export default () => {
@@ -24,7 +24,7 @@ export default () => {
   return (
     <Row style={{ justifyContent: "center" }}>
       { creatorProfiles ?
-        <Inventory inventory={creatorProfiles} />
+        <AccountCards accounts={creatorProfiles} />
       :
         <Loader loading={true} />
       }

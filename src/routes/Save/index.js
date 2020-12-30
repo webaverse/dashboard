@@ -26,8 +26,9 @@ export default () => {
 
   const setInitialState = async (state) => {
     const balance = await getBalance(state.address);
-    const newState = await pullUser({ ...state });
-    setGlobalState({ balance, ...globalState, ...newState });
+    const newState = await pullUser(state);
+
+    setGlobalState({ balance, login: "true", ...newState });
   }
 
   useEffect(() => {

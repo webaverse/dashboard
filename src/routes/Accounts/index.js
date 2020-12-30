@@ -24,6 +24,10 @@ export default () => {
 
   const handleViewToggle = (view) => setSelectedView(view);
 
+  const logout = () => {
+    setGlobalState({ ...globalState, logout: "true" });
+  }
+
   useEffect(() => {
     (async () => {
       if (id) {
@@ -62,18 +66,38 @@ export default () => {
             <a className={`profileNavLink ${selectedView === "inventory" ? "active disable" : ""}`} onClick={() => handleViewToggle("inventory")}>
               Inventory
             </a>)}
+            {globalState && globalState.address === id.toLowerCase() && (
+            <a className={`profileNavLink ${selectedView === "settings" ? "active disable" : ""}`} onClick={() => handleViewToggle("settings")}>
+              Settings
+            </a>)}
           </div>
         </div>),
         !loading && (
         <div className="profileBodyAssets">
-          {selectedView === "store" ?
-            store && (
-            <CardGrid data={store} globalState={globalState} cardSize="" />)
-          :
-            inventory && (
-            <CardGrid data={inventory} globalState={globalState} cardSize="" />)
-          }
-        </div>)
+          {[
+          selectedView === "store" && store && (
+            <CardGrid data={store} globalState={globalState} cardSize="" />
+          ),
+          selectedView === "inventory" && inventory && (
+            <CardGrid data={inventory} globalState={globalState} cardSize="" />
+          )
+          ]}
+        </div>),
+        selectedView === "settings" && globalState && globalState.address == profile.address.toLowerCase() && (
+          <div className="settingsButtonsContainer">
+          {[
+            (<a className="button" onClick={() => {
+              const name = prompt("What is your name?", "Satoshi");
+              setName(name, globalState, handleSuccess, handleError)
+            }}>
+              Change Name
+            </a>),
+            (<a className="button" onClick={() => logout()}>
+              Logout
+            </a>)
+          ]}
+          </div>
+        )
       ]}
     </div>
   )

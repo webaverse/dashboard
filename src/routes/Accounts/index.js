@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-grid-system';
-import { useParams } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getBoothForCreator, getBalance } from "../../functions/UIStateFunctions.js";
 import { getLoadout } from "../../functions/AssetFunctions.js";
@@ -12,6 +12,7 @@ import ProfileHeader from "../../components/Profile";
 import './style.css';
 
 export default () => {
+  const history = useHistory();
   const { id } = useParams();
   const { globalState, setGlobalState } = useAppContext();
   const [loading, setLoading] = useState(true);
@@ -22,7 +23,13 @@ export default () => {
   const [store, setStore] = useState(null);
   const [selectedView, setSelectedView] = useState("inventory");
 
-  const handleViewToggle = (view) => setSelectedView(view);
+  const currentTab = window.location.pathname.split("/")[3];
+  console.log("pathname", window.location.pathname);
+
+  const handleViewToggle = (view) => {
+    history.push("/accounts/" + id + "/" + view);
+    setSelectedView(view);
+  }
 
   const logout = () => {
     setGlobalState({ ...globalState, logout: "true" });
@@ -50,14 +57,22 @@ export default () => {
       })();
       (async () => {
         const inventory = await getInventoryForCreator(id, 0, true, globalState);
-        setInventory(inventory.creatorInventories[id][0]);
+        if (inventory.creatorInventories[id][0][0] != "0") {
+          setInventory(inventory.creatorInventories[id][0]);
+        }
       })();
     }
 
     if (globalState && id.toLowerCase() === globalState.address) {
       handleViewToggle("settings");
+    } else if (currentTab) {
+      handleViewToggle(currentTab);
+    } else {
+      handleViewToggle(selectedView);
     }
   }, []);
+
+
 
   return (
     <div>
@@ -70,7 +85,7 @@ export default () => {
         <div className="profileBodyNav">
           <div className="profileBodyNavContainer">
             {(
-            <a className={`profileNavLink ${selectedView === "store" ? "active disable" : ""}`} onClick={() => {
+            <a className={`profileNavLink ${currentTab === "store" ? "active disable" : ""}`} onClick={() => {
               setLoading("true");
               loadStore();
               handleViewToggle("store");
@@ -78,11 +93,11 @@ export default () => {
               Store
             </a>)}
             {inventory && inventory.length > 0 && (
-            <a className={`profileNavLink ${selectedView === "inventory" ? "active disable" : ""}`} onClick={() => handleViewToggle("inventory")}>
+            <a className={`profileNavLink ${currentTab === "inventory" ? "active disable" : ""}`} onClick={() => handleViewToggle("inventory")}>
               Inventory
             </a>)}
             {globalState && globalState.address === id.toLowerCase() && (
-            <a className={`profileNavLink ${selectedView === "settings" ? "active disable" : ""}`} onClick={() => handleViewToggle("settings")}>
+            <a className={`profileNavLink ${currentTab === "settings" ? "active disable" : ""}`} onClick={() => handleViewToggle("settings")}>
               Settings
             </a>)}
           </div>
@@ -90,15 +105,15 @@ export default () => {
         !loading && (
         <div className="profileBodyAssets">
           {[
-          selectedView === "store" && store && (
+          currentTab === "store" && store && (
             <CardGrid data={store} globalState={globalState} cardSize="" />
           ),
-          selectedView === "inventory" && inventory && (
+          currentTab === "inventory" && inventory && (
             <CardGrid data={inventory} globalState={globalState} cardSize="" />
           )
           ]}
         </div>),
-        !loading && selectedView === "settings" && globalState && globalState.address == id.toLowerCase() && (
+        !loading &&  currentTab === "settings" && globalState && globalState.address == id.toLowerCase() && (
           <div className="settingsButtonsContainer">
           {[
             (<a className="button" onClick={() => {

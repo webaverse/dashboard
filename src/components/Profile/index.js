@@ -39,17 +39,6 @@ export default ({ loadout, balance, profile }) => {
               <p className="profileText">FLUX Balance: {balance ? balance : "0"}</p>
             : null}
           </div>
-          {globalState.address == profile.address.toLowerCase() && ([
-            (<a className="button" onClick={() => {
-              const name = prompt("What is your name?", "Satoshi");
-              setName(name, globalState, handleSuccess, handleError)
-            }}>
-              Change Name
-            </a>),
-            (<a className="button" onClick={() => logout()}>
-              Logout
-            </a>)
-          ])}
           <div className="profileLoadout">
             {loadout ?
                 loadout.map((item, i) =>

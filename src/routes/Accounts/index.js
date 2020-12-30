@@ -38,19 +38,8 @@ export default () => {
   useEffect(() => {
     if (id) {
       (async () => {
-        const balance = await getBalance(id);
-        setBalance(balance);
-      })();
-      (async () => {
-        const loadout = await getLoadout(id);
-        setLoadout(loadout);
-      })();
-      (async () => {
         const profile = await getProfileForCreator(id, globalState);
         setProfile(profile.creatorProfiles[id]);
-        if (currentTab === "inventory" || currentTab === "settings" || currentTab === undefined) {
-          setLoading(false);
-        }
       })();
       (async () => {
         const inventory = await getInventoryForCreator(id, 0, true, globalState);
@@ -61,9 +50,14 @@ export default () => {
       (async () => {
         const store = await getBoothForCreator(id, 0, true, globalState);
         setStore(store.creatorBooths[id.toLowerCase()][0]);
-        if (currentTab === "store") {
-          setLoading(false);
-        }
+      })();
+      (async () => {
+        const balance = await getBalance(id);
+        setBalance(balance);
+      })();
+      (async () => {
+        const loadout = await getLoadout(id);
+        setLoadout(loadout);
       })();
     }
 
@@ -76,6 +70,11 @@ export default () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (profile) {
+      setLoading(false);
+    }
+  }, [inventory, profile]);
 
 
   return (

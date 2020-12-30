@@ -9,7 +9,6 @@ export default () => {
   const code = new URLSearchParams(window.location.search).get("code") || "";
   const id = new URLSearchParams(window.location.search).get("id") || "";
   const { globalState, setGlobalState } = useAppContext();
-  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -22,21 +21,13 @@ export default () => {
         location.href = '/save';
       } else {
         console.warn('no mnemonic returned from api');
-        setMessage('no mnemonic returned from api: ', j);
       }
     })();
   }, []);
 
   return (
     <div>
-    {
-      !message ?
-        <Loader loading={true} />
-      :
-        <div>
-          <p>{message}</p>
-        </div>
-    }
+      <Loader loading={true} />
     </div>
   )
 }

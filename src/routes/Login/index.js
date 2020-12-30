@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Redirect, useParams } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 import { useAppContext } from "../../libs/contextLib";
 import { parseQuery } from "../../functions/Functions";
 import storage from "../../functions/Storage";
@@ -8,6 +8,7 @@ import bip39 from '../../libs/bip39.js';
 import Loader from "../../components/Loader";
 
 export default () => {
+  const history = useHistory();
   const code = new URLSearchParams(window.location.search).get("code") || "";
   const id = new URLSearchParams(window.location.search).get("id") || "";
   const { globalState, setGlobalState } = useAppContext();
@@ -31,6 +32,7 @@ export default () => {
     const newState = await pullUser(state);
 
     setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
+    history.push("/accounts/" + state.address);
   }
 
   useEffect(() => {
@@ -52,9 +54,6 @@ export default () => {
   return (
     <div>
       <Loader loading={true} />
-      {globalState && globalState.loginProcessed && (
-        <Redirect to={"/accounts/" + globalState.address} />
-      )}
     </div>
   )
 }

@@ -17,9 +17,15 @@ const App = () => {
   const [globalState, setGlobalState] = useState(InitialStateValues);
 
   const init = async () => {
-    const localStorageState = await getLocalStorage();
-    if (localStorageState) {
-      setGlobalState(localStorageState);
+    const storageState = await storage.get('globalState');
+    const loginToken = await storage.get('loginToken');
+
+    if (storageState && loginToken) {
+      setGlobalState({...storageState, loginToken: loginToken});
+    } else if (storageState) {
+      setGlobalState(storageState);
+    } else if (loginToken) {
+      setGlobalState({...globalState, loginToken: loginToken});
     }
   }
 
@@ -39,19 +45,6 @@ const App = () => {
       await storage.set('globalState', globalState);
     }
   }
-
-  const getLocalStorage = async () => {
-    const storageState = await storage.get('globalState');
-    const loginToken = await storage.get('loginToken');
-
-    if (storageState && loginToken) {
-      return {...storageState, loginToken: loginToken};
-    } else if (storageState) {
-      return storageState;
-    } else {
-      return;
-    }
-  } 
 
   React.useEffect(() => {
     updateLocalStorage(globalState);

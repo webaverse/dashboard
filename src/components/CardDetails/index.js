@@ -392,22 +392,19 @@ export default ({
                 (globalState.address && !userOwnsThisAsset && storeId && buyPrice ?
                   <div className="detailsBlock detailsBlockOnSale">
                     <div className="Accordion">
-                      <div className="accordionTitle" onClick={toggleOnSale}>
-                        <span className="accordionTitleValue">ON SALE FOR {buyPrice}Ψ</span>
-                        <span className="accordionIcon {toggleOnSaleOpen ? 'reverse' : ''}"></span>
-                      </div>
-                      {toggleOnSaleOpen && 
+                      <span className="accordionTitleValue">ON SALE FOR {buyPrice}Ψ</span>
+                      <span className="accordionIcon {toggleOnSaleOpen ? 'reverse' : ''}"></span>
                       <div className="accordionDropdown accordionDropdownWithConfirm">
-                        <button className={`assetDetailsButton assetSubmitButton ${toggleDropdownConfirmOpen ? 'disable' : ''}`} onClick={toggleDropdownConfirm}>Buy Asset</button>         
-                        {toggleDropdownConfirmOpen && 
+                        {[(<button className={`assetDetailsButton assetSubmitButton ${toggleDropdownConfirmOpen ? 'disable' : ''}`} onClick={toggleDropdownConfirm}>Buy Asset</button>),
+                        (toggleDropdownConfirmOpen &&
                           <div className="accordionDropdownConfirm">
                             <span className="dropdownConfirmTitle">A you sure?</span>
                             <div className="dropdownConfirmSubmit">
                               <button className="assetDetailsButton assetSubmitButton assetSubmitButtonSmall" onClick={handleBuyAsset}>Buy</button>
                               <button className="assetDetailsButton assetSubmitButton assetSubmitButtonSmall" onClick={toggleDropdownConfirm}>Nope</button>
                             </div>
-                          </div>}
-                      </div>}
+                          </div>)]}
+                        </div>
                     </div>
                   </div>    
               : null)]}   

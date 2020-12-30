@@ -60,11 +60,9 @@ export const getInventoryForCreator = async (creatorAddress, page, forceUpdate, 
 
 export const getBoothForCreator = async (creatorAddress, page, forceUpdate, state) => {
   // Use cached page
-/*
   if (forceUpdate !== true && state.creatorBooths[creatorAddress] !== undefined) {
     return state;
   }
-*/
 
   creatorAddress = creatorAddress.toLowerCase();
   const address = `https://store.webaverse.com/${creatorAddress}?page=`;
@@ -84,12 +82,10 @@ export const getBoothForCreator = async (creatorAddress, page, forceUpdate, stat
 export const getProfileForCreator = async (creatorAddress, state) => {
   console.log("Getting profile for creator")
   // Use cached page
-/*
   if (state.creatorProfiles[creatorAddress] !== undefined &&
     state.creatorInventories[creatorAddress] !== undefined &&
     state.creatorBooths[creatorAddress] !== undefined)
     return state;
-*/
 
   const res = await fetch(`https://accounts.webaverse.com/${creatorAddress}`);
   const creatorProfile = await res.json();
@@ -102,10 +98,8 @@ export const getProfileForCreator = async (creatorAddress, state) => {
 
 export const getBooths = async (page, state) => {
   // Use cached page
-/*
   if (state.booths && state.booths[page] !== undefined)
     return state;
-*/
 
   const res = await fetch(`https://store.webaverse.com`);
   const booths = await res.json();
@@ -152,10 +146,8 @@ export const getStores = async () => {
 
 export const getCreators = async (page, state) => {
   // Use cached page
-/*
   if (state.creators[page] !== undefined)
     return state;
-*/
 
   const res = await fetch(`https://accounts.webaverse.com/`);
   const creators = await res.json();

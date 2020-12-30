@@ -71,10 +71,14 @@ export default ({
 
   console.log("State address is", globalState.address);
 
-  const userOwnsThisAsset = ownerAddress.toLowerCase() === globalState.address.toLowerCase();
-
-  // Did you create this asset?
-  const userCreatedThisAsset = minterAddress.toLowerCase() === globalState.address.toLowerCase();
+  let userOwnsThisAsset, userCreatedThisAsset;
+  if (globalState && globalState.address) {
+    userOwnsThisAsset = ownerAddress.toLowerCase() === globalState.address.toLowerCase();
+    userCreatedThisAsset = minterAddress.toLowerCase() === globalState.address.toLowerCase();
+  } else {
+    userOwnsThisAsset = false;
+    userCreatedThisAsset = false;
+  }
 
   // Otherwise, is this asset for sale?
   const isForSale = buyPrice !== undefined && buyPrice !== null && buyPrice !== ""

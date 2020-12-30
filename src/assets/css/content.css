@@ -99,8 +99,8 @@
 }
 .profileHeader .profilePicture {
   border-radius: 10px;
-  width: auto;
-  max-height: 350px;
+  width: 16em;
+  height: 16em;
   filter: drop-shadow(0px 0px 5px black);
 }
 .profileHeader .profileName {

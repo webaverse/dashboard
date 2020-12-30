@@ -5,6 +5,7 @@ import { setName } from "../../functions/AssetFunctions";
 import preview from "../../assets/images/preview.png";
 import defaulthomespace from "../../assets/images/defaulthomespace.svg";
 import { useAppContext } from "../../libs/contextLib";
+import "./style.css";
 
 export default ({ loadout, balance, profile }) => {
   if (!profile) { return null; }
@@ -65,12 +66,14 @@ export default ({ loadout, balance, profile }) => {
             : null}
           </div>
         </div>
-        <Col className="profilePicture" sm={12} md={3} style={{
-          backgroundImage: `url("${profile.avatarPreview ? profile.avatarPreview : preview}")`,
-          backgroundSize: "contain",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center center",
-        }} />
+        <div className="profilePictureContainer">
+          <div className="profilePicture" style={{
+            backgroundImage: `url("${profile.avatarPreview ? profile.avatarPreview : preview}")`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
+          }} />
+        </div>
       </div>
     </Col>
   )

@@ -72,3 +72,12 @@
   height: 36px;
   margin-top: 2px;
 }
+.accountPicture {
+  border: 2px solid #312936;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+.accountPicture .loggedIn {
+  box-shadow: 0px 0px 5px #c4005d;
+}

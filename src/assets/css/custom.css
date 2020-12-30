@@ -10,12 +10,6 @@ a {
   color: #fff;
   text-decoration: none;
 }
-.accountPicture {
-  border: 2px solid #312936;    
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-}
 .button {
   background-color: #c4005d;
   border-radius: 6px;

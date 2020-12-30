@@ -3,7 +3,7 @@ import createHistory from 'history/createBrowserHistory'
 import { AppContext } from "./libs/contextLib";
 import { InitialStateValues } from "./constants/InitialStateValues";
 import storage from "./functions/Storage";
-import { getCreators, getBooths, getStores, getInventoryForCreator, getProfileForCreator, getBalance } from "./functions/UIStateFunctions.js";
+import { pullUserObject, getCreators, getBooths, getStores, getInventoryForCreator, getProfileForCreator, getBalance } from "./functions/UIStateFunctions.js";
 
 import Routes from "./routes";
 import NavBar from "./components/NavBar";
@@ -21,11 +21,14 @@ const App = () => {
     const loginToken = await storage.get('loginToken');
 
     if (storageState && loginToken) {
-      setGlobalState({...storageState, loginToken: loginToken});
+      const newState = await pullUserObject({...storageState, loginToken: loginToken});
+      setGlobalState(newState);
     } else if (storageState) {
-      setGlobalState(storageState);
+      const newState = await pullUserObject({...storageState});
+      setGlobalState(newState);
     } else if (loginToken) {
-      setGlobalState({...globalState, loginToken: loginToken});
+      const newState = await pullUserObject({...globalState, loginToken: loginToken});
+      setGlobalState(newState);
     }
   }
 
@@ -41,7 +44,6 @@ const App = () => {
     } else if (globalState.refresh === "true") {
       init();
     } else if (globalState.address) {
-      const localStorageState = await getLocalStorage();
       await storage.set('globalState', globalState);
     }
   }

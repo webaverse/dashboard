@@ -46,6 +46,10 @@ export default () => {
         setLoading(false);
       }
     })();
+
+    if (globalState && id.toLowerCase() === globalState.address) {
+      setSelectedView("settings");
+    }
   }, []);
 
   return (
@@ -83,7 +87,7 @@ export default () => {
           )
           ]}
         </div>),
-        selectedView === "settings" && globalState && globalState.address == profile.address.toLowerCase() && (
+        !loading && selectedView === "settings" && globalState && globalState.address == id.toLowerCase() && (
           <div className="settingsButtonsContainer">
           {[
             (<a className="button" onClick={() => {

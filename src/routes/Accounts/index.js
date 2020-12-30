@@ -88,8 +88,6 @@ export default () => {
           </div>
         </div>),
         !loading && (
-        <Loader loading={true} />),
-        !loading && (
         <div className="profileBodyAssets">
           {[
           selectedView === "store" && store && (

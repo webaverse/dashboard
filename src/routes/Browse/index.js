@@ -9,7 +9,7 @@ import CardGrid from "../../components/CardGrid";
 export default () => {
   const { globalState, setGlobalState } = useAppContext();
   const [booths, setBooths] = useState(null);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -19,10 +19,6 @@ export default () => {
     })();
   }, []);
 
-  const Sales = () => booths && booths.length > 0? booths.map((seller, i) =>
-    <CardGrid key={i} data={seller.entries} globalState={globalState} cardSize="" />
-  ) : null
-
   return (
     <div>
       {[
@@ -30,7 +26,9 @@ export default () => {
         <Loader loading={loading} />),
         !loading && (
         <div className="profileBodyAssets">
-          <Sales />
+          { booths && booths.length > 0? booths.map((seller, i) =>
+            <CardGrid key={i} data={seller.entries} globalState={globalState} cardSize="" />
+          ) : null}
         </div>)
       ]}
     </div>

@@ -45,7 +45,7 @@ export default ({
   const [toggleDropdownConfirmOpen, setToggleDropdownConfirmOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [calculatedCardSize, setCalculatedCardSize] = useState(CardSize.Large)
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
@@ -106,11 +106,11 @@ export default ({
 
   const handleSuccess = () => {
     console.log("success!");
-    setLoading(false);
+    window.location.reload();
   }
   const handleError = (err) => {
     console.log("error", err);
-    setLoading(false);
+    window.location.reload();
   }
 
   const handleSetAvatar = (e) => {

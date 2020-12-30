@@ -78,6 +78,6 @@
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
-.accountPicture .loggedIn {
+.accountPicture.loggedIn {
   box-shadow: 0px 0px 5px #c4005d;
 }

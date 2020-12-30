@@ -39,6 +39,14 @@ export default ({ loadout, balance, profile }) => {
               <p className="profileText">FLUX Balance: {balance ? balance : "0"}</p>
             : null}
           </div>
+        </div>
+        <div className="profilePictureContainer">
+          <div className="profilePicture" style={{
+            backgroundImage: `url("${profile.avatarPreview ? profile.avatarPreview : preview}")`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
+          }} />
           <div className="profileLoadout">
             {loadout ?
                 loadout.map((item, i) =>
@@ -54,14 +62,6 @@ export default ({ loadout, balance, profile }) => {
                 )
             : null}
           </div>
-        </div>
-        <div className="profilePictureContainer">
-          <div className="profilePicture" style={{
-            backgroundImage: `url("${profile.avatarPreview ? profile.avatarPreview : preview}")`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center center",
-          }} />
         </div>
       </div>
     </Col>

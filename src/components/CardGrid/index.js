@@ -5,20 +5,29 @@ import './style.css';
 
 export default ({
   data,
+  currentCard,
+  setCurrentCard,
   globalState,
   cardSize
 }) => {
   console.log("Data is", data);
   const [currentAsset, setCurrentAsset] = useState(null)
 
+
   const showCardDetails = (asset) => {
     console.log("Showing card details", asset);
     setCurrentAsset(asset);
+    if (currentCard != asset && setCurrentCard) {
+      setCurrentCard(asset);
+    }
   }
 
   const hideCardDetails = () => {
     console.log("Hiding card details");
     setCurrentAsset(null);
+    if (setCurrentCard) {
+      setCurrentCard({ hide: true });
+    }
   }
 
   useEffect(() => {
@@ -56,7 +65,11 @@ export default ({
             networkType='webaverse'
           />
         ),
-        (data.map(asset =>
+        (data.map(asset =>{
+        if (currentAsset != asset && asset === currentCard) {
+          showCardDetails(asset);
+        }
+        return (
           <AssetCard
              key={asset.properties.hash}
              id={asset.id}
@@ -81,6 +94,7 @@ export default ({
              onClickFunction={() => showCardDetails(asset)}
              networkType='webaverse'
           />
+          )}
         )
       )]}
     </div>

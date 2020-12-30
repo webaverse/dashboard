@@ -48,7 +48,7 @@ export default () => {
       (async () => {
         const profile = await getProfileForCreator(id, globalState);
         setProfile(profile.creatorProfiles[id]);
-        if (currentTab === "inventory") {
+        if (currentTab === "inventory" || currentTab === "settings" || currentTab === undefined) {
           setLoading(false);
         }
       })();
@@ -61,7 +61,7 @@ export default () => {
       (async () => {
         const store = await getBoothForCreator(id, 0, true, globalState);
         setStore(store.creatorBooths[id.toLowerCase()][0]);
-        if (currentTab === "inventory" || currentTab === undefined) {
+        if (currentTab === "store") {
           setLoading(false);
         }
       })();
@@ -69,7 +69,6 @@ export default () => {
 
     if (globalState && id.toLowerCase() === globalState.address) {
       handleViewToggle("settings");
-      setLoading(false);
     } else if (currentTab) {
       handleViewToggle(currentTab);
     } else {

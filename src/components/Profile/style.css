@@ -67,8 +67,8 @@
   width: 100%;
   height: 100%;
   -webkit-filter: blur(1px);
-  filter: blur(1px);
-  opacity: .5;
+  filter: blur(2px);
+  opacity: .25;
   z-index: -9999;
 }
 .profileHeader {

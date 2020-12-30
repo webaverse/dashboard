@@ -30,6 +30,7 @@ export default ({
   minterUsername,
   cardSize,
   networkType,
+  glow,
   onClickFunction
 }) => {
 
@@ -72,7 +73,7 @@ export default ({
   
   return (
       <div
-        className={`card cardItem ${rarity}`}
+        className={`card cardItem ${rarity} ${glow ? "glow" : ""}`}
           onClick={onClickFunction}
       >
         <div className={`${rarity} upperCardInfo upperCardInfo ${cardSize} upperCardInfo upperCardInfo_${(ext ?? "").replace('.','')}`}>

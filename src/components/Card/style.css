@@ -590,6 +590,7 @@ img {
 .lowerCardInfoTop.unique {
     background: linear-gradient(90deg, #FFC700 34.8%, #665000 100%);
 }
+.card.unique.glow,
 .card.unique:hover {
    filter: drop-shadow(0px 0px 10px #FFC700);
 }
@@ -599,6 +600,7 @@ img {
 .lowerCardInfoTop.mythic {
    background: linear-gradient(90deg, #ef00ff 34.8%, #790971 100%);
 }
+.card.mythic.glow,
 .card.mythic:hover {
    filter: drop-shadow(0px 0px 10px #ef00ff);
 }
@@ -608,6 +610,7 @@ img {
 .lowerCardInfoTop.legendary {
    background: linear-gradient(90deg, #AD00EA 34.8%, #32002D 100%);
 }
+.card.legendary.glow,
 .card.legendary:hover {
    filter: drop-shadow(0px 0px 10px #AD00EA);
 }
@@ -617,6 +620,7 @@ img {
 .lowerCardInfoTop.epic {
    background: linear-gradient(90deg, #00B3DB 34.8%, #003743 100%);
 }
+.card.epic.glow,
 .card.epic:hover {
    filter: drop-shadow(0px 0px 10px #00B3DB);
 }
@@ -626,6 +630,7 @@ img {
 .lowerCardInfoTop.rare {
    background: linear-gradient(90deg, #00CE21 34.8%, #00560E 100%);
 }
+.card.rare.glow,
 .card.rare:hover {
    filter: drop-shadow(0px 0px 10px #00CE21);
 }
@@ -635,6 +640,7 @@ img {
 .lowerCardInfoTop.uncommon {
    background: linear-gradient(90deg, #ff8400 34.8%, #875806 100%);
 }
+.card.uncommon.glow,
 .card.uncommon:hover {
    filter: drop-shadow(0px 0px 10px #ff8400);
 }
@@ -644,6 +650,7 @@ img {
 .lowerCardInfoTop.common {
    background: linear-gradient(90deg, #DCDCDC 34.8%, #373737 100%);
 }
+.card.common.glow,
 .card.common:hover {
    filter: drop-shadow(0px 0px 10px #DCDCDC);
 }

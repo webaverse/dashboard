@@ -48,7 +48,7 @@ export default () => {
     })();
 
     if (globalState && id.toLowerCase() === globalState.address) {
-      setSelectedView("settings");
+      handleViewToggle("settings");
     }
   }, []);
 

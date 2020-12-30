@@ -11,7 +11,6 @@ export default () => {
   const code = new URLSearchParams(window.location.search).get("code") || "";
   const id = new URLSearchParams(window.location.search).get("id") || "";
   const { globalState, setGlobalState } = useAppContext();
-  const [address, setAddress] = useState(null);
 
   const loginWithKey = (key) => {
     if (bip39.validateMnemonic(key)) {
@@ -31,12 +30,14 @@ export default () => {
     const balance = await getBalance(state.address);
     const newState = await pullUser(state);
 
-    setAddress(newState.address);
-    setGlobalState({ balance, login: "true", ...newState });
+    setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
   }
 
   useEffect(() => {
     (async () => {
+      if (globalState && globalState.loginProcessed) {
+        return;
+      }
       const res = await fetch(`https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
       const j = await res.json();
       const {mnemonic} = j;
@@ -51,8 +52,8 @@ export default () => {
   return (
     <div>
       <Loader loading={true} />
-      {address && (
-        <Redirect to={"/accounts/" + address} />
+      {globalState && globalState.loginProcessed && (
+        <Redirect to={"/accounts/" + globalState.address} />
       )}
     </div>
   )

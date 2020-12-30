@@ -11,6 +11,7 @@ export default () => {
   const code = new URLSearchParams(window.location.search).get("code") || "";
   const id = new URLSearchParams(window.location.search).get("id") || "";
   const { globalState, setGlobalState } = useAppContext();
+  const [address, setAddress] = useState(null);
 
   const loginWithKey = (key) => {
     if (bip39.validateMnemonic(key)) {
@@ -30,6 +31,7 @@ export default () => {
     const balance = await getBalance(state.address);
     const newState = await pullUser(state);
 
+    setAddress(newState.address);
     setGlobalState({ balance, login: "true", ...newState });
   }
 
@@ -49,8 +51,8 @@ export default () => {
   return (
     <div>
       <Loader loading={true} />
-      {globalState.address && (
-        <Redirect to={"/accounts/" + globalState.address} />
+      {address && (
+        <Redirect to={"/accounts/" + address} />
       )}
     </div>
   )

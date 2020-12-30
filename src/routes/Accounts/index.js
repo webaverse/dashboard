@@ -54,12 +54,14 @@ export default () => {
         !loading && (
         <div className="profileBodyNav">
           <div className="profileBodyNavContainer">
+            {store.length > 0 && (
             <a className={`profileNavLink ${selectedView === "store" ? "active disable" : ""}`} onClick={() => handleViewToggle("store")}>
               Store
-            </a>
+            </a>)}
+            {inventory.length > 0 && (
             <a className={`profileNavLink ${selectedView === "inventory" ? "active disable" : ""}`} onClick={() => handleViewToggle("inventory")}>
               Inventory
-            </a>
+            </a>)}
           </div>
         </div>),
         !loading && (

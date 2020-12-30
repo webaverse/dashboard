@@ -27,6 +27,7 @@ export default ({
     minterUsername,
     networkType,
     buyPrice,
+    storeId,
     hideDetails,
     globalState,
     assetType
@@ -46,24 +47,12 @@ export default ({
   const [calculatedCardSize, setCalculatedCardSize] = useState(CardSize.Large)
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(false);
-  const [store, setStore] = useState(null);
-  const [price, setPrice] = useState(null);
 
   useEffect(() => {
       document.documentElement.clientWidth < 585 ? setCalculatedCardSize(CardSize.Small) :
       document.documentElement.clientWidth < 750 ? setCalculatedCardSize(CardSize.Medium) : 
                                                    setCalculatedCardSize(CardSize.Large)
   },  [document.documentElement.clientWidth])
-
-  useEffect(() => {
-    getStores().then(res => {
-      if (res[id]) {
-        setStore(res[id].id);
-        setPrice(res[id].price);
-      }
-      setLoading(false);
-    });
-  }, []);
 
   // Do you own this asset?
   console.log("Owner address is", ownerAddress);
@@ -83,7 +72,7 @@ export default ({
   // Otherwise, is this asset for sale?
   const isForSale = buyPrice !== undefined && buyPrice !== null && buyPrice !== ""
 
-  console.log("**** Buy price is", price);
+  console.log("**** Buy price is", buyPrice);
 
   const ethEnabled = () => {
     if (window.ethereum) {
@@ -153,7 +142,7 @@ export default ({
   const handleBuyAsset = (e) => {
     e.preventDefault();
     setLoading(true);
-    buyAsset(store, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
+    buyAsset(storeId, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
   const handleSellAsset = (e) => {
@@ -399,11 +388,11 @@ export default ({
               
             
            
-                (globalState.address && !userOwnsThisAsset && store && price ? 
+                (globalState.address && !userOwnsThisAsset && storeId && buyPrice ?
                   <div className="detailsBlock detailsBlockOnSale">
                     <div className="Accordion">
                       <div className="accordionTitle" onClick={toggleOnSale}>
-                        <span className="accordionTitleValue">ON SALE FOR {price}Ψ</span>
+                        <span className="accordionTitleValue">ON SALE FOR {buyPrice}Ψ</span>
                         <span className="accordionIcon {toggleOnSaleOpen ? 'reverse' : ''}"></span>
                       </div>
                       {toggleOnSaleOpen && 

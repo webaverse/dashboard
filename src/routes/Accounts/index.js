@@ -15,7 +15,6 @@ export default () => {
   const { id } = useParams();
   const { globalState, setGlobalState } = useAppContext();
   const [loading, setLoading] = useState(true);
-  const [loadingContent, setLoadingContent] = useState(true);
   const [inventory, setInventory] = useState(null);
   const [balance, setBalance] = useState(null);
   const [loadout, setLoadout] = useState(null);
@@ -31,7 +30,7 @@ export default () => {
   const loadStore = async () => {
     const store = await getBoothForCreator(id, 0, true, globalState);
     setStore(store.creatorBooths[id.toLowerCase()][0]);
-    setLoadingContent(false);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -52,7 +51,6 @@ export default () => {
       (async () => {
         const inventory = await getInventoryForCreator(id, 0, true, globalState);
         setInventory(inventory.creatorInventories[id][0]);
-        setLoadingContent(false);
       })();
     }
 
@@ -73,7 +71,7 @@ export default () => {
           <div className="profileBodyNavContainer">
             {(
             <a className={`profileNavLink ${selectedView === "store" ? "active disable" : ""}`} onClick={() => {
-              setLoadingContent("true");
+              setLoading("true");
               loadStore();
               handleViewToggle("store");
             }}>
@@ -89,9 +87,9 @@ export default () => {
             </a>)}
           </div>
         </div>),
-        !loading && loadingContent && (
-        <Loader loading={loadingContent} />),
-        !loading && !loadingContent && (
+        !loading && (
+        <Loader loading={true} />),
+        !loading && (
         <div className="profileBodyAssets">
           {[
           selectedView === "store" && store && (

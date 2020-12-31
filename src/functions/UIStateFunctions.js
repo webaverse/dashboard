@@ -103,10 +103,22 @@ export const getBooths = async (page, state) => {
 
   const res = await fetch(`https://store.webaverse.com`);
   const booths = await res.json();
+
+  const boothsMap = [];
+  await Promise.all(
+    booths.map(seller => {
+      return Promise.all(seller.entries.map(entry => {
+        boothsMap.push(entry);
+      }));
+    })
+  );
+  return boothsMap;
+/*
   const newState = { ...state };
   newState.booths[page] = booths;
 
   return newState;
+*/
 };
 
 export const getStores = async () => {

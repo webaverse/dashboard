@@ -139,8 +139,8 @@ export default () =>
     <FourthSection
       heroBg=""
       headTitle="Market"
-      title="Digital assets from the best creators"
-      subtitle="Buy, sell, trade your creations. Owners get micropayment as people use their items or avatars in Webaverse."
+      title="Collective virtual assets"
+      subtitle="Buy, sell, and trade virtual assets."
       callToAction="START BROWSING"
       ctaUrl="https://docs.webaverse.com/docs/market"
     />

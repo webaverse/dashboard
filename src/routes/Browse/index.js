@@ -13,46 +13,42 @@ export default () => {
   const [booths, setBooths] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentCard, setCurrentCard] = useState(null);
+
   const pathName = window.location.pathname.split("/")[2];
 
   useEffect(() => {
     (async () => {
       const booths = await getBooths(0, globalState);
-      setBooths(booths.booths[0]);
-      setLoading(false);
+      setBooths(booths);
     })();
 
     if (pathName && pathName != "all") {
       setCurrentCard(pathName);
+    } else if (!pathName) {
+      setCurrentCard(null);
     }
   }, []);
 
   useEffect(() => {
-    console.log("currentCard", currentCard);
+    if (booths && booths.length > 0) {
+      setLoading(false);
+    }
+  }, [booths, currentCard]);
+
+  useEffect(() => {
+    if (!currentCard) return;
 
     if (currentCard && currentCard.hide === true) {
       setCurrentCard(null);
       history.push("/browse/all");
-
     } else if (currentCard && currentCard.id) {
       history.push("/browse/" + currentCard.id);
     }
   }, [currentCard]);
 
-  const Sales = () => booths && booths.length > 0? booths.map((seller, i) =>
-            <CardGrid key={i} data={seller.entries} globalState={globalState} cardSize="" currentCard={currentCard} setCurrentCard={setCurrentCard} />
-          ) : null
- 
-
-  return (
+  return !loading && booths && booths.length > 0 ? <CardGrid data={booths} globalState={globalState} cardSize="" currentCard={currentCard} setCurrentCard={setCurrentCard} />
+  :
     <div>
-      { loading ?
-        <Loader loading={loading} />
-      :
-        <div className="profileBodyAssets">
-          <Sales />
-        </div>
-      }
+      <Loader loading={true} />
     </div>
-  )
 }

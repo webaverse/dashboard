@@ -99,7 +99,7 @@ const FourthSection = ({heroBg, headTitle, title, subtitle, callToAction, ctaUrl
               <h1 className="head-title">{headTitle}</h1>
               <h1 className="secondary">{title}</h1>
               <p className="secondary">{subtitle}</p>
-              <a href={ctaUrl} className="button">{callToAction}</a>
+              <Link to={ctaUrl} className="button">{callToAction}</Link>
             </div>
           </Col>
           <Col sm={6}>
@@ -143,6 +143,6 @@ export default () =>
       title="Digital assets in an open marketplace"
       subtitle="Buy, sell, and trade virtual assets. Collect them all!"
       callToAction="START BROWSING"
-      ctaUrl="https://webaverse.com/browse"
+      ctaUrl="/browse"
     />
   </>

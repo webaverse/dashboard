@@ -33,8 +33,8 @@ export default ({ loadout, balance, profile }) => {
       <div className="profileHeader">
         <div className="profileName">
           <div>
-            <h1 className="profileText">{profile.name ? profile.name : "Anonymous"}</h1>
-            <p className="profileText">{profile.address ? profile.address : ""}</p>
+            <h1 className="profileText mainName">{profile.name ? profile.name : "Anonymous"}</h1>
+            <p className="profileText address">{profile.address ? profile.address : ""}</p>
             {balance && balance > 0 ?
               <p className="profileText">FLUX Balance: {balance ? balance : "0"}</p>
             : null}

@@ -120,13 +120,3 @@
   flex-direction: column;
   margin-right: 50px;
 }
-.profileHeader .profileText {
-  font-size: 1em;
-  padding: 10px;
-  background-color: #18141a;
-  border-radius: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 35vw;
-}

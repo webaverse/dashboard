@@ -94,10 +94,12 @@
   filter: drop-shadow(0px 0px 5px black);
 }
 .profileHeader .profilePicture {
-  border-radius: 0;
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 20% 20% 0px 0px;
+  border-radius: 20% 20% 0px 0px;
   width: 25em;
   height: 25em;
-  filter: drop-shadow(0px 0px 5px black);
+  filter: drop-shadow(0px 0px 3px black);
   position: absolute;
   border: none;
   padding-bottom: 1px;
@@ -110,15 +112,24 @@
   flex-wrap: wrap;
   flex-direction: column;
   margin-right: 50px;
+  margin: 20px 0px 20px 0px;
 }
 .profileHeader .profileText {
   font-size: 1em;
   padding: 10px;
-  background-color: #18141a;
   border-radius: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 35vw;
-  box-shadow: 0px 0px 5px black;
+  text-shadow: 2px 2px 2px black;
+}
+.profileHeader .profileText.mainName {
+  font-size: 3em;
+  margin-bottom: 0;
+}
+.profileHeader .profileText.address {
+  font-size: .65em;
+  margin: 0;
+  padding: 0;
 }

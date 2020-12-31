@@ -35,10 +35,9 @@ export default ({
     console.log("Address is", currentAsset.id);
   }, [currentAsset])
 
-
   return (
     <div className="main">
-      {[(currentAsset !== null &&
+      {[(currentAsset !== null && currentCard !== null &&
          <AssetDetails
             id={currentAsset.id}
             key={currentAsset.id}

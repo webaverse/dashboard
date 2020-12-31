@@ -17,6 +17,17 @@ export default () => {
   const pathName = window.location.pathname.split("/")[2];
 
   useEffect(() => {
+    if (pathName && pathName != "all") {
+      setCurrentCard(pathName);
+    } else if (pathName === "all" || pathName === undefined || !pathName) {
+      console.log("pathName is now", pathName);
+      setCurrentCard(null);
+      history.push("/browse/all");
+    }
+
+  }, [pathName]);
+
+  useEffect(() => {
     (async () => {
       const booths = await getBooths(0, globalState);
       setBooths(booths);

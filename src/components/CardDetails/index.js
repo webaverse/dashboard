@@ -142,7 +142,12 @@ export default ({
   const handleBuyAsset = (e) => {
     e.preventDefault();
     setLoading(true);
-    buyAsset(storeId, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
+    var r = confirm("You are about to buy this, are you sure?");
+    if (r == true) {
+      buyAsset(storeId, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
+    } else {
+      handleError("canceled delete");
+    }
   }
 
   const handleDeleteAsset = (e) => {
@@ -306,6 +311,12 @@ export default ({
               <button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>
               <button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>
             </div>),
+
+            globalState.address && !userOwnsThisAsset && storeId && buyPrice && (
+            <div className="detailsBlock detailsBlockSet">
+              <button className="assetDetailsButton" onClick={handleBuyAsset}>Buy This Item</button>
+            </div>),
+
 /*
             (userCreatedThisAsset &&
             <div className="detailsBlock detailsBlockEdit">
@@ -403,7 +414,7 @@ export default ({
                 ),
  */
             
-           
+/*
                 (globalState.address && !userOwnsThisAsset && storeId && buyPrice ?
                   <div className="detailsBlock detailsBlockOnSale">
                     <div className="Accordion">
@@ -422,7 +433,9 @@ export default ({
                         </div>
                     </div>
                   </div>    
-              : null)]}   
+              : null)
+*/
+            ]}
 
         <button className="assetDetailsButton assetDetailsCloseButton" onClick={hideDetails}></button>
       </div>)

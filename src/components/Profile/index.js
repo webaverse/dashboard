@@ -42,7 +42,7 @@ export default ({ loadout, balance, profile }) => {
         </div>
         <div className="profilePictureContainer">
           <div className="profilePicture" style={{
-            backgroundImage: `url("${profile.avatarPreview ? profile.avatarPreview : preview}")`,
+            backgroundImage: `url("${profile.avatarPreview ? profile.avatarPreview.replace(/\.[^.]*$/, '.png') : preview}")`,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center center",

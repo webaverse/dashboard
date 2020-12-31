@@ -14,7 +14,7 @@ export default ({ globalState, setGlobalState, accounts, loadout }) => {
   return accounts.map((item, i) => {
     console.log("item", item);
     let url, name;
-    const image = item.image || item.avatarPreview;
+    const image = item.image || item.avatarPreview.replace(/\.[^.]*$/, '.png');
     console.log("image", image);
   
     const homeSpaceImage = item.homeSpacePreview || defaulthomespace;

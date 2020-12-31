@@ -22,13 +22,15 @@ const App = () => {
 
     if (storageState && loginToken) {
       const newState = await pullUserObject({...storageState, loginToken: loginToken});
-      setGlobalState(newState);
+      setGlobalState({ ...newState, init: true });
     } else if (storageState) {
       const newState = await pullUserObject({...storageState});
-      setGlobalState(newState);
+      setGlobalState({ ...newState, init: true });
     } else if (loginToken) {
       const newState = await pullUserObject({...globalState, loginToken: loginToken});
-      setGlobalState(newState);
+      setGlobalState({ ...newState, init: true });
+    } else {
+      setGlobalState({ ...globalState, init: true });
     }
   }
 
@@ -62,7 +64,13 @@ const App = () => {
   return (
         <AppContext.Provider value={{ globalState, setGlobalState }}>
           <NavBar />
-          <Routes />
+          { globalState.init === true ?
+            <Routes />
+          :
+            <div>
+              <Loader loading={true} />
+            </div>
+          }
           <Footer />
         </AppContext.Provider>
   )

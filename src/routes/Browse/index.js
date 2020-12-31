@@ -46,9 +46,12 @@ export default () => {
     }
   }, [currentCard]);
 
-  return !loading && booths && booths.length > 0 ? <CardGrid data={booths} globalState={globalState} cardSize="" currentCard={currentCard} setCurrentCard={setCurrentCard} />
+  return !loading && booths && booths.length > 0 ?
+    <div className="container">
+      <CardGrid data={booths} globalState={globalState} cardSize="" currentCard={currentCard} setCurrentCard={setCurrentCard} />
+    </div>
   :
-    <div>
+    <div className="container">
       <Loader loading={true} />
     </div>
 }

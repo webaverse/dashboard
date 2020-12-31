@@ -22,12 +22,12 @@ export default () => {
 
 
   return (
-    <Row style={{ justifyContent: "center" }}>
+    <div className="container">
       { creatorProfiles ?
         <AccountCards accounts={creatorProfiles} />
       :
         <Loader loading={true} />
       }
-    </Row>
+    </div>
   )
 }

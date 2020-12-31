@@ -7,6 +7,7 @@
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     padding: 0 11%;
+    justify-content: center;
 }
 .profileBodyNav {
     max-width: 100%;

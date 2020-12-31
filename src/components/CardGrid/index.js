@@ -13,7 +13,6 @@ export default ({
   console.log("Data is", data);
   const [currentAsset, setCurrentAsset] = useState(null)
 
-
   const showCardDetails = (asset) => {
     console.log("Showing card details", asset);
     setCurrentAsset(asset);
@@ -66,37 +65,37 @@ export default ({
           />
         ),
         (data.map(asset =>{
-        if (currentAsset != asset && asset === currentCard) {
-          showCardDetails(asset);
-        }
-        return (
-          <AssetCard
-             key={asset.properties.hash}
-             id={asset.id}
-             assetName={asset.name}
-             description={asset.description}
-             image={asset.image}
-             hash={asset.properties.hash}
-             external_url={asset.external_url}
-             filename={asset.properties.filename}
-             ext={asset.properties.ext}
-             totalSupply={asset.totalSupply}
-             balance={asset.balance}
-             buyPrice={asset.buyPrice}
-             storeId={asset.storeId}
-             ownerAvatarPreview={asset.owner.avatarPreview}
-             ownerUsername={asset.owner.username}
-             ownerAddress={asset.owner.address}
-             minterAvatarPreview={asset.minter.avatarPreview}
-             minterUsername={asset.minter.username}
-             minterAddress={asset.minter.address}
-             cardSize={cardSize}
-             onClickFunction={() => showCardDetails(asset)}
-             networkType='webaverse'
-          />
-          )}
-        )
-      )]}
+          if (currentAsset != asset && asset.id === parseInt(currentCard)) {
+            showCardDetails(asset);
+          }
+          return (
+            <AssetCard
+               key={asset.properties.hash}
+               id={asset.id}
+               assetName={asset.name}
+               description={asset.description}
+               image={asset.image}
+               hash={asset.properties.hash}
+               external_url={asset.external_url}
+               filename={asset.properties.filename}
+               ext={asset.properties.ext}
+               totalSupply={asset.totalSupply}
+               balance={asset.balance}
+               buyPrice={asset.buyPrice}
+               storeId={asset.storeId}
+               ownerAvatarPreview={asset.owner.avatarPreview}
+               ownerUsername={asset.owner.username}
+               ownerAddress={asset.owner.address}
+               minterAvatarPreview={asset.minter.avatarPreview}
+               minterUsername={asset.minter.username}
+               minterAddress={asset.minter.address}
+               cardSize={cardSize}
+               onClickFunction={() => showCardDetails(asset)}
+               networkType='webaverse'
+            />
+          )
+        }))
+      ]}
     </div>
   )
 };

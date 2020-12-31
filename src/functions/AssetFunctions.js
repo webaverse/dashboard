@@ -6,6 +6,28 @@ import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 
+
+export const deleteAsset = async (id, mnemonic, successCallback, errorCallback) => {
+  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+  const address = wallet.getAddressString();
+
+  console.log("Deleting asset", id);
+  try {
+    const network = 'sidechain';
+    const burnAddress = "0x000000000000000000000000000000000000dEaD";
+
+    const result = await runSidechainTransaction(mnemonic)('NFT', 'transferFrom', address, burnAddress, id);
+
+    if(result) console.log("Result of delete transaction:", result);
+
+    if (successCallback)
+      successCallback(result);
+  } catch (error) {
+    if (errorCallback)
+      errorCallback(error);
+  }
+}
+
 export const buyAsset = async (id, networkType, mnemonic, successCallback, errorCallback) => {
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();

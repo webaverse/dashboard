@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import AssetCard from '../Card';
 import CardSize from '../../constants/CardSize.js';
-import { setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../../functions/AssetFunctions.js'
+import { deleteAsset, setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../../functions/AssetFunctions.js'
 import { getStores } from '../../functions/UIStateFunctions.js'
 import Loader from '../Loader';
 import './style.css';
@@ -143,6 +143,17 @@ export default ({
     e.preventDefault();
     setLoading(true);
     buyAsset(storeId, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
+  }
+
+  const handleDeleteAsset = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    var r = confirm("You are about to permanently delete this, are you sure?");
+    if (r == true) {
+      deleteAsset(id, globalState.loginToken.mnemonic, handleSuccess, handleError);
+    } else {
+      handleError("canceled delete");
+    }
   }
 
   const handleSellAsset = (e) => {
@@ -293,6 +304,7 @@ export default ({
               <button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>
               <button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>
               <button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>
+              <button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>
             </div>),
 /*
             (userCreatedThisAsset &&

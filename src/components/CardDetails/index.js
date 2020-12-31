@@ -291,6 +291,8 @@ export default ({
               <button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>
               <button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>
               <button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>
+              <button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>
+              <button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>
             </div>),
 /*
             (userCreatedThisAsset &&
@@ -332,6 +334,7 @@ export default ({
 */
             
 
+/*
             userOwnsThisAsset && (
             <div className="detailsBlock detailsBlockTransferTo">
               <div className="Accordion">
@@ -386,7 +389,7 @@ export default ({
                   </div>
                 </div>)
                 ),
-              
+ */
             
            
                 (globalState.address && !userOwnsThisAsset && storeId && buyPrice ?

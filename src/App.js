@@ -43,7 +43,7 @@ const App = () => {
       setGlobalState({ ...globalState, login: "false" });
     } else if (globalState.logout === "true") {
       await storage.set("globalState", { ...globalState, logout: "false", loginToken: null, address: "", name: "", avatarUrl: "", avatarPreview: "", avatarFileName: "" });
-      await storage.set('loginToken', null);
+      await storage.set('loginToken', "");
        setGlobalState({ ...globalState, logout: "false", loginToken: null, address: "", name: "", avatarUrl: "", avatarPreview: "", avatarFileName: "" });
     } else if (globalState.refresh === "true") {
       init();

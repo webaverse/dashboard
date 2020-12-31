@@ -11,6 +11,7 @@ export default () => {
   const history = useHistory();
   const code = new URLSearchParams(window.location.search).get("code") || "";
   const id = new URLSearchParams(window.location.search).get("id") || "";
+  const play = new URLSearchParams(window.location.search).get("play");
   const { globalState, setGlobalState } = useAppContext();
 
   const loginWithKey = (key) => {
@@ -31,8 +32,15 @@ export default () => {
     const balance = await getBalance(state.address);
     const newState = await pullUser(state);
 
-    setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
-    history.push("/accounts/" + state.address);
+    if (play) {
+      console.log(newState);
+      storage.set("loginToken", { mnemonic: newState.loginToken.mneomnic });
+      setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
+      window.location.href = "https://app.webaverse.com";
+    } else {
+      setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
+      history.push("/accounts/" + state.address);
+    }
   }
 
   useEffect(() => {

@@ -18,7 +18,7 @@ export default () => {
     if (bip39.validateMnemonic(key)) {
       loginWithPrivateKey(key, globalState)
       .then(res => {
-        setInitialState(res);
+        setInitialState(res, key);
       })
       .catch(err => {
         console.log(err);
@@ -28,13 +28,13 @@ export default () => {
     }
   }
 
-  const setInitialState = async (state) => {
+  const setInitialState = async (state, key) => {
     const balance = await getBalance(state.address);
     const newState = await pullUser(state);
 
     if (play) {
-      storage.set("loginToken", { mnemonic: newState.loginToken.mneomnic });
-      setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
+      await storage.set("loginToken", { mnemonic: key });
+      window.location.href = "https://app.webaverse.com";
     } else {
       setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
       history.push("/accounts/" + state.address);
@@ -42,13 +42,7 @@ export default () => {
   }
 
   useEffect(() => {
-    if (play && globalState && globalState.loginProcessed) {
-      window.location.href = "https://app.webaverse.com";
-    }
     (async () => {
-      if (globalState && globalState.loginProcessed) {
-        return;
-      }
       const res = await fetch(`https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
       const j = await res.json();
       const {mnemonic} = j;

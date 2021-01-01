@@ -61,7 +61,7 @@ export default () => {
       })();
     }
 
-    if (!loading && !inventory && !store && globalState && id.toLowerCase() === globalState.address) {
+    if (!inventory && !store && globalState && id.toLowerCase() === globalState.address) {
       handleViewToggle("settings");
     } else if (currentTab) {
       handleViewToggle(currentTab);

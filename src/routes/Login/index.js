@@ -33,10 +33,8 @@ export default () => {
     const newState = await pullUser(state);
 
     if (play) {
-      console.log(newState);
       storage.set("loginToken", { mnemonic: newState.loginToken.mneomnic });
       setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
-      window.location.href = "https://app.webaverse.com";
     } else {
       setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
       history.push("/accounts/" + state.address);
@@ -44,6 +42,9 @@ export default () => {
   }
 
   useEffect(() => {
+    if (play && globalState && globalState.loginProcessed) {
+      window.location.href = "https://app.webaverse.com";
+    }
     (async () => {
       if (globalState && globalState.loginProcessed) {
         return;

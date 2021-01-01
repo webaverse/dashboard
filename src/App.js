@@ -45,6 +45,7 @@ const App = () => {
       await storage.remove("globalState");
       await storage.remove("loginToken");
       setGlobalState(InitialStateValues);
+      window.location.href = "/browse";
     } else if (globalState.refresh === "true") {
       init();
     } else if (globalState.address) {

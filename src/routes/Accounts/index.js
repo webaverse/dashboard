@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getBoothForCreator, getBalance } from "../../functions/UIStateFunctions.js";
-import { getLoadout } from "../../functions/AssetFunctions.js";
+import { setName, getLoadout } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";

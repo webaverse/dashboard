@@ -35,6 +35,15 @@ export default () => {
     setGlobalState({ ...globalState, logout: "true" });
   }
 
+  const handleSuccess = () => {
+    console.log("success!");
+    window.location.reload();
+  }
+  const handleError = (err) => {
+    console.log("error", err);
+    setLoading(false);
+  }
+
   useEffect(() => {
     if (id) {
       (async () => {
@@ -120,6 +129,7 @@ export default () => {
             (<a className="button" onClick={() => {
               const name = prompt("What is your name?", "Satoshi");
               setName(name, globalState, handleSuccess, handleError)
+              setLoading(true);
             }}>
               Change Name
             </a>),

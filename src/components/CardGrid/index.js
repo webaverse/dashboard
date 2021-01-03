@@ -64,12 +64,15 @@ export default ({
           />
         ),
         (data.map(asset =>{
+          if (asset.totalSupply === 0) {
+            return;
+          }
           if (currentAsset != asset && asset.id === parseInt(currentCard)) {
             showCardDetails(asset);
           }
           return (
             <AssetCard
-               key={asset.properties.hash}
+               key={asset.id}
                id={asset.id}
                assetName={asset.name}
                description={asset.description}

@@ -32,7 +32,7 @@ export default () => {
             </div>
             <div>
               <Link to="/settings">
-                <img className={`accountPicture ${globalState.address ? "loggedIn" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview : preview} />
+                <img className={`accountPicture ${globalState.address ? "loggedIn" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : preview} />
               </Link>
             </div>
   

@@ -94,7 +94,7 @@ export default ({
               <div className={`lowerCardInfoTopLeftGroup`}>
                 <span className={`creator creator ${cardSize}`}>
                   <span className={`creatorIcon creatorIcon tooltip ${cardSize}`}>
-                    <img src={minterAvatarPreview} />
+                    <img src={minterAvatarPreview.replace(/\.[^.]*$/, '.png')} />
                     <span className={`creatorName creatorName tooltiptext ${cardSize}`}>{minterUsername}</span>
                   </span>
                 </span>

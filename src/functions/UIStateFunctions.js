@@ -24,6 +24,13 @@ export const getAddress = (state) => {
   return { ...state, address };
 };
 
+export const getLands = async (start, end) => {
+  const res = await fetch(`https://land.webaverse.com/${start}-${end}`);
+  const tokens = await res.json();
+
+  return tokens;
+};
+
 export const getTokens = async (start, end) => {
   const res = await fetch(`https://tokens.webaverse.com/${start}-${end}`);
   const tokens = await res.json();

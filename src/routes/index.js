@@ -4,8 +4,10 @@ import { Route, Switch } from 'react-router-dom'
 import Browse from './Browse';
 import BrowseInfo from './BrowseInfo';
 import Mint from './Mint';
-import Creators from './Creators';
-import Accounts from './Accounts';
+import Assets from './Assets';
+import Land from './Land';
+import Profiles from './Profiles';
+import Profile from './Profile';
 import Settings from './Settings';
 import Login from './Login';
 import Home from './Home';
@@ -21,8 +23,10 @@ export default () =>
       window.location.href = "https://discord.com/api/oauth2/authorize?client_id=684141574808272937&redirect_uri=https%3A%2F%2Fwebaverse.com%2Flogin&response_type=code&scope=identify";
       return null;
     }}/>
-    <Route path='/accounts/:id' component={() => <Accounts />} />
-    <Route path='/creators' component={() => <Creators />} />
+    <Route path='/profiles/:id' component={() => <Profile />} />
+    <Route path='/assets' component={() => <Assets />} />
+    <Route path='/land' component={() => <Land />} />
+    <Route path='/profiles' component={() => <Profiles />} />
     <Route path='/browse' component={() => <Browse />} />
     <Route path='/mint' component={() => <Mint />} />
     <Route path='/login' component={() => <Login />} />

@@ -93,7 +93,7 @@ export default () => {
         <Loader loading={loading} />
       :
         globalState.address ?
-          <Redirect to={"/accounts/" + globalState.address} />
+          <Redirect to={"/profiles/" + globalState.address} />
         :
           <Col sm={12}>
             <Col sm={7} style={{ margin: "0 auto" }}>

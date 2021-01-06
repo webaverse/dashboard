@@ -3,7 +3,7 @@ import { Container, Row } from 'react-grid-system';
 import { useAppContext } from "../../libs/contextLib";
 import { getCreators } from "../../functions/UIStateFunctions.js";
 import Loader from "../../components/Loader";
-import AccountCards from "../../components/AccountCards";
+import ProfileCards from "../../components/ProfileCards";
 
 
 export default () => {
@@ -24,7 +24,7 @@ export default () => {
   return (
     <div className="container">
       { creatorProfiles ?
-        <AccountCards accounts={creatorProfiles} />
+        <ProfileCards profiles={creatorProfiles} />
       :
         <Loader loading={true} />
       }

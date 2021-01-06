@@ -50,6 +50,7 @@ html, body, #root {
   height: 1.5rem;
   margin: 25px auto;
   color: #676370;
+  font-size: 14px;
 }
 .footer * {
   color: #676370 !important;

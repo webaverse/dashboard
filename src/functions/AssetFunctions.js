@@ -147,6 +147,53 @@ export const setAvatar = async (id, state, successCallback, errorCallback) => {
   }
 };
 
+export const deployLand = async (file, tokenId, successCallback, errorCallback, state) => {
+  const mnemonic = state.loginToken.mnemonic;
+  const res = await fetch(storageHost, { method: 'POST', body: file });
+  const { hash } = await res.json();
+
+  const oldHash = await contracts.sidechain.LAND.methods.getHash(tokenId).call();
+
+  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+  const address = wallet.getAddressString();
+
+  const fullAmount = {
+    t: 'uint256',
+    v: new web3.sidechain.utils.BN(1e9)
+      .mul(new web3.sidechain.utils.BN(1e9))
+      .mul(new web3.sidechain.utils.BN(1e9)),
+  };
+
+  let status, transactionHash;
+  try {
+    {
+      const result = await runSidechainTransaction(mnemonic)('LAND', 'updateHash', oldHash, hash);
+      status = result.status;
+      transactionHash = '0x0';
+    }
+    if (status) {
+      const extName = path.extname(file.name).slice(1);
+      const fileName = extName ? file.name.slice(0, -(extName.length + 1)) : file.name;
+      await Promise.all([
+        runSidechainTransaction(mnemonic)('LAND', 'setMetadata', hash, 'name', fileName),
+        runSidechainTransaction(mnemonic)('LAND', 'setMetadata', hash, 'ext', extName)
+      ]);
+      status = true;
+      transactionHash = '0x0';
+    }
+  } catch(err) {
+    console.warn(err.stack);
+    status = false;
+    transactionHash = err.message;
+  }
+
+  if (status) {
+    successCallback();
+  } else {
+    errorCallback(transactionHash);
+  }
+}
+
 export const mintNft = async (file, name, ext, description, quantity, successCallback, errorCallback, state) => {
   const  mnemonic = state.loginToken.mnemonic;
   const address = state.address;

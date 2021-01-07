@@ -12,7 +12,7 @@ import grid from '../../assets/images/defaulthomespace.svg';
 
 export default ({
   id,
-  assetName,
+  name,
   description,
   image,
   hash,
@@ -77,7 +77,7 @@ export default ({
       >
         <div className={`${rarity} upperCardInfo upperCardInfo ${cardSize} upperCardInfo upperCardInfo_${(ext ?? "").replace('.','')}`}>
           <div className={`upperCardInfoLeft upperCardInfoLeft ${cardSize}`}>
-            <span className={`cardAssetName cardName ${cardSize}`}>{season} #{id}</span>
+            <span className={`cardAssetName cardName ${cardSize}`}>{name}</span>
           </div>
           <div className={`upperCardInfoRight upperCardInfoRight ${cardSize}`}>
             <div className={`itemType ext ${cardSize} ext_${ext}`}>

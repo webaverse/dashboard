@@ -74,7 +74,7 @@ export default ({
             <AssetCard
                key={asset.id}
                id={asset.id}
-               assetName={asset.name}
+               name={asset.name}
                description={asset.description}
                image={asset.image}
                hash={asset.properties.hash}

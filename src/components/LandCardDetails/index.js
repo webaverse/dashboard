@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import AssetCard from '../LandCard';
 import CardSize from '../../constants/CardSize.js';
-import { deleteAsset, setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../../functions/AssetFunctions.js'
+import { deployLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../../functions/AssetFunctions.js'
 import { getStores } from '../../functions/UIStateFunctions.js'
 import Loader from '../Loader';
 import './style.css';
@@ -47,6 +47,7 @@ export default ({
   const [calculatedCardSize, setCalculatedCardSize] = useState(CardSize.Large)
   const [loading, setLoading] = useState(false);
   const [pending, setPending] = useState(false);
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
       document.documentElement.clientWidth < 585 ? setCalculatedCardSize(CardSize.Small) :
@@ -168,6 +169,31 @@ export default ({
     sellAsset(id, sellPrice, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
+  const handleWithdraw = async (e) => {
+    if(e) {
+      e.preventDefault();
+    }
+    console.warn("withdraw todo");
+/*
+    setLoading(true);
+
+    try {
+      const ethAccount = await loginWithMetaMask();
+      if (ethAccount) {
+        const mainnetAddress = prompt("What mainnet address do you want to send to?", "0x0");
+        await depositAsset(id, 'webaverse', mainnetAddress, globalState.address, globalState);
+        handleSuccess();
+      } if (ethEnabled()) {
+        setPending(true);
+      } else {
+        setLoading(false);
+      }
+    } catch (err) {
+      handleError(err.toString());
+    }
+*/
+  }
+
   const handleDeposit = async (e) => {
     if(e) {
       e.preventDefault();
@@ -191,9 +217,18 @@ export default ({
     }
   }
 
-  const handleReupload = (e) => {
-      e.preventDefault();
-      console.warn("TODO: Handle reuploading image");
+  const handleDeploy = file => {
+    console.log(file);
+    if (file) {
+      let reader = new FileReader();
+      reader.onloadend = () => {
+        setFile(file);
+        deployLand(file, id, handleSuccess, handleError, globalState);
+        console.log(file);
+      }
+      reader.readAsDataURL(file);
+    }
+    else console.warn("Didnt upload file");
   }
 
 /*
@@ -279,7 +314,7 @@ export default ({
           <AssetCard
             key={id}
             id={id}
-            assetName={name}
+            name={name}
             ext={ext}
             description={description}
             buyPrice={buyPrice}
@@ -305,12 +340,10 @@ export default ({
           {[
             userOwnsThisAsset && (
             <div className="detailsBlock detailsBlockSet">
-              <button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>
-              <button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>
-              <button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>
+              <button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>
               <button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>
-              <button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>
-              <button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>
+              <label htmlFor="input-file" className="assetDetailsButton">Deploy Content</label>
+              <input type="file" id="input-file" onChange={(e) => handleDeploy(e.target.files[0])} multiple={false} style={{display: 'none'}} />
             </div>),
 
             globalState.address && !userOwnsThisAsset && storeId && buyPrice && (

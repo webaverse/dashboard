@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import AssetCard from '../LandCard';
 import CardSize from '../../constants/CardSize.js';
-import { deployLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../../functions/AssetFunctions.js'
+import { deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../../functions/AssetFunctions.js'
 import { getStores } from '../../functions/UIStateFunctions.js'
 import Loader from '../Loader';
 import './style.css';
@@ -47,6 +47,7 @@ export default ({
   const [calculatedCardSize, setCalculatedCardSize] = useState(CardSize.Large)
   const [loading, setLoading] = useState(false);
   const [pending, setPending] = useState(false);
+  const [mainnetAddress, setMainnetAddress] = useState(null);
   const [file, setFile] = useState(null);
 
   useEffect(() => {
@@ -84,7 +85,7 @@ export default ({
     return false;
   }
 
-  const loginWithMetaMask = async () => {
+  const loginWithMetaMask = async (func) => {
     if (!ethEnabled()) {
       return "Please install MetaMask to use Webaverse!";
     } else {
@@ -92,10 +93,12 @@ export default ({
       try {
         const eth = await window.ethereum.request({ method: 'eth_accounts' });
         if (eth && eth[0]) {
+          setMainnetAddress(eth[0]);
           return eth[0];
         } else {
           ethereum.on('accountsChanged', (accounts) => {
-            handleDeposit();
+            setMainnetAddress(accounts[0]);
+            func();
           });
           return false;
         }
@@ -173,15 +176,13 @@ export default ({
     if(e) {
       e.preventDefault();
     }
-    console.warn("withdraw todo");
-/*
+
     setLoading(true);
 
     try {
       const ethAccount = await loginWithMetaMask();
       if (ethAccount) {
-        const mainnetAddress = prompt("What mainnet address do you want to send to?", "0x0");
-        await depositAsset(id, 'webaverse', mainnetAddress, globalState.address, globalState);
+        await withdrawAsset(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
         handleSuccess();
       } if (ethEnabled()) {
         setPending(true);
@@ -191,7 +192,7 @@ export default ({
     } catch (err) {
       handleError(err.toString());
     }
-*/
+
   }
 
   const handleDeposit = async (e) => {
@@ -202,10 +203,10 @@ export default ({
     setLoading(true);
 
     try {
-      const ethAccount = await loginWithMetaMask();
+      const ethAccount = await loginWithMetaMask(handleDeposit);
       if (ethAccount) {
         const mainnetAddress = prompt("What mainnet address do you want to send to?", "0x0");
-        await depositAsset(id, 'webaverse', mainnetAddress, globalState.address, globalState);
+        await depositLand(id, mainnetAddress, globalState.address, globalState);
         handleSuccess();
       } if (ethEnabled()) {
         setPending(true);

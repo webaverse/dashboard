@@ -174,10 +174,7 @@ export const deployLand = async (file, tokenId, successCallback, errorCallback, 
     if (status) {
       const extName = getExt(file.name);
       const fileName = extName ? file.name.slice(0, -(extName.length + 1)) : file.name;
-      await Promise.all([
-//        runSidechainTransaction(mnemonic)('LAND', 'setSingleMetadata', tokenId, 'name', fileName),
-        runSidechainTransaction(mnemonic)('LAND', 'setSingleMetadata', tokenId, 'ext', extName)
-      ]);
+      await runSidechainTransaction(mnemonic)('LAND', 'setSingleMetadata', tokenId, 'ext', extName);
       status = true;
       transactionHash = '0x0';
     }

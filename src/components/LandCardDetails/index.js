@@ -65,10 +65,8 @@ export default ({
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
     userOwnsThisAsset = ownerAddress.toLowerCase() === globalState.address.toLowerCase();
-    userCreatedThisAsset = minterAddress.toLowerCase() === globalState.address.toLowerCase();
   } else {
     userOwnsThisAsset = false;
-    userCreatedThisAsset = false;
   }
 
   // Otherwise, is this asset for sale?
@@ -180,8 +178,9 @@ export default ({
     setLoading(true);
 
     try {
-      const ethAccount = await loginWithMetaMask();
+      const ethAccount = await loginWithMetaMask(handleWithdraw);
       if (ethAccount) {
+        const mainnetAddress = prompt("What mainnet address do you want to get from?", "0x0");
         await withdrawAsset(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
         handleSuccess();
       } if (ethEnabled()) {
@@ -339,7 +338,8 @@ export default ({
         </div>),
         (<div className="assetDetailsRightColumn">
           {[
-            userOwnsThisAsset && (
+//            userOwnsThisAsset && (
+            (
             <div className="detailsBlock detailsBlockSet">
               <button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>
               <button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>

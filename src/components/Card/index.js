@@ -73,7 +73,7 @@ export default ({
   
   return (
       <div
-        className={`card cardItem ${rarity} ${glow ? "glow" : ""}`}
+        className={`card cardItem ${rarity}`}
           onClick={onClickFunction}
       >
         <div className={`${rarity} upperCardInfo upperCardInfo ${cardSize} upperCardInfo upperCardInfo_${(ext ?? "").replace('.','')}`}>

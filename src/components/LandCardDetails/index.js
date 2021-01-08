@@ -341,10 +341,12 @@ export default ({
 //            userOwnsThisAsset && (
             (
             <div className="detailsBlock detailsBlockSet">
-              <button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>
-              <button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>
-              <label htmlFor="input-file" className="assetDetailsButton">Deploy Content</label>
-              <input type="file" id="input-file" onChange={(e) => handleDeploy(e.target.files[0])} multiple={false} style={{display: 'none'}} />
+              {[
+                (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
+                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
+                userOwnsThisAsset && (<label htmlFor="input-file" className="assetDetailsButton">Deploy Content</label>),
+                userOwnsThisAsset && (<input type="file" id="input-file" onChange={(e) => handleDeploy(e.target.files[0])} multiple={false} style={{display: 'none'}} />),
+              ]}
             </div>),
 
             globalState.address && !userOwnsThisAsset && storeId && buyPrice && (

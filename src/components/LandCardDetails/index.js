@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import AssetCard from '../LandCard';
 import CardSize from '../../constants/CardSize.js';
 import { deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../../functions/AssetFunctions.js'
-import { getStores } from '../../functions/UIStateFunctions.js'
+import { getLandMain, getStores } from '../../functions/UIStateFunctions.js'
 import Loader from '../Loader';
 import './style.css';
 
@@ -48,6 +48,7 @@ export default ({
   const [loading, setLoading] = useState(false);
   const [pending, setPending] = useState(false);
   const [mainnetAddress, setMainnetAddress] = useState(null);
+  const [landMainnetAddress, setLandMainnetAddress] = useState(null);
   const [file, setFile] = useState(null);
 
   useEffect(() => {
@@ -55,6 +56,13 @@ export default ({
       document.documentElement.clientWidth < 750 ? setCalculatedCardSize(CardSize.Medium) : 
                                                    setCalculatedCardSize(CardSize.Large)
   },  [document.documentElement.clientWidth])
+
+  useEffect(() => {
+    (async () => {
+      const main = await getLandMain(id);
+      setLandMainnetAddress(main.owner.address);
+    })();
+  },  []);
 
   // Do you own this asset?
   console.log("Owner address is", ownerAddress);
@@ -339,10 +347,9 @@ export default ({
         (<div className="assetDetailsRightColumn">
           {[
 //            userOwnsThisAsset && (
-            (
-            <div className="detailsBlock detailsBlockSet">
+              userOwnsThisAsset || landMainnetAddress && landMainnetAddress != "0x0000000000000000000000000000000000000000" && (<div className="detailsBlock detailsBlockSet">
               {[
-                (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
+                landMainnetAddress && landMainnetAddress != "0x0000000000000000000000000000000000000000" && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
                 userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
                 userOwnsThisAsset && (<label htmlFor="input-file" className="assetDetailsButton">Deploy Content</label>),
                 userOwnsThisAsset && (<input type="file" id="input-file" onChange={(e) => handleDeploy(e.target.files[0])} multiple={false} style={{display: 'none'}} />),

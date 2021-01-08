@@ -119,7 +119,7 @@ export default () =>
       title="Webaverse"
       subtitle="An open virtual world built with existing communities."
       callToAction="GET STARTED"
-      ctaUrl="https://discord.gg/R5wqYhvv53"
+      ctaUrl="https://app.webaverse.com"
     />
     <SecondSection
       heroBg=""
@@ -127,7 +127,7 @@ export default () =>
       title="Lose yourself in an expansive, evolving world"
       subtitle="Explore the Webaverse with your friends or go on a solo adventure."
       callToAction="START EXPLORING"
-      ctaUrl="https://discord.gg/R5wqYhvv53"
+      ctaUrl="https://app.webaverse.com"
     />
     <ThirdSection
       heroBg=""

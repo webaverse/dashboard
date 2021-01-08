@@ -167,7 +167,7 @@ export const deployLand = async (file, tokenId, successCallback, errorCallback, 
   let status, transactionHash;
   try {
     {
-      const result = await runSidechainTransaction(mnemonic)('LAND', 'updateHash', oldHash, hash);
+      const result = await runSidechainTransaction(mnemonic)('LAND', 'setSingleMetadata', tokenId, 'hash', hash);
       status = result.status;
       transactionHash = '0x0';
     }
@@ -175,14 +175,13 @@ export const deployLand = async (file, tokenId, successCallback, errorCallback, 
       const extName = getExt(file.name);
       const fileName = extName ? file.name.slice(0, -(extName.length + 1)) : file.name;
       await Promise.all([
-        runSidechainTransaction(mnemonic)('LAND', 'setMetadata', hash, 'name', fileName),
-        runSidechainTransaction(mnemonic)('LAND', 'setMetadata', hash, 'ext', extName)
+        runSidechainTransaction(mnemonic)('LAND', 'setSingleMetadata', tokenId, 'name', fileName),
+        runSidechainTransaction(mnemonic)('LAND', 'setSingleMetadata', tokenId, 'ext', extName)
       ]);
       status = true;
       transactionHash = '0x0';
     }
   } catch(err) {
-    console.warn(err.stack);
     status = false;
     transactionHash = err.message;
   }
@@ -277,51 +276,35 @@ export const setHomespace = async (id, state, successCallback, errorCallback) =>
   }
 };
 
-export const withdrawAsset = async (tokenId, mainnetAddress, address, state, succesCallback, errorCallback) => {
+export const withdrawAsset = async (tokenId, mainnetAddress, address, state, successCallback, errorCallback) => {
   // Withdraw from mainnet
-  try {
-    const id = parseInt(tokenId, 10);
-    const tokenId = {
-      t: 'uint256',
-      v: new web3['main'].utils.BN(id),
-    };
+  const id = parseInt(tokenId, 10);
+  tokenId = {
+    t: 'uint256',
+    v: new web3['main'].utils.BN(id),
+  };
 
-    const hashSpec = await contracts.main.LAND.methods.getHash(tokenId.v).call();
-    const hash = {
-      t: 'uint256',
-      v: new web3['main'].utils.BN(hashSpec),
-    };
-    const filenameSpec = await contracts.main.LAND.methods.getMetadata(hashSpec, 'filename').call();
-    const filename = {
-      t: 'string',
-      v: filenameSpec,
-    };
+  await contracts.main.LAND.methods.setApprovalForAll(contracts.main.LANDProxy._address, true).send({
+    from: mainnetAddress,
+  });
 
-    const descriptionSpec = await contracts.main.LAND.methods.getMetadata(hashSpec, 'description').call();
-    const description = {
-      t: 'string',
-      v: descriptionSpec,
-    };
+  const receipt = await contracts.main.LANDProxy.methods.deposit(address, tokenId.v).send({
+    from: mainnetAddress,
+  });
 
+  const signature = await getTransactionSignature('main', 'LAND', receipt.transactionHash);
+  const timestamp = {
+    t: 'uint256',
+    v: signature.timestamp,
+  };
 
-    await _checkMainNftApproved();
+  const { r, s, v } = signature;
 
-    const receipt = await contracts.main.LANDProxy.methods.deposit(myAddress, tokenId.v).send({
-      from: mainnetAddress,
-    });
+  await runSidechainTransaction(state.loginToken.mnemonic)('LANDProxy', 'withdraw', address, tokenId.v, timestamp.v, r, s, v);
 
-    const signature = await getTransactionSignature('main', 'LAND', receipt.transactionHash);
+  successCallback();
 
-    const { timestamp, r, s, v } = signature;
-
-    await runSidechainTransaction('LANDProxy', 'withdraw', myAddress, tokenId.v, hash.v, filename.v, description.v, timestamp, r, s, v);
-
-    successCallback();
-
-    return;
-  } catch (err) {
-    errorCallback(err);
-  }
+  return;
 }
 
 export const depositLand = async (tokenId, mainnetAddress, address, state) => {

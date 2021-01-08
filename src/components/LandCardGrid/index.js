@@ -55,9 +55,6 @@ export default ({
             ownerAvatarPreview={currentAsset.owner.avatarPreview}
             ownerUsername={currentAsset.owner.username}
             ownerAddress={currentAsset.owner.address}
-            minterAvatarPreview={currentAsset.minter.avatarPreview}
-            minterAddress={currentAsset.minter.address}
-            minterUsername={currentAsset.minter.username}
             hideDetails={hideCardDetails}
             globalState={globalState}
             networkType='webaverse'
@@ -88,9 +85,6 @@ export default ({
                ownerAvatarPreview={asset.owner.avatarPreview}
                ownerUsername={asset.owner.username}
                ownerAddress={asset.owner.address}
-               minterAvatarPreview={asset.minter.avatarPreview}
-               minterUsername={asset.minter.username}
-               minterAddress={asset.minter.address}
                cardSize={cardSize}
                onClickFunction={() => showCardDetails(asset)}
                networkType='webaverse'

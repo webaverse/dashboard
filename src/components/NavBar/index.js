@@ -32,9 +32,15 @@ export default () => {
               <a className="item" href="https://discord.gg/R5wqYhvv53">Join Our Discord</a>
             </div>
             <div>
-              <Link to="/settings">
-                <img className={`accountPicture ${globalState.address ? "loggedIn" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : preview} />
-              </Link>
+              { globalState.address ?
+                <a href={"/profiles/" + globalState.address}>
+                  <img className={`accountPicture loggedIn`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : preview} />
+                </a>
+              :
+                <Link to="/settings">
+                  <img className="accountPicture" src={preview} />
+                </Link>
+              }
             </div>
   
         </div>

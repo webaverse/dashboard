@@ -23,11 +23,7 @@ export default () => {
   const [store, setStore] = useState(null);
   const [selectedView, setSelectedView] = useState("inventory");
 
-  const currentTab = window.location.pathname.split("/")[3];
-  console.log("pathname", window.location.pathname);
-
   const handleViewToggle = (view) => {
-    history.push("/profiles/" + id + "/" + view);
     setSelectedView(view);
   }
 
@@ -54,6 +50,9 @@ export default () => {
         const inventory = await getInventoryForCreator(id, 0, true, globalState);
         if (inventory.creatorInventories[id][0][0] != "0") {
           setInventory(inventory.creatorInventories[id][0]);
+          setLoading(false);
+        } else {
+          setLoading(false);
         }
       })();
       (async () => {
@@ -69,22 +68,7 @@ export default () => {
         setLoadout(loadout);
       })();
     }
-
-    if (!inventory && !store && globalState && id.toLowerCase() === globalState.address) {
-      handleViewToggle("settings");
-    } else if (currentTab) {
-      handleViewToggle(currentTab);
-    } else {
-      handleViewToggle(selectedView);
-    }
   }, []);
-
-  useEffect(() => {
-    if (profile) {
-      setLoading(false);
-    }
-  }, [inventory, profile]);
-
 
   return (
     <div>
@@ -97,17 +81,17 @@ export default () => {
         <div className="profileBodyNav">
           <div className="profileBodyNavContainer">
             {store && store.length > 0 && (
-            <a className={`profileNavLink ${currentTab === "store" ? "active disable" : ""}`} onClick={() => {
+            <a className={`profileNavLink ${selectedView === "store" ? "active disable" : ""}`} onClick={() => {
               handleViewToggle("store");
             }}>
               Store
             </a>)}
             {inventory && inventory.length > 0 && (
-            <a className={`profileNavLink ${currentTab === "inventory" ? "active disable" : ""}`} onClick={() => handleViewToggle("inventory")}>
+            <a className={`profileNavLink ${selectedView === "inventory" ? "active disable" : ""}`} onClick={() => handleViewToggle("inventory")}>
               Inventory
             </a>)}
             {globalState && globalState.address === id.toLowerCase() && (
-            <a className={`profileNavLink ${currentTab === "settings" ? "active disable" : ""}`} onClick={() => handleViewToggle("settings")}>
+            <a className={`profileNavLink ${selectedView === "settings" ? "active disable" : ""}`} onClick={() => handleViewToggle("settings")}>
               Settings
             </a>)}
           </div>
@@ -115,15 +99,15 @@ export default () => {
         !loading && (
         <div className="profileBodyAssets">
           {[
-          currentTab === "store" && store && (
+          selectedView === "store" && store && (
             <CardGrid data={store} globalState={globalState} cardSize="" />
           ),
-          currentTab === "inventory" && inventory && (
+          selectedView === "inventory" && inventory && (
             <CardGrid data={inventory} globalState={globalState} cardSize="" />
           )
           ]}
         </div>),
-        !loading &&  currentTab === "settings" && globalState && globalState.address == id.toLowerCase() && (
+        !loading &&  selectedView === "settings" && globalState && globalState.address == id.toLowerCase() && (
           <div className="settingsButtonsContainer">
           {[
             (<a className="button" onClick={() => {

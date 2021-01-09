@@ -17,12 +17,11 @@ export default () => {
   const pathName = window.location.pathname.split("/")[2];
 
   useEffect(() => {
-    if (pathName && pathName != "all") {
+    if (pathName && pathName != "") {
       setCurrentCard(pathName);
-    } else if (pathName === "all" || pathName === undefined || !pathName) {
+    } else if (pathName === "" || pathName === undefined || !pathName) {
       console.log("pathName is now", pathName);
       setCurrentCard(null);
-      history.push("/land/all");
     }
 
   }, [pathName]);
@@ -33,7 +32,7 @@ export default () => {
       setLands(lands);
     })();
 
-    if (pathName && pathName != "all") {
+    if (pathName && pathName != "") {
       setCurrentCard(pathName);
     } else if (!pathName) {
       setCurrentCard(null);
@@ -51,7 +50,7 @@ export default () => {
 
     if (currentCard && currentCard.hide === true) {
       setCurrentCard(null);
-      history.push("/land/all");
+      history.push("/land");
     } else if (currentCard && currentCard.id) {
       history.push("/land/" + currentCard.id);
     }

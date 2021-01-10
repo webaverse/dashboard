@@ -16,6 +16,8 @@ export default ({ data }) => {
         <meta name="description" content={data.description + " | Webaverse"} />
         <meta property="og:title" content={data.name + " | Webaverse"} />
         <meta property="og:image" content={data.image} />
+        <meta name="theme-color" content="#c4005d">
+        <meta name="twitter:card" content="summary_large_image">
       </Head>
       <LandCardDetails
          id={data.id}

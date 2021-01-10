@@ -47,6 +47,8 @@ export default ({ data }) => {
         <meta name="description" content={"Check out " + profile.name + "'s items on Webaverse."} />
         <meta property="og:title" content={profile.name + "'s account | Webaverse"} />
         <meta property="og:image" content={profile.avatarPreview ? profile.avatarPreview.replace(/\.[^.]*$/, '.png') : "./preview.png"} />
+        <meta name="theme-color" content="#c4005d">
+        <meta name="twitter:card" content="summary_large_image">
       </Head>
       {[
         (<ProfileHeader loadout={loadout} balance={balance} profile={profile} />),

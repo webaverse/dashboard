@@ -15,8 +15,15 @@ let {
 } = addresses;
 let {Account: AccountAbi, FT: FTAbi, FTProxy: FTProxyAbi, NFT: NFTAbi, NFTProxy: NFTProxyAbi, Trade: TradeAbi, LAND:LANDAbi, LANDProxy: LANDProxyAbi } = abis;
 
+let main;
+if (typeof window !== 'undefined' && window.ethereum) {
+  main = new Web3(window.ethereum);
+} else {
+  main = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/420"));
+}
+
 const web3 = {
-  main: new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/544c350a4cbf425ba5148a140fa9237f")),
+  main: main,
   sidechain: new Web3(new Web3.providers.HttpProvider(web3SidechainEndpoint)),
 };
 web3['sidechain'].eth.transactionConfirmationBlocks = 1;

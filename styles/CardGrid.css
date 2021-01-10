@@ -1,0 +1,17 @@
+.main {
+  width: 100%;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+}
+.small {
+
+}
+.medium {
+  flex-wrap: wrap;
+  width:100%;
+  display:flex;
+}
+.large {
+
+}

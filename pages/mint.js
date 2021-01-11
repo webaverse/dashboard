@@ -109,7 +109,6 @@ export default () => {
               <Col sm={12}>
                 { mintedState === null ?
                   <div>
-                    <img className="nft-preview" src={imagePreview ? imagePreview : null} />
                     <div>
                         <label>Name</label>
                     </div>

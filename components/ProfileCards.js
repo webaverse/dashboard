@@ -19,7 +19,7 @@ export default ({ profiles }) => {
       url = "/assets/" + item.id;
       name = item.name;
     } else if (item.address) {
-      url = "/profiles/" + item.address;
+      url = "/accounts/" + item.address;
       name = item.name ? item.name : "Anonymous";
     }
 

@@ -20,7 +20,7 @@ const Navbar = () => {
             <div className={styles.secondaryMenu}>
               <Link href="/assets"><a className={styles.item}>Assets</a></Link>
               <Link href="/land"><a className={styles.item}>Land</a></Link>
-              <Link href="/profiles"><a className={styles.item}>Profiles</a></Link>
+              <Link href="/accounts"><a className={styles.item}>Accounts</a></Link>
               <Link href="/mint"><a className={styles.item}>Mint</a></Link>
               <a className={styles.item} href="https://docs.webaverse.com">Docs</a>
               <a className={styles.item} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
@@ -31,7 +31,7 @@ const Navbar = () => {
             </div>
             <div>
               { globalState.address ?
-                <a href={"/profiles/" + globalState.address}>
+                <a href={"/accounts/" + globalState.address}>
                   <img className={`${styles.accountPicture} ${styles.loggedIn}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} />
                 </a>
               :

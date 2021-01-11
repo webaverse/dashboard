@@ -1,5 +1,6 @@
 module.exports = {
-  webpack (config, options) {
+  target: 'serverless',
+  webpack (config, { webpack }) {
     config.module.rules.push({
       test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
       use: {
@@ -9,6 +10,8 @@ module.exports = {
         }
       }
     })
+    config.plugins.push(new webpack.IgnorePlugin(/^electron$/));
+
     return config
   }
 }

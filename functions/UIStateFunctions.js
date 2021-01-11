@@ -1,7 +1,7 @@
 import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 import { web3, contracts, getAddressFromMnemonic } from '../webaverse/blockchain.js';
-import storage from '../webaverse/storage.js';
+import storage from './Storage.js';
 
 const hdkey = hdkeySpec.default;
 

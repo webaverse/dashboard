@@ -3,23 +3,25 @@ import {localstorageHost} from '../webaverse/constants.js';
 
 let ids = 0;
 const loadPromise = new Promise((accept, reject) => {
-  const iframe = document.createElement('iframe');
-  iframe.onload = () => {
-    const channel = new MessageChannel();
-    iframe.contentWindow.postMessage({
-      _localstorage: true,
-      port: channel.port2,
-    }, '*', [channel.port2]);
-    channel.port1.start();
-    accept(channel.port1);
-  };
-  iframe.onerror = reject;
-  iframe.src = localstorageHost;
-  iframe.setAttribute('frameborder', 0);
-  iframe.style.position = 'absolute';
-  iframe.style.top = '-4096px';
-  iframe.style.left = '-4096px';
-  document.body.appendChild(iframe);
+  if (typeof window !== 'undefined') {
+    const iframe = document.createElement('iframe');
+    iframe.onload = () => {
+      const channel = new MessageChannel();
+      iframe.contentWindow.postMessage({
+        _localstorage: true,
+        port: channel.port2,
+      }, '*', [channel.port2]);
+      channel.port1.start();
+      accept(channel.port1);
+    };
+    iframe.onerror = reject;
+    iframe.src = localstorageHost;
+    iframe.setAttribute('frameborder', 0);
+    iframe.style.position = 'absolute';
+    iframe.style.top = '-4096px';
+    iframe.style.left = '-4096px';
+    document.body.appendChild(iframe);
+  }
 });
 
 const storage = {

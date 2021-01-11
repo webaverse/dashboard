@@ -34,7 +34,7 @@ export default () => {
       window.location.href = "https://app.webaverse.com";
     } else {
       setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
-      history.push("/profiles/" + state.address);
+      history.push("/accounts/" + state.address);
     }
   }
 

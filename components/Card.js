@@ -68,7 +68,7 @@ export default ({
       >
         <div className={`${rarity} upperCardInfo upperCardInfo ${cardSize} upperCardInfo upperCardInfo_${(ext ?? "").replace('.','')}`}>
           <div className={`upperCardInfoLeft upperCardInfoLeft ${cardSize}`}>
-            <span className={`cardAssetName cardName ${cardSize}`}>{assetName}</span>
+            <span className={`cardAssetName cardName ${cardSize}`}>#{id} - {assetName}</span>
           </div>
           <div className={`upperCardInfoRight upperCardInfoRight ${cardSize}`}>
             <div className={`itemType ext ${cardSize} ext_${ext}`}>

@@ -17,6 +17,9 @@ import '../styles/ProfileCards.css';
 import '../styles/Profiles.css';
 import '../styles/Profile.css';
 import '../styles/Mint.css';
+import '../styles/Map.css';
+
+import 'leaflet/dist/leaflet.css';
 
 const App = ({ Component, pageProps }) => {
 

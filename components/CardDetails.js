@@ -47,12 +47,6 @@ export default ({
   const [loading, setLoading] = useState(false);
   const [pending, setPending] = useState(false);
 
-  // Do you own this asset?
-  console.log("Owner address is", ownerAddress);
-  console.log("minterAddress address is", minterAddress);
-
-  console.log("State address is", globalState.address);
-
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
     userOwnsThisAsset = ownerAddress.toLowerCase() === globalState.address.toLowerCase();
@@ -64,8 +58,6 @@ export default ({
 
   // Otherwise, is this asset for sale?
   const isForSale = buyPrice !== undefined && buyPrice !== null && buyPrice !== ""
-
-  console.log("**** Buy price is", buyPrice);
 
   const ethEnabled = () => {
     if (window.ethereum) {
@@ -270,6 +262,7 @@ export default ({
         : [
         (<div className="assetDetailsLeftColumn">
           <AssetCard
+            id={id}
             key={id}
             assetName={name}
             ext={ext}

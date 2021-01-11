@@ -195,14 +195,16 @@ img {
 }
 
 .assetDescription {
-    width: 100%;
+    max-width: 90%;
+    max-width: 90%;
     /* height: 9.4em; */
     /* padding: 1.4em 2em 2em 2em; */
     background: lightgray;
-    font-size: .7em;
+    font-size: 10px;
     font-weight: 300;
     font-style: italic;
     word-wrap: break-word;
+    z-index: 1;
 }
 
 .lowerCardInfoBottom {
@@ -214,7 +216,7 @@ img {
 }
 
 .assetHash {
-    font-size: .4em;
+    font-size: 6px;
 }
 
 .card.small {

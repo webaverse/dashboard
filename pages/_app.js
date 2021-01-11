@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
 import { AppWrapper } from "../libs/contextLib";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -21,6 +22,9 @@ const App = ({ Component, pageProps }) => {
 
   return (
     <AppWrapper>
+      <Head>
+        <link rel="shortcut icon" href="/favicon.ico" />
+      </Head>
       <Navbar />
       <Component {...pageProps} />
       <Footer />

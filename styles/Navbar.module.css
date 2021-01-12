@@ -1,14 +1,14 @@
 .navbar {
   margin-bottom: 0;
   border-bottom: none;
-  position: relative;
+  position: fixed;
   height: 64px;
   padding: 15px 0 0px 0;
   border-bottom: 1px solid rgba(103,99,112,.2);
   width: 100%;
   box-sizing: content-box;
   z-index: 20;
-  background-color: transparent;
+  background-color: #18141a;
   border-color: transparent;
   transition: background-color .5s ease,border-color .5s ease;
 }
@@ -26,10 +26,6 @@
 .navbar .container .navbarMenu {
   position: relative;
   display: flex;
-  flex-wrap: wrap;
-}
-.navbar .container .navbarMenu div {
-  display: inline;
 }
 .navbar .container .navbarMenu .secondaryMenu {
   margin-left: 20px;

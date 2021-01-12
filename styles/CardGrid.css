@@ -4,6 +4,18 @@
   display: flex;
   justify-content: center;
 }
+.mainAssets {
+  max-width: 100%;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-box-pack: center;
+  justify-content: center;
+  padding-left: 341px;
+}
 .mainRow {
   width: 100%;
   flex-wrap: wrap;

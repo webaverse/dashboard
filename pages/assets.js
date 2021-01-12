@@ -1,16 +1,24 @@
 import React from 'react'
 import { useAppContext } from "../libs/contextLib";
-import { getBooths } from "../functions/UIStateFunctions.js";
+import { getTokens } from "../functions/UIStateFunctions.js";
 import CardGrid from "../components/CardGrid";
+import FilterSidebar from "../components/FilterSidebar";
 
 export default ({ data }) => {
   const { globalState, setGlobalState } = useAppContext();
 
-  return <CardGrid data={data} globalState={globalState} />
+  return (
+    <>
+      <FilterSidebar />
+      <div className="mainAssets">
+        <CardGrid data={data} globalState={globalState} cardSize="small" />
+      </div>
+    </>
+  )
 }
 
 export async function getServerSideProps() {
-  const data = await getBooths(0);
+  const data = await getTokens(1, 100);
 
   return { props: { data } }
 }

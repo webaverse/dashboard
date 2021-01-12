@@ -20,6 +20,9 @@ a {
   color: #fff;
   text-decoration: none;
 }
+.root {
+  padding-top: 100px;
+}
 .button {
   background-color: #c4005d;
   border-radius: 6px;

@@ -1,0 +1,9 @@
+.filterSidebarContainer {
+  position: fixed;
+  width: 340px;
+  height: 92vh;
+  top: 80px;
+  background: #18141a;
+  z-index: 1;
+  overflow-y: scroll;
+}

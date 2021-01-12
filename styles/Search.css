@@ -1,0 +1,35 @@
+.searchContainer {
+  -webkit-box-align: center;
+  align-items: center;
+  display: flex;
+  flex: 1 0 0%;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+.searchInputContainer {
+  margin-right: 8px;
+  position: relative;
+  -webkit-box-align: center;
+  align-items: center;
+  background-color: lightgray;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: rgba(4, 17, 29, 0.75);
+  display: flex;
+  flex: 1 0 0%;
+  height: 45px;
+  max-width: 768px;
+  padding: 0px 10px;
+}
+.searchInput {
+  padding: unset;
+  margin: unset;
+  background-color: transparent;
+  color: rgba(4, 17, 29, 0.75);
+  border: none;
+  flex: 1 0 0%;
+  height: 100%;
+  margin-left: 16px;
+  outline: none;
+  line-height: normal;
+}

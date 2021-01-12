@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link'
 import { useAppContext } from "../libs/contextLib";
 import styles from '../styles/Navbar.module.css';
+import Search from "./Search";
 
 const Navbar = () => {
   const { globalState, setGlobalState } = useAppContext();
@@ -20,6 +21,7 @@ const Navbar = () => {
                 Webaverse
               </Link>
             </div>
+            <Search />
             <div className={styles.rightMenuContainer}>
               <Link href="/assets"><a className={styles.item}>Browse</a></Link>
               <Link href="/land"><a className={styles.item}>Land</a></Link>

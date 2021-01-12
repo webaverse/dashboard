@@ -64,11 +64,11 @@ export default ({
   
   return (
       <div
-        className={`card cardItem ${rarity}`}
+        className={`card cardItem ${rarity} ${cardSize}`}
       >
         <div className={`${rarity} upperCardInfo upperCardInfo ${cardSize} upperCardInfo upperCardInfo_${(ext ?? "").replace('.','')}`}>
           <div className={`upperCardInfoLeft upperCardInfoLeft ${cardSize}`}>
-            <span className={`cardAssetName cardName ${cardSize}`}>{assetName}</span>
+            <span className={`cardAssetName cardName ${cardSize}`}>#{id} - {assetName}</span>
           </div>
           <div className={`upperCardInfoRight upperCardInfoRight ${cardSize}`}>
             <div className={`itemType ext ${cardSize} ext_${ext}`}>
@@ -92,7 +92,7 @@ export default ({
               </div>
               <div className="lowerCardInfoTopClear"></div>
             </div>
-            <span className={`greaseLoadedIntoAsset greaseLoadedIntoAsset ${cardSize}`}>{`${buyPrice ? "岾 " + buyPrice : ""} ${buyPrice ? "FLUX" : ""}`}</span>
+            <span className={`greaseLoadedIntoAsset greaseLoadedIntoAsset ${cardSize}`}></span>
           </div>
           <div className={`lowerCardInfoMiddle lowerCardInfoMiddle ${cardSize}`}>
             <span className={`assetDescription assetDescription ${cardSize}`}>{description}</span>

@@ -1,5 +1,4 @@
 module.exports = {
-  target: 'serverless',
   webpack (config, { webpack }) {
     config.module.rules.push({
       test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,

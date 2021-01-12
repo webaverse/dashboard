@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import dynamic from "next/dynamic";
-import { useHistory } from "react-router-dom";
-import { Container, Row } from 'react-grid-system';
+import React from 'react'
 import { useAppContext } from "../libs/contextLib";
 import { getLands } from "../functions/UIStateFunctions.js";
-
 import CardGrid from "../components/LandCardGrid";
 
 export default ({ data }) => {
@@ -14,10 +10,6 @@ export default ({ data }) => {
 
   const history = useHistory();
   const { globalState, setGlobalState } = useAppContext();
-  const [lands, setLands] = useState(data);
-  const [loading, setLoading] = useState(true);
-  const [currentCard, setCurrentCard] = useState(null);
-
 
   return lands && lands.length > 0 && 
     <div className="container">

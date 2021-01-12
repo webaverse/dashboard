@@ -63,7 +63,7 @@ export default ({
   
   return (
       <div
-        className={`landCard cardItem ${rarity} ${glow ? "glow" : ""}`}
+        className={`landCard cardItem card ${cardSize} ${rarity} ${glow ? "glow" : ""}`}
           onClick={onClickFunction}
       >
         <div className={`${rarity} upperCardInfo upperCardInfo ${cardSize} upperCardInfo upperCardInfo_${(ext ?? "").replace('.','')}`}>
@@ -78,7 +78,7 @@ export default ({
         </div>
         <div className={`assetImage assetImage ${cardSize}`}><img src={image} /></div>
         <div className={`lowerCardInfo lowerCardInfo ${cardSize}`}>
-          <div className={`lowerCardInfoTop ${rarity} lowerCardInfoTop ${cardSize} lowerCardInfoTop`}>
+          <div className={`lowerLandCardInfoTop ${rarity} lowerCardInfoTop ${cardSize} lowerCardInfoTop`}>
             <div className={`lowerCardInfoTopLeft lowerCardInfoTopLeft ${cardSize}`}>
               <div className="lowerCardInfoTopClear"></div>
             </div>

@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { Container, Row } from 'react-grid-system';
+import React from 'react'
 import { useAppContext } from "../libs/contextLib";
 import { getBooths } from "../functions/UIStateFunctions.js";
-
 import CardGrid from "../components/CardGrid";
 
 export default ({ data }) => {
-  const [booths, setBooths] = useState(data);
-  const [currentCard, setCurrentCard] = useState(null);
-
   const { globalState, setGlobalState } = useAppContext();
 
-  return (
-    <div className="container">
-      <CardGrid data={booths} globalState={globalState} cardSize="" currentCard={currentCard} setCurrentCard={setCurrentCard} />
-    </div>
-  )
+  return <CardGrid data={data} globalState={globalState} />
 }
 
 export async function getServerSideProps() {

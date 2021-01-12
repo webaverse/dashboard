@@ -10,24 +10,23 @@ const Navbar = () => {
     <div className={styles.navbar}>
       <div className={styles.container}>
         <div className={styles.navbarMenu}>
-  
             <div className={styles.leftMenuContainer}>
               <Link href="/">
                 <img className="logo" src="/webaverse.png" alt="Webaverse logo" />
               </Link>
             </div>
-  
             <div className={styles.secondaryMenu}>
-              <Link href="/assets"><a className={styles.item}>Assets</a></Link>
+              <Link href="/">
+                Webaverse
+              </Link>
+            </div>
+            <div className={styles.rightMenuContainer}>
+              <Link href="/assets"><a className={styles.item}>Browse</a></Link>
               <Link href="/land"><a className={styles.item}>Land</a></Link>
               <Link href="/accounts"><a className={styles.item}>Accounts</a></Link>
               <Link href="/mint"><a className={styles.item}>Mint</a></Link>
               <a className={styles.item} href="https://docs.webaverse.com">Docs</a>
               <a className={styles.item} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
-            </div>
-  
-            <div className={styles.rightMenuContainer}>
-              <a className={styles.item} href="https://discord.gg/R5wqYhvv53">Join Our Discord</a>
             </div>
             <div>
               { globalState.address ?
@@ -40,7 +39,6 @@ const Navbar = () => {
                 </Link>
               }
             </div>
-  
         </div>
       </div>
     </div>

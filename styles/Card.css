@@ -10,7 +10,7 @@ img {
     height: 26em;
     display: flex;
     flex-direction: column;
-    margin: 2em;
+    margin: 1em;
     color: black;
     transition: transform .1s ease-in-out,box-shadow .1s ease-in-out;
     filter: drop-shadow(0px 0px 4px #000000);
@@ -195,14 +195,16 @@ img {
 }
 
 .assetDescription {
-    width: 100%;
+    max-width: 90%;
+    max-width: 90%;
     /* height: 9.4em; */
     /* padding: 1.4em 2em 2em 2em; */
     background: lightgray;
-    font-size: .7em;
+    font-size: 10px;
     font-weight: 300;
     font-style: italic;
     word-wrap: break-word;
+    z-index: 1;
 }
 
 .lowerCardInfoBottom {
@@ -214,7 +216,7 @@ img {
 }
 
 .assetHash {
-    font-size: .4em;
+    font-size: 6px;
 }
 
 .card.small {
@@ -476,8 +478,8 @@ img {
 .arrow-down.small {
     border-right: 0.75em solid transparent;
     border-top: 0.75em solid transparent;
-    border-left: 0.75em solid white;
-    border-bottom: 0.75em solid white;
+    border-left: 0.75em solid lightgray;
+    border-bottom: 0.75em solid lightgray;
 }
 
 .arrow-down.medium {
@@ -536,7 +538,6 @@ img {
 .assetDescription.small {
     height: 5em;
     font-size: 0.6em;
-    display: none;
 }
 
 .assetDescription.medium {
@@ -563,7 +564,6 @@ img {
 
 .assetHash.small {
     font-size: 0.1em;
-    display: none;
 }
 
 .assetHash.medium {

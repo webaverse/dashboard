@@ -49,7 +49,6 @@ a {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  padding: 0 11%;
   justify-content: center;
 }
 .logo,

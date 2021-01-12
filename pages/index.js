@@ -114,7 +114,7 @@ export default () =>
       heroBg="/hero.gif"
       title="Webaverse"
       subtitle="An open virtual world built with existing communities."
-      callToAction="GET STARTED"
+      callToAction="Explore"
       ctaUrl="https://app.webaverse.com"
     />
     <SecondSection

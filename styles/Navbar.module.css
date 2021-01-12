@@ -3,7 +3,7 @@
   border-bottom: none;
   position: relative;
   height: 64px;
-  padding: 10px 0;
+  padding: 15px 0 0px 0;
   border-bottom: 1px solid rgba(103,99,112,.2);
   width: 100%;
   box-sizing: content-box;
@@ -16,26 +16,28 @@
   position: relative;
   display: flex;
   flex-flow: row nowrap;
-  align-items: center;
   height: 100%;
   background-color: transparent;
   transition: background-color .25s ease;
-  width: 933px;
-  margin-left: auto!important;
-  margin-right: auto!important;
+  margin-left: 25px;
+  margin-right: 25px;
   display: block;
-  max-width: 100%!important;
 }
 .navbar .container .navbarMenu {
   position: relative;
   display: flex;
+  flex-wrap: wrap;
 }
 .navbar .container .navbarMenu div {
   display: inline;
 }
 .navbar .container .navbarMenu .secondaryMenu {
   margin-left: 20px;
-  margin-top: 10px;
+  margin-top: 4px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #676370;
+  text-shadow: 0 0 0.1em rgba(0,0,0,.5);
 }
 .navbar .container .navbarMenu .rightMenuContainer {
   margin-top: 10px;

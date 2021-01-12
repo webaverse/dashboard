@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link';
+import { useRouter } from 'next/router'
 import { Container, Row, Col } from 'react-grid-system';
 import { FileDrop } from 'react-file-drop';
 import { useAppContext } from "../libs/contextLib";
@@ -8,6 +9,7 @@ import Loader from '../components/Loader';
 
 
 export default () => {
+  const router = useRouter();
   const { globalState, setGlobalState } = useAppContext();
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
@@ -39,7 +41,6 @@ export default () => {
       description,
       quantity,
       (tokenId) => {
-        console.log("Success callback!", "/assets/" + tokenId);
         setMintedState('success')
         setMintedMessage(tokenId)
       },
@@ -53,7 +54,6 @@ export default () => {
   }
 
   const handleFileUpload = file => {
-    console.log(file);
     if (file) {
       let reader = new FileReader();
       reader.onloadend = () => {
@@ -71,11 +71,12 @@ export default () => {
         <Loader loading={true} />
       )
     } else if (mintedState === "success") {
+      if (mintedMessage) {
+        router.push('/assets/' + mintedMessage);
+      }
+
       return (
-        <div>
-          <h1>Success</h1>
-          Your token is now minted as #{mintedMessage}.
-        </div>
+        <Loader loading={true} />
       )
     } else if (mintedState === "error") {
       return (
@@ -129,7 +130,7 @@ export default () => {
                     </div>
                     <div>
                         <a className="button" onClick={handleMintNftButton}>
-                          Mint NFT for 10 FLUX
+                          Mint NFT for {10*quantity} FLUX
                         </a>
                     </div>
                   </div>

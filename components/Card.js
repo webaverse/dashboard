@@ -64,7 +64,7 @@ export default ({
   
   return (
       <div
-        className={`card cardItem ${rarity}`}
+        className={`card cardItem ${rarity} ${cardSize}`}
       >
         <div className={`${rarity} upperCardInfo upperCardInfo ${cardSize} upperCardInfo upperCardInfo_${(ext ?? "").replace('.','')}`}>
           <div className={`upperCardInfoLeft upperCardInfoLeft ${cardSize}`}>

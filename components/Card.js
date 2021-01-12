@@ -92,7 +92,7 @@ export default ({
               </div>
               <div className="lowerCardInfoTopClear"></div>
             </div>
-            <span className={`greaseLoadedIntoAsset greaseLoadedIntoAsset ${cardSize}`}>{`${buyPrice ? "岾 " + buyPrice : ""} ${buyPrice ? "FLUX" : ""}`}</span>
+            <span className={`greaseLoadedIntoAsset greaseLoadedIntoAsset ${cardSize}`}></span>
           </div>
           <div className={`lowerCardInfoMiddle lowerCardInfoMiddle ${cardSize}`}>
             <span className={`assetDescription assetDescription ${cardSize}`}>{description}</span>

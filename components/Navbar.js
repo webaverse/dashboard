@@ -16,7 +16,9 @@ const Navbar = () => {
               </Link>
             </div>
             <div className={styles.secondaryMenu}>
-              Webaverse
+              <Link href="/">
+                Webaverse
+              </Link>
             </div>
             <div className={styles.rightMenuContainer}>
               <Link href="/assets"><a className={styles.item}>Browse</a></Link>

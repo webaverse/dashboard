@@ -7,12 +7,9 @@ export default ({ data }) => {
   const { globalState, setGlobalState } = useAppContext();
 
   return data && data.length > 0 &&
-    <>
-      <iframe className="mapFrame" src="https://map.webaverse.com"></iframe>
-      <div className="container">
-        <CardGrid data={data} globalState={globalState} />
-      </div>
-    </>
+    <div className="container">
+      <CardGrid data={data} globalState={globalState} />
+    </div>
 }
 
 export async function getServerSideProps() {

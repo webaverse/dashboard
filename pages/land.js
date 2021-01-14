@@ -6,7 +6,10 @@ import CardGrid from "../components/LandCardGrid";
 export default ({ data }) => {
   const { globalState, setGlobalState } = useAppContext();
 
-  return <CardGrid data={data} globalState={globalState} />
+  return data && data.length > 0 &&
+    <div className="container">
+      <CardGrid data={data} globalState={globalState} />
+    </div>
 }
 
 export async function getServerSideProps() {

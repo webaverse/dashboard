@@ -11,12 +11,14 @@ import '../styles/Card.css';
 import '../styles/CardDetails.css';
 import '../styles/CardGrid.css';
 import '../styles/LandCard.css';
-import '../styles/LandCardDetails.css';
 import '../styles/LandCardGrid.css';
 import '../styles/ProfileCards.css';
 import '../styles/Profiles.css';
 import '../styles/Profile.css';
 import '../styles/Mint.css';
+import '../styles/Map.css';
+
+import 'leaflet/dist/leaflet.css';
 
 const App = ({ Component, pageProps }) => {
 

@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import Link from 'next/link';
 import AssetCard from './Card';
 import CardSize from '../constants/CardSize.js';
 import { deleteAsset, setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
@@ -288,6 +289,13 @@ export default ({
         </div>),
         (<div className="assetDetailsRightColumn">
           {[
+            (<div className="assetDetailsOwnedBy">
+              <span className={`creatorIcon creatorIcon tooltip`}>
+                <img src={ownerAvatarPreview.replace(/\.[^.]*$/, '.png')} />
+                <span className={`creatorName creatorName tooltiptext`}>{ownerUsername}</span>
+              </span>
+              {' '}Owned by <Link href={`/accounts/` + ownerAddress}>{ownerUsername}</Link>
+            </div>),
             userOwnsThisAsset && (
             <div className="detailsBlock detailsBlockSet">
               <button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>

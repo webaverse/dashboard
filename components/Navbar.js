@@ -23,6 +23,7 @@ const Navbar = () => {
             <div className={styles.rightMenuContainer}>
               <Link href="/assets"><a className={styles.item}>Browse</a></Link>
               <Link href="/land"><a className={styles.item}>Land</a></Link>
+              <a href="https://map.webaverse.com" className={styles.item}>Map</a>
               <Link href="/accounts"><a className={styles.item}>Accounts</a></Link>
               <Link href="/mint"><a className={styles.item}>Mint</a></Link>
               <a className={styles.item} href="https://docs.webaverse.com">Docs</a>

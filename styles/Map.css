@@ -1,4 +1,10 @@
+.mapFrame {
+  width: 100%;
+  height: 100%;
+  border: 1px black;
+}
 .mapContainer {
-  height: 350px;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
+  flex: 1;
 }

@@ -27,12 +27,11 @@
   flex-flow: column nowrap;
 }
 .footerContainer {
-  padding-top: 100px;
-  padding-bottom: 50px;
+  margin-top: auto;
+  z-index: 10;
 }
 .footer {
   margin-top: auto;
-  position: absolute;
   bottom: 0; 
   width: 100%;
   display: flex;

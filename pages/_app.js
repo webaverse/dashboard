@@ -7,7 +7,6 @@ import Footer from "../components/Footer";
 import '../styles/globals.css';
 
 import '../styles/Footer.css';
-import '../styles/Land.css';
 import '../styles/Card.css';
 import '../styles/CardDetails.css';
 import '../styles/CardGrid.css';

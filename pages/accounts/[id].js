@@ -37,7 +37,7 @@ export default ({ data }) => {
 
   const handleError = (err) => {
     console.log("error", err);
-    setLoading(false);
+    //setLoading(false);
   }
 
   return (
@@ -86,7 +86,7 @@ export default ({ data }) => {
             (<a className="button" onClick={() => {
               const name = prompt("What is your name?", "Satoshi");
               setName(name, globalState, handleSuccess, handleError)
-              setLoading(true);
+              //setLoading(true);
             }}>
               Change Name
             </a>),

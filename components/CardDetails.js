@@ -47,6 +47,7 @@ export default ({
   const [calculatedCardSize, setCalculatedCardSize] = useState(CardSize.Large)
   const [loading, setLoading] = useState(false);
   const [pending, setPending] = useState(false);
+  const [imageView, setImageView] = useState("2d");
 
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
@@ -55,6 +56,12 @@ export default ({
   } else {
     userOwnsThisAsset = false;
     userCreatedThisAsset = false;
+  }
+
+  let is3d = false;
+  if (ext.toLowerCase() === "vrm" ||
+      ext.toLowerCase() === "glb") {
+    is3d = true;
   }
 
   // Otherwise, is this asset for sale?
@@ -269,7 +276,7 @@ export default ({
             ext={ext}
             description={description}
             buyPrice={buyPrice}
-            image={image}
+            image={imageView === "2d" ? image : image.replace(/\.[^.]*$/, '.gif')}
             hash={hash}
             numberInEdition={numberInEdition}
             totalSupply={totalSupply}
@@ -296,14 +303,18 @@ export default ({
               </span>
               {' '}Owned by <Link href={`/accounts/` + ownerAddress}>{ownerUsername}</Link>
             </div>),
-            userOwnsThisAsset && (
+            (is3d || userOwnsThisAsset) && (
             <div className="detailsBlock detailsBlockSet">
-              <button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>
-              <button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>
-              <button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>
-              <button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>
-              <button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>
-              <button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>
+              {[
+                is3d && imageView != "3d" && (<button className="assetDetailsButton" onClick={() => setImageView("3d")}>See in 3d</button>),
+                is3d && imageView != "2d" && (<button className="assetDetailsButton" onClick={() => setImageView("2d")}>See in 2d</button>),
+                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>),
+                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>),
+                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>),
+                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
+                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),
+                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>),
+              ]}
             </div>),
 
             globalState.address && !userOwnsThisAsset && storeId && buyPrice && (

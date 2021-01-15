@@ -51,8 +51,6 @@ export default ({
   const [landMainnetAddress, setLandMainnetAddress] = useState(null);
   const [file, setFile] = useState(null);
 
-  console.log("globalState", globalState);
-
   useEffect(() => {
     (async () => {
       const main = await getLandMain(id);

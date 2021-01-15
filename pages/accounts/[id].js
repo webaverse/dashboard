@@ -73,10 +73,10 @@ export default ({ data }) => {
         (<div className="profileBodyAssets">
           {[
           selectedView === "store" && store && (
-            <CardGrid data={store} globalState={globalState} cardSize="" />
+            <CardGrid data={store} globalState={globalState} cardSize="small" />
           ),
           selectedView === "inventory" && inventory && (
-            <CardGrid data={inventory} globalState={globalState} cardSize="" />
+            <CardGrid data={inventory} globalState={globalState} cardSize="small" />
           )
           ]}
         </div>),

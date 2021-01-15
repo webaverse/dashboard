@@ -39,6 +39,8 @@ export default ({
     extIcon = "/icon-jpg.svg";
   } else if (ext.toLowerCase() === "vrm") {
     extIcon = "/icon-vrm.svg";
+  } else if (ext.toLowerCase() === "wbn") {
+    extIcon = "/icon-vrm.svg";
   } else if (ext.toLowerCase() === "glb") {
     extIcon = "/icon-glb.svg";
   } else if (ext.toLowerCase() === "gif") {

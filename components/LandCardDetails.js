@@ -62,10 +62,18 @@ export default ({
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
     userOwnsThisAsset = ownerAddress.toLowerCase() === globalState.address.toLowerCase();
-    console.log("user does own this asset");
   } else {
     userOwnsThisAsset = false;
   }
+
+  let landOnMainnet;
+  if (landMainnetAddress && !landMainnetAddress.includes("0x0000000")) {
+    landOnMainnet = true;
+  } else {
+    landOnMainnet = false;
+  }
+
+  let ownsOrMain = landOnMainnet || userOwnsThisAsset;
 
   // Otherwise, is this asset for sale?
   const isForSale = buyPrice !== undefined && buyPrice !== null && buyPrice !== ""
@@ -334,7 +342,7 @@ export default ({
         </div>),
         (<div className="assetDetailsRightColumn">
           {[
-            (<div className="detailsBlock detailsBlockSet">
+            ownsOrMain && (<div className="detailsBlock detailsBlockSet">
               {[
                 landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
                 userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),

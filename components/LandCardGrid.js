@@ -14,7 +14,6 @@ export default ({
   const [currentAsset, setCurrentAsset] = useState(null)
 
   const showCardDetails = (asset) => {
-    console.log("Showing card details", asset);
     setCurrentAsset(asset);
     if (currentCard != asset && setCurrentCard) {
       setCurrentCard(asset);
@@ -22,7 +21,6 @@ export default ({
   }
 
   const hideCardDetails = () => {
-    console.log("Hiding card details");
     setCurrentAsset(null);
     if (setCurrentCard) {
       setCurrentCard({ hide: true });
@@ -31,8 +29,6 @@ export default ({
 
   useEffect(() => {
     if(currentAsset === null) return
-    console.log("**** Current asset is", currentAsset);
-    console.log("Address is", currentAsset.id);
   }, [currentAsset])
 
   return (

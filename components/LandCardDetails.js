@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { useAppContext } from "../libs/contextLib";
+import address from '../webaverse/address.js';
 import CardSize from '../constants/CardSize.js';
 import { deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { getLandMain, getStores } from '../functions/UIStateFunctions.js'
@@ -28,9 +30,9 @@ export default ({
     buyPrice,
     storeId,
     hideDetails,
-    globalState,
     assetType
 }) => {
+  const { globalState, setGlobalState } = useAppContext();
 
   const [sellAssetShowing, setSellAssetShowing] = useState(false);
   const [salePrice, setSalePrice] = useState(0);
@@ -49,6 +51,8 @@ export default ({
   const [landMainnetAddress, setLandMainnetAddress] = useState(null);
   const [file, setFile] = useState(null);
 
+  console.log("globalState", globalState);
+
   useEffect(() => {
     (async () => {
       const main = await getLandMain(id);
@@ -56,11 +60,6 @@ export default ({
     })();
   },  []);
 
-  // Do you own this asset?
-  console.log("Owner address is", ownerAddress);
-  console.log("minterAddress address is", minterAddress);
-
-  console.log("State address is", globalState.address);
 
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
@@ -72,8 +71,6 @@ export default ({
 
   // Otherwise, is this asset for sale?
   const isForSale = buyPrice !== undefined && buyPrice !== null && buyPrice !== ""
-
-  console.log("**** Buy price is", buyPrice);
 
   const ethEnabled = () => {
     if (window.ethereum) {
@@ -206,7 +203,7 @@ export default ({
       const ethAccount = await loginWithMetaMask(handleDeposit);
       if (ethAccount) {
         const mainnetAddress = prompt("What mainnet address do you want to send to?", "0x0");
-        await depositLand(id, mainnetAddress, globalState.address, globalState);
+        await depositLand(id, mainnetAddress, globalState);
         handleSuccess();
       } if (ethEnabled()) {
         setPending(true);
@@ -339,9 +336,9 @@ export default ({
         </div>),
         (<div className="assetDetailsRightColumn">
           {[
-              userOwnsThisAsset && (<div className="detailsBlock detailsBlockSet">
+            (<div className="detailsBlock detailsBlockSet">
               {[
-                landMainnetAddress && landMainnetAddress != "0x0000000000000000000000000000000000000000" && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
+                landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
                 userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
                 userOwnsThisAsset && (<label htmlFor="input-file" className="assetDetailsButton">Deploy Content</label>),
                 userOwnsThisAsset && (<input type="file" id="input-file" onChange={(e) => handleDeploy(e.target.files[0])} multiple={false} style={{display: 'none'}} />),

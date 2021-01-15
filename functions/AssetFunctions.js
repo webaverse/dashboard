@@ -1,5 +1,5 @@
 import { getAddress } from './UIStateFunctions';
-import { contracts, runSidechainTransaction, web3, getTransactionSignature } from '../webaverse/blockchain.js';
+import { getAddressFromMnemonic, contracts, runSidechainTransaction, web3, getTransactionSignature } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
 import bip39 from '../libs/bip39.js';
@@ -304,7 +304,10 @@ export const withdrawAsset = async (tokenId, mainnetAddress, address, state, suc
   return;
 }
 
-export const depositLand = async (tokenId, mainnetAddress, address, state) => {
+export const depositLand = async (tokenId, mainnetAddress, state) => {
+  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+  const address = wallet.getAddressString();
+
 // Deposit to mainnet
   const id = parseInt(tokenId, 10);
   if (!isNaN(id)) {
@@ -313,19 +316,12 @@ export const depositLand = async (tokenId, mainnetAddress, address, state) => {
       t: 'uint256',
       v: new web3['sidechain'].utils.BN(id),
     };
-    console.log("tokenId", tokenId);
-    console.log("mainnetAddress", mainnetAddress);
-    console.log("address", address);
-    console.log("state.loginToken.mnemonic", state.loginToken.mnemonic);
 
     await runSidechainTransaction(state.loginToken.mnemonic)('LAND', 'setApprovalForAll', contracts['sidechain'].LANDProxy._address, true);
 
     const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('LANDProxy', 'deposit', mainnetAddress, tokenId.v);
-    console.log("receipt", receipt);
 
     const signature = await getTransactionSignature('sidechain', 'LAND', receipt.transactionHash);
-    console.log("signature", signature);
-    console.log("setting tmestamp");
     const timestamp = {
       t: 'uint256',
       v: signature.timestamp,
@@ -333,9 +329,6 @@ export const depositLand = async (tokenId, mainnetAddress, address, state) => {
 
     const { r, s, v } = signature;
 
-    console.log("mainnetAddress", mainnetAddress);
-    console.log("tokenId", tokenId.v);
-    console.log("timestamp", timestamp.v);
     await contracts.main.LANDProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
       from: mainnetAddress,
     });

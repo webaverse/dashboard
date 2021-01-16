@@ -75,7 +75,8 @@ img {
     text-transform: uppercase;
 }
 
-.assetImage {
+.assetImage,
+.assetImage video {
     background-color: lightgray;
     width: 16em;
     height: 16em;

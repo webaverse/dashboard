@@ -18,6 +18,7 @@
     "react-dom": "17.0.1",
     "react-file-drop": "^3.1.2",
     "react-grid-system": "^7.1.1",
+    "react-infinite-scroll-component": "^5.1.0",
     "react-leaflet": "^3.0.5",
     "react-router-dom": "^5.2.0",
     "react-spinners": "^0.10.4",

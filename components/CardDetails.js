@@ -48,6 +48,7 @@ export default ({
   const [loading, setLoading] = useState(false);
   const [pending, setPending] = useState(false);
   const [imageView, setImageView] = useState("2d");
+  const [tryOn, setTryOn] = useState(false);
 
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
@@ -263,189 +264,84 @@ export default ({
   }
 
   return (
-    <div className="assetDetailsContainer">
-      <div className="assetDetails">
-        { loading ?
-          <Loader loading={loading} />
-        : [
-        (<div className="assetDetailsLeftColumn">
-          <AssetCard
-            id={id}
-            key={id}
-            assetName={name}
-            ext={ext}
-            description={description}
-            buyPrice={buyPrice}
-            image={image}
-            hash={hash}
-            numberInEdition={numberInEdition}
-            totalSupply={totalSupply}
-            balance={balance}
-            totalInEdition={totalInEdition}
-            assetType={assetType}
-            ownerAvatarPreview={ownerAvatarPreview}
-            ownerUsername={ownerUsername}
-            ownerAddress={ownerAddress}
-            minterAvatarPreview={minterAvatarPreview}
-            minterUsername={minterUsername}
-            minterAddress={minterAddress}
-            cardSize={""}
-            networkType='webaverse'
-            glow={true}
-            imageView={imageView}
-          /> 
-        </div>),
-        (<div className="assetDetailsRightColumn">
-          {[
-            (<div className="assetDetailsOwnedBy">
-              <span className={`creatorIcon creatorIcon tooltip`}>
-                <img src={ownerAvatarPreview.replace(/\.[^.]*$/, '.png')} />
-                <span className={`creatorName creatorName tooltiptext`}>{ownerUsername}</span>
-              </span>
-              {' '}Owned by <Link href={`/accounts/` + ownerAddress}>{ownerUsername}</Link>
+    <>
+    { tryOn ?
+      <>
+        <a className="button" onClick={() => setTryOn(false)}>
+          Go back
+        </a>
+        <div className="IFrameContainer">
+          <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + id} />
+        </div>
+      </>
+    :
+      <div>
+        <div className="assetDetailsContainer">
+          <div className="assetDetails">
+            { loading ?
+              <Loader loading={loading} />
+            : [
+            (<div className="assetDetailsLeftColumn">
+              <AssetCard
+                id={id}
+                key={id}
+                assetName={name}
+                ext={ext}
+                description={description}
+                buyPrice={buyPrice}
+                image={image}
+                hash={hash}
+                numberInEdition={numberInEdition}
+                totalSupply={totalSupply}
+                balance={balance}
+                totalInEdition={totalInEdition}
+                assetType={assetType}
+                ownerAvatarPreview={ownerAvatarPreview}
+                ownerUsername={ownerUsername}
+                ownerAddress={ownerAddress}
+                minterAvatarPreview={minterAvatarPreview}
+                minterUsername={minterUsername}
+                minterAddress={minterAddress}
+                cardSize={""}
+                networkType='webaverse'
+                glow={true}
+                imageView={imageView}
+              />
             </div>),
-            (is3d || userOwnsThisAsset) && (
-            <div className="detailsBlock detailsBlockSet">
+            (<div className="assetDetailsRightColumn">
               {[
-                is3d && imageView != "3d" && (<button className="assetDetailsButton" onClick={() => setImageView("3d")}>See in 3d</button>),
-                is3d && imageView != "2d" && (<button className="assetDetailsButton" onClick={() => setImageView("2d")}>See in 2d</button>),
-                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>),
-                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>),
-                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>),
-                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
-                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),
-                userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>),
-              ]}
-            </div>),
-
-            globalState.address && !userOwnsThisAsset && storeId && buyPrice && (
-            <div className="detailsBlock detailsBlockSet">
-              <button className="assetDetailsButton" onClick={handleBuyAsset}>Buy This Item</button>
-            </div>),
-
-/*
-            (userCreatedThisAsset &&
-            <div className="detailsBlock detailsBlockEdit">
-             <div className="Accordion">
-               <div className="accordionTitle" onClick={toggleReupload}>
-                 <span className="accordionTitleValue">Reupload file</span>
-                 <span className="accordionIcon {toggleReuploadOpen ? 'reverse' : ''}"></span>
-               </div>
-
-               {toggleReuploadOpen && 
-               <div className="accordionDropdown">
-                 <button className="assetDetailsButton assetSubmitButton" onClick={handleReupload}>Reupload</button>   
-               </div>}
-
-             </div>
-             <div className="Accordion">
-               <div className="accordionTitle" onClick={toggleRename}>
-                 <span className="accordionTitleValue">Rename asset</span>
-                 <span className="accordionIcon {toggleRenameOpen ? 'reverse' : ''}"></span>
-               </div>
-               {toggleRenameOpen && 
-               <div className="accordionDropdown">
-                 <button className="assetDetailsButton assetSubmitButton" onClick={() => console.log('rename asset')}>rename</button>   
-               </div>}
-             </div>
-
-             <div className="Accordion">
-               <div className="accordionTitle" onClick={toggleDestroy}>
-                 <span className="accordionTitleValue">destroy asset</span>
-                 <span className="accordionIcon {toggleDestroyOpen ? 'reverse' : ''}"></span>
-               </div>
-               {toggleDestroyOpen && 
-               <div className="accordionDropdown">
-                 <button className="assetDetailsButton assetSubmitButton" onClick={() => console.log('destroy')}>destroy</button>   
-               </div>}
-             </div>
-            </div>),
-*/
-            
-
-/*
-            userOwnsThisAsset && (
-            <div className="detailsBlock detailsBlockTransferTo">
-              <div className="Accordion">
-                <div className="accordionTitle" onClick={toggleTransferTo}>
-                  <span className="accordionTitleValue">TRANSFER TO MAINNET</span>
-                  <span className="accordionIcon {toggleTransferToOpen ? 'reverse' : ''}"></span>
-                </div>
-                {toggleTransferToOpen && 
-                <div className="accordionDropdown transferToDropdown">
-                  <button className="assetDetailsButton assetSubmitButton" onClick={handleDeposit}>To {networkType === 'webaverse' ? 'Mainnet' : 'Webaverse'}</button>      
-                </div>}
-              </div>
-            </div>),
-            
-
-            userOwnsThisAsset && (
-              isForSale ? 
-              <div className="detailsBlock detailsBlockCancelSell">
-                <div className="Accordion">
-                  <div className="accordionTitle" onClick={toggleCancelSale}>
-                    <span className="accordionTitleValue">Cancel sell</span>
-                    <span className="accordionIcon {toggleCancelSaleOpen ? 'reverse' : ''}"></span>
-                  </div>
-                  (toggleCancelSaleOpen && 
-                  <div className="accordionDropdown">
-                    <button className="assetDetailsButton assetSubmitButton" onClick={handleCancelSale}>Cancel</button>      
-                  </div>)
-                </div>
-              </div>
-             : 
-              (!sellAssetShowing ? 
-                <div className="detailsBlock detailsBlockSell">
-                  <div className="Accordion">
-                    <div className="accordionTitle" onClick={toggleShowSellAsset}>
-                      <span className="accordionTitleValue">sell in gallery</span>
-                      <span className="accordionIcon {sellAssetShowing ? 'reverse' : ''}"></span>
-                    </div>
-                  </div>
-                </div>
-              : 
-                <div className="detailsBlock detailsBlockSell">
-                  <div className="Accordion">
-                    <div className="accordionTitle" onClick={toggleShowSellAsset}>
-                      <span className="accordionTitleValue">sell in gallery</span>
-                      <span className="accordionIcon {sellAssetShowing ? 'reverse' : ''}"></span>
-                    </div>
-                    <div className="accordionDropdown sellInputDropdown">
-                      <div className="sellConfirmLine">
-                        <button className="assetDetailsButton assetSubmitButton" onClick={handleSellAsset}>Sell</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>)
-                ),
- */
-            
-/*
-                (globalState.address && !userOwnsThisAsset && storeId && buyPrice ?
-                  <div className="detailsBlock detailsBlockOnSale">
-                    <div className="Accordion">
-                      <span className="accordionTitleValue">ON SALE FOR {buyPrice}Ψ</span>
-                      <span className="accordionIcon {toggleOnSaleOpen ? 'reverse' : ''}"></span>
-                      <div className="accordionDropdown accordionDropdownWithConfirm">
-                        {[(<button className={`assetDetailsButton assetSubmitButton ${toggleDropdownConfirmOpen ? 'disable' : ''}`} onClick={toggleDropdownConfirm}>Buy Asset</button>),
-                        (toggleDropdownConfirmOpen &&
-                          <div className="accordionDropdownConfirm">
-                            <span className="dropdownConfirmTitle">A you sure?</span>
-                            <div className="dropdownConfirmSubmit">
-                              <button className="assetDetailsButton assetSubmitButton assetSubmitButtonSmall" onClick={handleBuyAsset}>Buy</button>
-                              <button className="assetDetailsButton assetSubmitButton assetSubmitButtonSmall" onClick={toggleDropdownConfirm}>Nope</button>
-                            </div>
-                          </div>)]}
-                        </div>
-                    </div>
-                  </div>    
-              : null)
-*/
-            ]}
-
-      </div>)
-    ]}
+                (<div className="assetDetailsOwnedBy">
+                  <span className={`creatorIcon creatorIcon tooltip`}>
+                    <img src={ownerAvatarPreview.replace(/\.[^.]*$/, '.png')} />
+                    <span className={`creatorName creatorName tooltiptext`}>{ownerUsername}</span>
+                  </span>
+                  {' '}Owned by <Link href={`/accounts/` + ownerAddress}>{ownerUsername}</Link>
+                </div>),
+                (is3d || userOwnsThisAsset) && (
+                <div className="detailsBlock detailsBlockSet">
+                  {[
+                    is3d && imageView != "3d" && (<button className="assetDetailsButton" onClick={() => setImageView("3d")}>See in 3d</button>),
+                    is3d && imageView != "2d" && (<button className="assetDetailsButton" onClick={() => setImageView("2d")}>See in 2d</button>),
+                    is3d && (<button className="assetDetailsButton" onClick={() => setTryOn(true)}>Try in Webaverse</button>),
+                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>),
+                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>),
+                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>),
+                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
+                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),
+                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>),
+                  ]}
+                </div>),
+                globalState.address && !userOwnsThisAsset && storeId && buyPrice && (
+                <div className="detailsBlock detailsBlockSet">
+                  <button className="assetDetailsButton" onClick={handleBuyAsset}>Buy This Item</button>
+                </div>),
+                ]}
+          </div>)
+        ]}
+        </div>
+      </div>
     </div>
-  </div>
+    }
+    </>
   );
 };

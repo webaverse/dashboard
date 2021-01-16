@@ -70,6 +70,9 @@ a {
   justify-content: center;
   padding: 0 8%;
 }
+.containerText {
+  color: #676370;
+}
 .logo,
 .accountPicture {
   cursor: pointer;

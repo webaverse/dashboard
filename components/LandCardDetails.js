@@ -337,7 +337,7 @@ export default ({
             minterAddress={minterAddress}
             cardSize={""}
             networkType='webaverse'
-            glow={true}
+            glow={false}
           /> 
         </div>),
         (<div className="assetDetailsRightColumn">

@@ -40,6 +40,8 @@ export default ({
     extIcon = "/icon-jpg.svg";
   } else if (ext.toLowerCase() === "vrm") {
     extIcon = "/icon-vrm.svg";
+  } else if (ext.toLowerCase() === "vox") {
+    extIcon = "/icon-vrm.svg";
   } else if (ext.toLowerCase() === "wbn") {
     extIcon = "/icon-vrm.svg";
   } else if (ext.toLowerCase() === "glb") {

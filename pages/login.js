@@ -13,11 +13,11 @@ export default () => {
   const { globalState, setGlobalState } = useAppContext();
   const [loading, setLoading] = useState(true);
 
-  const loginWithKey = (key, play) => {
+  const loginWithKey = (key, play, roomId) => {
     if (bip39.validateMnemonic(key)) {
       loginWithPrivateKey(key, globalState)
       .then(res => {
-        setInitialState(res, key, play);
+        setInitialState(res, key, play, roomId);
       })
       .catch(err => {
         console.log(err);
@@ -27,13 +27,17 @@ export default () => {
     }
   }
 
-  const setInitialState = async (state, key, play) => {
+  const setInitialState = async (state, key, play, roomId) => {
     const balance = await getBalance(state.address);
     const newState = await pullUser(state);
 
     if (play) {
       await storage.set("loginToken", { mnemonic: key });
-      window.location.href = "https://app.webaverse.com";
+      if (roomId != "") {
+        window.location.href = "https://app.webaverse.com/?r=room-" + roomId;
+      } else {
+        window.location.href = "https://app.webaverse.com";
+      }
     } else {
       setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
       history.push("/accounts/" + state.address);
@@ -44,6 +48,7 @@ export default () => {
     const code = new URLSearchParams(window.location.search).get("code") || "";
     const id = new URLSearchParams(window.location.search).get("id") || "";
     const play = new URLSearchParams(window.location.search).get("play") || false;
+    const roomId = new URLSearchParams(window.location.search).get("roomId") || "";
 
     if (code || id || play) {
       (async () => {
@@ -51,7 +56,7 @@ export default () => {
         const j = await res.json();
         const {mnemonic} = j;
         if (mnemonic) {
-          loginWithKey(mnemonic, true);
+          loginWithKey(mnemonic, play, roomId);
         } else {
           console.warn('no mnemonic returned from api');
         }

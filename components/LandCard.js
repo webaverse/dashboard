@@ -53,14 +53,6 @@ export default ({
   }
 */
 
-  let season;
-  if (id < 100) {
-    season = "Season 1: Genesis";
-    image = "/defaulthomespace.svg";
-    rarity = "weba";
-  }
-
-  
   return (
       <div
         className={`landCard cardItem card ${cardSize} ${rarity} ${glow ? "glow" : ""}`}

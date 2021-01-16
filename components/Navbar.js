@@ -28,6 +28,7 @@ const Navbar = () => {
               <Link href="/mint"><a className={styles.item}>Mint</a></Link>
               <a className={styles.item} href="https://docs.webaverse.com">Docs</a>
               <a className={styles.item} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
+              <a className={styles.item} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
             </div>
             <div>
               { globalState.address ?

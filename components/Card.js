@@ -23,6 +23,7 @@ export default ({
   cardSize,
   networkType,
   glow,
+  imageView,
 }) => {
 
   let networkIcon;
@@ -79,7 +80,13 @@ export default ({
             </div>
           </div>
         </div>
-        <div className={`assetImage assetImage ${cardSize}`}><img src={image} /></div>
+        <div className={`assetImage assetImage ${cardSize}`}>
+          { imageView === "2d" ?
+            <img src={image} />
+          :
+            <video autoplay loop src={image.replace(/\.[^.]*$/, '.webm')} />
+          }
+        </div>
         <div className={`lowerCardInfo lowerCardInfo ${cardSize}`}>
           <div className={`lowerCardInfoTop ${rarity} lowerCardInfoTop ${cardSize} lowerCardInfoTop`}>
             <div className={`lowerCardInfoTopLeft lowerCardInfoTopLeft ${cardSize}`}>

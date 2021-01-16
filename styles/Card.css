@@ -26,7 +26,12 @@ img {
 }
 
 .upperCardInfoLeft {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: white;
     padding-left: 1em;
+    max-width: 77%;
 }
 
 .upperCardInfoRight {

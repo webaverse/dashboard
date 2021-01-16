@@ -37,7 +37,7 @@ const Navbar = () => {
                   <img className={`${styles.accountPicture} ${styles.loggedIn}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} />
                 </a>
               :
-                <Link href="/settings">
+                <Link href="/login">
                   <img className="accountPicture" src="/preview.png" alt="Placeholder profile picture" />
                 </Link>
               }

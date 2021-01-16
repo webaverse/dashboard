@@ -5,6 +5,8 @@ import { Container, Row, Col } from 'react-grid-system';
 import { FileDrop } from 'react-file-drop';
 import { useAppContext } from "../libs/contextLib";
 import { mintNft, setAvatar, setHomespace } from '../functions/AssetFunctions.js';
+import { storageHost } from "../webaverse/constants";
+import { getExt } from "../webaverse/util";
 import Loader from '../components/Loader';
 
 
@@ -18,6 +20,9 @@ export default () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [mintedState, setMintedState] = useState(null);
   const [mintedMessage, setMintedMessage] = useState(null);
+  const [ipfsUrl, setIpfsUrl] = useState(null);
+  const [extName, setExtName] = useState(null);
+  const [fileName, setFileName] = useState(null);
 
   const handleNameChange = (e) => setName(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
@@ -57,8 +62,23 @@ export default () => {
     if (file) {
       let reader = new FileReader();
       reader.onloadend = () => {
+        const extName = getExt(file.name);
+        const fileName = extName ? file.name.slice(0, -(extName.length + 1)) : file.name;
         setFile(file);
-        setImagePreview(reader.result);
+        setExtName(extName);
+        setFileName(fileName);
+
+        fetch(storageHost, {
+          method: 'POST',
+          body: file
+        })
+        .then(response => response.json())
+        .then(data => {
+          setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
+        })
+        .catch(error => {
+          console.error(error)
+        })
       }
       reader.readAsDataURL(file);
     }
@@ -105,41 +125,46 @@ export default () => {
             </FileDrop>
           </div>
         :
-          <Container>
-            <Row style={{ justifyContent: "center" }}>
-              <Col sm={12}>
-                { mintedState === null ?
+          <>
+            { ipfsUrl ?
+              <div className="IFrameContainer">
+                <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + ipfsUrl} />
+              </div>
+            :
+              null
+            }
+            <div className="mintingOptionsContainer">
+              { mintedState === null ?
+                <div>
                   <div>
-                    <div>
-                        <label>Name</label>
-                    </div>
-                    <div>
-                        <input type="text" value={name} onChange={handleNameChange} />
-                    </div>
-                    <div>
-                        <label>Description</label>
-                    </div>
-                    <div>
-                        <input type="text" value={description} onChange={handleDescriptionChange} />
-                    </div>
-                    <div>
-                        <label>Quantity</label>
-                    </div>
-                    <div>
-                        <input type="number" value={quantity} onChange={handleQuantityChange} />
-                    </div>
-                    <div>
-                        <a className="button" onClick={handleMintNftButton}>
-                          Mint NFT for {10*quantity} FLUX
-                        </a>
-                    </div>
+                      <label>Name</label>
                   </div>
-                :
-                  <MintSteps />
-                }
-              </Col>
-            </Row>
-          </Container>
+                  <div>
+                      <input type="text" value={name} onChange={handleNameChange} />
+                  </div>
+                  <div>
+                      <label>Description</label>
+                  </div>
+                  <div>
+                      <input type="text" value={description} onChange={handleDescriptionChange} />
+                  </div>
+                  <div>
+                      <label>Quantity</label>
+                  </div>
+                  <div>
+                      <input type="number" value={quantity} onChange={handleQuantityChange} />
+                  </div>
+                  <div>
+                      <a className={`button mintButton`} onClick={handleMintNftButton}>
+                        Mint NFT for {10*quantity} FLUX
+                      </a>
+                  </div>
+                </div>
+              :
+                <MintSteps />
+              }
+            </div>
+          </>
         )
       ]}
     </>

@@ -8,7 +8,7 @@ export default ({ data }) => {
 
   return data && data.length > 0 &&
     <div className="container">
-      <CardGrid data={data} cardSize="small" globalState={globalState} />
+      <CardGrid data={data} globalState={globalState} />
     </div>
 }
 

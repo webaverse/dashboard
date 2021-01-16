@@ -81,7 +81,7 @@ export default ({
           </div>
         </div>
         <div className={`assetImage assetImage ${cardSize}`}>
-          { imageView === "2d" ?
+          { !imageView || imageView === "2d" ?
             <img src={image} />
           :
             <video autoPlay loop src={image.replace(/\.[^.]*$/, '.webm')} />

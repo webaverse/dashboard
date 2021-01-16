@@ -4,12 +4,14 @@ import { useAppContext } from "../libs/contextLib";
 import { parseQuery } from "../functions/Functions";
 import storage from "../functions/Storage";
 import { loginWithPrivateKey, pullUser, getBalance } from "../functions/UIStateFunctions.js";
+import { discordOauthUrl } from '../webaverse/constants.js';
 import bip39 from '../libs/bip39.js';
 import Loader from "../components/Loader";
 
 export default () => {
   const history = useHistory();
   const { globalState, setGlobalState } = useAppContext();
+  const [loading, setLoading] = useState(true);
 
   const loginWithKey = (key, play) => {
     if (bip39.validateMnemonic(key)) {
@@ -43,21 +45,35 @@ export default () => {
     const id = new URLSearchParams(window.location.search).get("id") || "";
     const play = new URLSearchParams(window.location.search).get("play") || false;
 
-    (async () => {
-      const res = await fetch(`https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
-      const j = await res.json();
-      const {mnemonic} = j;
-      if (mnemonic) {
-        loginWithKey(mnemonic, true);
-      } else {
-        console.warn('no mnemonic returned from api');
-      }
-    })();
+    if (code || id || play) {
+      (async () => {
+        const res = await fetch(`https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
+        const j = await res.json();
+        const {mnemonic} = j;
+        if (mnemonic) {
+          loginWithKey(mnemonic, true);
+        } else {
+          console.warn('no mnemonic returned from api');
+        }
+      })();
+    } else {
+      setLoading(false)
+    }
   }, []);
 
   return (
-    <div>
-      <Loader loading={true} />
-    </div>
+    <>
+      { loading ?
+        <div>
+          <Loader loading={loading} />
+        </div>
+      :
+        <div className="container">
+          <a className="button" href={discordOauthUrl}>
+            Login With Discord
+          </a>
+        </div>
+      }
+    </>
   )
 }

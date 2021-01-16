@@ -11,7 +11,7 @@ export default ({ data }) => {
   const { globalState, setGlobalState } = useAppContext();
 
   return (
-    <div>
+    <>
       <Head>
         <title>{data.name} | Webaverse</title>
         <meta name="description" content={data.description + " | Webaverse"} />
@@ -43,7 +43,7 @@ export default ({ data }) => {
          globalState={globalState}
          networkType='webaverse'
        />
-    </div>
+    </>
   )
 }
 

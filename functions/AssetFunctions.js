@@ -96,6 +96,26 @@ export const cancelSale = async (id, networkType, successCallback, errorCallback
   }
 };
 
+export const setAssetName = async (name, hash, state, successCallback, errorCallback) => {
+  if (!state.loginToken)
+    throw new Error('not logged in');
+  try {
+    await Promise.all([
+      runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setMetadata', hash, 'name', name),
+    ]);
+    if (successCallback)
+      successCallback();
+
+    return;
+  } catch (error) {
+    if (errorCallback) {
+      errorCallback(error);
+      return;
+    }
+  }
+};
+
+
 export const setName = async (name, state, successCallback, errorCallback) => {
   if (!state.loginToken)
     throw new Error('not logged in');

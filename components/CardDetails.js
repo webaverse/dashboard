@@ -276,7 +276,7 @@ export default ({
             ext={ext}
             description={description}
             buyPrice={buyPrice}
-            image={imageView === "2d" ? image : image.replace(/\.[^.]*$/, '.gif')}
+            image={image}
             hash={hash}
             numberInEdition={numberInEdition}
             totalSupply={totalSupply}
@@ -292,6 +292,7 @@ export default ({
             cardSize={""}
             networkType='webaverse'
             glow={true}
+            imageView={imageView}
           /> 
         </div>),
         (<div className="assetDetailsRightColumn">

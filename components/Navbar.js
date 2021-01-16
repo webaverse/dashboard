@@ -29,6 +29,7 @@ const Navbar = () => {
               <a className={styles.item} href="https://docs.webaverse.com">Docs</a>
               <a className={styles.item} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
               <a className={styles.item} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
+              <a className={styles.item} href="https:/app.webaverse.com">Play</a>
             </div>
             <div>
               { globalState.address ?

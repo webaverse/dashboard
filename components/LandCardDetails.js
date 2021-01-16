@@ -82,14 +82,20 @@ export default ({
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
       window.ethereum.enable();
-      return true;
+      if (window.web3.version.network == 4) {
+        return true;
+      } else {
+        alert("You need to be on the Rinkeby network.");
+        return false;
+      }
     }
+    alert("Please install MetaMask to use Webaverse!");
     return false;
   }
 
   const loginWithMetaMask = async (func) => {
     if (!ethEnabled()) {
-      return "Please install MetaMask to use Webaverse!";
+      return;
     } else {
       const web3 = window.web3;
       try {
@@ -187,8 +193,6 @@ export default ({
         const mainnetAddress = prompt("What mainnet address do you want to get from?", "0x0");
         await withdrawAsset(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
         handleSuccess();
-      } if (ethEnabled()) {
-        setPending(true);
       } else {
         setLoading(false);
       }

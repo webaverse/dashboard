@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router'
 import { Container, Row, Col } from 'react-grid-system';
 import { FileDrop } from 'react-file-drop';
@@ -102,7 +103,7 @@ export default () => {
       return (
         <div>
           <h1>Error</h1>
-          Minting failed: {mintedMessage}.
+          {mintedMessage}.
         </div>
       )
     }
@@ -111,8 +112,13 @@ export default () => {
   return (
     <>
       {[
-       !globalState.loginToken && (
-          <h1>You need to login to Mint.</h1>
+        !globalState.loginToken && (
+          <>
+            <h1>You need to login to mint.</h1>
+            <div className="container">
+              <Image src="/404.png" width={121} height={459} />
+            </div>
+          </>
         ),
         globalState.loginToken && ( !file ?
           <div className="file-drop-container">

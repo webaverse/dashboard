@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import AssetCard from './Card';
 import CardSize from '../constants/CardSize.js';
-import { deleteAsset, setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
+import { setAssetName, deleteAsset, setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { getStores } from '../functions/UIStateFunctions.js'
 import Loader from './Loader';
 
@@ -107,9 +107,15 @@ export default ({
     window.location.reload();
   }
 
+  const handleSetAssetName = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const name = prompt("What would you like to name this asset?", "");
+    setAssetName(name, hash, globalState, handleSuccess, handleError);
+  }
+
   const handleSetAvatar = (e) => {
       e.preventDefault();
-      console.log("Setting avatar, id is", id);
       setLoading(true);
       setAvatar(id, globalState, handleSuccess, handleError)
   }
@@ -323,6 +329,7 @@ export default ({
                     is3d && imageView != "3d" && (<button className="assetDetailsButton" onClick={() => setImageView("3d")}>See in 3d</button>),
                     is3d && imageView != "2d" && (<button className="assetDetailsButton" onClick={() => setImageView("2d")}>See in 2d</button>),
                     is3d && (<button className="assetDetailsButton" onClick={() => setTryOn(true)}>Try in Webaverse</button>),
+                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAssetName}>Change Asset Name</button>),
                     userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>),
                     userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>),
                     userOwnsThisAsset && (<button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>),

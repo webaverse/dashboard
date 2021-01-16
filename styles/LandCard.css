@@ -1,0 +1,6 @@
+.landCard {
+  height: 19em !important;
+}
+.landCard .lowerCardInfo {
+  display: none;
+}

@@ -19,7 +19,7 @@ import '../styles/ProfileCards.css';
 import '../styles/Profiles.css';
 import '../styles/Profile.css';
 import '../styles/Mint.css';
-import '../styles/Map.css';
+import '../styles/IFrame.css';
 
 import 'leaflet/dist/leaflet.css';
 

@@ -84,7 +84,7 @@ export default ({
           { imageView === "2d" ?
             <img src={image} />
           :
-            <video autoplay loop src={image.replace(/\.[^.]*$/, '.webm')} />
+            <video autoPlay loop src={image.replace(/\.[^.]*$/, '.webm')} />
           }
         </div>
         <div className={`lowerCardInfo lowerCardInfo ${cardSize}`}>

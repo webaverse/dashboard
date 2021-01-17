@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useAppContext } from "../libs/contextLib";
 import address from '../webaverse/address.js';
 import CardSize from '../constants/CardSize.js';
-import { getLandHash, deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
+import { removeLandCollaborator, addLandCollaborator, getLandHash, deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { getLandMain, getStores } from '../functions/UIStateFunctions.js'
 import Loader from './Loader';
 import AssetCard from './LandCard';
@@ -242,6 +242,26 @@ export default ({
     else alert("You need to give an NFT id.");
   }
 
+  const handleAddCollaborator = () => {
+   const address = prompt("What is the address of the collaborator to add?", "0x0");
+
+    if (address) {
+      addLandCollaborator(id, address, handleSuccess, handleError, globalState);
+      setLoading(true);
+    }
+    else alert("No address given.");
+  }
+
+  const handleRemoveCollaborator = () => {
+   const address = prompt("What is the address of the collaborator to remove?", "0x0");
+
+    if (address) {
+      removeLandCollaborator(id, address, handleSuccess, handleError, globalState);
+      setLoading(true);
+    }
+    else alert("No address given.");
+  }
+
 /*
   const handleCancelSale = (e) => {
       e.preventDefault();
@@ -370,6 +390,8 @@ export default ({
                   landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
                   userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
                   userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeploy}>Deploy Content</button>),
+                  userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleAddCollaborator}>Add Collaborator</button>),
+                  userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleRemoveCollaborator}>Remove Collaborator</button>),
                 ]}
               </div>),
 

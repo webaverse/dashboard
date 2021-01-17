@@ -232,18 +232,14 @@ export default ({
     }
   }
 
-  const handleDeploy = file => {
-    console.log(file);
-    if (file) {
-      let reader = new FileReader();
-      reader.onloadend = () => {
-        setFile(file);
-        deployLand(file, id, handleSuccess, handleError, globalState);
-        console.log(file);
-      }
-      reader.readAsDataURL(file);
+  const handleDeploy = () => {
+   const contentId = prompt("What is the id for the NFT you want to deploy?", "");
+
+    if (contentId) {
+      deployLand(id, contentId, handleSuccess, handleError, globalState);
+      setLoading(true);
     }
-    else console.warn("Didnt upload file");
+    else alert("You need to give an NFT id.");
   }
 
 /*
@@ -373,8 +369,7 @@ export default ({
                   landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<a target="_blank" href={"https://testnets.opensea.io/assets/" + address["main"]["LAND"] + "/" + id}><button className="assetDetailsButton">View on OpenSea</button></a>),
                   landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
                   userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
-                  userOwnsThisAsset && (<label htmlFor="input-file" className="assetDetailsButton">Deploy Content</label>),
-                  userOwnsThisAsset && (<input type="file" id="input-file" onChange={(e) => handleDeploy(e.target.files[0])} multiple={false} style={{display: 'none'}} />),
+                  userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeploy}>Deploy Content</button>),
                 ]}
               </div>),
 

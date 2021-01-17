@@ -13,7 +13,7 @@
   transition: background-color .5s ease,border-color .5s ease;
   background: #18141a;
 }
-.navbar .container {
+.navbar .navbarContainer {
   position: relative;
   display: flex;
   flex-flow: row nowrap;
@@ -24,15 +24,15 @@
   margin-right: 25px;
   display: block;
 }
-.navbar .container .navbarMenu {
+.navbar .navbarContainer .navbarMenu {
   position: relative;
   display: flex;
   overflow: hidden;
 }
-.navbar .container .navbarMenu div {
+.navbar .navbarContainer .navbarMenu div {
   display: inline;
 }
-.navbar .container .navbarMenu .secondaryMenu {
+.navbar .navbarContainer .navbarMenu .secondaryMenu {
   margin-left: 20px;
   margin-top: 5px;
   font-size: 20px;
@@ -40,7 +40,7 @@
   color: #676370;
   text-shadow: 0 0 0.1em rgba(0,0,0,.5);
 }
-.navbar .container .navbarMenu .rightMenuContainer {
+.navbar .navbarContainer .navbarMenu .rightMenuContainer {
   margin-top: 10px;
   margin-left: auto;
 }
@@ -83,4 +83,15 @@
 }
 .accountPicture.loggedIn {
   box-shadow: 0px 0px 5px #c4005d;
+}
+
+@media screen and (max-width: 600px) {
+  .rightMenuContainer,
+  .navbarMenu div a img {
+    display: none !important;
+  }
+  .mobileIcon a.icon {
+    float: right;
+    display: block;
+  }
 }

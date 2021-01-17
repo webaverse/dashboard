@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useAppContext } from "../libs/contextLib";
 import address from '../webaverse/address.js';
 import CardSize from '../constants/CardSize.js';
-import { removeLandCollaborator, addLandCollaborator, getLandHash, deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
+import { removeLandCollaborator, addLandCollaborator, getLandHash, deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawLand, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { getLandMain, getStores } from '../functions/UIStateFunctions.js'
 import Loader from './Loader';
 import AssetCard from './LandCard';
@@ -198,7 +198,7 @@ export default ({
       const ethAccount = await loginWithMetaMask(handleWithdraw);
       if (ethAccount) {
         const mainnetAddress = prompt("What mainnet address do you want to get from?", "0x0");
-        await withdrawAsset(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
+        await withdrawLand(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
         handleSuccess();
       } else {
         setLoading(false);

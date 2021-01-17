@@ -372,7 +372,7 @@ export const setHomespace = async (id, state, successCallback, errorCallback) =>
   }
 };
 
-export const withdrawAsset = async (tokenId, mainnetAddress, address, state, successCallback, errorCallback) => {
+export const withdrawLand = async (tokenId, mainnetAddress, address, state, successCallback, errorCallback) => {
   // Withdraw from mainnet
   const id = parseInt(tokenId, 10);
   tokenId = {

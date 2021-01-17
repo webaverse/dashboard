@@ -16,12 +16,9 @@ import '../styles/CardGrid.css';
 import '../styles/LandCard.css';
 import '../styles/LandCardGrid.css';
 import '../styles/ProfileCards.css';
-import '../styles/Profiles.css';
 import '../styles/Profile.css';
 import '../styles/Mint.css';
 import '../styles/IFrame.css';
-
-import 'leaflet/dist/leaflet.css';
 
 //Binding events
 Router.events.on('routeChangeStart', () => NProgress.start());

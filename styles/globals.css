@@ -16,7 +16,6 @@ body {
   min-height: 100vh; 
   position: relative;
   margin: 0;
-  padding-top: 82px;
 }
 body {
   font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
@@ -89,4 +88,11 @@ a {
 }
 .accountPicture.loggedIn {
   box-shadow: 0px 0px 5px #c4005d;
+}
+.appContainer {
+  flex: 1 1;
+  flex-direction: column;
+  padding-top: 93px;
+  display: flex;
+  padding-top: 93px;
 }

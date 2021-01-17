@@ -1,14 +1,14 @@
 import React from 'react'
 import { useAppContext } from "../libs/contextLib";
 import { getLands } from "../functions/UIStateFunctions.js";
-import CardGrid from "../components/LandCardGrid";
+import LandCardGrid from "../components/LandCardGrid";
 
 export default ({ data }) => {
   const { globalState, setGlobalState } = useAppContext();
 
   return data && data.length > 0 &&
     <div className="container">
-      <CardGrid data={data} globalState={globalState} />
+      <LandCardGrid data={data} globalState={globalState} />
     </div>
 }
 

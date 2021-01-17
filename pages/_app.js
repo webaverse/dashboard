@@ -34,7 +34,9 @@ const App = ({ Component, pageProps }) => {
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Component {...pageProps} />
+      <div className="appContainer">
+        <Component {...pageProps} />
+      </div>
       <Footer />
     </AppWrapper>
   )

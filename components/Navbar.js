@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link'
+import MenuIcon from '@material-ui/icons/Menu';
 import { useAppContext } from "../libs/contextLib";
 
 const Navbar = () => {
   const { globalState, setGlobalState } = useAppContext();
+  const [dropdown, setDropdown] = useState(false);
 
   return (
     <div className="navbar">
@@ -19,7 +21,10 @@ const Navbar = () => {
               Webaverse
             </Link>
           </div>
-          <div className="rightMenuContainer">
+          <a className="navbarIcon" onClick={() => setDropdown(!dropdown)}>
+            <MenuIcon />
+          </a>
+          <div className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
             <Link href="/assets"><a className="item">Browse</a></Link>
             <Link href="/land"><a className="item">Land</a></Link>
             <Link href="/map"><a className="item">Map</a></Link>

@@ -173,46 +173,26 @@ export const getLandHash = async (id) => {
   return hash;
 }
 
-export const deployLand = async (file, tokenId, successCallback, errorCallback, state) => {
+export const deployLand = async (tokenId, contentId, successCallback, errorCallback, state) => {
   const mnemonic = state.loginToken.mnemonic;
-  const res = await fetch(storageHost, { method: 'POST', body: file });
-  const { hash } = await res.json();
 
-  const oldHash = await contracts.sidechain.LAND.methods.getHash(tokenId).call();
-
-  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
-  const address = wallet.getAddressString();
-
-  const fullAmount = {
-    t: 'uint256',
-    v: new web3.sidechain.utils.BN(1e9)
-      .mul(new web3.sidechain.utils.BN(1e9))
-      .mul(new web3.sidechain.utils.BN(1e9)),
-  };
-
-  let status, transactionHash;
-  try {
-    {
-      const result = await runSidechainTransaction(mnemonic)('LAND', 'setSingleMetadata', tokenId, 'hash', hash);
-      status = result.status;
-      transactionHash = '0x0';
+  if (!isNaN(contentId)) {
+    let status, transactionHash;
+    try {
+        const result = await runSidechainTransaction(mnemonic)('LAND', 'setSingleMetadata', tokenId, 'hash', contentId);
+        status = result.status;
+    } catch(err) {
+      status = false;
+      transactionHash = err.message;
     }
+
     if (status) {
-      const extName = getExt(file.name);
-      const fileName = extName ? file.name.slice(0, -(extName.length + 1)) : file.name;
-      await runSidechainTransaction(mnemonic)('LAND', 'setSingleMetadata', tokenId, 'ext', extName);
-      status = true;
-      transactionHash = '0x0';
+      successCallback();
+    } else {
+      errorCallback(transactionHash);
     }
-  } catch(err) {
-    status = false;
-    transactionHash = err.message;
-  }
-
-  if (status) {
-    successCallback();
   } else {
-    errorCallback(transactionHash);
+    errorCallback("Invalid NFT ID");
   }
 }
 

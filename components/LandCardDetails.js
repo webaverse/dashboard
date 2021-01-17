@@ -15,6 +15,7 @@ export default ({
     hash,
     external_url,
     filename,
+    rarity,
     ext,
     totalInEdition,
     numberInEdition,
@@ -323,6 +324,7 @@ export default ({
             key={id}
             id={id}
             name={name}
+            rarity={rarity}
             ext={ext}
             description={description}
             buyPrice={buyPrice}

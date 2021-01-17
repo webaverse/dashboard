@@ -167,6 +167,12 @@ export const setAvatar = async (id, state, successCallback, errorCallback) => {
   }
 };
 
+export const getLandHash = async (id) => {
+  const hash = contracts.sidechain.LAND.methods.getSingleMetadata(id, 'hash').call();
+
+  return hash;
+}
+
 export const deployLand = async (file, tokenId, successCallback, errorCallback, state) => {
   const mnemonic = state.loginToken.mnemonic;
   const res = await fetch(storageHost, { method: 'POST', body: file });

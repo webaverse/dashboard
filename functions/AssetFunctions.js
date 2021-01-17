@@ -173,6 +173,53 @@ export const getLandHash = async (id) => {
   return hash;
 }
 
+export const removeLandCollaborator = async (tokenId, address, successCallback, errorCallback, state) => {
+  const mnemonic = state.loginToken.mnemonic;
+
+  if (address) {
+    let status, transactionHash;
+    try {
+      const result = await runSidechainTransaction(mnemonic)('LAND', 'removeSingleCollaborator', tokenId, address);
+      status = result.status;
+    } catch(err) {
+      status = false;
+      transactionHash = err.message;
+    }
+
+    if (status) {
+      successCallback();
+    } else {
+      errorCallback(transactionHash);
+    }
+  } else {
+    errorCallback("No address given.");
+  }
+}
+
+export const addLandCollaborator = async (tokenId, address, successCallback, errorCallback, state) => {
+  const mnemonic = state.loginToken.mnemonic;
+
+  if (address) {
+    let status, transactionHash;
+    try {
+      const result = await runSidechainTransaction(mnemonic)('LAND', 'addSingleCollaborator', tokenId, address);
+      status = result.status;
+    } catch(err) {
+      status = false;
+      transactionHash = err.message;
+    }
+
+    if (status) {
+      successCallback();
+    } else {
+      errorCallback(transactionHash);
+    }
+  } else {
+    errorCallback("No address given.");
+  }
+}
+
+
 export const deployLand = async (tokenId, contentId, successCallback, errorCallback, state) => {
   const mnemonic = state.loginToken.mnemonic;
 

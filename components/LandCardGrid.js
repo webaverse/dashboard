@@ -51,6 +51,7 @@ export default ({
                    hash={asset.properties.hash}
                    external_url={asset.external_url}
                    filename={asset.properties.filename}
+                   rarity={asset.properties.rarity}
                    ext={asset.properties.ext}
                    totalSupply={asset.totalSupply}
                    balance={asset.balance}

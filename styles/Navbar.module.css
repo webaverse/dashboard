@@ -1,16 +1,17 @@
 .navbar {
   margin-bottom: 0;
   border-bottom: none;
-  position: relative;
+  position: fixed;
+  top: 0;
   height: 64px;
   padding: 15px 0 0px 0;
   border-bottom: 1px solid rgba(103,99,112,.2);
   width: 100%;
   box-sizing: content-box;
   z-index: 20;
-  background-color: transparent;
   border-color: transparent;
   transition: background-color .5s ease,border-color .5s ease;
+  background: #18141a;
 }
 .navbar .container {
   position: relative;
@@ -26,7 +27,7 @@
 .navbar .container .navbarMenu {
   position: relative;
   display: flex;
-  flex-wrap: wrap;
+  overflow: hidden;
 }
 .navbar .container .navbarMenu div {
   display: inline;

@@ -45,7 +45,7 @@ a {
   text-decoration: none;
   width: calc(50% - 1em);
   max-width: 250px;
-  padding: .85em 4em;
+  padding: .85em 2em;
   font-size: 15px;
   margin: 1em;
   white-space: nowrap;

@@ -29,13 +29,13 @@ export default ({ loadout, balance, profile }) => {
       }} />
       <div className="profileHeader">
         <div className="profileName">
-          <div>
+          <>
             <h1 className="profileText mainName">{profile.name ? profile.name : "Anonymous"}</h1>
             <p className="profileText address">{profile.address ? profile.address : ""}</p>
             {balance && balance > 0 ?
               <p className="profileText">FLUX Balance: {balance ? balance : "0"}</p>
             : null}
-          </div>
+          </>
         </div>
         <div className="profilePictureContainer">
           <div className="profilePicture" style={{

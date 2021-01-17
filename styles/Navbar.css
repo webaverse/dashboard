@@ -28,9 +28,7 @@
   position: relative;
   display: flex;
   overflow: hidden;
-}
-.navbar .navbarContainer .navbarMenu div {
-  display: inline;
+  flex-wrap: wrap;
 }
 .navbar .navbarContainer .navbarMenu .secondaryMenu {
   margin-left: 20px;
@@ -85,13 +83,45 @@
   box-shadow: 0px 0px 5px #c4005d;
 }
 
+.navbarIcon {
+  display: none;
+}
 @media screen and (max-width: 600px) {
   .rightMenuContainer,
   .navbarMenu div a img {
-    display: none !important;
+    display: none;
   }
-  .mobileIcon a.icon {
+  .navbarIcon {
     float: right;
     display: block;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .rightMenuContainer.responsive {position: relative;}
+  .rightMenuContainer.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .rightMenuContainer.responsive {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    float: none;
+    text-align: left;
+    flex-direction: column;
+    display: flex;
+    width: 100%;
+    text-align: center;
+    background-color: #18141a;
+    width: 100%;
+  }
+  .rightMenuContainer.responsive a {
+    font-size: 1em;
+    padding: 20px 0;
   }
 }

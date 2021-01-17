@@ -48,7 +48,7 @@ export default ({
             </div>
           </div>
         </div>
-        <div className={`assetImage assetImage ${cardSize}`}><img src={image} /></div>
+        <div className={`assetImage assetImage ${cardSize}`}><img src={image + "&r=" + rarity} /></div>
         <div className={`lowerCardInfo lowerCardInfo ${cardSize}`}>
           <div className={`lowerLandCardInfoTop ${rarity} lowerCardInfoTop ${cardSize} lowerCardInfoTop`}>
             <div className={`lowerCardInfoTopLeft lowerCardInfoTopLeft ${cardSize}`}>

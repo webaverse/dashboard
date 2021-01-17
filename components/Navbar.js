@@ -42,7 +42,9 @@ const Navbar = () => {
               </a>
             :
               <Link href="/login">
-                <img className="accountPicture" src="/preview.png" alt="Placeholder profile picture" />
+                <a>
+                  <img className="accountPicture" src="/preview.png" alt="Placeholder profile picture" />
+                </a>
               </Link>
             }
           </div>

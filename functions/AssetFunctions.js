@@ -167,6 +167,52 @@ export const setAvatar = async (id, state, successCallback, errorCallback) => {
   }
 };
 
+export const removeNftCollaborator = async (hash, address, successCallback, errorCallback, state) => {
+  const mnemonic = state.loginToken.mnemonic;
+
+  if (address) {
+    let status, transactionHash;
+    try {
+      const result = await runSidechainTransaction(mnemonic)('NFT', 'removeCollaborator', hash, address);
+      status = result.status;
+    } catch(err) {
+      status = false;
+      transactionHash = err.message;
+    }
+
+    if (status) {
+      successCallback();
+    } else {
+      errorCallback(transactionHash);
+    }
+  } else {
+    errorCallback("No address given.");
+  }
+}
+
+export const addNftCollaborator = async (hash, address, successCallback, errorCallback, state) => {
+  const mnemonic = state.loginToken.mnemonic;
+
+  if (address) {
+    let status, transactionHash;
+    try {
+      const result = await runSidechainTransaction(mnemonic)('NFT', 'addCollaborator', hash, address);
+      status = result.status;
+    } catch(err) {
+      status = false;
+      transactionHash = err.message;
+    }
+
+    if (status) {
+      successCallback();
+    } else {
+      errorCallback(transactionHash);
+    }
+  } else {
+    errorCallback("No address given.");
+  }
+}
+
 export const getLandHash = async (id) => {
   const hash = contracts.sidechain.LAND.methods.getSingleMetadata(id, 'hash').call();
 

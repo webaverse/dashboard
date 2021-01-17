@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import AssetCard from './Card';
 import CardSize from '../constants/CardSize.js';
-import { setAssetName, deleteAsset, setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
+import { addNftCollaborator, removeNftCollaborator, setAssetName, deleteAsset, setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { getStores } from '../functions/UIStateFunctions.js'
 import Loader from './Loader';
 
@@ -195,6 +195,26 @@ export default ({
     }
   }
 
+  const handleAddCollaborator = () => {
+   const address = prompt("What is the address of the collaborator to add?", "0x0");
+
+    if (address) {
+      addNftCollaborator(hash, address, handleSuccess, handleError, globalState);
+      setLoading(true);
+    }
+    else alert("No address given.");
+  }
+
+  const handleRemoveCollaborator = () => {
+   const address = prompt("What is the address of the collaborator to remove?", "0x0");
+
+    if (address) {
+      removeNftCollaborator(hash, address, handleSuccess, handleError, globalState);
+      setLoading(true);
+    }
+    else alert("No address given.");
+  }
+
   const handleReupload = (e) => {
       e.preventDefault();
       console.warn("TODO: Handle reuploading image");
@@ -340,6 +360,8 @@ export default ({
                     userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
                     userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),
                     userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>),
+                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleAddCollaborator}>Add Collaborator</button>),
+                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleRemoveCollaborator}>Remove Collaborator</button>),
                   ]}
                 </div>),
                 globalState.address && !userOwnsThisAsset && storeId && buyPrice && (

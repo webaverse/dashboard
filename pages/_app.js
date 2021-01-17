@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 
 import '../styles/globals.css';
 
+import '../styles/Navbar.css';
 import '../styles/Footer.css';
 import '../styles/Card.css';
 import '../styles/CardDetails.css';

@@ -30,6 +30,7 @@ export default ({ data }) => {
          hash={data.properties.hash}
          external_url={data.external_url}
          filename={data.properties.filename}
+         rarity={data.properties.rarity}
          ext={data.properties.ext}
          totalSupply={data.totalSupply}
          balance={data.balance}

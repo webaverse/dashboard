@@ -9,6 +9,7 @@ export default ({
   hash,
   external_url,
   filename,
+  rarity,
   buyPrice,
   ext,
   totalSupply,
@@ -31,27 +32,6 @@ export default ({
   } else if (networkType === "ethereum") {
     extIcon = "/icon-ethereum.svg";
   }
-
-  let rarity;
-//    rarity = "mythic";
-    rarity = "legendary";
-/*
-  if (totalSupply < 2) {
-    rarity = "unique";
-  } else if (totalSupply < 3) {
-    rarity = "mythic";
-  } else if (totalSupply < 8) {
-    rarity = "legendary";
-  } else if (totalSupply < 15) {
-    rarity = "epic";
-  } else if (totalSupply < 30) {
-    rarity = "rare";
-  } else if (totalSupply < 50) {
-    rarity = "uncommon";
-  } else if (totalSupply > 50) {
-    rarity = "common";
-  }
-*/
 
   return (
       <div

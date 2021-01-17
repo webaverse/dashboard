@@ -24,7 +24,7 @@ const Navbar = () => {
           <a className="navbarIcon" onClick={() => setDropdown(!dropdown)}>
             <MenuIcon />
           </a>
-          <div className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
+          <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
             <Link href="/assets"><a className="item">Browse</a></Link>
             <Link href="/land"><a className="item">Land</a></Link>
             <Link href="/map"><a className="item">Map</a></Link>

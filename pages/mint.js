@@ -74,6 +74,7 @@ export default () => {
         setExtName(extName);
         setFileName(fileName);
         setName(fileName);
+        setDescription("This is an awesome " + fileName + ".");
 
         fetch(storageHost, {
           method: 'POST',

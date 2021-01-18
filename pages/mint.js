@@ -158,22 +158,10 @@ export default () => {
       ),
       mintStage === 3 && (
         <div className="mintContainer">
-          <div className="mintFormContainer">
-            <div className="mintFormSubContainer">
-                  <label>Name</label>
-                  <input type="text" placeholder={fileName} value={name} onChange={handleNameChange} />
-                  <label>Description</label>
-                  <input type="text" placeholder="This item is awesome." value={description} onChange={handleDescriptionChange} />
-                  <label>Quantity</label>
-                  <input type="number" value={quantity} onChange={handleQuantityChange} />
-              <a className={`button noselect mintButton`} onClick={handleMintNftButton}>
-                Mint NFT for {10*quantity} FLUX
-              </a>
-            </div>
-          </div>
-          <div className="mintFormContainer">
+          <div className="mintCardContainer">
             <AssetCard
               id={42}
+              totalSupply={quantity}
               assetName={name}
               ext={extName}
               description={description}
@@ -186,6 +174,19 @@ export default () => {
               networkType='webaverse'
               glow={true}
             />
+          </div>
+          <div className="mintFormContainer">
+            <div className="mintFormSubContainer">
+                  <label>Name</label>
+                  <input type="text" placeholder={fileName} value={name} onChange={handleNameChange} />
+                  <label>Description</label>
+                  <input type="text" placeholder="This item is awesome." value={description} onChange={handleDescriptionChange} />
+                  <label>Quantity</label>
+                  <input type="number" value={quantity} onChange={handleQuantityChange} />
+              <a className={`button noselect mintButton`} onClick={handleMintNftButton}>
+                Mint NFT for {10*quantity} FLUX
+              </a>
+            </div>
           </div>
         </div>
       ),

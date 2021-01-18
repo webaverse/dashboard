@@ -9,6 +9,7 @@ import { mintNft, setAvatar, setHomespace } from '../functions/AssetFunctions.js
 import { storageHost } from "../webaverse/constants";
 import { getExt } from "../webaverse/util";
 import Loader from '../components/Loader';
+import AssetCard from '../components/Card';
 
 
 export default () => {
@@ -20,10 +21,12 @@ export default () => {
   const [quantity, setQuantity] = useState(1);
   const [imagePreview, setImagePreview] = useState(null);
   const [mintedState, setMintedState] = useState(null);
+  const [mintStage, setMintStage] = useState(0);
   const [mintedMessage, setMintedMessage] = useState(null);
   const [ipfsUrl, setIpfsUrl] = useState(null);
   const [extName, setExtName] = useState(null);
   const [fileName, setFileName] = useState(null);
+  const [hash, setHash] = useState(null);
 
   const handleNameChange = (e) => setName(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
@@ -49,6 +52,7 @@ export default () => {
       (tokenId) => {
         setMintedState('success')
         setMintedMessage(tokenId)
+        setMintStage(4)
       },
       (err) => {
         console.log("Minting failed", err);
@@ -66,8 +70,10 @@ export default () => {
         const extName = getExt(file.name);
         const fileName = extName ? file.name.slice(0, -(extName.length + 1)) : file.name;
         setFile(file);
+        setMintStage(2);
         setExtName(extName);
         setFileName(fileName);
+        setName(fileName);
 
         fetch(storageHost, {
           method: 'POST',
@@ -75,6 +81,7 @@ export default () => {
         })
         .then(response => response.json())
         .then(data => {
+          setHash(data.hash);
           setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
         })
         .catch(error => {
@@ -120,7 +127,7 @@ export default () => {
             </div>
           </>
         ),
-        globalState.loginToken && ( !file ?
+        globalState.loginToken && !file && (
           <div className="file-drop-container">
             <FileDrop
               onDrop={(files, e) => handleFileUpload(files[0])}
@@ -129,49 +136,60 @@ export default () => {
               <label htmlFor="input-file" className="button">Or choose file</label>
               <input type="file" id="input-file" onChange={(e) => handleFileUpload(e.target.files[0])} multiple={false} style={{display: 'none'}} />
             </FileDrop>
-          </div>
-        :
+          </div>),
+        file && mintStage === 2 && (
           <>
-            { ipfsUrl ?
+            <div className="mintingOptionsContainer">
+              <h1>Woah, check it out!</h1>
+              <p>
+                This is the awesome thing you{"'"}re about to mint! You can move around and check it out here.
+                Like what you see? Just click the big glowing button to mint it.
+              </p>
+              <a className={`button noselect mintButton`} onClick={() => setMintStage(3)}>
+                Let{"'"}s mint!
+              </a>
+            </div>
+            { ipfsUrl && (
               <div className="IFrameContainer">
                 <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + ipfsUrl} />
               </div>
-            :
-              null
-            }
-            <div className="mintingOptionsContainer">
-              { mintedState === null ?
-                <div>
-                  <div>
-                      <label>Name</label>
-                  </div>
-                  <div>
-                      <input type="text" value={name} onChange={handleNameChange} />
-                  </div>
-                  <div>
-                      <label>Description</label>
-                  </div>
-                  <div>
-                      <input type="text" value={description} onChange={handleDescriptionChange} />
-                  </div>
-                  <div>
-                      <label>Quantity</label>
-                  </div>
-                  <div>
-                      <input type="number" value={quantity} onChange={handleQuantityChange} />
-                  </div>
-                  <div>
-                      <a className={`button mintButton`} onClick={handleMintNftButton}>
-                        Mint NFT for {10*quantity} FLUX
-                      </a>
-                  </div>
-                </div>
-              :
-                <MintSteps />
-              }
-            </div>
+            )}
           </>
-        )
+      ),
+      mintStage === 3 && (
+        <div className="mintContainer">
+          <div className="mintFormContainer">
+            <div className="mintFormSubContainer">
+                  <label>Name</label>
+                  <input type="text" placeholder={fileName} value={name} onChange={handleNameChange} />
+                  <label>Description</label>
+                  <input type="text" placeholder="This item is awesome." value={description} onChange={handleDescriptionChange} />
+                  <label>Quantity</label>
+                  <input type="number" value={quantity} onChange={handleQuantityChange} />
+              <a className={`button noselect mintButton`} onClick={handleMintNftButton}>
+                Mint NFT for {10*quantity} FLUX
+              </a>
+            </div>
+          </div>
+          <div className="mintFormContainer">
+            <AssetCard
+              id={42}
+              assetName={name}
+              ext={extName}
+              description={description}
+              image={"https://preview.exokit.org/" + hash + "." + extName + "/preview.png"}
+              hash={hash}
+              minterAvatarPreview={globalState.avatarPreview}
+              minterUsername={globalState.name}
+              minterAddress={globalState.address}
+              cardSize={""}
+              networkType='webaverse'
+              glow={true}
+            />
+          </div>
+        </div>
+      ),
+      mintStage === 4 && (<MintSteps />),
       ]}
     </>
   )

@@ -33,20 +33,12 @@ export default ({
     assetType
 }) => {
 
-  const [sellAssetShowing, setSellAssetShowing] = useState(false);
-  const [salePrice, setSalePrice] = useState(0);
-  const [toggleReuploadOpen, setToggleReuploadOpen] = useState(false);
-  const [toggleRenameOpen, setToggleRenameOpen] = useState(false);
-  const [toggleDestroyOpen, setToggleDestroyOpen] = useState(false);
-  const [toggleCancelSaleOpen, setToggleCancelSaleOpen] = useState(false);
-  // const [toggleSaleOpen, setToggleSaleOpen] = useState(false);
-  const [toggleOnSaleOpen, setToggleOnSaleOpen] = useState(false);
-  const [toggleTransferToOpen, setToggleTransferToOpen] = useState(false);
-  const [toggleDropdownConfirmOpen, setToggleDropdownConfirmOpen] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-  const [calculatedCardSize, setCalculatedCardSize] = useState(CardSize.Large)
+  const [toggleViewOpen, setToggleViewOpen] = useState(true);
+  const [toggleEditOpen, setToggleEditOpen] = useState(false);
+  const [toggleAddOpen, setToggleAddOpen] = useState(false);
+  const [toggleTradeOpen, setToggleTradeOpen] = useState(false);
+
   const [loading, setLoading] = useState(false);
-  const [pending, setPending] = useState(false);
   const [imageView, setImageView] = useState("2d");
   const [tryOn, setTryOn] = useState(false);
 
@@ -65,7 +57,6 @@ export default ({
     is3d = true;
   }
 
-  // Otherwise, is this asset for sale?
   const isForSale = buyPrice !== undefined && buyPrice !== null && buyPrice !== ""
 
   const ethEnabled = () => {
@@ -140,11 +131,6 @@ export default ({
     setLoading(false);
   }
 
-  // const removeFromLoadout = (e) => {
-  //     e.preventDefault();
-  //     removeFromLoadout(id, () => console.log("Changed homespace to ", id), (err) => console.log("Failed to change homespace", err));
-  // }
-
   const handleBuyAsset = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -215,83 +201,6 @@ export default ({
     else alert("No address given.");
   }
 
-  const handleReupload = (e) => {
-      e.preventDefault();
-      console.warn("TODO: Handle reuploading image");
-  }
-
-/*
-  const handleCancelSale = (e) => {
-      e.preventDefault();
-      cancelSale(id, networkType, () => console.log("Changed homespace to ", id), (err) => console.log("Failed to change homespace", err));
-  }
-*/
-
-  const handleHideSellAsset = (e) => {
-      e.preventDefault();
-      setSellAssetShowing(false);
-  }
-
-/*
-  const handleSellAsset = (e) => {
-      e.preventDefault();
-      if(salePrice < 0) return console.error("Sale price can't be less than 0");
-      console.log("Selling id", id, "from login token", globalState.loginToken.mnemonic);
-      sellAsset(
-          id,
-          salePrice,
-          networkType,
-          globalState.loginToken.mnemonic,
-          (success) => console.log("Sold asset ", id, success),
-          (err) => console.log("Failed to sell asset", err)
-      );
-  }
-*/
-
-/*
-  const handleBuyAsset = (e) => {
-      e.preventDefault();
-      buyAsset(
-          id,
-          networkType,
-          globalState.loginToken.mnemonic,
-          () => console.log("Buying Asset", id),
-          (err) => console.log("Failed to purchase asset", err)
-      );
-  }
-*/
-
-  const toggleReupload = () => {
-      setToggleReuploadOpen(!toggleReuploadOpen);
-  }
-
-  const toggleRename = () => {
-      setToggleRenameOpen(!toggleRenameOpen);
-  }
- 
-  const toggleDestroy = () => {
-      setToggleDestroyOpen(!toggleDestroyOpen);
-  }
-
-  const toggleCancelSale = () => {
-      setToggleCancelSaleOpen(!toggleCancelSaleOpen);
-  }
-
-  const toggleShowSellAsset = () => {
-      setSellAssetShowing(!sellAssetShowing);
-  }
-
-  const toggleTransferTo = () => {
-      setToggleTransferToOpen(!toggleTransferToOpen);
-  }
-
-  const toggleDropdownConfirm = () => {
-      setToggleDropdownConfirmOpen(!toggleDropdownConfirmOpen)
-  }
-
-  const toggleOnSale = () => {
-      setToggleOnSaleOpen(!toggleOnSaleOpen)
-  }
 
   return (
     <>
@@ -305,8 +214,7 @@ export default ({
         </div>
       </>
     :
-      <div>
-        <div className="assetDetailsContainer">
+      <>
           <div className="assetDetails">
             { loading ?
               <Loader loading={loading} />
@@ -347,14 +255,14 @@ export default ({
                   </span>
                   {' '}Owned by <Link href={`/accounts/` + ownerAddress}>{ownerUsername}</Link>
                 </div>),
-                (<div className="detailsBlock detailsBlockSet">
+                (<div className={`detailsBlock detailsBlockSet noselect`}>
                   {[
                     (<div className="Accordion">
-                        <div className="accordionTitle" onClick={toggleReupload}>
+                        <div className="accordionTitle" onClick={() => setToggleViewOpen(!toggleViewOpen)}>
                             <span className="accordionTitleValue">View</span>
-                            <span className={`accordionIcon ${toggleReuploadOpen ? 'reverse' : ''}`}></span>
+                            <span className={`accordionIcon ${toggleViewOpen ? 'reverse' : ''}`}></span>
                         </div>
-                        {toggleReuploadOpen && (
+                        {toggleViewOpen && (
                         <div className="accordionDropdown">
                           {[
                             is3d && imageView != "3d" && (<button className="assetDetailsButton" onClick={() => setImageView("3d")}>See in 3d</button>),
@@ -365,11 +273,11 @@ export default ({
                         )}
                     </div>),
                     userOwnsThisAsset && (<div className="Accordion">
-                        <div className="accordionTitle" onClick={toggleReupload}>
+                        <div className="accordionTitle" onClick={() => setToggleEditOpen(!toggleEditOpen)}>
                             <span className="accordionTitleValue">Edit</span>
-                            <span className={`accordionIcon ${toggleReuploadOpen ? 'reverse' : ''}`}></span>
+                            <span className={`accordionIcon ${toggleEditOpen ? 'reverse' : ''}`}></span>
                         </div>
-                        {toggleReuploadOpen && (
+                        {toggleEditOpen && (
                         <div className="accordionDropdown">
                           {[
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAssetName}>Change Asset Name</button>),
@@ -381,11 +289,11 @@ export default ({
                         )}
                     </div>),
                     userOwnsThisAsset && (<div className="Accordion">
-                        <div className="accordionTitle" onClick={toggleReupload}>
+                        <div className="accordionTitle" onClick={() => setToggleAddOpen(!toggleAddOpen)}>
                             <span className="accordionTitleValue">Add</span>
-                            <span className={`accordionIcon ${toggleReuploadOpen ? 'reverse' : ''}`}></span>
+                            <span className={`accordionIcon ${toggleAddOpen ? 'reverse' : ''}`}></span>
                         </div>
-                        {toggleReuploadOpen && (
+                        {toggleAddOpen && (
                         <div className="accordionDropdown">
                           {[
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>),
@@ -396,11 +304,11 @@ export default ({
                         )}
                     </div>),
                     userOwnsThisAsset && (<div className="Accordion">
-                        <div className="accordionTitle" onClick={toggleReupload}>
+                        <div className="accordionTitle" onClick={() => setToggleTradeOpen(!toggleTradeOpen)}>
                             <span className="accordionTitleValue">Trade</span>
-                            <span className={`accordionIcon ${toggleReuploadOpen ? 'reverse' : ''}`}></span>
+                            <span className={`accordionIcon ${toggleTradeOpen ? 'reverse' : ''}`}></span>
                         </div>
-                        {toggleReuploadOpen && (
+                        {toggleTradeOpen && (
                         <div className="accordionDropdown">
                           {[
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
@@ -419,8 +327,7 @@ export default ({
           </div>)
         ]}
         </div>
-      </div>
-    </div>
+    </>
     }
     </>
   );

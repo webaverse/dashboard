@@ -30,7 +30,7 @@ const Navbar = () => {
             <a className="item" href="https://docs.webaverse.com">Docs</a>
             <a className="item" href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
             <a className="item" target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
-            <a className="item" href="https:/app.webaverse.com">Play</a>
+            <a className="item" href="https://app.webaverse.com">Play</a>
           </div>
           <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
             { globalState.address ?

@@ -11,7 +11,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="navbarContainer">
         <div className="navbarMenu">
-          <div className="leftMenuContainer">
+          <div onClick={() => setDropdown(false)} className="leftMenuContainer">
             <Link href="/">
               <img className="logo" src="/webaverse.png" alt="Webaverse logo" />
             </Link>
@@ -21,9 +21,6 @@ const Navbar = () => {
               Webaverse
             </Link>
           </div>
-          <a className="navbarIcon" onClick={() => setDropdown(!dropdown)}>
-            <MenuIcon />
-          </a>
           <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
             <Link href="/assets"><a className="item">Browse</a></Link>
             <Link href="/land"><a className="item">Land</a></Link>
@@ -35,10 +32,10 @@ const Navbar = () => {
             <a className="item" target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
             <a className="item" href="https:/app.webaverse.com">Play</a>
           </div>
-          <div>
+          <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
             { globalState.address ?
               <a href={"/accounts/" + globalState.address}>
-                <img className={`accountPicture loggedIn`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} />
+                <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} />
               </a>
             :
               <Link href="/login">
@@ -48,6 +45,9 @@ const Navbar = () => {
               </Link>
             }
           </div>
+          <a className="navbarIcon" onClick={() => setDropdown(!dropdown)}>
+            <MenuIcon />
+          </a>
         </div>
       </div>
     </div>

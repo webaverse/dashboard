@@ -85,11 +85,23 @@ input {
   flex-direction: row;
   flex-wrap: wrap;
 }
-.mintFormContainer {
+.mintFormContainer,
+.mintCardContainer {
   display: flex;
   flex-direction: column;
   flex: 1 1;
   align-items: center;
+}
+@media screen and (min-width: 844px) {
+  .mintCardContainer {
+    align-items: flex-end;
+    margin-right: 50px;
+  }
+  .mintFormContainer {
+    align-items: flex-start;
+    margin-left: 50px;
+  }
+
 }
 .mintFormSubContainer {
   display: flex;

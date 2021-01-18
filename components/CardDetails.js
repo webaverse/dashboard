@@ -347,8 +347,7 @@ export default ({
                   </span>
                   {' '}Owned by <Link href={`/accounts/` + ownerAddress}>{ownerUsername}</Link>
                 </div>),
-                (is3d || userOwnsThisAsset) && (
-                <div className="detailsBlock detailsBlockSet">
+                (<div className="detailsBlock detailsBlockSet">
                   {[
                     is3d && imageView != "3d" && (<button className="assetDetailsButton" onClick={() => setImageView("3d")}>See in 3d</button>),
                     is3d && imageView != "2d" && (<button className="assetDetailsButton" onClick={() => setImageView("2d")}>See in 2d</button>),

@@ -46,7 +46,6 @@ export default ({
   const [landMainnetAddress, setLandMainnetAddress] = useState(null);
   const [landHash, setLandHash] = useState(null);
   const [openHologram, setOpenHologram] = useState(false);
-  const [file, setFile] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -76,7 +75,6 @@ export default ({
 
   let ownsOrMain = landOnMainnet || userOwnsThisAsset;
 
-  // Otherwise, is this asset for sale?
   const isForSale = buyPrice !== undefined && buyPrice !== null && buyPrice !== ""
 
   const ethEnabled = () => {
@@ -124,61 +122,6 @@ export default ({
   const handleError = (err) => {
     console.log("error", err);
     window.location.reload();
-  }
-
-  const handleSetAvatar = (e) => {
-      e.preventDefault();
-      console.log("Setting avatar, id is", id);
-      setLoading(true);
-      setAvatar(id, globalState, handleSuccess, handleError)
-  }
-
-  const handleSetHomespace = (e) => {
-      e.preventDefault();
-      setLoading(true);
-      setHomespace(id, globalState, handleSuccess, handleError);
-  }
-
-  const addToLoadout = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const loadoutNum = prompt("What loadout number do you want to add this to?", "1");
-    await setLoadoutState(id, loadoutNum, globalState);
-    setLoading(false);
-  }
-
-  // const removeFromLoadout = (e) => {
-  //     e.preventDefault();
-  //     removeFromLoadout(id, () => console.log("Changed homespace to ", id), (err) => console.log("Failed to change homespace", err));
-  // }
-
-  const handleBuyAsset = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    var r = confirm("You are about to buy this, are you sure?");
-    if (r == true) {
-      buyAsset(storeId, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
-    } else {
-      handleError("canceled delete");
-    }
-  }
-
-  const handleDeleteAsset = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    var r = confirm("You are about to permanently delete this, are you sure?");
-    if (r == true) {
-      deleteAsset(id, globalState.loginToken.mnemonic, handleSuccess, handleError);
-    } else {
-      handleError("canceled delete");
-    }
-  }
-
-  const handleSellAsset = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const sellPrice = prompt("How much would you like to sell this for?", "10");
-    sellAsset(id, sellPrice, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
   const handleWithdraw = async (e) => {
@@ -254,79 +197,6 @@ export default ({
       setLoading(true);
     }
     else alert("No address given.");
-  }
-
-/*
-  const handleCancelSale = (e) => {
-      e.preventDefault();
-      cancelSale(id, networkType, () => console.log("Changed homespace to ", id), (err) => console.log("Failed to change homespace", err));
-  }
-*/
-
-  const handleHideSellAsset = (e) => {
-      e.preventDefault();
-      setSellAssetShowing(false);
-  }
-
-/*
-  const handleSellAsset = (e) => {
-      e.preventDefault();
-      if(salePrice < 0) return console.error("Sale price can't be less than 0");
-      console.log("Selling id", id, "from login token", globalState.loginToken.mnemonic);
-      sellAsset(
-          id,
-          salePrice,
-          networkType,
-          globalState.loginToken.mnemonic,
-          (success) => console.log("Sold asset ", id, success),
-          (err) => console.log("Failed to sell asset", err)
-      );
-  }
-*/
-
-/*
-  const handleBuyAsset = (e) => {
-      e.preventDefault();
-      buyAsset(
-          id,
-          networkType,
-          globalState.loginToken.mnemonic,
-          () => console.log("Buying Asset", id),
-          (err) => console.log("Failed to purchase asset", err)
-      );
-  }
-*/
-
-  const toggleReupload = () => {
-      setToggleReuploadOpen(!toggleReuploadOpen);
-  }
-
-  const toggleRename = () => {
-      setToggleRenameOpen(!toggleRenameOpen);
-  }
- 
-  const toggleDestroy = () => {
-      setToggleDestroyOpen(!toggleDestroyOpen);
-  }
-
-  const toggleCancelSale = () => {
-      setToggleCancelSaleOpen(!toggleCancelSaleOpen);
-  }
-
-  const toggleShowSellAsset = () => {
-      setSellAssetShowing(!sellAssetShowing);
-  }
-
-  const toggleTransferTo = () => {
-      setToggleTransferToOpen(!toggleTransferToOpen);
-  }
-
-  const toggleDropdownConfirm = () => {
-      setToggleDropdownConfirmOpen(!toggleDropdownConfirmOpen)
-  }
-
-  const toggleOnSale = () => {
-      setToggleOnSaleOpen(!toggleOnSaleOpen)
   }
 
   return (

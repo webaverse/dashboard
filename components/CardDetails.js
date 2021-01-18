@@ -349,18 +349,66 @@ export default ({
                 </div>),
                 (<div className="detailsBlock detailsBlockSet">
                   {[
-                    is3d && imageView != "3d" && (<button className="assetDetailsButton" onClick={() => setImageView("3d")}>See in 3d</button>),
-                    is3d && imageView != "2d" && (<button className="assetDetailsButton" onClick={() => setImageView("2d")}>See in 2d</button>),
-                    (<button className="assetDetailsButton" onClick={() => setTryOn(true)}>Try in Webaverse</button>),
-                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAssetName}>Change Asset Name</button>),
-                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>),
-                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>),
-                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>),
-                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
-                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),
-                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>),
-                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleAddCollaborator}>Add Collaborator</button>),
-                    userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleRemoveCollaborator}>Remove Collaborator</button>),
+                    (<div className="Accordion">
+                        <div className="accordionTitle" onClick={toggleReupload}>
+                            <span className="accordionTitleValue">View</span>
+                            <span className={`accordionIcon ${toggleReuploadOpen ? 'reverse' : ''}`}></span>
+                        </div>
+                        {toggleReuploadOpen && (
+                        <div className="accordionDropdown">
+                          {[
+                            is3d && imageView != "3d" && (<button className="assetDetailsButton" onClick={() => setImageView("3d")}>See in 3d</button>),
+                            is3d && imageView != "2d" && (<button className="assetDetailsButton" onClick={() => setImageView("2d")}>See in 2d</button>),
+                            (<button className="assetDetailsButton" onClick={() => setTryOn(true)}>Try in Webaverse</button>),
+                          ]}
+                        </div>
+                        )}
+                    </div>),
+                    userOwnsThisAsset && (<div className="Accordion">
+                        <div className="accordionTitle" onClick={toggleReupload}>
+                            <span className="accordionTitleValue">Edit</span>
+                            <span className={`accordionIcon ${toggleReuploadOpen ? 'reverse' : ''}`}></span>
+                        </div>
+                        {toggleReuploadOpen && (
+                        <div className="accordionDropdown">
+                          {[
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAssetName}>Change Asset Name</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleAddCollaborator}>Add Collaborator</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleRemoveCollaborator}>Remove Collaborator</button>),
+                          ]}
+                        </div>
+                        )}
+                    </div>),
+                    userOwnsThisAsset && (<div className="Accordion">
+                        <div className="accordionTitle" onClick={toggleReupload}>
+                            <span className="accordionTitleValue">Add</span>
+                            <span className={`accordionIcon ${toggleReuploadOpen ? 'reverse' : ''}`}></span>
+                        </div>
+                        {toggleReuploadOpen && (
+                        <div className="accordionDropdown">
+                          {[
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>),
+                          ]}
+                        </div>
+                        )}
+                    </div>),
+                    userOwnsThisAsset && (<div className="Accordion">
+                        <div className="accordionTitle" onClick={toggleReupload}>
+                            <span className="accordionTitleValue">Trade</span>
+                            <span className={`accordionIcon ${toggleReuploadOpen ? 'reverse' : ''}`}></span>
+                        </div>
+                        {toggleReuploadOpen && (
+                        <div className="accordionDropdown">
+                          {[
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),
+                          ]}
+                        </div>
+                        )}
+                    </div>),
                   ]}
                 </div>),
                 globalState.address && !userOwnsThisAsset && storeId && buyPrice && (

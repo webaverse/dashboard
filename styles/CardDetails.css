@@ -42,11 +42,9 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background-color: black;
-    padding-left: 0.5em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
+    background-color: rgb(0, 0, 0, 0.25);
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .assetDetailsButton {
@@ -54,13 +52,16 @@
     border: none;
     cursor: pointer;
     outline: inherit;
-    font-size: 1em;
+    font-size: .8em;
     font-weight: 400;
-    text-transform: uppercase;
     color: white;
     padding: 0.5em;
+    text-align: left;
+    padding-left: .75em;
 }
-
+.assetDetailsButton .assetDetailsButtonBottomBorder {
+    border-bottom: 1px solid rgb(50,50,50,1);
+}
 .assetSubmitButton {
     width: 11em;
     height: 2.5em;
@@ -167,6 +168,7 @@
 .Accordion {
     width: 100%;
     margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .accordionTitle {
@@ -175,6 +177,7 @@
     padding-left: 0.5em;
     padding-right: 1em;
     cursor: pointer;
+    padding-bottom: .5em;
 }
 
 .accordionTitleValue {
@@ -201,7 +204,7 @@
 .accordionDropdown {
     display: flex;
     justify-content: center;
-    margin-top: 1em;
+    flex-direction: column;
 }
 
 .accordionDropdownConfirm {

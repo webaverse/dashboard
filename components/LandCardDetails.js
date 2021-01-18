@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useAppContext } from "../libs/contextLib";
 import address from '../webaverse/address.js';
 import CardSize from '../constants/CardSize.js';
@@ -35,19 +36,12 @@ export default ({
 }) => {
   const { globalState, setGlobalState } = useAppContext();
 
-  const [sellAssetShowing, setSellAssetShowing] = useState(false);
-  const [salePrice, setSalePrice] = useState(0);
-  const [toggleReuploadOpen, setToggleReuploadOpen] = useState(false);
-  const [toggleRenameOpen, setToggleRenameOpen] = useState(false);
-  const [toggleDestroyOpen, setToggleDestroyOpen] = useState(false);
-  const [toggleCancelSaleOpen, setToggleCancelSaleOpen] = useState(false);
-  // const [toggleSaleOpen, setToggleSaleOpen] = useState(false);
-  const [toggleOnSaleOpen, setToggleOnSaleOpen] = useState(false);
-  const [toggleTransferToOpen, setToggleTransferToOpen] = useState(false);
-  const [toggleDropdownConfirmOpen, setToggleDropdownConfirmOpen] = useState(false);
-  const [quantity, setQuantity] = useState(1);
+  const [toggleViewOpen, setToggleViewOpen] = useState(true);
+  const [toggleEditOpen, setToggleEditOpen] = useState(false);
+  const [toggleAddOpen, setToggleAddOpen] = useState(false);
+  const [toggleTradeOpen, setToggleTradeOpen] = useState(false);
+
   const [loading, setLoading] = useState(false);
-  const [pending, setPending] = useState(false);
   const [mainnetAddress, setMainnetAddress] = useState(null);
   const [landMainnetAddress, setLandMainnetAddress] = useState(null);
   const [landHash, setLandHash] = useState(null);
@@ -347,7 +341,7 @@ export default ({
         </div>
       </>
     :
-      <div className="assetDetailsContainer">
+      <>
         <div className="assetDetails">
           { loading ?
             <Loader loading={loading} />
@@ -379,32 +373,62 @@ export default ({
               glow={false}
             />
           </div>),
-          (<div className="assetDetailsRightColumn">
-            {[
-              (<div className="detailsBlock detailsBlockSet">
-                {[
-                  (<a target="_blank" href={external_url}><button className="assetDetailsButton">Visit on Street</button></a>),
-                  landHash && (<a onClick={() => setOpenHologram(true)}><button className="assetDetailsButton">Open hologram</button></a>),
-                  landHash && name && (<a target="_blank" href={"https://app.webaverse.com?u=" + landHash + "&r=" + name.replace(/\s+/g, '-')}><button className="assetDetailsButton">Enter parcel</button></a>),
-                  landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<a target="_blank" href={"https://testnets.opensea.io/assets/" + address["main"]["LAND"] + "/" + id}><button className="assetDetailsButton">View on OpenSea</button></a>),
-                  landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
-                  userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
-                  userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeploy}>Deploy Content</button>),
-                  userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleAddCollaborator}>Add Collaborator</button>),
-                  userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleRemoveCollaborator}>Remove Collaborator</button>),
+            (<div className="assetDetailsRightColumn">
+              {[
+                (<div className="assetDetailsOwnedBy">
+                  <span className={`creatorIcon creatorIcon tooltip`}>
+                    <img src={ownerAvatarPreview.replace(/\.[^.]*$/, '.png')} />
+                    <span className={`creatorName creatorName tooltiptext`}>{ownerUsername}</span>
+                  </span>
+                  {' '}Owned by <Link href={`/accounts/` + ownerAddress}>{ownerUsername}</Link>
+                </div>),
+                (<div className={`detailsBlock detailsBlockSet noselect`}>
+                  {[
+                    (<div className="Accordion">
+                        <div className="accordionTitle" onClick={() => setToggleViewOpen(!toggleViewOpen)}>
+                            <span className="accordionTitleValue">View</span>
+                            <span className={`accordionIcon ${toggleViewOpen ? 'reverse' : ''}`}></span>
+                        </div>
+                        {toggleViewOpen && (
+                        <div className="accordionDropdown">
+                          {[
+                            (<a target="_blank" href={external_url}><button className="assetDetailsButton">Visit on Street</button></a>),
+                            landHash && (<a onClick={() => setOpenHologram(true)}><button className="assetDetailsButton">Open hologram</button></a>),
+                            landHash && name && (<a target="_blank" href={"https://app.webaverse.com?u=" + landHash + "&r=" + name.replace(/\s+/g, '-')}><button className="assetDetailsButton">Enter parcel</button></a>),
+                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<a target="_blank" href={"https://testnets.opensea.io/assets/" + address["main"]["LAND"] + "/" + id}><button className="assetDetailsButton">View on OpenSea</button></a>),
+                          ]}
+                        </div>
+                        )}
+                    </div>),
+                    userOwnsThisAsset && (<div className="Accordion">
+                        <div className="accordionTitle" onClick={() => setToggleEditOpen(!toggleEditOpen)}>
+                            <span className="accordionTitleValue">Edit</span>
+                            <span className={`accordionIcon ${toggleEditOpen ? 'reverse' : ''}`}></span>
+                        </div>
+                        {toggleEditOpen && (
+                        <div className="accordionDropdown">
+                          {[
+                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeploy}>Deploy Content</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleAddCollaborator}>Add Collaborator</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleRemoveCollaborator}>Remove Collaborator</button>),
+                          ]}
+                        </div>
+                        )}
+                    </div>),
+                  ]}
+                </div>),
+                globalState.address && !userOwnsThisAsset && storeId && buyPrice && (
+                <div className="detailsBlock detailsBlockSet">
+                  <button className="assetDetailsButton" onClick={handleBuyAsset}>Buy This Item</button>
+                </div>),
                 ]}
-              </div>),
-
-              globalState.address && !userOwnsThisAsset && storeId && buyPrice && (
-              <div className="detailsBlock detailsBlockSet">
-                <button className="assetDetailsButton" onClick={handleBuyAsset}>Buy This Item</button>
-              </div>),
-              ]}
-        </div>)
+          </div>)
         ]}
         </div>
-      </div>
-      }
+    </>
+    }
     </>
   );
 };

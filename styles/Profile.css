@@ -59,9 +59,8 @@
    flex-direction: column;
    display: flex;
    justify-content: flex-end;
-   flex: .5 .5 auto;
+   flex: 1 1 auto;
    align-items: center;
-   padding-right: 5vw;
 }
 .content-inner {
   width: 250px;
@@ -171,6 +170,11 @@
   margin-right: 50px;
   margin: 20px 0px 20px 0px;
   z-index: 1;
+}
+@media screen and (max-width: 600px) {
+  .profileHeader .profileName {
+    padding-bottom: 175px;
+  }
 }
 .profileHeader .profileText {
   font-size: 1em;

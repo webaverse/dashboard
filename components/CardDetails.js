@@ -352,7 +352,7 @@ export default ({
                   {[
                     is3d && imageView != "3d" && (<button className="assetDetailsButton" onClick={() => setImageView("3d")}>See in 3d</button>),
                     is3d && imageView != "2d" && (<button className="assetDetailsButton" onClick={() => setImageView("2d")}>See in 2d</button>),
-                    is3d && (<button className="assetDetailsButton" onClick={() => setTryOn(true)}>Try in Webaverse</button>),
+                    (<button className="assetDetailsButton" onClick={() => setTryOn(true)}>Try in Webaverse</button>),
                     userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAssetName}>Change Asset Name</button>),
                     userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>),
                     userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>),

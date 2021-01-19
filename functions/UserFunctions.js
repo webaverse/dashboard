@@ -1,4 +1,4 @@
-import { contracts, runSidechainTransaction, web3 } from '../webaverse/blockchain.js';
+import { runSidechainTransaction, getWeb3OrContracts } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
 
@@ -68,6 +68,7 @@ export const setFtu = async (name, avatarUrl, state) => {
 };
 
 export const connectMetamask = async (state) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   if (!window.ethereum) {
     console.log("Window.ethereum is null");
     return state;
@@ -100,6 +101,7 @@ export const disconnectMetamask = async (state) => {
 };
 
 export const checkMainFtApproved = async (amt) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   const receipt0 = await contracts.main.FT.methods
     .allowance(mainnetAddress, contracts.main.FTProxy._address)
     .call();
@@ -124,6 +126,7 @@ export const checkMainFtApproved = async (amt) => {
 };
 
 export const checkMainNftApproved = async () => {
+  const { web3, contracts } = await getWeb3OrContracts();
   const approved = await contracts.main.NFT.methods
     .isApprovedForAll(mainnetAddress, contracts.main.NFTProxy._address)
     .call();

@@ -270,7 +270,7 @@ export default ({
                             (<a target="_blank" href={external_url}><button className="assetDetailsButton">Visit on Street</button></a>),
                             landHash && (<a onClick={() => setOpenHologram(true)}><button className="assetDetailsButton">Open hologram</button></a>),
                             landHash && name && (<a target="_blank" href={"https://app.webaverse.com?u=" + landHash + "&r=" + name.replace(/\s+/g, '-')}><button className="assetDetailsButton">Enter parcel</button></a>),
-                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<a target="_blank" href={"https://testnets.opensea.io/assets/" + address["main"]["LAND"] + "/" + id}><button className="assetDetailsButton">View on OpenSea</button></a>),
+                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]) && (<a target="_blank" href={"https://testnets.opensea.io/assets/" + address["rinkeby"]["LAND"] + "/" + id}><button className="assetDetailsButton">View on OpenSea</button></a>),
                           ]}
                         </div>
                         )}
@@ -283,7 +283,7 @@ export default ({
                         {toggleEditOpen && (
                         <div className="accordionDropdown">
                           {[
-                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["main"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
+                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeploy}>Deploy Content</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleAddCollaborator}>Add Collaborator</button>),

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from "react-router-dom"
+import { useRouter } from 'next/router';
 import { useAppContext } from "../libs/contextLib";
 import { parseQuery } from "../functions/Functions";
 import storage from "../functions/Storage";
@@ -9,9 +9,10 @@ import bip39 from '../libs/bip39.js';
 import Loader from "../components/Loader";
 
 export default () => {
-  const history = useHistory();
   const { globalState, setGlobalState } = useAppContext();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
+
 
   const loginWithKey = (key, play, realmId) => {
     if (bip39.validateMnemonic(key)) {
@@ -40,7 +41,7 @@ export default () => {
       }
     } else {
       setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
-      history.push("/accounts/" + state.address);
+      router.push("/accounts/" + state.address);
     }
   }
 

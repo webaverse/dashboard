@@ -1,5 +1,5 @@
 import { getAddress } from './UIStateFunctions';
-import { getAddressFromMnemonic, contracts, runSidechainTransaction, web3, getTransactionSignature } from '../webaverse/blockchain.js';
+import { getAddressFromMnemonic, getWeb3OrContracts, runSidechainTransaction, getTransactionSignature } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
 import bip39 from '../libs/bip39.js';
@@ -29,6 +29,7 @@ export const deleteAsset = async (id, mnemonic, successCallback, errorCallback) 
 }
 
 export const buyAsset = async (id, networkType, mnemonic, successCallback, errorCallback) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
 
@@ -64,6 +65,7 @@ export const buyAsset = async (id, networkType, mnemonic, successCallback, error
 };
 
 export const sellAsset = async (id, price, networkType, mnemonic, successCallback, errorCallback) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   console.log("Selling asset, price is", price);
   try {
     const network = networkType.toLowerCase() === 'mainnet' ? 'mainnet' : 'sidechain';
@@ -81,6 +83,7 @@ export const sellAsset = async (id, price, networkType, mnemonic, successCallbac
 };
 
 export const cancelSale = async (id, networkType, successCallback, errorCallback) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   try {
     const network = networkType.toLowerCase() === 'mainnet' ? 'mainnet' : 'sidechain';
     await runSidechainTransaction(mnemonic)('NFT', 'setApprovalForAll', contracts[network]['Trade']._address, true);
@@ -214,6 +217,7 @@ export const addNftCollaborator = async (hash, address, successCallback, errorCa
 }
 
 export const getLandHash = async (id) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   const hash = contracts.sidechain.LAND.methods.getSingleMetadata(id, 'hash').call();
 
   return hash;
@@ -290,6 +294,7 @@ export const deployLand = async (tokenId, contentId, successCallback, errorCallb
 }
 
 export const mintNft = async (file, name, ext, description, quantity, successCallback, errorCallback, state) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   const  mnemonic = state.loginToken.mnemonic;
   const address = state.address;
   const res = await fetch(storageHost, { method: 'POST', body: file });
@@ -373,6 +378,7 @@ export const setHomespace = async (id, state, successCallback, errorCallback) =>
 };
 
 export const withdrawLand = async (tokenId, mainnetAddress, address, state, successCallback, errorCallback) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   // Withdraw from mainnet
   const id = parseInt(tokenId, 10);
   tokenId = {
@@ -404,6 +410,7 @@ export const withdrawLand = async (tokenId, mainnetAddress, address, state, succ
 }
 
 export const depositLand = async (tokenId, mainnetAddress, state) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
 
@@ -439,6 +446,7 @@ export const depositLand = async (tokenId, mainnetAddress, state) => {
 
 
 export const depositAsset = async (tokenId, networkType, mainnetAddress, address, state) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   // Deposit to mainnet
   if (networkType === 'webaverse') {
     const id = parseInt(tokenId, 10);
@@ -516,6 +524,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
 }
 
 export const getLoadout = async (address) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   const loadoutString = await contracts.sidechain.Account.methods.getMetadata(address, 'loadout').call();
   console.log("loadoutString", loadoutString);
   let loadout = loadoutString ? JSON.parse(loadoutString) : null;
@@ -529,6 +538,7 @@ export const getLoadout = async (address) => {
 }
 
 export const setLoadoutState = async (id, index, state) => {
+  const { web3, contracts } = await getWeb3OrContracts();
   if (!state.loginToken) {
     console.log("state", state);
     throw new Error('not logged in');

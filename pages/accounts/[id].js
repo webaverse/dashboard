@@ -22,6 +22,7 @@ export default ({ data }) => {
   const [profile, setProfile] = useState(data.profile);
   const [store, setStore] = useState(data.store);
   const [selectedView, setSelectedView] = useState("inventory");
+  const [loading, setLoading] = useState(false);
 
   const handleViewToggle = (view) => {
     setSelectedView(view);
@@ -33,14 +34,21 @@ export default ({ data }) => {
 
   const handleSuccess = () => {
     console.log("success!");
+    setLoading(false);
+    if (window != "undefined") {
+      location.reload();
+    }
   }
 
   const handleError = (err) => {
     console.log("error", err);
-    //setLoading(false);
+    setLoading(false);
   }
 
-  return (
+  return (<>{
+    loading ?
+    <Loader loading={loading} />
+  :
     <div>
       <Head>
         <title>{profile.name} | Webaverse</title>
@@ -86,7 +94,7 @@ export default ({ data }) => {
             (<a className="button" onClick={() => {
               const name = prompt("What is your name?", "Satoshi");
               setName(name, globalState, handleSuccess, handleError)
-              //setLoading(true);
+              setLoading(true);
             }}>
               Change Name
             </a>),
@@ -98,7 +106,7 @@ export default ({ data }) => {
         )
       ]}
     </div>
-  )
+  }</>)
 }
 
 export async function getServerSideProps({ params }) {

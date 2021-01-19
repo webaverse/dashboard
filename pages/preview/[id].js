@@ -21,12 +21,14 @@ export default () => {
       const fileNameData = id.split(".")[1];
       const extNameData = id.split(".")[2];
 
-      setHash(hashData);
-      setFileName(fileNameData);
-      setExtName(extNameData);
+      if (hashData && fileNameData && extNameData) {
+        setHash(hashData);
+        setFileName(fileNameData);
+        setExtName(extNameData);
 
-      setPreviewId("https://ipfs.exokit.org/" + hash + "/" + fileName + "." + extName);
-      setIsHashId(true);
+        setPreviewId("https://ipfs.exokit.org/" + hashData + "/" + fileNameData + "." + extNameData);
+        setIsHashId(true);
+      }
     }
   }
 
@@ -34,7 +36,7 @@ export default () => {
     <>
       {[
         previewId && isTokenId && (<>
-          <Link href={"https://webaverse.com/assets/" + previewId}>
+          <Link href={"/assets/" + previewId}>
             <a className="button">
               Go back
             </a>
@@ -43,8 +45,8 @@ export default () => {
             <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + previewId} />
           </div>
         </>),
-        previewId && isHashId && (<>
-          <Link href={"https://webaverse.com/mint"}>
+        hash && fileName && extName && previewId && isHashId && (<>
+          <Link href={"/mint"}>
             <a className="button">
               Go back
             </a>
@@ -55,7 +57,7 @@ export default () => {
               This is the awesome thing you{"'"}re about to mint! You can move around and check it out here.
               Like what you see? Just click the big glowing button to mint it.
             </p>
-            <Link href={"https://webaverse.com/mint/" + hash + "." + fileName + "." + extName}>
+            <Link href={"/mint/" + hash + "." + fileName + "." + extName}>
               <a className={`button noselect mintButton`}>
                 Let{"'"}s mint!
               </a>

@@ -8,19 +8,27 @@ export default () => {
   const [previewId, setPreviewId] = useState(null);
   const [isTokenId, setIsTokenId] = useState(false);
   const [isHashId, setIsHashId] = useState(false);
+  const [hash, setHash] = useState(null);
+  const [fileName, setFileName] = useState(null);
+  const [extName, setExtName] = useState(null);
 
-    if (id && !isTokenId && !isHashId) {
-      console.log("got id", id);
-      if (isNaN(parseInt(id)) === false) {
-        setPreviewId(id);
-        setIsTokenId(true);
-      } else {
-        const hash = id.split(".")[0];
-        const extName = id.split(".")[1];
-        setPreviewId("https://ipfs.exokit.org/" + hash + "/" + "preview." + extName);
-        setIsHashId(true);
-      }
+  if (id && !isTokenId && !isHashId) {
+    if (isNaN(parseInt(id)) === false) {
+      setPreviewId(id);
+      setIsTokenId(true);
+    } else {
+      const hashData = id.split(".")[0];
+      const fileNameData = id.split(".")[1];
+      const extNameData = id.split(".")[2];
+
+      setHash(hashData);
+      setFileName(fileNameData);
+      setExtName(extNameData);
+
+      setPreviewId("https://ipfs.exokit.org/" + hash + "/" + fileName + "." + extName);
+      setIsHashId(true);
     }
+  }
 
   return (
     <>
@@ -36,7 +44,7 @@ export default () => {
           </div>
         </>),
         previewId && isHashId && (<>
-          <Link href={"https://webaverse.com/assets/" + previewId}>
+          <Link href={"https://webaverse.com/mint"}>
             <a className="button">
               Go back
             </a>
@@ -47,9 +55,11 @@ export default () => {
               This is the awesome thing you{"'"}re about to mint! You can move around and check it out here.
               Like what you see? Just click the big glowing button to mint it.
             </p>
-            <a className={`button noselect mintButton`}>
-              Let{"'"}s mint!
-            </a>
+            <Link href={"https://webaverse.com/mint/" + hash + "." + fileName + "." + extName}>
+              <a className={`button noselect mintButton`}>
+                Let{"'"}s mint!
+              </a>
+            </Link>
           </div>
           <div className="IFrameContainer">
             <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + previewId} />

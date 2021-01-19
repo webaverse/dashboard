@@ -10,7 +10,6 @@ export default ({
   globalState,
   cardSize
 }) => {
-  console.log("Data is", data);
 
   return (
     <div className="mainRow">

@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAppContext } from "../libs/contextLib";
-import address from '../webaverse/address.js';
 import CardSize from '../constants/CardSize.js';
 import { removeLandCollaborator, addLandCollaborator, getLandHash, deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawLand, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { getLandMain, getStores } from '../functions/UIStateFunctions.js'
+import { getWeb3OrContracts } from '../webaverse/blockchain.js'
 import Loader from './Loader';
 import AssetCard from './LandCard';
 
@@ -46,6 +46,7 @@ export default ({
   const [landMainnetAddress, setLandMainnetAddress] = useState(null);
   const [landHash, setLandHash] = useState(null);
   const [openHologram, setOpenHologram] = useState(false);
+  const [address, setAddress] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -55,6 +56,10 @@ export default ({
     (async () => {
       const landHashRes = await getLandHash(id);
       setLandHash(landHashRes);
+    })();
+    (async () => {
+      const { addresses } = await getWeb3OrContracts();
+      setAddress(addresses);
     })();
   },  []);
 

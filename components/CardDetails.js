@@ -242,7 +242,7 @@ export default ({
                 minterAddress={minterAddress}
                 cardSize={""}
                 networkType='webaverse'
-                glow={true}
+                glow={false}
                 imageView={imageView}
               />
             </div>),

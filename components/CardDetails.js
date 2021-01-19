@@ -265,7 +265,7 @@ export default ({
                         {toggleViewOpen && (
                         <div className="accordionDropdown">
                           {[
-                            is3d && imageView != "3d" && (<button className="assetDetailsButton" onClick={() => setImageView("3d")}>See in 3d</button>),
+                            is3d && imageView != "3d" && (<Link href={"/preview/" + id}><button className="assetDetailsButton">See in 3d</button></Link>),
                             is3d && imageView != "2d" && (<button className="assetDetailsButton" onClick={() => setImageView("2d")}>See in 2d</button>),
                             (<button className="assetDetailsButton" onClick={() => setTryOn(true)}>Try in Webaverse</button>),
                           ]}

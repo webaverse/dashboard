@@ -4,12 +4,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router'
 import { Container, Row, Col } from 'react-grid-system';
 import { FileDrop } from 'react-file-drop';
-import { useAppContext } from "../libs/contextLib";
-import { mintNft, setAvatar, setHomespace } from '../functions/AssetFunctions.js';
-import { storageHost } from "../webaverse/constants";
-import { getExt } from "../webaverse/util";
-import Loader from '../components/Loader';
-import AssetCard from '../components/Card';
+import { useAppContext } from "../../libs/contextLib";
+import { mintNft, setAvatar, setHomespace } from '../../functions/AssetFunctions.js';
+import { storageHost } from "../../webaverse/constants";
+import { getExt } from "../../webaverse/util";
+import Loader from '../../components/Loader';
+import AssetCard from '../../components/Card';
 
 
 export default () => {
@@ -37,6 +37,8 @@ export default () => {
 
     setHash(hashData);
     setFileName(fileNameData);
+    setName(fileNameData);
+    setDescription("This is an awesome " + fileNameData + ".");
     setExtName(extNameData);
     setIpfsUrl("https://ipfs.exokit.org/" + hash + "/" + fileName + "." + extName);
   }
@@ -107,7 +109,7 @@ export default () => {
     loading && (<Loader loading={true} />),
     !loading && (<>
       {[
-        !globalstate.logintoken && (
+        !globalState.loginToken && (
           <>
             <h1>you need to login to mint.</h1>
             <div classname="container">
@@ -123,7 +125,7 @@ export default () => {
             </div>
           </>
         ),
-      mintStage === 3 && (
+      mintStage === 3 && globalState && globalState.loginToken && (
         <div className="mintContainer">
           <div className="mintCardContainer">
             <AssetCard

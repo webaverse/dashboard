@@ -49,11 +49,13 @@
     cursor: default;
 }
 .settingsButtonsContainer {
-  margin-top: 100px;
+  margin-top: 20px;
   flex-wrap: wrap;
   display: flex;
   flex: 1;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 .profilePictureContainer {
    flex-direction: column;

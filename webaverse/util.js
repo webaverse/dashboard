@@ -63,6 +63,11 @@ export function bindUploadFileButton(inputFileEl, handleUpload) {
     bindUploadFileButton(newInputFileEl, handleUpload);
   });
 }
+export function blobToFile(theBlob, fileName){
+  theBlob.lastModifiedDate = new Date();
+  theBlob.name = fileName;
+  return theBlob;
+}
 
 export function makePromise() {
   let accept, reject;

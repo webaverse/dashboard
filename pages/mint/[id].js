@@ -60,6 +60,7 @@ export default () => {
 
   const handleMintNftButton = (e) => {
     e.preventDefault();
+    setLoading(true);
     setMintedState('loading');
 
     mintNft(file,

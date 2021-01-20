@@ -1,12 +1,12 @@
 import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
-import { getWeb3OrContracts, getAddressFromMnemonic } from '../webaverse/blockchain.js';
+import { getBlockchain, getAddressFromMnemonic } from '../webaverse/blockchain.js';
 import storage from './Storage.js';
 
 const hdkey = hdkeySpec.default;
 
 export const getBalance = async (address) => {
-  const { web3, contracts } = await getWeb3OrContracts();
+  const { web3, contracts } = await getBlockchain();
   try {
     console.log("address", address);
     const result = await contracts["sidechain"]["FT"].methods.balanceOf(address).call();
@@ -130,7 +130,7 @@ export const getBooths = async (page) => {
 };
 
 export const getStores = async () => {
-  const { web3, contracts } = await getWeb3OrContracts();
+  const { web3, contracts } = await getBlockchain();
   const numStores = await contracts["sidechain"]["Trade"].methods.numStores().call();
   const booths = [];
   const sales = {};

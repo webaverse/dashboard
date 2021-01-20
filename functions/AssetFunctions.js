@@ -375,6 +375,49 @@ export const setHomespace = async (id, state, successCallback, errorCallback) =>
   }
 };
 
+export const withdrawFlux = async (amount, mainnetAddress, address, state, successCallback, errorCallback) => {
+  const { web3, contracts } = await getBlockchain();
+  console.log("got contracts", contracts);
+  console.log("got amount", amount);
+  console.log("got mainnetAddress", mainnetAddress);
+  // Withdraw from mainnet
+  amount = parseInt(amount, 10);
+  console.log("2 got amount", amount);
+/*
+  amount = {
+    t: 'uint256',
+    v: new web3['front'].utils.BN(amountNum),
+  };
+  console.log("3 got amount", amount);
+*/
+
+  await contracts.front.FT.methods.approve(contracts.front.FTProxy._address, amount).send({
+    from: mainnetAddress,
+  });
+
+  const receipt = await contracts.front.FTProxy.methods.deposit(address, amount.v).send({
+    from: mainnetAddress,
+  });
+
+  const signature = await getTransactionSignature('main', 'FT', receipt.transactionHash);
+  const timestamp = {
+    t: 'uint256',
+    v: signature.timestamp,
+  };
+
+  const { r, s, v } = signature;
+
+  try {
+    await runSidechainTransaction(state.loginToken.mnemonic)('FTProxy', 'withdraw', address, amount.v, timestamp.v, r, s, v);
+    successCallback();
+  } catch (err) {
+    errorCallback(err);
+  }
+
+  return;
+}
+
+
 export const withdrawLand = async (tokenId, mainnetAddress, address, state, successCallback, errorCallback) => {
   const { web3, contracts } = await getBlockchain();
   // Withdraw from mainnet
@@ -384,11 +427,11 @@ export const withdrawLand = async (tokenId, mainnetAddress, address, state, succ
     v: new web3['front'].utils.BN(id),
   };
 
-  await contracts.main.LAND.methods.setApprovalForAll(contracts.main.LANDProxy._address, true).send({
+  await contracts.front.LAND.methods.setApprovalForAll(contracts.front.LANDProxy._address, true).send({
     from: mainnetAddress,
   });
 
-  const receipt = await contracts.main.LANDProxy.methods.deposit(address, tokenId.v).send({
+  const receipt = await contracts.front.LANDProxy.methods.deposit(address, tokenId.v).send({
     from: mainnetAddress,
   });
 
@@ -433,7 +476,7 @@ export const depositLand = async (tokenId, mainnetAddress, state) => {
 
     const { r, s, v } = signature;
 
-    await contracts.main.LANDProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
+    await contracts.front.LANDProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
       from: mainnetAddress,
     });
 
@@ -471,7 +514,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
       console.log("mainnetAddress", mainnetAddress);
       console.log("tokenId", tokenId.v);
       console.log("timestamp", timestamp.v);
-      await contracts.main.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
+      await contracts.front.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
         from: mainnetAddress,
       });
 
@@ -487,18 +530,18 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
       v: new web3['front'].utils.BN(id),
     };
 
-    const hashSpec = await contracts.main.NFT.methods.getHash(tokenId.v).call();
+    const hashSpec = await contracts.front.NFT.methods.getHash(tokenId.v).call();
     const hash = {
       t: 'uint256',
       v: new web3['front'].utils.BN(hashSpec),
     };
-    const filenameSpec = await contracts.main.NFT.methods.getMetadata(hashSpec, 'filename').call();
+    const filenameSpec = await contracts.front.NFT.methods.getMetadata(hashSpec, 'filename').call();
     const filename = {
       t: 'string',
       v: filenameSpec,
     };
 
-    const descriptionSpec = await contracts.main.NFT.methods.getMetadata(hashSpec, 'description').call();
+    const descriptionSpec = await contracts.front.NFT.methods.getMetadata(hashSpec, 'description').call();
     const description = {
       t: 'string',
       v: descriptionSpec,
@@ -507,7 +550,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
 
     await _checkMainNftApproved();
 
-    const receipt = await contracts.main.NFTProxy.methods.deposit(myAddress, tokenId.v).send({
+    const receipt = await contracts.front.NFTProxy.methods.deposit(myAddress, tokenId.v).send({
       from: mainnetAddress,
     });
 

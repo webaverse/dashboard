@@ -4,10 +4,10 @@ import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 import ethereumJsTx from '../libs/ethereumjs-tx.js';
 import {makePromise} from './util.js';
-import {storageHost, web3RinkebySidechainEndpoint} from './constants.js';
+import {storageHost, web3MainnetSidechainEndpoint, web3RinkebySidechainEndpoint} from './constants.js';
 const {Transaction, Common} = ethereumJsTx;
 
-const getWeb3OrContracts = async() => {
+const getBlockchain = async () => {
   const  addresses = await fetch('https://contracts.webaverse.com/config/addresses.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
 
    const abis = await fetch('https://contracts.webaverse.com/config/abi.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
@@ -18,42 +18,68 @@ const getWeb3OrContracts = async() => {
   } = addresses;
   let {Account: AccountAbi, FT: FTAbi, FTProxy: FTProxyAbi, NFT: NFTAbi, NFTProxy: NFTProxyAbi, Trade: TradeAbi, LAND:LANDAbi, LANDProxy: LANDProxyAbi } = abis;
 
-  let main;
-  if (typeof window !== 'undefined' && window.ethereum) {
-    main = new Web3(window.ethereum);
-  } else {
-    main = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/420"));
-  }
+  const injectedWeb3 = typeof window !== 'undefined' ? new Web3(window.ethereum) : new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/420"));
 
   const web3 = {
-    main: main,
-    sidechain: new Web3(new Web3.providers.HttpProvider(web3RinkebySidechainEndpoint)),
+    mainnet: injectedWeb3,
+    mainnetsidechain: new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint)),
+    rinkeby: injectedWeb3,
+    rinkebysidechain: new Web3(new Web3.providers.HttpProvider(web3RinkebySidechainEndpoint)),
+    front: null,
+    back: null,
   };
-  web3['sidechain'].eth.transactionConfirmationBlocks = 1;
+  let addressFront = null;
+  let addressBack = null;
+  let networkName = '';
+  function _setMainChain(isMainChain) {
+    if (isMainChain) {
+      web3.front = web3.mainnet;
+      web3.back = web3.mainnetsidechain;
+      addressFront = addresses.mainnet;
+      addressBack = addresses.mainnetsidechain;
+      networkName = 'main';
+    } else {
+      web3.front = web3.rinkeby;
+      web3.back = web3.rinkebysidechain;
+      addressFront = addresses.rinkeby;
+      addressBack = addresses.rinkebysidechain;
+      networkName = 'side';
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    _setMainChain(/^main\./.test(location.hostname));
+  } else {
+    _setMainChain(false);
+  }
 
   const contracts = {
-    main: {
-      Account: new web3['main'].eth.Contract(AccountAbi, AccountAddress),
-      FT: new web3['main'].eth.Contract(FTAbi, FTAddress),
-      FTProxy: new web3['main'].eth.Contract(FTProxyAbi, FTProxyAddress),
-      NFT: new web3['main'].eth.Contract(NFTAbi, NFTAddress),
-      NFTProxy: new web3['main'].eth.Contract(NFTProxyAbi, NFTProxyAddress),
-      Trade: new web3['main'].eth.Contract(TradeAbi, TradeAddress),
-      LAND: new web3['main'].eth.Contract(LANDAbi, LANDAddress),
-      LANDProxy: new web3['main'].eth.Contract(LANDProxyAbi, LANDProxyAddress),
+    front: {
+      Account: new web3.front.eth.Contract(abis.Account, addressFront.Account),
+      FT: new web3.front.eth.Contract(abis.FT, addressFront.FT),
+      FTProxy: new web3.front.eth.Contract(abis.FTProxy, addressFront.FTProxy),
+      NFT: new web3.front.eth.Contract(abis.NFT, addressFront.NFT),
+      NFTProxy: new web3.front.eth.Contract(abis.NFTProxy, addressFront.NFTProxy),
+      Trade: new web3.front.eth.Contract(abis.Trade, addressFront.Trade),
+      LAND: new web3.front.eth.Contract(abis.LAND, addressFront.LAND),
+      LANDProxy: new web3.front.eth.Contract(abis.LANDProxy, addressFront.LANDProxy),
     },
-    sidechain: {
-      Account: new web3['sidechain'].eth.Contract(AccountAbi, AccountAddressSidechain),
-      FT: new web3['sidechain'].eth.Contract(FTAbi, FTAddressSidechain),
-      FTProxy: new web3['sidechain'].eth.Contract(FTProxyAbi, FTProxyAddressSidechain),
-      NFT: new web3['sidechain'].eth.Contract(NFTAbi, NFTAddressSidechain),
-      NFTProxy: new web3['sidechain'].eth.Contract(NFTProxyAbi, NFTProxyAddressSidechain),
-      Trade: new web3['sidechain'].eth.Contract(TradeAbi, TradeAddressSidechain),
-      LAND: new web3['sidechain'].eth.Contract(LANDAbi, LANDAddressSidechain),
-      LANDProxy: new web3['sidechain'].eth.Contract(LANDProxyAbi, LANDProxyAddressSidechain),
+    back: {
+      Account: new web3.back.eth.Contract(abis.Account, addressBack.Account),
+      FT: new web3.back.eth.Contract(abis.FT, addressBack.FT),
+      FTProxy: new web3.back.eth.Contract(abis.FTProxy, addressBack.FTProxy),
+      NFT: new web3.back.eth.Contract(abis.NFT, addressBack.NFT),
+      NFTProxy: new web3.back.eth.Contract(abis.NFTProxy, addressBack.NFTProxy),
+      Trade: new web3.back.eth.Contract(abis.Trade, addressBack.Trade),
+      LAND: new web3.back.eth.Contract(abis.LAND, addressBack.LAND),
+      LANDProxy: new web3.back.eth.Contract(abis.LANDProxy, addressBack.LANDProxy),
     },
   };
-  return { web3, contracts, addresses };
+
+  const getNetworkName = () => networkName;
+  const getOtherNetworkName = () => networkName === 'main' ? 'side' : 'main';
+
+  return { web3, contracts, addresses, getNetworkName, getOtherNetworkName };
 }
 
 const transactionQueue = {
@@ -77,28 +103,28 @@ const transactionQueue = {
   },
 };
 const runSidechainTransaction = mnemonic => async (contractName, method, ...args) => {
-  const { web3, contracts } = await getWeb3OrContracts();
+  const { web3, contracts } = await getBlockchain();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
   const privateKey = wallet.getPrivateKeyString();
-  const privateKeyBytes = Uint8Array.from(web3['sidechain'].utils.hexToBytes(privateKey));
+  const privateKeyBytes = Uint8Array.from(web3['back'].utils.hexToBytes(privateKey));
 
-  const txData = contracts['sidechain'][contractName].methods[method](...args);
+  const txData = contracts['back'][contractName].methods[method](...args);
   const data = txData.encodeABI();
   const gas = await txData.estimateGas({
     from: address,
   });
-  let gasPrice = await web3['sidechain'].eth.getGasPrice();
+  let gasPrice = await web3['back'].eth.getGasPrice();
   gasPrice = parseInt(gasPrice, 10);
 
   await transactionQueue.lock();
-  const nonce = await web3['sidechain'].eth.getTransactionCount(address);
+  const nonce = await web3['back'].eth.getTransactionCount(address);
   let tx = Transaction.fromTxData({
-    to: contracts['sidechain'][contractName]._address,
-    nonce: '0x' + new web3['sidechain'].utils.BN(nonce).toString(16),
-    gas: '0x' + new web3['sidechain'].utils.BN(gasPrice).toString(16),
-    gasPrice: '0x' + new web3['sidechain'].utils.BN(gasPrice).toString(16),
-    gasLimit: '0x' + new web3['sidechain'].utils.BN(8000000).toString(16),
+    to: contracts['back'][contractName]._address,
+    nonce: '0x' + new web3['back'].utils.BN(nonce).toString(16),
+    gas: '0x' + new web3['back'].utils.BN(gasPrice).toString(16),
+    gasPrice: '0x' + new web3['back'].utils.BN(gasPrice).toString(16),
+    gasLimit: '0x' + new web3['back'].utils.BN(8000000).toString(16),
     data,
   }, {
     common: Common.forCustomChain(
@@ -112,11 +138,24 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
     ),
   }).sign(privateKeyBytes);
   const rawTx = '0x' + tx.serialize().toString('hex');
-  const receipt = await web3['sidechain'].eth.sendSignedTransaction(rawTx);
+  const receipt = await web3['back'].eth.sendSignedTransaction(rawTx);
   transactionQueue.unlock();
   return receipt;
 };
 const getTransactionSignature = async (chainName, contractName, transactionHash) => {
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
+  if (networkName === "main" && chainName === "main") {
+    chainName = mainnet;
+  } else if (networkName === "main" && chainName === "sidechain") {
+    chainName = mainnetsidechain;
+  } else if (networkName === "side" && chainName === "main") {
+    chainName = rinkeby;
+  } else if (networkName === "side" && chainName === "sidechain") {
+    chainName = rinkebysidechain;
+  }
+
   const u = `https://sign.exokit.org/${chainName}/${contractName}/${transactionHash}`;
   for (let i = 0; i < 10; i++) {
     const signature = await fetch(u).then(res => res.json());
@@ -139,7 +178,7 @@ const getAddressFromMnemonic = mnemonic => _getWalletFromMnemonic(mnemonic)
   .getAddressString();
 
 export {
-  getWeb3OrContracts,
+  getBlockchain,
   runSidechainTransaction,
   getTransactionSignature,
   getAddressFromMnemonic,

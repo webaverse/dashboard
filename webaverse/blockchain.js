@@ -4,7 +4,7 @@ import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 import ethereumJsTx from '../libs/ethereumjs-tx.js';
 import {makePromise} from './util.js';
-import {storageHost, web3SidechainEndpoint} from './constants.js';
+import {storageHost, web3RinkebySidechainEndpoint} from './constants.js';
 const {Transaction, Common} = ethereumJsTx;
 
 const getWeb3OrContracts = async() => {
@@ -27,7 +27,7 @@ const getWeb3OrContracts = async() => {
 
   const web3 = {
     main: main,
-    sidechain: new Web3(new Web3.providers.HttpProvider(web3SidechainEndpoint)),
+    sidechain: new Web3(new Web3.providers.HttpProvider(web3RinkebySidechainEndpoint)),
   };
   web3['sidechain'].eth.transactionConfirmationBlocks = 1;
 

@@ -4,7 +4,7 @@ import { useAppContext } from "../libs/contextLib";
 import CardSize from '../constants/CardSize.js';
 import { removeLandCollaborator, addLandCollaborator, getLandHash, deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawLand, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { getLandMain, getStores } from '../functions/UIStateFunctions.js'
-import { getWeb3OrContracts } from '../webaverse/blockchain.js'
+import { getBlockchain } from '../webaverse/blockchain.js'
 import Loader from './Loader';
 import AssetCard from './LandCard';
 
@@ -58,7 +58,7 @@ export default ({
       setLandHash(landHashRes);
     })();
     (async () => {
-      const { addresses } = await getWeb3OrContracts();
+      const { addresses } = await getBlockchain();
       setAddress(addresses);
     })();
   },  []);

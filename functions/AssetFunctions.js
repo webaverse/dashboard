@@ -293,12 +293,10 @@ export const deployLand = async (tokenId, contentId, successCallback, errorCallb
   }
 }
 
-export const mintNft = async (file, name, ext, description, quantity, successCallback, errorCallback, state) => {
+export const mintNft = async (hash, name, ext, description, quantity, successCallback, errorCallback, state) => {
   const { web3, contracts } = await getBlockchain();
   const  mnemonic = state.loginToken.mnemonic;
   const address = state.address;
-  const res = await fetch(storageHost, { method: 'POST', body: file });
-  const { hash } = await res.json();
 
   let status, transactionHash, tokenIds;
 

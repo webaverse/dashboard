@@ -10,12 +10,13 @@ import { storageHost } from "../webaverse/constants";
 import { getExt } from "../webaverse/util";
 import Loader from '../components/Loader';
 import AssetCard from '../components/Card';
-
+import { makeWbn } from "../webaverse/build";
 
 export default () => {
   const router = useRouter();
   const { globalState, setGlobalState } = useAppContext();
   const [file, setFile] = useState(null);
+  const [files, setFiles] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -33,6 +34,13 @@ export default () => {
     setLoading(false);
   }
 
+  useEffect(async () => {
+    if (files && files.length > 0) {
+      const wbn = await makeWbn(files);
+      handleFileUpload(wbn);
+    }
+  }, [files]);
+
   const handleNameChange = (e) => setName(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
   const handleQuantityChange = (e) => setQuantity(e.target.value);
@@ -44,42 +52,14 @@ export default () => {
     setMintedMessage(e.toString());
   }
 
-  const handleMintNftButton = (e) => {
-    e.preventDefault();
-    setMintedState('loading');
-
-    const ext = file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2);;
-    mintNft(file,
-      name,
-      ext,
-      description,
-      quantity,
-      (tokenId) => {
-        setMintedState('success')
-        setMintedMessage(tokenId)
-        setMintStage(4)
-      },
-      (err) => {
-        console.log("Minting failed", err);
-        setMintedState('error')
-        setMintedMessage(err.toString())
-      },
-      globalState
-    );
-  }
-
   const handleFileUpload = file => {
     if (file) {
       let reader = new FileReader();
       reader.onloadend = () => {
         const extName = getExt(file.name);
         const fileName = extName ? file.name.slice(0, -(extName.length + 1)) : file.name;
-        setFile(file);
-        setMintStage(2);
         setExtName(extName);
-        setFileName(fileName);
         setName(fileName);
-        setDescription("This is an awesome " + fileName + ".");
 
         fetch(storageHost, {
           method: 'POST',
@@ -89,6 +69,7 @@ export default () => {
         .then(data => {
           setHash(data.hash);
           setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
+          setMintStage(2);
         })
         .catch(error => {
           console.error(error)
@@ -114,21 +95,23 @@ export default () => {
     !loading && (<>
       {[
         !globalState.loginToken && (
-          <>
+          <React.Fragment key="login-required-message">
             <h1>You need to login to mint.</h1>
             <div className="container">
               <Image src="/404.png" width={121} height={459} />
             </div>
-          </>
+          </React.Fragment>
         ),
         globalState.loginToken && !file && (
-          <div className="file-drop-container">
+          <div key="file-drop-container" className="file-drop-container">
             <FileDrop
               onDrop={(files, e) => handleFileUpload(files[0])}
             >
               Drop the file you want to mint here!
               <label htmlFor="input-file" className="button">Or choose file</label>
               <input type="file" id="input-file" onChange={(e) => handleFileUpload(e.target.files[0])} multiple={false} style={{display: 'none'}} />
+              <label htmlFor="input-folder" className="button">Mint my code</label>
+              <input type="file" id="input-folder" onChange={(e) => setFiles(Array.from(e.target.files))} webkitdirectory="" mozdirectory="" directory="" style={{display: 'none'}} />
             </FileDrop>
           </div>),
         mintStage === 2 && (<MintSteps />),

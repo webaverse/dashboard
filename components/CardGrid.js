@@ -18,7 +18,7 @@ export default ({
             return;
           }
           return (
-            <Link href={"/assets/" + asset.id}> 
+            <Link key={asset.id} href={"/assets/" + asset.id}>
               <a>
                 <AssetCard
                    key={asset.id}

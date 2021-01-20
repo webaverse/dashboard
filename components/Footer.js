@@ -24,7 +24,7 @@ export default () =>
         </a>
       </div>
       <div className="copyright">
-        {"© 2020 Webaverse"}
+        {"© 2021 Webaverse"}
       </div>
     </div>
   </div>

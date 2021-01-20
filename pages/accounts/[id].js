@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
-import { setName, getLoadout } from "../../functions/AssetFunctions.js";
+import { setName, getLoadout, withdrawFlux } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
@@ -45,6 +45,67 @@ export default ({ data }) => {
     setLoading(false);
   }
 
+  const ethEnabled = () => {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      window.ethereum.enable();
+      if (window.web3.version.network == 4) {
+        return true;
+      } else {
+        alert("You need to be on the Rinkeby network.");
+        return false;
+      }
+    }
+    alert("Please install MetaMask to use Webaverse!");
+    return false;
+  }
+
+  const loginWithMetaMask = async (func) => {
+    if (!ethEnabled()) {
+      return;
+    } else {
+      const web3 = window.web3;
+      try {
+        const eth = await window.ethereum.request({ method: 'eth_accounts' });
+        if (eth && eth[0]) {
+          //setMainnetAddress(eth[0]);
+          return eth[0];
+        } else {
+          ethereum.on('accountsChanged', (accounts) => {
+            //setMainnetAddress(accounts[0]);
+            func();
+          });
+          return false;
+        }
+      } catch(err) {
+        handleError(err);
+      }
+    }
+  }
+
+  const handleWithdraw = async (e) => {
+    if(e) {
+      e.preventDefault();
+    }
+
+    setLoading(true);
+
+    try {
+      const ethAccount = await loginWithMetaMask(handleWithdraw);
+      if (ethAccount) {
+        const amount = prompt("How much FLUX do you want to transfer?", "10");
+        const mainnetAddress = prompt("What mainnet address do you want to transfer from?", "0x0");
+        await withdrawFlux(amount, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
+        handleSuccess();
+      } else {
+        setLoading(false);
+      }
+    } catch (err) {
+      handleError(err.toString());
+    }
+
+  }
+
   return (<>{
     loading ?
     <Loader loading={loading} />
@@ -59,8 +120,8 @@ export default ({ data }) => {
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       {[
-        (<ProfileHeader loadout={loadout} balance={balance} profile={profile} />),
-        (<div className="profileBodyNav">
+        (<ProfileHeader key="profileHeader" loadout={loadout} balance={balance} profile={profile} />),
+        (<div key="profileBodynav" className="profileBodyNav">
           <div className="profileBodyNavContainer">
             {store && store.length > 0 && (
             <a className={`profileNavLink ${selectedView === "store" ? "active disable" : ""}`} onClick={() => {
@@ -78,27 +139,30 @@ export default ({ data }) => {
             </a>)}
           </div>
         </div>),
-        (<div className="profileBodyAssets">
+        (<div key="profileBodyAssets" className="profileBodyAssets">
           {[
           selectedView === "store" && store && (
-            <CardGrid data={store} globalState={globalState} cardSize="small" />
+            <CardGrid key="storeCards" data={store} globalState={globalState} cardSize="small" />
           ),
           selectedView === "inventory" && inventory && (
-            <CardGrid data={inventory} globalState={globalState} cardSize="small" />
+            <CardGrid key="inventoryCards" data={inventory} globalState={globalState} cardSize="small" />
           )
           ]}
         </div>),
         selectedView === "settings" && globalState && globalState.address == id.toLowerCase() && (
-          <div className="settingsButtonsContainer">
+          <div key="settingsButtonsContainer" className="settingsButtonsContainer">
           {[
-            (<a className="button" onClick={() => {
+            (<a key="fluxButton" className="button" onClick={handleWithdraw}>
+              Transfer FLUX from mainnet
+            </a>),
+            (<a key="nameChangeButton" className="button" onClick={() => {
               const name = prompt("What is your name?", "Satoshi");
               setName(name, globalState, handleSuccess, handleError)
               setLoading(true);
             }}>
               Change Name
             </a>),
-            (<a className="button" onClick={() => logout()}>
+            (<a key="logoutButton" className="button" onClick={() => logout()}>
               Logout
             </a>)
           ]}

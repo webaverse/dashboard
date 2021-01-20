@@ -526,7 +526,6 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
 export const getLoadout = async (address) => {
   const { web3, contracts } = await getWeb3OrContracts();
   const loadoutString = await contracts.sidechain.Account.methods.getMetadata(address, 'loadout').call();
-  console.log("loadoutString", loadoutString);
   let loadout = loadoutString ? JSON.parse(loadoutString) : null;
   if (!Array.isArray(loadout)) {
     loadout = [];

@@ -63,7 +63,7 @@ export default () => {
     setLoading(true);
     setMintedState('loading');
 
-    mintNft(file,
+    mintNft(hash,
       name,
       extName,
       description,

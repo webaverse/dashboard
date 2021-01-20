@@ -377,19 +377,8 @@ export const setHomespace = async (id, state, successCallback, errorCallback) =>
 
 export const withdrawFlux = async (amount, mainnetAddress, address, state, successCallback, errorCallback) => {
   const { web3, contracts } = await getBlockchain();
-  console.log("got contracts", contracts);
-  console.log("got amount", amount);
-  console.log("got mainnetAddress", mainnetAddress);
   // Withdraw from mainnet
   amount = parseInt(amount, 10);
-  console.log("2 got amount", amount);
-/*
-  amount = {
-    t: 'uint256',
-    v: new web3['front'].utils.BN(amountNum),
-  };
-  console.log("3 got amount", amount);
-*/
 
   await contracts.front.FT.methods.approve(contracts.front.FTProxy._address, amount).send({
     from: mainnetAddress,

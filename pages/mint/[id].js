@@ -59,8 +59,8 @@ export default () => {
   }
 
   const handleMintNftButton = (e) => {
-    e.preventDefault();
     setLoading(true);
+    e.preventDefault();
     setMintedState('loading');
 
     mintNft(hash,
@@ -125,41 +125,41 @@ export default () => {
             </div>
           </>
         ),
-      mintStage === 3 && globalState && globalState.loginToken && (
-        <div className="mintContainer">
-          <div className="mintCardContainer">
-            <AssetCard
-              id={42}
-              totalSupply={quantity}
-              assetName={name}
-              ext={extName}
-              description={description}
-              image={"https://preview.exokit.org/" + hash + "." + extName + "/preview.png"}
-              hash={hash}
-              minterAvatarPreview={globalState.avatarPreview}
-              minterUsername={globalState.name}
-              minterAddress={globalState.address}
-              cardSize={""}
-              networkType='webaverse'
-              glow={true}
-            />
-          </div>
-          <div className="mintFormContainer">
-            <div className="mintFormSubContainer">
-                  <label>Name</label>
-                  <input type="text" placeholder={fileName} value={name} onChange={handleNameChange} />
-                  <label>Description</label>
-                  <input type="text" placeholder="This item is awesome." value={description} onChange={handleDescriptionChange} />
-                  <label>Quantity</label>
-                  <input type="number" value={quantity} onChange={handleQuantityChange} />
-              <a className={`button noselect mintButton`} onClick={handleMintNftButton}>
-                Mint for {10*quantity} FLUX
-              </a>
+        !loading && mintStage === 3 && globalState && globalState.loginToken && (
+          <div className="mintContainer">
+            <div className="mintCardContainer">
+              <AssetCard
+                id={42}
+                totalSupply={quantity}
+                assetName={name}
+                ext={extName}
+                description={description}
+                image={"https://preview.exokit.org/" + hash + "." + extName + "/preview.png"}
+                hash={hash}
+                minterAvatarPreview={globalState.avatarPreview}
+                minterUsername={globalState.name}
+                minterAddress={globalState.address}
+                cardSize={""}
+                networkType='webaverse'
+                glow={true}
+              />
+            </div>
+            <div className="mintFormContainer">
+              <div className="mintFormSubContainer">
+                    <label>Name</label>
+                    <input type="text" placeholder={fileName} value={name} onChange={handleNameChange} />
+                    <label>Description</label>
+                    <input type="text" placeholder="This item is awesome." value={description} onChange={handleDescriptionChange} />
+                    <label>Quantity</label>
+                    <input type="number" value={quantity} onChange={handleQuantityChange} />
+                <a className={`button noselect mintButton`} onClick={handleMintNftButton}>
+                  Mint for {10*quantity} FLUX
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      ),
-      mintStage === 4 && (<MintSteps />),
+        ),
+        !loading && mintStage === 4 && (<MintSteps />),
       ]}
     </>),
   ]}</>

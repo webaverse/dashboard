@@ -62,10 +62,9 @@ export default () => {
     e.preventDefault();
     setMintedState('loading');
 
-    const ext = file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2);;
     mintNft(file,
       name,
-      ext,
+      extName,
       description,
       quantity,
       (tokenId) => {

@@ -147,13 +147,13 @@ const getTransactionSignature = async (chainName, contractName, transactionHash)
   const networkName = getNetworkName();
 
   if (networkName === "main" && chainName === "main") {
-    chainName = mainnet;
+    chainName = "mainnet";
   } else if (networkName === "main" && chainName === "sidechain") {
-    chainName = mainnetsidechain;
+    chainName = "mainnetsidechain";
   } else if (networkName === "side" && chainName === "main") {
-    chainName = rinkeby;
+    chainName = "rinkeby";
   } else if (networkName === "side" && chainName === "sidechain") {
-    chainName = rinkebysidechain;
+    chainName = "rinkebysidechain";
   }
 
   const u = `https://sign.exokit.org/${chainName}/${contractName}/${transactionHash}`;

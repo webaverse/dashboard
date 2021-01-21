@@ -381,7 +381,7 @@ export const setHomespace = async (id, state, successCallback, errorCallback) =>
   }
 };
 
-export const depositFlux = async (amount, mainnetAddress, address, state, successCallback, errorCallback) => {
+export const depositFlux = async (amount, mainnetAddress, state, successCallback, errorCallback) => {
   const { web3, contracts } = await getBlockchain();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();

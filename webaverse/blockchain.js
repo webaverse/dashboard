@@ -146,13 +146,13 @@ const getTransactionSignature = async (chainName, contractName, transactionHash)
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
-  if (networkName === "main" && chainName === "main") {
+  if (networkName === "main" && chainName === "front") {
     chainName = "mainnet";
-  } else if (networkName === "main" && chainName === "sidechain") {
+  } else if (networkName === "main" && chainName === "back") {
     chainName = "mainnetsidechain";
-  } else if (networkName === "side" && chainName === "main") {
+  } else if (networkName === "side" && chainName === "front") {
     chainName = "rinkeby";
-  } else if (networkName === "side" && chainName === "sidechain") {
+  } else if (networkName === "side" && chainName === "back") {
     chainName = "rinkebysidechain";
   }
 

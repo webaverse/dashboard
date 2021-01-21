@@ -41,6 +41,7 @@
   text-shadow: 0 0 0.1em rgba(0,0,0,.5);
 }
 .navbar .navbarContainer .navbarMenu .rightMenuContainer {
+  display: flex;
   margin-left: auto;
   margin-right: auto;
 }
@@ -65,6 +66,7 @@
   -ms-user-select: none;
   user-select: none;
   padding: 0 25px;
+  margin: auto 0;
 }
 .navbar .navbarMenu .secondaryMenu {
   margin: 0;
@@ -150,9 +152,10 @@
 .navbarTopLevelMenuOption:hover .navbarSubMenuContainer {
   display: block;
 }
-.navbarTopLevelMenuOption:hover .navbarLinkItem {
+.item:hover {
   text-decoration: underline;
   text-decoration-color: #c4005d;
+  text-underline-position: under;
 }
 .navbarSubMenuLinkItem:hover {
   transition: all 1s ease;
@@ -170,7 +173,7 @@
   transition: all 1s ease;
 }
 
-@media screen and (min-width: 844px) {
+@media screen and (min-width: 1280px) {
   .desktop {
     display: flex;
   }
@@ -178,7 +181,7 @@
     display: none;
   }
 }
-@media screen and (max-width: 844px) {
+@media screen and (max-width: 1280px) {
   .mobile {
     display: flex;
   }
@@ -186,9 +189,10 @@
     display: none;
   }
 }
-@media screen and (max-width: 844px) {
-  .rightMenuContainer {
-    display: none;
+@media screen and (max-width: 1280px) {
+  .rightMenuContainer,
+  .navbarFluxContainer {
+    display: none !important;
   }
   .navbarIcon {
     float: right;
@@ -203,7 +207,7 @@
   }
 }
 
-@media screen and (max-width: 844px) {
+@media screen and (max-width: 1280px) {
   .rightMenuContainer.responsive {position: relative;}
   .rightMenuContainer.responsive a.icon {
     position: absolute;

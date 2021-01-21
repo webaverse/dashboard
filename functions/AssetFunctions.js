@@ -148,7 +148,7 @@ export const setAvatar = async (id, state, successCallback, errorCallback) => {
   if (!state.loginToken)
     throw new Error('not logged in');
   try {
-    const res = await fetch(`${networkName !== "main" ? `https://tokens.webaverse.com/${id}` : `https://tokens-main.webaverse.com/${id}`}`);
+    const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain.webaverse.com/${id}` : `https://mainnetsidechain.rinkebysidechain.webaverse.com/${id}`}`);
     const token = await res.json();
     const { name, ext, hash } = token.properties;
     const url = `${storageHost}/${hash.slice(2)}`;
@@ -355,7 +355,7 @@ export const setHomespace = async (id, state, successCallback, errorCallback) =>
 
   try {
 
-    const res = await fetch(`${networkName !== "main" ? `https://tokens.webaverse.com/${id}` : `https://tokens-main.webaverse.com/${id}`}`);
+    const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain.webaverse.com/${id}` : `https://mainnetsidechain.rinkebysidechain.webaverse.com/${id}`}`);
     const token = await res.json();
     const { name, ext, hash } = token.properties;
     const url = `${storageHost}/${hash.slice(2)}`;

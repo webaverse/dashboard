@@ -12,8 +12,8 @@ export default ({ data }) => {
     </div>
 }
 
-export async function getServerSideProps() {
-  const data = await getLands(1, 100);
+export async function getServerSideProps(context) {
+  const data = await getLands(1, 100, context.req.headers.host);
 
   return { props: { data } }
 }

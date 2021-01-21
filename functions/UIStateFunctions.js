@@ -53,7 +53,7 @@ export const getLands = async (start, end, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://rinkeby.land.webaverse.com/${start}-${end}` : `https://mainnetsidechain-land.webaverse.com/${start}-${end}`}`);
+  const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain-land.webaverse.com/${start}-${end}` : `https://mainnetsidechain-land.webaverse.com/${start}-${end}`}`);
 
   const tokens = await res.json();
 
@@ -69,7 +69,7 @@ export const getLand = async (id, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://rinkeby.land.webaverse.com/${id}` : `https://mainnetsidechain-land.webaverse.com/${id}`}`);
+  const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain-land.webaverse.com/${id}` : `https://mainnetsidechain-land.webaverse.com/${id}`}`);
 
   const land = await res.json();
 

@@ -104,3 +104,6 @@ a {
   display: flex;
   padding-top: 65px;
 }
+.hidden {
+  display: none;
+}

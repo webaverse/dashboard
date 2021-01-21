@@ -37,13 +37,6 @@ export default () => {
     setInit(true);
   }
 
-  useEffect(async () => {
-    if (files && files.length > 0) {
-      const wbn = await makeWbn(files);
-      handleFileUpload(wbn);
-    }
-  }, [files]);
-
   const handleNameChange = (e) => setName(e.target.value);
   const handleDescriptionChange = (e) => setDescription(e.target.value);
   const handleQuantityChange = (e) => setQuantity(e.target.value);
@@ -53,6 +46,27 @@ export default () => {
   }
   const handleError = (e) => {
     setMintedMessage(e.toString());
+  }
+
+  const handleFilesMagically = async (files) => {
+    setLoading(true);
+    console.log("got files", files);
+    console.log("got files[0]", files[0]);
+    console.log("got files[0].name", files[0].name);
+    if (files.length > 1) {
+      const filesArray = Array.from(files)
+      const wbn = await makeWbn(filesArray);
+      handleFileUpload(wbn);
+    } else if (files.length === 1) {
+      if (getExt(files[0].name) === "glb") {
+        makePhysicsBake(files);
+      } else {
+        handleFileUpload(files[0]);
+      }
+    } else {
+      alert("No files uploaded!");
+      setLoading(false);
+    }
   }
 
   const makePhysicsBake = async (file) => {
@@ -126,15 +140,11 @@ export default () => {
               <script type="text/javascript" src="/geometry.js"></script>
             </Head>
             <FileDrop
-              onDrop={(files, e) => handleFileUpload(files[0])}
+              onDrop={(files, e) => handleFilesMagically(files)}
             >
               Drop the file you want to mint here!
               <label htmlFor="input-file" className="button">Or choose file</label>
-              <input type="file" id="input-file" onChange={(e) => handleFileUpload(e.target.files[0])} multiple={false} style={{display: 'none'}} />
-              <label htmlFor="input-folder" className="button">Mint my code</label>
-              <input type="file" id="input-folder" onChange={(e) => setFiles(Array.from(e.target.files))} webkitdirectory="" mozdirectory="" directory="" style={{display: 'none'}} />
-              <label htmlFor="input-model" className="button">Mint my model with physics</label>
-              <input type="file" id="input-model" onChange={(e) => makePhysicsBake(e.target.files)} multiple={false} style={{display: 'none'}} />
+              <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
             </FileDrop>
           </div>),
       ]}

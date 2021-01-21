@@ -21,17 +21,18 @@ const Navbar = () => {
               Webaverse
             </Link>
           </div>
-          <div onClick={() => setDropdown(false)} className={`rightMenuContainer mobile ${dropdown ? "responsive" : ""}`}>
-            <Link href="/assets"><a className={`navbarSubMenuLinkItem item`}>Browse</a></Link>
-            <Link href="/land"><a className={`navbarSubMenuLinkItem item`}>Land</a></Link>
-            <Link href="/map"><a className={`navbarSubMenuLinkItem item`}>Map</a></Link>
-            <Link href="/accounts"><a className={`navbarSubMenuLinkItem item`}>Accounts</a></Link>
-            <Link href="/mint"><a className={`navbarSubMenuLinkItem item`}>Mint</a></Link>
-            <a className={`navbarSubMenuLinkItem item`} href="https://docs.webaverse.com">Docs</a>
-            <a className={`navbarSubMenuLinkItem item`} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
-            <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
-            <a className={`navbarSubMenuLinkItem item`} href="https://app.webaverse.com">Play</a>
+          <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
+            <a className={`item`} href="https://app.webaverse.com">Play</a>
+            <Link href="/assets"><a className={`item`}>Browse</a></Link>
+            <Link href="/land"><a className={`item`}>Land</a></Link>
+            <Link href="/map"><a className={`item`}>Map</a></Link>
+            <Link href="/accounts"><a className={`item`}>Accounts</a></Link>
+            <Link href="/mint"><a className={`item`}>Mint</a></Link>
+            <a className={`item`} href="https://docs.webaverse.com">Docs</a>
+            <a className={`item`} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
+            <a className={`item`} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
           </div>
+{/*
           <div onClick={() => setDropdown(false)} className={`rightMenuContainer desktop`}>
             <div className="navbarTopLevelMenuOption">
               <a className="navbarLinkItem item" href="https://app.webaverse.com">Play</a>
@@ -57,7 +58,6 @@ const Navbar = () => {
                     <Link href="/land"><a className={`navbarSubMenuLinkItem item`}>Land</a></Link>
                     <Link href="/map"><a className={`navbarSubMenuLinkItem item`}>Map</a></Link>
                     <Link href="/accounts"><a className={`navbarSubMenuLinkItem item`}>Accounts</a></Link>
-                    <Link href="/mint"><a className={`navbarSubMenuLinkItem item`}>Mint</a></Link>
                   </div>
                 </div>
               </div>
@@ -66,7 +66,7 @@ const Navbar = () => {
               <Link href="/mint"><a className="navbarLinkItem item">Mint</a></Link>
             </div>
           </div>
-
+*/}
           <div onClick={() => setDropdown(false)} className={`navbarFluxContainer desktop`}>
             <a className="navbarFluxSymbol">
               山

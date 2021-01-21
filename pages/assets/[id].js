@@ -47,8 +47,8 @@ export default ({ data }) => {
   )
 }
 
-export async function getServerSideProps({ params }) {
-  const data = await getToken(params.id);
+export async function getServerSideProps(context) {
+  const data = await getToken(context.params.id, context.req.headers.host);
 
   return { props: { data } }
 }

@@ -5,6 +5,18 @@ import storage from './Storage.js';
 
 const hdkey = hdkeySpec.default;
 
+export const getNetworkNameFromHostName = (hostname) => {
+  let networkName = null;
+  if (hostname) {
+    if (/^main\./.test(hostname)) {
+      networkName = 'main';
+    } else {
+      networkName = 'side';
+    }
+  }
+  return networkName;
+}
+
 export const getBalance = async (address) => {
   const { web3, contracts } = await getBlockchain();
   try {
@@ -32,9 +44,14 @@ export const getLandMain = async (id) => {
   return tokens;
 };
 
-export const getLands = async (start, end) => {
-  const { getNetworkName } = await getBlockchain();
-  const networkName = getNetworkName();
+export const getLands = async (start, end, hostname) => {
+  let networkName;
+  if (hostname) {
+    networkName = getNetworkNameFromHostName(hostname);
+  } else {
+    const { getNetworkName } = await getBlockchain();
+    networkName = getNetworkName();
+  }
 
   const res = await fetch(`${networkName !== "main" ? `https://land.webaverse.com/${start}-${end}` : `https://land-main.webaverse.com/${start}-${end}`}`);
 
@@ -43,9 +60,14 @@ export const getLands = async (start, end) => {
   return tokens;
 };
 
-export const getLand = async (id) => {
-  const { getNetworkName } = await getBlockchain();
-  const networkName = getNetworkName();
+export const getLand = async (id, hostname) => {
+  let networkName;
+  if (hostname) {
+    networkName = getNetworkNameFromHostName(hostname);
+  } else {
+    const { getNetworkName } = await getBlockchain();
+    networkName = getNetworkName();
+  }
 
   const res = await fetch(`${networkName !== "main" ? `https://land.webaverse.com/${id}` : `https://land-main.webaverse.com/${id}`}`);
 
@@ -54,9 +76,14 @@ export const getLand = async (id) => {
   return land;
 };
 
-export const getTokens = async (start, end) => {
-  const { getNetworkName } = await getBlockchain();
-  const networkName = getNetworkName();
+export const getTokens = async (start, end, hostname) => {
+  let networkName;
+  if (hostname) {
+    networkName = getNetworkNameFromHostName(hostname);
+  } else {
+    const { getNetworkName } = await getBlockchain();
+    networkName = getNetworkName();
+  }
 
   const res = await fetch(`${networkName !== "main" ? `https://tokens.webaverse.com/${start}-${end}` : `https://tokens-main.webaverse.com/${start}-${end}`}`);
   const tokens = await res.json();
@@ -64,9 +91,14 @@ export const getTokens = async (start, end) => {
   return tokens;
 };
 
-export const getToken = async (id) => {
-  const { getNetworkName } = await getBlockchain();
-  const networkName = getNetworkName();
+export const getToken = async (id, hostname) => {
+  let networkName;
+  if (hostname) {
+    networkName = getNetworkNameFromHostName(hostname);
+  } else {
+    const { getNetworkName } = await getBlockchain();
+    networkName = getNetworkName();
+  }
 
   const res = await fetch(`${networkName !== "main" ? `https://tokens.webaverse.com/${id}` : `https://tokens-main.webaverse.com/${id}`}`);
 
@@ -84,9 +116,14 @@ export const clearInventroryForCreator = async (creatorAddress, state) => {
   return newState;
 };
 
-export const getInventoryForCreator = async (creatorAddress) => {
-  const { getNetworkName } = await getBlockchain();
-  const networkName = getNetworkName();
+export const getInventoryForCreator = async (creatorAddress, hostname) => {
+  let networkName;
+  if (hostname) {
+    networkName = getNetworkNameFromHostName(hostname);
+  } else {
+    const { getNetworkName } = await getBlockchain();
+    networkName = getNetworkName();
+  }
 
   const res = await fetch(`${networkName !== "main" ? `https://tokens.webaverse.com/${creatorAddress}` : `https://tokens-main.webaverse.com/${creatorAddress}`}`);
 
@@ -99,10 +136,16 @@ export const getInventoryForCreator = async (creatorAddress) => {
   return creatorInventory;
 };
 
-export const getStoreForCreator = async (creatorAddress) => {
+export const getStoreForCreator = async (creatorAddress, hostname) => {
   creatorAddress = creatorAddress.toLowerCase();
-  const { getNetworkName } = await getBlockchain();
-  const networkName = getNetworkName();
+
+  let networkName;
+  if (hostname) {
+    networkName = getNetworkNameFromHostName(hostname);
+  } else {
+    const { getNetworkName } = await getBlockchain();
+    networkName = getNetworkName();
+  }
 
   const res = await fetch(`${networkName !== "main" ? `https://store.webaverse.com/${creatorAddress}` : `https://store-main.webaverse.com/${creatorAddress}`}`);
 
@@ -154,11 +197,11 @@ export const getBooths = async (page) => {
 
 export const getStores = async () => {
   const { web3, contracts } = await getBlockchain();
-  const numStores = await contracts['sidechain']['Trade'].methods.numStores().call();
+  const numStores = await contracts['back']['Trade'].methods.numStores().call();
   const booths = [];
   const sales = {};
   for (let i = 0; i < numStores; i++) {
-    const store = await contracts['sidechain']['Trade'].methods.getStoreByIndex(i + 1).call();
+    const store = await contracts['back']['Trade'].methods.getStoreByIndex(i + 1).call();
     if (store.live) {
       const id = parseInt(store.id, 10);
       const seller = store.seller.toLowerCase();

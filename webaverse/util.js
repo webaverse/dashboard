@@ -1,5 +1,8 @@
 import * as THREE from '../libs/three.module.js';
 import atlaspack from '../libs/atlaspack.js';
+import {BufferGeometryUtils} from '../libs/BufferGeometryUtils.js';
+
+const localVector = new THREE.Vector3();
 
 export function parseQuery(queryString) {
   var query = {};
@@ -66,6 +69,7 @@ export function bindUploadFileButton(inputFileEl, handleUpload) {
 export function blobToFile(theBlob, fileName){
   theBlob.lastModifiedDate = new Date();
   theBlob.name = fileName;
+  theBlob.webkitRelativePath = fileName;
   return theBlob;
 }
 
@@ -315,4 +319,47 @@ export function mergeMeshes(meshes, geometries, textures) {
 
   const mesh = new THREE.Mesh(geometry, material);
   return mesh;
+}
+export function convertMeshToPhysicsMesh(mesh) {
+  mesh.updateMatrixWorld();
+
+  const meshes = [];
+  mesh.traverse(o => {
+    if (o.isMesh) {
+      meshes.push(o);
+    }
+  });
+  const newGeometries = meshes.map(mesh => {
+    const {geometry} = mesh;
+    const newGeometry = new THREE.BufferGeometry();
+
+    if (geometry.attributes.position.isInterleavedBufferAttribute) {
+      const positions = new Float32Array(geometry.attributes.position.count * 3);
+      for (let i = 0, j = 0; i < positions.length; i += 3, j += geometry.attributes.position.data.stride) {
+        localVector
+          .fromArray(geometry.attributes.position.data.array, j)
+          .applyMatrix4(mesh.matrixWorld)
+          .toArray(positions, i);
+      }
+      newGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    } else {
+      const positions = new Float32Array(geometry.attributes.position.array.length);
+      for (let i = 0; i < positions.length; i += 3) {
+        localVector
+          .fromArray(geometry.attributes.position.array, i)
+          .applyMatrix4(mesh.matrixWorld)
+          .toArray(positions, i);
+      }
+      newGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    }
+
+    if (geometry.index) {
+      newGeometry.setIndex(geometry.index);
+    }
+
+    return newGeometry;
+  });
+  const newGeometry = BufferGeometryUtils.mergeBufferGeometries(newGeometries);
+  const physicsMesh = new THREE.Mesh(newGeometry);
+  return physicsMesh;
 }

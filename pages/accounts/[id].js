@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
-import { setName, getLoadout, withdrawFlux } from "../../functions/AssetFunctions.js";
+import { setName, getLoadout, withdrawFlux, depositFlux } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
@@ -83,6 +83,29 @@ export default ({ data }) => {
     }
   }
 
+  const handleDeposit = async (e) => {
+    if(e) {
+      e.preventDefault();
+    }
+
+    setLoading(true);
+
+    try {
+      const ethAccount = await loginWithMetaMask(handleWithdraw);
+      if (ethAccount) {
+        const amount = prompt("How much FLUX do you want to transfer?", "10");
+        const mainnetAddress = prompt("What mainnet address do you want to transfer to?", "0x0");
+        await depositFlux(amount, mainnetAddress, globalState, handleSuccess, handleError);
+        handleSuccess();
+      } else {
+        setLoading(false);
+      }
+    } catch (err) {
+      handleError(err.toString());
+    }
+
+  }
+
   const handleWithdraw = async (e) => {
     if(e) {
       e.preventDefault();
@@ -152,6 +175,9 @@ export default ({ data }) => {
         selectedView === "settings" && globalState && globalState.address == id.toLowerCase() && (
           <div key="settingsButtonsContainer" className="settingsButtonsContainer">
           {[
+            (<a key="fluxToMainnetButton" className="button" onClick={handleDeposit}>
+              Transfer FLUX to mainnet
+            </a>),
             (<a key="fluxButton" className="button" onClick={handleWithdraw}>
               Transfer FLUX from mainnet
             </a>),

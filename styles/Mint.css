@@ -12,8 +12,8 @@ input {
 }
 .file-drop-container {
   border: 1px solid #c4005d;
-  width: 75%;
-  height: 50vh;
+  width: 95%;
+  height: 95%;
   text-align: center;
   margin: 0 auto;
 }

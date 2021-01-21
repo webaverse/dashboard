@@ -238,16 +238,22 @@ export const getStores = async () => {
 };
 
 export const getCreators = async () => {
-  const res = await fetch(`https://accounts.webaverse.com/`);
+  const { getNetworkName } = await getBlockchain();
+  networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain-accounts.webaverse.com/` : `https://mainnetsidechain-accounts.webaverse.com/`}`);
+
   const creators = await res.json();
 
   return creators;
 };
 
 export const pullUser = async (state) => {
-
   const address = state.address;
-  const res = await fetch(`https://accounts.webaverse.com/${address}`);
+  const { getNetworkName } = await getBlockchain();
+  networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain-accounts.webaverse.com/${address}` : `https://mainnetsidechain-accounts.webaverse.com/${address}`}`);
   const result = await res.json();
   const newState = {
     ...state,
@@ -259,7 +265,10 @@ export const pullUser = async (state) => {
 
 export const pullUserObject = async (state) => {
   const address = getAddressFromMnemonic(state.loginToken.mnemonic);
-  const res = await fetch(`https://accounts.webaverse.com/${address}`);
+  const { getNetworkName } = await getBlockchain();
+  networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain-accounts.webaverse.com/${address}` : `https://mainnetsidechain-accounts.webaverse.com/${address}`}`);
   const result = await res.json();
   const newState = {
     ...state,

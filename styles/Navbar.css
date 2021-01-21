@@ -93,7 +93,7 @@
   display: none;
 }
 .navbarFluxContainer {
-  display: flex;
+  display: flex !important;
   flex-direction: row;
   width: 150px;
   height: 25px;
@@ -128,6 +128,9 @@
   background-color: #d4055a;
 }
 
+.rightMenuContainer {
+  transition: all 1s ease;
+}
 .navbarSubMenuContainer {
   position: fixed;
   width: 100%;
@@ -141,11 +144,21 @@
 }
 .navbarTopLevelMenuOption {
   height: 100%;
+  display: flex;
+  transition: all 1s ease;
 }
 .navbarTopLevelMenuOption:hover .navbarSubMenuContainer {
   display: block;
 }
-.navbarLinkLearn {
+.navbarTopLevelMenuOption:hover .navbarLinkItem {
+  text-decoration: underline;
+  text-decoration-color: #c4005d;
+}
+.navbarSubMenuLinkItem:hover {
+  transition: all 1s ease;
+  background: #312936;
+}
+.navbarLinkItem {
   display: flex;
   position: relative;
   display: flex;
@@ -154,8 +167,25 @@
   width: fit-content;
   height: 100%;
   cursor: pointer;
+  transition: all 1s ease;
 }
 
+@media screen and (min-width: 844px) {
+  .desktop {
+    display: flex;
+  }
+  .mobile {
+    display: none;
+  }
+}
+@media screen and (max-width: 844px) {
+  .mobile {
+    display: flex;
+  }
+  .desktop {
+    display: none;
+  }
+}
 @media screen and (max-width: 844px) {
   .rightMenuContainer {
     display: none;

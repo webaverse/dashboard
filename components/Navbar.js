@@ -21,7 +21,7 @@ const Navbar = () => {
               Webaverse
             </Link>
           </div>
-          <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
+          <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : "hidden"}`}>
             <Link href="/assets"><a className="item">Browse</a></Link>
             <Link href="/land"><a className="item">Land</a></Link>
             <Link href="/map"><a className="item">Map</a></Link>
@@ -32,7 +32,27 @@ const Navbar = () => {
             <a className="item" target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
             <a className="item" href="https://app.webaverse.com">Play</a>
           </div>
-          <div onClick={() => setDropdown(false)} className={`navbarFluxContainer ${dropdown ? "responsive" : ""}`}>
+          <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "hidden" : ""}`}>
+            <div className="navbarTopLevelMenuOption">
+              <a className="navbarLinkLearn item" href="https://docs.webaverse.com">Learn</a>
+              <div className="navbarSubMenuContainer">
+                <div className="navbarSubMenu">
+                  <div className="navbarSubMenuLeftbar">
+                    <Link href="/assets"><a className="item">Browse</a></Link>
+                    <Link href="/land"><a className="item">Land</a></Link>
+                    <Link href="/map"><a className="item">Map</a></Link>
+                    <Link href="/accounts"><a className="item">Accounts</a></Link>
+                    <Link href="/mint"><a className="item">Mint</a></Link>
+                    <a className="item" href="https://docs.webaverse.com">Docs</a>
+                    <a className="item" href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
+                    <a className="item" target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
+                    <a className="item" href="https://app.webaverse.com">Play</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "hidden" : ""}`}>
             <a className="navbarFluxSymbol">
               山
             </a>

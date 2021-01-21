@@ -173,11 +173,11 @@ export default ({ data }) => {
   }</>)
 }
 
-export async function getServerSideProps({ params }) {
-  const id = params.id;
+export async function getServerSideProps(context) {
+  const id = context.params.id;
 
   const profile = await getProfileForCreator(id);
-  const inventory = await getInventoryForCreator(id);
+  const inventory = await getInventoryForCreator(id, context.req.headers.host);
   const store = await getStoreForCreator(id);
   const balance = await getBalance(id);
   const loadout = await getLoadout(id);

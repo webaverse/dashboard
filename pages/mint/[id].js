@@ -22,7 +22,6 @@ export default () => {
   const [quantity, setQuantity] = useState(1);
   const [imagePreview, setImagePreview] = useState(null);
   const [mintedState, setMintedState] = useState(null);
-  const [mintStage, setMintStage] = useState(3);
   const [mintedMessage, setMintedMessage] = useState(null);
   const [ipfsUrl, setIpfsUrl] = useState(null);
   const [extName, setExtName] = useState(null);
@@ -71,7 +70,7 @@ export default () => {
       (tokenId) => {
         setMintedState('success')
         setMintedMessage(tokenId)
-        setMintStage(4)
+        router.push('/assets/' + tokenId);
       },
       (err) => {
         console.log("Minting failed", err);
@@ -80,29 +79,6 @@ export default () => {
       },
       globalState
     );
-  }
-
-  const MintSteps = () => {
-    if (mintedState === "loading") {
-      return (
-        <Loader loading={true} />
-      )
-    } else if (mintedState === "success") {
-      if (mintedMessage) {
-        router.push('/assets/' + mintedMessage);
-      }
-
-      return (
-        <Loader loading={true} />
-      )
-    } else if (mintedState === "error") {
-      return (
-        <div>
-          <h1>Error</h1>
-          {mintedMessage}.
-        </div>
-      )
-    }
   }
 
   return (<>{[
@@ -117,7 +93,7 @@ export default () => {
             </div>
           </>
         ),
-        !hash && (
+        globalState.loginToken && !hash && (
           <>
             <h1>you need a correct hash to mint!</h1>
             <div classname="container">
@@ -125,7 +101,14 @@ export default () => {
             </div>
           </>
         ),
-        !loading && mintStage === 3 && globalState && globalState.loginToken && (
+        globalState.loginToken && hash && (
+          <>
+            <p className="mintFinalStepText">
+              This is the final step! Here you can see what you{"'"}re about to mint and make any changes. When you{"'"}re ready to mint, just click the big glowing button!
+            </p>
+          </>
+        ),
+        !loading && hash && globalState.loginToken && (
           <div className="mintContainer">
             <div className="mintCardContainer">
               <AssetCard
@@ -141,7 +124,7 @@ export default () => {
                 minterAddress={globalState.address}
                 cardSize={""}
                 networkType='webaverse'
-                glow={true}
+                glow={false}
               />
             </div>
             <div className="mintFormContainer">
@@ -159,7 +142,6 @@ export default () => {
             </div>
           </div>
         ),
-        !loading && mintStage === 4 && (<MintSteps />),
       ]}
     </>),
   ]}</>

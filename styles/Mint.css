@@ -143,3 +143,9 @@ input {
   font-size: 1.05em;
   margin: 0;
 }
+.mintFinalStepText {
+  max-width: 662px;
+  text-align: center;
+  margin: 25px auto;
+  margin-bottom: 75px;
+}

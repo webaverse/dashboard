@@ -142,10 +142,13 @@ export const setName = async (name, state, successCallback, errorCallback) => {
 
 
 export const setAvatar = async (id, state, successCallback, errorCallback) => {
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
   if (!state.loginToken)
     throw new Error('not logged in');
   try {
-    const res = await fetch(`https://tokens.webaverse.com/${id}`);
+    const res = await fetch(`${networkName !== "main" ? `https://tokens.webaverse.com/${id}` : `https://tokens-main.webaverse.com/${id}`}`);
     const token = await res.json();
     const { name, ext, hash } = token.properties;
     const url = `${storageHost}/${hash.slice(2)}`;
@@ -347,9 +350,12 @@ export const setHomespace = async (id, state, successCallback, errorCallback) =>
   if (!state.loginToken)
     throw new Error('not logged in');
   console.log("Setting homespace");
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
   try {
 
-    const res = await fetch(`https://tokens.webaverse.com/${id}`);
+    const res = await fetch(`${networkName !== "main" ? `https://tokens.webaverse.com/${id}` : `https://tokens-main.webaverse.com/${id}`}`);
     const token = await res.json();
     const { name, ext, hash } = token.properties;
     const url = `${storageHost}/${hash.slice(2)}`;

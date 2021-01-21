@@ -142,8 +142,8 @@ export default () => {
             <FileDrop
               onDrop={(files, e) => handleFilesMagically(files)}
             >
-              Drop the file you want to mint here!
-              <label htmlFor="input-file" className="button">Or choose file</label>
+              Drop files here to mint or
+              <label htmlFor="input-file" className="button">Upload</label>
               <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
             </FileDrop>
           </div>),

@@ -33,28 +33,44 @@ export const getLandMain = async (id) => {
 };
 
 export const getLands = async (start, end) => {
-  const res = await fetch(`https://land.webaverse.com/${start}-${end}`);
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://land.webaverse.com/${start}-${end}` : `https://land-main.webaverse.com/${start}-${end}`}`);
+
   const tokens = await res.json();
 
   return tokens;
 };
 
 export const getLand = async (id) => {
-  const res = await fetch(`https://land.webaverse.com/${id}`);
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://land.webaverse.com/${id}` : `https://land-main.webaverse.com/${id}`}`);
+
   const land = await res.json();
 
   return land;
 };
 
 export const getTokens = async (start, end) => {
-  const res = await fetch(`https://tokens.webaverse.com/${start}-${end}`);
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://tokens.webaverse.com/${start}-${end}` : `https://tokens-main.webaverse.com/${start}-${end}`}`);
   const tokens = await res.json();
 
   return tokens;
 };
 
 export const getToken = async (id) => {
-  const res = await fetch(`https://tokens.webaverse.com/${id}`);
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://tokens.webaverse.com/${id}` : `https://tokens-main.webaverse.com/${id}`}`);
+
+
   const token = await res.json();
 
   return token;
@@ -69,7 +85,11 @@ export const clearInventroryForCreator = async (creatorAddress, state) => {
 };
 
 export const getInventoryForCreator = async (creatorAddress) => {
-  const res = await fetch(`https://tokens.webaverse.com/${creatorAddress}`);
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://tokens.webaverse.com/${creatorAddress}` : `https://tokens-main.webaverse.com/${creatorAddress}`}`);
+
   const creatorInventory = await res.json();
 
   if (creatorInventory && creatorInventory.length === 1 && creatorInventory[0] === "0") {
@@ -81,8 +101,11 @@ export const getInventoryForCreator = async (creatorAddress) => {
 
 export const getStoreForCreator = async (creatorAddress) => {
   creatorAddress = creatorAddress.toLowerCase();
-  const address = `https://store.webaverse.com/${creatorAddress}`;
-  const res = await fetch(address);
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://store.webaverse.com/${creatorAddress}` : `https://store-main.webaverse.com/${creatorAddress}`}`);
+
   const creatorBooth = await res.json();
 
   let data;

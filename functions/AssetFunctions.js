@@ -381,6 +381,37 @@ export const setHomespace = async (id, state, successCallback, errorCallback) =>
   }
 };
 
+export const depositFlux = async (amount, mainnetAddress, address, state, successCallback, errorCallback) => {
+  const { web3, contracts } = await getBlockchain();
+  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+  const address = wallet.getAddressString();
+  // Withdraw from mainnet
+  amount = parseInt(amount, 10);
+
+  await runSidechainTransaction(state.loginToken.mnemonic)('FT', 'approve', contracts['back'].LANDProxy._address, amount);
+
+  const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('FTProxy', 'deposit', mainnetAddress, amount);
+
+  const signature = await getTransactionSignature('back', 'FT', receipt.transactionHash);
+  const timestamp = {
+    t: 'uint256',
+    v: signature.timestamp,
+  };
+
+  const { r, s, v } = signature;
+
+  try {
+    await contracts.front.FTProxy.methods.withdraw(mainnetAddress, amount, timestamp.v, r, s, v).send({
+      from: mainnetAddress,
+    });
+    successCallback();
+  } catch (err) {
+    errorCallback(err);
+  }
+
+  return;
+}
+
 export const withdrawFlux = async (amount, mainnetAddress, address, state, successCallback, errorCallback) => {
   const { web3, contracts } = await getBlockchain();
   // Withdraw from mainnet
@@ -390,11 +421,11 @@ export const withdrawFlux = async (amount, mainnetAddress, address, state, succe
     from: mainnetAddress,
   });
 
-  const receipt = await contracts.front.FTProxy.methods.deposit(address, amount.v).send({
+  const receipt = await contracts.front.FTProxy.methods.deposit(address, amount).send({
     from: mainnetAddress,
   });
 
-  const signature = await getTransactionSignature('main', 'FT', receipt.transactionHash);
+  const signature = await getTransactionSignature('front', 'FT', receipt.transactionHash);
   const timestamp = {
     t: 'uint256',
     v: signature.timestamp,
@@ -403,7 +434,7 @@ export const withdrawFlux = async (amount, mainnetAddress, address, state, succe
   const { r, s, v } = signature;
 
   try {
-    await runSidechainTransaction(state.loginToken.mnemonic)('FTProxy', 'withdraw', address, amount.v, timestamp.v, r, s, v);
+    await runSidechainTransaction(state.loginToken.mnemonic)('FTProxy', 'withdraw', address, amount, timestamp.v, r, s, v);
     successCallback();
   } catch (err) {
     errorCallback(err);

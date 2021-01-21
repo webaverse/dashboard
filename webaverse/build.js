@@ -38,7 +38,7 @@ const _filterCandidateFiles = files => {
   const result = [];
   for (const type in typeHandlers) {
     for (const file of files) {
-      const ext = getExt(file.path);
+      const ext = getExt(file.name);
       if (ext === type) {
         result.push(file);
       }
@@ -61,18 +61,18 @@ export async function makeWbn(files) {
       const primaryExchangeUrl = primaryUrl + '/manifest.json';
       const builder = new wbn.BundleBuilder(primaryExchangeUrl);
       for (const file of files) {
-        const {type, path} = file;
-        const u = new URL(path, primaryUrl);
+        const {type, name} = file;
+        const u = new URL(name, primaryUrl);
         const arrayBuffer = await file.arrayBuffer();
         builder.addExchange(u.href, 200, {
           'Content-Type': type || '/application/octet-stream',
         }, new Uint8Array(arrayBuffer));
       }
 
-      const hadManifestJson = files.some(file => file.path === 'manifest.json');
+      const hadManifestJson = files.some(file => file.name === 'manifest.json');
       if (!hadManifestJson) {
         const manifestJson = {
-          start_url: encodeURI(file.path),
+          start_url: encodeURI(file.name),
         };
         const manifestJsonString = JSON.stringify(manifestJson, null, 2);
         builder.addExchange(primaryUrl + '/manifest.json', 200, {

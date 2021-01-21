@@ -41,7 +41,7 @@ export const getLandMain = async (id) => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
-  const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain-land.webaverse.com/${id}` : `https://mainnetsidechain-land.webaverse.com/${id}`}`);
+  const res = await fetch(`${networkName !== "main" ? `https://rinkeby-land.webaverse.com/${id}` : `https://mainnet-land.webaverse.com/${id}`}`);
   const tokens = await res.json();
 
   return tokens;

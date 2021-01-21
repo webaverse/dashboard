@@ -163,7 +163,7 @@ export const getStoreForCreator = async (creatorAddress, hostname) => {
 
 export const getProfileForCreator = async (creatorAddress) => {
   const { getNetworkName } = await getBlockchain();
-  networkName = getNetworkName();
+  const networkName = getNetworkName();
 
   const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain-store.webaverse.com/${creatorAddress}` : `https://mainnetsidechain-store.webaverse.com/${creatorAddress}`}`);
   const creatorProfile = await res.json();
@@ -178,7 +178,7 @@ export const getBooths = async (page) => {
     return state;
 */
   const { getNetworkName } = await getBlockchain();
-  networkName = getNetworkName();
+  const networkName = getNetworkName();
 
   const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain-store.webaverse.com/` : `https://mainnetsidechain-store.webaverse.com/`}`);
 

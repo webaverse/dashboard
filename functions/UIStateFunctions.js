@@ -271,11 +271,13 @@ export const pullUserObject = async (state) => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
+   const balance = await getBalance(address);
   const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain-accounts.webaverse.com/${address}` : `https://mainnetsidechain-accounts.webaverse.com/${address}`}`);
   const result = await res.json();
   const newState = {
     ...state,
     address,
+    balance,
     ...result
   };
   return newState;

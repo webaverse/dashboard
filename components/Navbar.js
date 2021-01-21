@@ -32,6 +32,19 @@ const Navbar = () => {
             <a className="item" target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
             <a className="item" href="https://app.webaverse.com">Play</a>
           </div>
+          <div onClick={() => setDropdown(false)} className={`navbarFluxContainer ${dropdown ? "responsive" : ""}`}>
+            <a className="navbarFluxSymbol">
+              山
+            </a>
+            <a className="navbarFluxAmount">
+              {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}
+            </a>
+            <div className={`navbarFluxPlusContainer noselect ${dropdown ? "responsive" : ""}`}>
+              <a className="navbarFluxPlus">
+                +
+              </a>
+            </div>
+          </div>
           <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
             { globalState.address ?
               <a href={"/accounts/" + globalState.address}>

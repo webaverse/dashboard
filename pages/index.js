@@ -27,9 +27,9 @@ export default ({ data }) =>
   </>
 
 
-export async function getServerSideProps() {
-  const tokens1 = await getTokens(1, 100);
-  const tokens2 = await getTokens(100, 200);
+export async function getServerSideProps(context) {
+  const tokens1 = await getTokens(1, 100, context.req.headers.host);
+  const tokens2 = await getTokens(100, 200, context.req.headers.host);
   const tokens = tokens1.concat(tokens2);
 
   const avatars = tokens.filter(o => o.properties.ext.toLowerCase().includes("vrm"));

@@ -11,7 +11,6 @@ export const deleteAsset = async (id, mnemonic, successCallback, errorCallback) 
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
 
-  console.log("Deleting asset", id);
   try {
     const network = 'sidechain';
     const burnAddress = "0x000000000000000000000000000000000000dEaD";
@@ -54,7 +53,6 @@ export const buyAsset = async (id, networkType, mnemonic, successCallback, error
     }
 
     const result = await runSidechainTransaction(mnemonic)('Trade', 'buy', id);
-    if(result) console.log("Result of buy transaction:", result);
 
     if (successCallback)
       successCallback(result);
@@ -66,13 +64,11 @@ export const buyAsset = async (id, networkType, mnemonic, successCallback, error
 
 export const sellAsset = async (id, price, networkType, mnemonic, successCallback, errorCallback) => {
   const { web3, contracts } = await getBlockchain();
-  console.log("Selling asset, price is", price);
   try {
     const network = networkType.toLowerCase() === 'mainnet' ? 'mainnet' : 'sidechain';
 
     await runSidechainTransaction(mnemonic)('NFT', 'setApprovalForAll', contracts[network]['Trade']._address, true);
     const result = await runSidechainTransaction(mnemonic)('Trade', 'addStore', id, price);
-    if(result) console.log("Result of buy transaction:", result);
 
     if (successCallback)
       successCallback(result);
@@ -334,7 +330,6 @@ export const mintNft = async (hash, name, ext, description, quantity, successCal
       transactionHash = result.transactionHash;
       const tokenId = new web3['back'].utils.BN(result.logs[0].topics[3].slice(2), 16).toNumber();
       tokenIds = [tokenId, tokenId + quantity - 1];
-      console.log("Token id is", tokenId);
       successCallback(tokenId);
     }
   } catch (err) {
@@ -349,7 +344,6 @@ export const mintNft = async (hash, name, ext, description, quantity, successCal
 export const setHomespace = async (id, state, successCallback, errorCallback) => {
   if (!state.loginToken)
     throw new Error('not logged in');
-  console.log("Setting homespace");
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
@@ -388,7 +382,7 @@ export const depositFlux = async (amount, mainnetAddress, state, successCallback
   // Withdraw from mainnet
   amount = parseInt(amount, 10);
 
-  await runSidechainTransaction(state.loginToken.mnemonic)('FT', 'approve', contracts['back'].LANDProxy._address, amount);
+  await runSidechainTransaction(state.loginToken.mnemonic)('FT', 'approve', contracts['back'].FTProxy._address, amount);
 
   const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('FTProxy', 'deposit', mainnetAddress, amount);
 
@@ -416,12 +410,16 @@ export const withdrawFlux = async (amount, mainnetAddress, address, state, succe
   const { web3, contracts } = await getBlockchain();
   // Withdraw from mainnet
   amount = parseInt(amount, 10);
+  amount = {
+    t: 'uint256',
+    v: new web3['front'].utils.BN(amount),
+  };
 
-  await contracts.front.FT.methods.approve(contracts.front.FTProxy._address, amount).send({
+  await contracts.front.FT.methods.approve(contracts.front.FTProxy._address, amount.v).send({
     from: mainnetAddress,
   });
 
-  const receipt = await contracts.front.FTProxy.methods.deposit(address, amount).send({
+  const receipt = await contracts.front.FTProxy.methods.deposit(address, amount.v).send({
     from: mainnetAddress,
   });
 
@@ -434,7 +432,7 @@ export const withdrawFlux = async (amount, mainnetAddress, address, state, succe
   const { r, s, v } = signature;
 
   try {
-    await runSidechainTransaction(state.loginToken.mnemonic)('FTProxy', 'withdraw', address, amount, timestamp.v, r, s, v);
+    await runSidechainTransaction(state.loginToken.mnemonic)('FTProxy', 'withdraw', address, amount.v, timestamp.v, r, s, v);
     successCallback();
   } catch (err) {
     errorCallback(err);
@@ -484,7 +482,6 @@ export const depositLand = async (tokenId, mainnetAddress, state) => {
 // Deposit to mainnet
   const id = parseInt(tokenId, 10);
   if (!isNaN(id)) {
-    console.log("setting tokenId");
     const tokenId = {
       t: 'uint256',
       v: new web3['back'].utils.BN(id),
@@ -507,7 +504,6 @@ export const depositLand = async (tokenId, mainnetAddress, state) => {
     });
 
     return;
-    console.log('OK');
   }
 }
 
@@ -518,7 +514,6 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
   if (networkType === 'webaverse') {
     const id = parseInt(tokenId, 10);
     if (!isNaN(id)) {
-      console.log("setting tokenId");
       const tokenId = {
         t: 'uint256',
         v: new web3['back'].utils.BN(id),
@@ -529,7 +524,6 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
       const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'deposit', mainnetAddress, tokenId.v);
 
       const signature = await getTransactionSignature('sidechain', 'NFT', receipt.transactionHash);
-      console.log("setting tmestamp");
       const timestamp = {
         t: 'uint256',
         v: signature.timestamp,
@@ -537,15 +531,11 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
 
       const { r, s, v } = signature;
 
-      console.log("mainnetAddress", mainnetAddress);
-      console.log("tokenId", tokenId.v);
-      console.log("timestamp", timestamp.v);
       await contracts.front.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
         from: mainnetAddress,
       });
 
       return;
-      console.log('OK');
     } else {
       console.log('failed to parse', JSON.stringify(ethNftIdInput.value));
     }
@@ -606,7 +596,6 @@ export const getLoadout = async (address) => {
 export const setLoadoutState = async (id, index, state) => {
   const { web3, contracts } = await getBlockchain();
   if (!state.loginToken) {
-    console.log("state", state);
     throw new Error('not logged in');
     return state;
   }

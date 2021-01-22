@@ -215,13 +215,14 @@
     top: 0;
   }
   .rightMenuContainer.responsive {
+    display: unset !important;
     position: fixed;
     top: 70px;
     left: 0;
     float: none;
     text-align: left;
     flex-direction: column;
-    display: flex;
+    display: flex !important;
     width: 100%;
     text-align: center;
     background-color: #18141a;

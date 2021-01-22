@@ -507,6 +507,37 @@ export const depositLand = async (tokenId, mainnetAddress, state) => {
   }
 }
 
+export const withdrawAsset = async (tokenId, mainnetAddress, address, state, successCallback, errorCallback) => {
+  const { web3, contracts } = await getBlockchain();
+  // Withdraw from mainnet
+  const id = parseInt(tokenId, 10);
+  tokenId = {
+    t: 'uint256',
+    v: new web3['front'].utils.BN(id),
+  };
+
+  await contracts.front.NFT.methods.setApprovalForAll(contracts.front.NFTProxy._address, true).send({
+    from: mainnetAddress,
+  });
+
+  const receipt = await contracts.front.NFTProxy.methods.deposit(address, tokenId.v).send({
+    from: mainnetAddress,
+  });
+
+  const signature = await getTransactionSignature('main', 'NFT', receipt.transactionHash);
+  const timestamp = {
+    t: 'uint256',
+    v: signature.timestamp,
+  };
+
+  const { r, s, v } = signature;
+
+  await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'withdraw', address, tokenId.v, timestamp.v, r, s, v);
+
+  successCallback();
+
+  return;
+}
 
 export const depositAsset = async (tokenId, networkType, mainnetAddress, address, state) => {
   const { web3, contracts } = await getBlockchain();

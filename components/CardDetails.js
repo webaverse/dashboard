@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import AssetCard from './Card';
 import CardSize from '../constants/CardSize.js';
-import { addNftCollaborator, removeNftCollaborator, setAssetName, deleteAsset, setLoadoutState, setAvatar, setHomespace, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
+import { addNftCollaborator, removeNftCollaborator, setAssetName, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { getStores } from '../functions/UIStateFunctions.js'
 import Loader from './Loader';
 
@@ -160,6 +160,28 @@ export default ({
     sellAsset(id, sellPrice, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
+  const handleWithdraw = async (e) => {
+    if(e) {
+      e.preventDefault();
+    }
+
+    setLoading(true);
+
+    try {
+      const ethAccount = await loginWithMetaMask(handleWithdraw);
+      if (ethAccount) {
+        const mainnetAddress = prompt("What mainnet address do you want to transfer from?", "0x0");
+        await withdrawAsset(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
+        handleSuccess();
+      } else {
+        setLoading(false);
+      }
+    } catch (err) {
+      handleError(err.toString());
+    }
+
+  }
+
   const handleDeposit = async (e) => {
     if(e) {
       e.preventDefault();
@@ -312,6 +334,7 @@ export default ({
                         <div className="accordionDropdown">
                           {[
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
+                            (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),
                           ]}
                         </div>

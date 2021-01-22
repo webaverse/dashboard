@@ -121,6 +121,18 @@ export const getTokenMain = async (id) => {
   return token;
 };
 
+export const isTokenOnMain = async (id) => {
+  const { contracts, getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://rinkeby-tokens.webaverse.com/${id}` : `https://mainnet-tokens.webaverse.com/${id}`}`);
+
+  const token = await res.json();
+  const owner = token.owner.address;
+  const tokenOnMain = owner === contracts.front.NFTProxy._address || owner === ("0x0000000000000000000000000000000000000000") ? false : true;
+  return tokenOnMain;
+};
+
 
 export const clearInventroryForCreator = async (creatorAddress, state) => {
   let newState = { ...state }

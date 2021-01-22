@@ -74,12 +74,7 @@ export default () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
       window.ethereum.enable();
-      if (window.web3.version.network == 4) {
-        return true;
-      } else {
-        alert("You need to be on the Rinkeby network.");
-        return false;
-      }
+      return true;
     }
     alert("Please install MetaMask to use Webaverse!");
     return false;

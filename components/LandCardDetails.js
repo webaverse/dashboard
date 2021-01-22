@@ -137,9 +137,8 @@ export default ({
     setLoading(true);
 
     try {
-      const ethAccount = await loginWithMetaMask(handleWithdraw);
-      if (ethAccount) {
-        const mainnetAddress = prompt("What mainnet address do you want to get from?", "0x0");
+      const mainnetAddress = await loginWithMetaMask(handleWithdraw);
+      if (mainnetAddress) {
         await withdrawLand(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
         handleSuccess();
       } else {
@@ -159,9 +158,8 @@ export default ({
     setLoading(true);
 
     try {
-      const ethAccount = await loginWithMetaMask(handleDeposit);
-      if (ethAccount) {
-        const mainnetAddress = prompt("What mainnet address do you want to send to?", "0x0");
+      const mainnetAddress = await loginWithMetaMask(handleDeposit);
+      if (mainnetAddress) {
         await depositLand(id, mainnetAddress, globalState);
         handleSuccess();
       } if (ethEnabled()) {

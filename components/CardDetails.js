@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import AssetCard from './Card';
 import CardSize from '../constants/CardSize.js';
+import { getBlockchain } from '../webaverse/blockchain.js';
 import { addNftCollaborator, removeNftCollaborator, setAssetName, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { isTokenOnMain, getStores } from '../functions/UIStateFunctions.js'
 import Loader from './Loader';
@@ -43,11 +44,16 @@ export default ({
   const [tryOn, setTryOn] = useState(false);
   const [tokenOnMain, setTokenOnMain] = useState(false);
   const [mainnetAddress, setMainnetAddress] = useState(null);
+  const [otherNetworkName, setOtherNetworkName] = useState(null);
 
   useEffect(() => {
     (async () => {
       const tokenOnMain = await isTokenOnMain(id);
       setTokenOnMain(tokenOnMain);
+    })();
+    (async () => {
+      const { getOtherNetworkName } = await getBlockchain();
+      setOtherNetworkName(getOtherNetworkName());
     })();
   }, []);
 
@@ -342,8 +348,8 @@ export default ({
                         {toggleTradeOpen && (
                         <div className="accordionDropdown">
                           {[
-                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
-                            tokenOnMain && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To {otherNetworkName}</button>),
+                            tokenOnMain && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),
                           ]}
                         </div>

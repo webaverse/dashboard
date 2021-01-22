@@ -58,7 +58,7 @@ export default () => {
           const res = await fetch(`https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
           console.log("got res!", res);
           console.log("got status!", res.headers.get("status"));
-          if (res.status !== "200") {
+          if (res.status !== 200) {
             throw "Login did not work, got response: " + res.status;
           }
           const j = await res.json();

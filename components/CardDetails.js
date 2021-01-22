@@ -3,7 +3,7 @@ import Link from 'next/link';
 import AssetCard from './Card';
 import CardSize from '../constants/CardSize.js';
 import { addNftCollaborator, removeNftCollaborator, setAssetName, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
-import { getStores } from '../functions/UIStateFunctions.js'
+import { isTokenOnMain, getStores } from '../functions/UIStateFunctions.js'
 import Loader from './Loader';
 
 export default ({
@@ -41,6 +41,14 @@ export default ({
   const [loading, setLoading] = useState(false);
   const [imageView, setImageView] = useState("2d");
   const [tryOn, setTryOn] = useState(false);
+  const [tokenOnMain, setTokenOnMain] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const tokenOnMain = await isTokenOnMain(id);
+      setTokenOnMain(tokenOnMain);
+    })();
+  }, []);
 
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
@@ -325,7 +333,7 @@ export default ({
                         </div>
                         )}
                     </div>),
-                    (<div className="Accordion">
+                    (userOwnsThisAsset || tokenOnMain) && (<div className="Accordion">
                         <div className="accordionTitle" onClick={() => setToggleTradeOpen(!toggleTradeOpen)}>
                             <span className="accordionTitleValue">Trade</span>
                             <span className={`accordionIcon ${toggleTradeOpen ? 'reverse' : ''}`}></span>
@@ -334,7 +342,7 @@ export default ({
                         <div className="accordionDropdown">
                           {[
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
-                            (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
+                            tokenOnMain && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),
                           ]}
                         </div>

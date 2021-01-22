@@ -95,6 +95,7 @@ export default ({
           return eth[0];
         } else {
           ethereum.on('accountsChanged', (accounts) => {
+            setMainnetAddress(accounts[0]);
             func();
           });
           return false;
@@ -179,7 +180,7 @@ export default ({
 
     try {
       const mainnetAddress = await loginWithMetaMask(handleWithdraw);
-      if (ethAccount) {
+      if (mainnetAddress) {
         await withdrawAsset(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
         handleSuccess();
       } else {
@@ -200,7 +201,7 @@ export default ({
 
     try {
       const mainnetAddress = await loginWithMetaMask(handleDeposit);
-      if (ethAccount) {
+      if (mainnetAddress) {
         await depositAsset(id, 'webaverse', mainnetAddress, globalState.address, globalState);
         handleSuccess();
       } else {

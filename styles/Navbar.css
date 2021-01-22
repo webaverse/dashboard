@@ -28,6 +28,7 @@
   overflow: hidden;
   flex-wrap: wrap;
   height: 100%;
+  flex: 1 1;
 }
 .navbar .leftMenuContainer {
   margin: auto 0;

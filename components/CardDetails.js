@@ -42,6 +42,7 @@ export default ({
   const [imageView, setImageView] = useState("2d");
   const [tryOn, setTryOn] = useState(false);
   const [tokenOnMain, setTokenOnMain] = useState(false);
+  const [mainnetAddress, setMainnetAddress] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -82,18 +83,19 @@ export default ({
     return false;
   }
 
-  const loginWithMetaMask = async () => {
+  const loginWithMetaMask = async (func) => {
     if (!ethEnabled()) {
-      return;
+      return false;
     } else {
       const web3 = window.web3;
       try {
         const eth = await window.ethereum.request({ method: 'eth_accounts' });
         if (eth && eth[0]) {
+          setMainnetAddress(eth[0]);
           return eth[0];
         } else {
           ethereum.on('accountsChanged', (accounts) => {
-            handleDeposit();
+            func();
           });
           return false;
         }
@@ -176,9 +178,8 @@ export default ({
     setLoading(true);
 
     try {
-      const ethAccount = await loginWithMetaMask(handleWithdraw);
+      const mainnetAddress = await loginWithMetaMask(handleWithdraw);
       if (ethAccount) {
-        const mainnetAddress = prompt("What mainnet address do you want to transfer from?", "0x0");
         await withdrawAsset(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
         handleSuccess();
       } else {
@@ -198,9 +199,8 @@ export default ({
     setLoading(true);
 
     try {
-      const ethAccount = await loginWithMetaMask();
+      const mainnetAddress = await loginWithMetaMask(handleDeposit);
       if (ethAccount) {
-        const mainnetAddress = prompt("What mainnet address do you want to send to?", "0x0");
         await depositAsset(id, 'webaverse', mainnetAddress, globalState.address, globalState);
         handleSuccess();
       } else {

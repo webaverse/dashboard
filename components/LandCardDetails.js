@@ -47,6 +47,7 @@ export default ({
   const [landHash, setLandHash] = useState(null);
   const [openHologram, setOpenHologram] = useState(false);
   const [address, setAddress] = useState(null);
+  const [otherNetworkName, setOtherNetworkName] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -58,8 +59,9 @@ export default ({
       setLandHash(landHashRes);
     })();
     (async () => {
-      const { addresses } = await getBlockchain();
+      const { addresses, getOtherNetworkName } = await getBlockchain();
       setAddress(addresses);
+      setOtherNetworkName(getOtherNetworkName());
     })();
   },  []);
 
@@ -281,8 +283,8 @@ export default ({
                         {toggleEditOpen && (
                         <div className="accordionDropdown">
                           {[
-                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From Mainnet</button>),
-                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To Mainnet</button>),
+                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From {otherNetworkName}</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeploy}>Deploy Content</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleAddCollaborator}>Add Collaborator</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleRemoveCollaborator}>Remove Collaborator</button>),

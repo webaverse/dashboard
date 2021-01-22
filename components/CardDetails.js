@@ -325,7 +325,7 @@ export default ({
                         </div>
                         )}
                     </div>),
-                    userOwnsThisAsset && (<div className="Accordion">
+                    (<div className="Accordion">
                         <div className="accordionTitle" onClick={() => setToggleTradeOpen(!toggleTradeOpen)}>
                             <span className="accordionTitleValue">Trade</span>
                             <span className={`accordionIcon ${toggleTradeOpen ? 'reverse' : ''}`}></span>

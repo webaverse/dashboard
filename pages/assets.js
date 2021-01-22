@@ -1,15 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useAppContext } from "../libs/contextLib";
 import { getTokens } from "../functions/UIStateFunctions.js";
 import CardGrid from "../components/CardGrid";
+import Loader from "../components/Loader";
 
 export default ({ data }) => {
   const [hasMore, setHasMore] = useState(true);
   const [start, setStart] = useState(51);
   const [end, setEnd] = useState(60);
-  const [cardData, setCardData] = useState(data);
+  const [cardData, setCardData] = useState(null);
   const { globalState, setGlobalState } = useAppContext();
+
+  useEffect(() => {
+    (async () => {
+      const data = await getTokens(1, 50);
+      setCardData(data);
+    })();
+  }, []);
 
   const fetchData = async () => {
     const newData = await getTokens(start, end);
@@ -26,25 +34,23 @@ export default ({ data }) => {
 
   return (
     <div className="container">
-      <InfiniteScroll
-        dataLength={cardData.length} //This is important field to render the next data
-        next={fetchData}
-        hasMore={hasMore}
-        loader={<p className="containerText">Loading...</p>}
-        endMessage={
-          <p className="containerText">
-            You have seen it all!
-          </p>
-        }
-      >
-        <CardGrid data={cardData} cardSize="small" globalState={globalState} />
-      </InfiniteScroll>
+      { cardData ?
+        <InfiniteScroll
+          dataLength={cardData.length} //This is important field to render the next data
+          next={fetchData}
+          hasMore={hasMore}
+          loader={<p className="containerText">Loading...</p>}
+          endMessage={
+            <p className="containerText">
+              You have seen it all!
+            </p>
+          }
+        >
+          <CardGrid data={cardData} cardSize="small" globalState={globalState} />
+        </InfiniteScroll>
+      :
+        <Loader loading={true} />
+      }
     </div>
   )
-}
-
-export async function getServerSideProps(context) {
-  const data = await getTokens(1, 50, context.req.headers.host);
-
-  return { props: { data } }
 }

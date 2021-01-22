@@ -111,6 +111,17 @@ export const getToken = async (id, hostname) => {
   return token;
 };
 
+export const getTokenMain = async (id) => {
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
+  const res = await fetch(`${networkName !== "main" ? `https://rinkeby-tokens.webaverse.com/${id}` : `https://mainnet-tokens.webaverse.com/${id}`}`);
+
+  const token = await res.json();
+  return token;
+};
+
+
 export const clearInventroryForCreator = async (creatorAddress, state) => {
   let newState = { ...state }
   // Use cached page

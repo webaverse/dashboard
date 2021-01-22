@@ -12,6 +12,7 @@ export default () => {
   const { globalState, setGlobalState } = useAppContext();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
 
   const loginWithKey = (key, play, realmId) => {
@@ -53,13 +54,23 @@ export default () => {
 
     if (code || id || play) {
       (async () => {
-        const res = await fetch(`https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
-        const j = await res.json();
-        const {mnemonic} = j;
-        if (mnemonic) {
-          loginWithKey(mnemonic, play, realmId);
-        } else {
-          console.warn('no mnemonic returned from api');
+        try {
+          const res = await fetch(`https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
+          console.log("got res!", res);
+          console.log("got status!", res.headers.get("status"));
+          if (res.status !== "200") {
+            throw "Login did not work, got response: " + res.status;
+          }
+          const j = await res.json();
+          const {mnemonic} = j;
+          if (mnemonic) {
+            loginWithKey(mnemonic, play, realmId);
+          } else {
+            console.warn('no mnemonic returned from api');
+          }
+        } catch (err) {
+          setLoading(false);
+          setError(err);
         }
       })();
     } else {
@@ -69,17 +80,19 @@ export default () => {
 
   return (
     <>
-      { loading ?
-        <div>
+      {[
+        error && (<div key="error">
+          {error}
+        </div>),
+        loading && (<div key="loading">
           <Loader loading={loading} />
-        </div>
-      :
-        <div className="container">
+        </div>),
+        !loading && (<div className="container" key="buttonContainer">
           <a className="button" href={discordOauthUrl}>
             Login With Discord
           </a>
-        </div>
-      }
+        </div>)
+      ]}
     </>
   )
 }

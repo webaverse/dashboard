@@ -459,7 +459,7 @@ export const withdrawLand = async (tokenId, mainnetAddress, address, state, succ
     from: mainnetAddress,
   });
 
-  const signature = await getTransactionSignature('main', 'LAND', receipt.transactionHash);
+  const signature = await getTransactionSignature('front', 'LAND', receipt.transactionHash);
   const timestamp = {
     t: 'uint256',
     v: signature.timestamp,
@@ -491,7 +491,7 @@ export const depositLand = async (tokenId, mainnetAddress, state) => {
 
     const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('LANDProxy', 'deposit', mainnetAddress, tokenId.v);
 
-    const signature = await getTransactionSignature('sidechain', 'LAND', receipt.transactionHash);
+    const signature = await getTransactionSignature('back', 'LAND', receipt.transactionHash);
     const timestamp = {
       t: 'uint256',
       v: signature.timestamp,
@@ -524,7 +524,7 @@ export const withdrawAsset = async (tokenId, mainnetAddress, address, state, suc
     from: mainnetAddress,
   });
 
-  const signature = await getTransactionSignature('main', 'NFT', receipt.transactionHash);
+  const signature = await getTransactionSignature('front', 'NFT', receipt.transactionHash);
   const timestamp = {
     t: 'uint256',
     v: signature.timestamp,
@@ -554,7 +554,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
 
       const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'deposit', mainnetAddress, tokenId.v);
 
-      const signature = await getTransactionSignature('sidechain', 'NFT', receipt.transactionHash);
+      const signature = await getTransactionSignature('back', 'NFT', receipt.transactionHash);
       const timestamp = {
         t: 'uint256',
         v: signature.timestamp,
@@ -601,7 +601,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
       from: mainnetAddress,
     });
 
-    const signature = await getTransactionSignature('main', 'NFT', receipt.transactionHash);
+    const signature = await getTransactionSignature('front', 'NFT', receipt.transactionHash);
 
     const { timestamp, r, s, v } = signature;
 

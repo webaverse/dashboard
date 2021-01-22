@@ -11,18 +11,43 @@ import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
 import ProfileHeader from "../../components/Profile";
 
-export default ({ data }) => {
+export default () => {
   const history = useHistory();
   const router = useRouter()
-  const { id } = router.query
+  const { id } = router.query;
   const { globalState, setGlobalState } = useAppContext();
-  const [inventory, setInventory] = useState(data.inventory);
-  const [balance, setBalance] = useState(data.balance);
-  const [loadout, setLoadout] = useState(data.loadout);
-  const [profile, setProfile] = useState(data.profile);
-  const [store, setStore] = useState(data.store);
+  const [inventory, setInventory] = useState(null);
+  const [balance, setBalance] = useState(null);
+  const [loadout, setLoadout] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [store, setStore] = useState(null);
   const [selectedView, setSelectedView] = useState("inventory");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (id && !profile && !balance && !inventory && !store && !loadout) {
+      (async () => {
+        const profile = await getProfileForCreator(id);
+        setProfile(profile);
+      })();
+      (async () => {
+        const inventory = await getInventoryForCreator(id);
+        setInventory(inventory);
+      })();
+      (async () => {
+        const store = await getStoreForCreator(id);
+        setStore(store);
+      })();
+      (async () => {
+        const balance = await getBalance(id);
+        setBalance(balance);
+      })();
+      (async () => {
+        const loadout = await getLoadout(id);
+        setLoadout(loadout);
+      })();
+    }
+  }, [id]);
 
   const handleViewToggle = (view) => {
     setSelectedView(view);
@@ -130,8 +155,8 @@ export default ({ data }) => {
   }
 
   return (<>{
-    loading ?
-    <Loader loading={loading} />
+    loading || !loadout || !store || !inventory || !balance || !profile ?
+    <Loader loading={true} />
   :
     <div>
       <Head>
@@ -197,26 +222,4 @@ export default ({ data }) => {
       ]}
     </div>
   }</>)
-}
-
-export async function getServerSideProps(context) {
-  const id = context.params.id;
-
-  const profile = await getProfileForCreator(id);
-  const inventory = await getInventoryForCreator(id, context.req.headers.host);
-  const store = await getStoreForCreator(id);
-  const balance = await getBalance(id);
-  const loadout = await getLoadout(id);
-
-  return { 
-    props: { 
-      data: {
-        profile: profile,
-        inventory: inventory,
-        store: store,
-        balance: balance,
-        loadout: loadout 
-      }
-    } 
-  }
 }

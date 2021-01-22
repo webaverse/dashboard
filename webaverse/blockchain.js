@@ -77,7 +77,7 @@ const getBlockchain = async () => {
   };
 
   const getNetworkName = () => networkName;
-  const getOtherNetworkName = () => networkName === 'main' ? 'side' : 'main';
+  const getOtherNetworkName = () => networkName === 'main' ? 'Mainnet' : 'Rinkeby';
 
   return { web3, contracts, addresses, getNetworkName, getOtherNetworkName };
 }

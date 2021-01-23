@@ -32,7 +32,8 @@ export default ({
     buyPrice,
     storeId,
     hideDetails,
-    assetType
+    assetType,
+    getData
 }) => {
   const { globalState, setGlobalState } = useAppContext();
 
@@ -50,6 +51,10 @@ export default ({
   const [otherNetworkName, setOtherNetworkName] = useState(null);
 
   useEffect(() => {
+    getData();
+  },  []);
+
+  const getData = () => {
     (async () => {
       const main = await getLandMain(id);
       setLandMainnetAddress(main.owner.address);
@@ -63,8 +68,7 @@ export default ({
       setAddress(addresses);
       setOtherNetworkName(getOtherNetworkName());
     })();
-  },  []);
-
+  }
 
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
@@ -124,11 +128,11 @@ export default ({
 
   const handleSuccess = () => {
     console.log("success!");
-    window.location.reload();
+    getData();
   }
   const handleError = (err) => {
     console.log("error", err);
-    window.location.reload();
+    getData();
   }
 
   const handleWithdraw = async (e) => {

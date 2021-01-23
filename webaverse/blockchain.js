@@ -79,7 +79,16 @@ const getBlockchain = async () => {
   const getNetworkName = () => networkName;
   const getOtherNetworkName = () => networkName === 'main' ? 'Mainnet' : 'Rinkeby';
 
-  return { web3, contracts, addresses, getNetworkName, getOtherNetworkName };
+  const getMainnetAddress = async () => {
+    if (typeof window !== "undefined") {
+      const [address] = await window.ethereum.enable();
+      return address || null;
+    } else {
+      return null;
+    }
+  };
+
+  return { web3, contracts, addresses, getNetworkName, getOtherNetworkName, getMainnetAddress };
 }
 
 const transactionQueue = {

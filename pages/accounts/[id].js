@@ -11,7 +11,7 @@ import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
 import ProfileHeader from "../../components/Profile";
 
-export default () => {
+export default ({ data }) => {
   const history = useHistory();
   const router = useRouter()
   const { id } = router.query;
@@ -19,7 +19,7 @@ export default () => {
   const [inventory, setInventory] = useState(null);
   const [balance, setBalance] = useState(null);
   const [loadout, setLoadout] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(data.profile);
   const [store, setStore] = useState(null);
   const [selectedView, setSelectedView] = useState("inventory");
   const [loading, setLoading] = useState(false);
@@ -221,4 +221,18 @@ export default () => {
       ]}
     </div>
   }</>)
+}
+
+export async function getServerSideProps(context) {
+  const id = context.params.id;
+
+  const profile = await getProfileForCreator(id);
+
+  return { 
+    props: { 
+      data: {
+        profile: profile
+      }
+    } 
+  }
 }

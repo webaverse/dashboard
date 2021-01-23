@@ -51,6 +51,7 @@ export default ({ data }) => {
         setLoadout(loadout);
       })();
     }
+  }
 
 
   const handleViewToggle = (view) => {
@@ -231,7 +232,7 @@ export async function getServerSideProps(context) {
   return { 
     props: { 
       data: {
-        profile: profile
+        profile: profile,
       }
     } 
   }

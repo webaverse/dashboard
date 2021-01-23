@@ -22,7 +22,7 @@ export default ({ data }) => {
       (async () => {
         const data = await getToken(id);
         setToken(data);
-        setToken(false);
+        setLoading(false);
       })();
     }
   }

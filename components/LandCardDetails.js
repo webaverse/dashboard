@@ -272,7 +272,7 @@ export default ({
                         <div className="accordionDropdown">
                           {[
                             (<a target="_blank" href={external_url}><button className="assetDetailsButton">Visit on Street</button></a>),
-                            landHash && (<a onClick={() => setOpenHologram(true)}><button className="assetDetailsButton">Open hologram</button></a>),
+                            landHash && (<a target="_blank" href={"https://app.webaverse.com/?t=" + landHash}><button className="assetDetailsButton">Open hologram</button></a>),
                             landHash && name && (<a target="_blank" href={"https://app.webaverse.com?u=" + landHash + "&r=" + name.replace(/\s+/g, '-')}><button className="assetDetailsButton">Enter parcel</button></a>),
                             landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]) && (<a target="_blank" href={"https://testnets.opensea.io/assets/" + address["rinkeby"]["LAND"] + "/" + id}><button className="assetDetailsButton">View on OpenSea</button></a>),
                           ]}

@@ -6,9 +6,9 @@ import { getCreators } from "../functions/UIStateFunctions.js";
 import ProfileCards from "../components/ProfileCards";
 import Loader from "../components/Loader";
 
-export default ({ data }) => {
+export default () => {
   const { globalState, setGlobalState } = useAppContext();
-  const [creatorProfiles, setCreatorProfiles] = useState(data);
+  const [creatorProfiles, setCreatorProfiles] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,10 +36,4 @@ export default ({ data }) => {
       }
     </div>
   )
-}
-
-export async function getServerSideProps() {
-  const data = await getCreators();
-
-  return { props: { data } }
 }

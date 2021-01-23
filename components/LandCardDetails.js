@@ -52,9 +52,10 @@ export default ({
 
   useEffect(() => {
     getData();
+    getOtherData();
   },  []);
 
-  const getData = () => {
+  const getOtherData = () => {
     (async () => {
       const main = await getLandMain(id);
       setLandMainnetAddress(main.owner.address);

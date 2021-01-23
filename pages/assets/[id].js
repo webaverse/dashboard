@@ -11,7 +11,7 @@ export default ({ data }) => {
   const { id } = router.query
   const { globalState, setGlobalState } = useAppContext();
   const [token, setToken] = useState(data);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getData();
@@ -22,22 +22,22 @@ export default ({ data }) => {
       (async () => {
         const data = await getToken(id);
         setToken(data);
+        setToken(false);
       })();
     }
   }
 
   return (
     <>
+      <Head>
+        <title>{token.name} | Webaverse</title>
+        <meta name="description" content={token.description + " | Webaverse"} />
+        <meta property="og:title" content={token.name + " | Webaverse"} />
+        <meta property="og:image" content={token.image} />
+        <meta name="theme-color" content="#c4005d" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
       { !loading ?
-        <>
-          <Head>
-            <title>{token.name} | Webaverse</title>
-            <meta name="description" content={token.description + " | Webaverse"} />
-            <meta property="og:title" content={token.name + " | Webaverse"} />
-            <meta property="og:image" content={token.image} />
-            <meta name="theme-color" content="#c4005d" />
-            <meta name="twitter:card" content="summary_large_image" />
-          </Head>
           <CardDetails
              id={token.id}
              key={token.id}

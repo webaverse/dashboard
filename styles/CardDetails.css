@@ -247,7 +247,15 @@
 .assetDetailsOwnedBy {
     max-width: 100%;
     text-overflow: ellipsis;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.assetDetailsDeployedContent {
+    padding-bottom: 5px;
+    font-size: .7em;
+    max-width: 100%;
+    text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }

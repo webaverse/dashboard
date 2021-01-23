@@ -119,10 +119,12 @@ export default ({
   const handleSuccess = () => {
     console.log("success!");
     getData();
+    setLoading(false);
   }
   const handleError = (err) => {
-    console.log("error", err);
+    console.error("error", err);
     getData();
+    setLoading(false);
   }
 
   const handleSetAssetName = (e) => {

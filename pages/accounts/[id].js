@@ -25,10 +25,10 @@ export default () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    init();
+    getData();
   }, [id]);
 
-  const init = () => {
+  const getData = () => {
     if (id && !profile && !balance && !inventory && !store && !loadout) {
       (async () => {
         const profile = await getProfileForCreator(id);
@@ -65,7 +65,7 @@ export default () => {
     console.log("success!");
     setLoading(false);
     if (window != "undefined") {
-      init();
+      getData();
     }
   }
 

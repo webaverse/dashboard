@@ -154,19 +154,20 @@ export default ({ data }) => {
 
   }
 
-  return (<>{
+  return (<>
+    <Head>
+      <title>{profile.name} | Webaverse</title>
+      <meta name="description" content={"Check out " + profile.name + "'s items on Webaverse."} />
+      <meta property="og:title" content={profile.name + "'s account | Webaverse"} />
+      <meta property="og:image" content={profile.avatarPreview ? profile.avatarPreview.replace(/\.[^.]*$/, '.png') : "./preview.png"} />
+      <meta name="theme-color" content="#c4005d" />
+      <meta name="twitter:card" content="summary_large_image" />
+    </Head>
+  {
     loading || !loadout || !store || !inventory || !balance || !profile ?
     <Loader loading={true} />
   :
     <div>
-      <Head>
-        <title>{profile.name} | Webaverse</title>
-        <meta name="description" content={"Check out " + profile.name + "'s items on Webaverse."} />
-        <meta property="og:title" content={profile.name + "'s account | Webaverse"} />
-        <meta property="og:image" content={profile.avatarPreview ? profile.avatarPreview.replace(/\.[^.]*$/, '.png') : "./preview.png"} />
-        <meta name="theme-color" content="#c4005d" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Head>
       {[
         (<ProfileHeader key="profileHeader" loadout={loadout} balance={balance} profile={profile} />),
         (<div key="profileBodynav" className="profileBodyNav">

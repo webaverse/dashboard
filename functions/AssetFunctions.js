@@ -1,11 +1,125 @@
 import { getAddress } from './UIStateFunctions';
-import { getAddressFromMnemonic, getBlockchain, runSidechainTransaction, getTransactionSignature } from '../webaverse/blockchain.js';
+import { getAddressFromMnemonic, getBlockchain, runSidechainTransaction, runMainnetTransaction, getTransactionSignature } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
 import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 
+export const getStuckAsset = async (tokenName, tokenId, sidechainAddress) => {
+  const { contracts, getNetworkName, getMainnetAddress } = await getBlockchain();
+
+  const mainnetAddress = await getMainnetAddress();
+  const networkName = getNetworkName();
+
+  let chainName, otherChainName;
+  if (networkName === "main") {
+    chainName = 'front';
+    otherChainName = 'back';
+  } else {
+    otherChainName = 'front';
+    chainName = 'back';
+  }
+
+  const contract = contracts[chainName];
+  const proxyContract = contract[tokenName + 'Proxy'];
+  const otherContract = contracts[otherChainName];
+  const otherProxyContract = otherContract[tokenName + 'Proxy'];
+
+  const [
+    depositedEntries,
+    withdrewEntries,
+    otherDepositedEntries,
+    otherWithdrewEntries,
+  ] = await Promise.all([
+    proxyContract.getPastEvents('Deposited', {
+      fromBlock: 0,
+      toBlock: 'latest',
+    }),
+    proxyContract.getPastEvents('Withdrew', {
+      fromBlock: 0,
+      toBlock: 'latest',
+    }),
+    otherProxyContract.getPastEvents('Deposited', {
+      fromBlock: 0,
+      toBlock: 'latest',
+    }),
+    otherProxyContract.getPastEvents('Withdrew', {
+      fromBlock: 0,
+      toBlock: 'latest',
+    }),
+  ]);
+
+  const withdrew = withdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === sidechainAddress && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+  const deposited = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === sidechainAddress && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+
+  let chainStatus;
+  if (withdrew && deposited) {
+    if (withdrew.blockNumber > deposited.blockNumber) {
+      chainStatus = "withdrew";
+    } else if (deposited.blockNumber > withdrew.blockNumber) {
+      chainStatus = "deposited";
+    }
+  } else if (withdrew && !deposited) {
+    chainStatus = "withdrew";
+  } else if (!withdrew && deposited) {
+    chainStatus = "deposited";
+  }
+  console.log("chainStatus", chainStatus);
+
+  const otherWithdrew = otherWithdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === sidechainAddress && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+  const otherDeposited = otherDepositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === sidechainAddress && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+
+  let otherChainStatus;
+  if (otherWithdrew && otherDeposited) {
+    if (otherWithdrew.blockNumber > otherDeposited.blockNumber) {
+      otherChainStatus = "withdrew";
+    } else if (otherDeposited.blockNumber > otherWithdrew.blockNumber) {
+      otherChainStatus = "deposited";
+    }
+  } else if (otherWithdrew && !otherDeposited) {
+    otherChainStatus = "withdrew";
+  } else if (!otherWithdrew && otherDeposited) {
+    otherChainStatus = "deposited";
+  }
+  console.log("otherChainStatus", otherChainStatus);
+
+  if (chainStatus === "deposited" && !otherChainStatus) {
+    console.log("deposited", deposited);
+    return deposited;
+  } else if (chainStatus === "withdrew" && otherChainStatus === "deposited") {
+    console.log("withdrew", withdrew);
+    return withdrew;
+  } else if (chainStatus === "withdrew" && otherChainStatus === "withdrew") {
+    console.log("withdrew", withdrew);
+    return otherWithdrew;
+  }
+
+  return null;
+}
+
+export const resubmitAsset = async (tokenName, tokenId, globalState, successCallback, errorCallback) => {
+  const { getNetworkName } = await getBlockchain();
+  let {transactionHash, blockNumber, returnValues: {to}} = await getStuckAsset(tokenName, tokenId, globalState.address);
+
+  to = to.toLowerCase();
+  tokenId = parseInt(tokenId, 10);
+  if (to === globalState.address) {
+//    _addText('Deposited: ' + transactionHash + ' @ ' + blockNumber + ' ' + tokenId + ' -> ' + to);
+    const networkName = getNetworkName();
+    const fullChainName = networkName;
+
+    const res = await fetch(`https://sign.exokit.org/${fullChainName}/${tokenName}/${transactionHash}`);
+    const signatureJson = await res.json();
+    const {timestamp, r, s, v} = signatureJson;
+    try {
+      await runMainnetTransaction(tokenName + 'Proxy', 'withdraw', to, tokenId, timestamp, r, s, v);
+      successCallback();
+    } catch (err) {
+      errorCallback(err);
+    }
+  }
+}
 
 export const deleteAsset = async (id, mnemonic, successCallback, errorCallback) => {
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();

@@ -262,6 +262,9 @@ export default ({
                   </span>
                   {' '}Owned by <Link href={`/accounts/` + ownerAddress}>{ownerUsername}</Link>
                 </div>),
+                hash && (<div className="assetDetailsDeployedContent">
+                  {' '}Deployed content: <Link href={`/preview/` + hash}>{hash}</Link>
+                </div>),
                 (<div className={`detailsBlock detailsBlockSet noselect`}>
                   {[
                     (<div className="Accordion">

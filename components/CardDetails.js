@@ -1,3 +1,4 @@
+import Web3 from 'web3';
 import React, { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import AssetCard from './Card';
@@ -75,11 +76,12 @@ export default ({
 
   const isForSale = buyPrice !== undefined && buyPrice !== null && buyPrice !== ""
 
-  const ethEnabled = () => {
+  const ethEnabled = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
       window.ethereum.enable();
-      if (window.web3.version.network == 4) {
+      const network = await window.web3.eth.net.getNetworkType();
+      if (network === "rinkeby") {
         return true;
       } else {
         alert("You need to be on the Rinkeby network.");
@@ -91,7 +93,8 @@ export default ({
   }
 
   const loginWithMetaMask = async (func) => {
-    if (!ethEnabled()) {
+    const enabled = await ethEnabled();
+    if (!enabled) {
       return false;
     } else {
       const web3 = window.web3;

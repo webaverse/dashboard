@@ -10,7 +10,7 @@ export default ({ data }) => {
   const router = useRouter()
   const { id } = router.query
   const { globalState, setGlobalState } = useAppContext();
-  const [land, setLand] = useState(null);
+  const [land, setLand] = useState(data);
 
   useEffect(() => {
     getData();
@@ -27,16 +27,15 @@ export default ({ data }) => {
 
   return (
     <>
+      <Head>
+        <title>{land.name} | Webaverse</title>
+        <meta name="description" content={land.description + " | Webaverse"} />
+        <meta property="og:title" content={land.name + " | Webaverse"} />
+        <meta property="og:image" content={land.image} />
+        <meta name="theme-color" content="#c4005d" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
       { land ?
-        <>
-          <Head>
-            <title>{land.name} | Webaverse</title>
-            <meta name="description" content={land.description + " | Webaverse"} />
-            <meta property="og:title" content={land.name + " | Webaverse"} />
-            <meta property="og:image" content={land.image} />
-            <meta name="theme-color" content="#c4005d" />
-            <meta name="twitter:card" content="summary_large_image" />
-          </Head>
           <LandCardDetails
              id={land.id}
              key={land.id}
@@ -65,4 +64,10 @@ export default ({ data }) => {
       }
     </>
   )
+}
+
+export async function getServerSideProps({ params }) {
+  const data = await getLand(params.id);
+
+  return { props: { data } }
 }

@@ -6,11 +6,12 @@ import Loader from "../../components/Loader";
 import { getToken } from "../../functions/UIStateFunctions";
 import { useAppContext } from "../../libs/contextLib";
 
-export default () => {
+export default ({ data }) => {
   const router = useRouter()
   const { id } = router.query
   const { globalState, setGlobalState } = useAppContext();
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(data);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getData();
@@ -21,13 +22,14 @@ export default () => {
       (async () => {
         const data = await getToken(id);
         setToken(data);
+        setLoading(false);
       })();
     }
   }
 
   return (
     <>
-      { token ?
+      { !loading ?
         <>
           <Head>
             <title>{token.name} | Webaverse</title>
@@ -67,4 +69,10 @@ export default () => {
       }
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const data = await getToken(context.params.id);
+
+  return { props: { data } }
 }

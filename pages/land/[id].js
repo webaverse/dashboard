@@ -33,7 +33,7 @@ export default ({ data }) => {
         <title>{land.name} | Webaverse</title>
         <meta name="description" content={land.description + " | Webaverse"} />
         <meta property="og:title" content={land.name + " | Webaverse"} />
-        <meta property="og:image" content={land.image} />
+        <meta property="og:image" content={land.image + "&r=" + land.properties.rarity} />
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>

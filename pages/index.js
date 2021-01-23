@@ -32,7 +32,7 @@ export default () => {
         <title>Members | Webaverse</title>
         <meta name="description" content={"An open virtual world built with existing communities.."} />
         <meta property="og:title" content={"Webaverse"} />
-        <meta property="og:image" content={"./preview.png"} />
+        <meta property="og:image" content={"https://webaverse.com/webaverse.png"} />
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>

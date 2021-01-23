@@ -22,7 +22,7 @@ export default () => {
         <title>Land | Webaverse</title>
         <meta name="description" content={"Check out the land in Webaverse."} />
         <meta property="og:title" content={"Land | Webaverse"} />
-        <meta property="og:image" content={"./preview.png"} />
+        <meta property="og:image" content={"https://webaverse.com/webaverse.png"} />
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>

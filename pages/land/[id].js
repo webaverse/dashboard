@@ -11,16 +11,18 @@ export default ({ data }) => {
   const { id } = router.query
   const { globalState, setGlobalState } = useAppContext();
   const [land, setLand] = useState(data);
+  const [loading, setLoading] = useState(data);
 
   useEffect(() => {
     getData();
   }, [id]);
 
   const getData = () => {
-    if (id && !land) {
+    if (id) {
       (async () => {
         const data = await getLand(id);
         setLand(data);
+        setLoading(false);
       })();
     }
   }
@@ -35,7 +37,7 @@ export default ({ data }) => {
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      { land ?
+      { !loading ?
           <LandCardDetails
              id={land.id}
              key={land.id}

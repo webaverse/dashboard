@@ -11,7 +11,7 @@ export default ({ data }) => {
   const { id } = router.query
   const { globalState, setGlobalState } = useAppContext();
   const [token, setToken] = useState(data);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getData();
@@ -22,7 +22,6 @@ export default ({ data }) => {
       (async () => {
         const data = await getToken(id);
         setToken(data);
-        setLoading(false);
       })();
     }
   }

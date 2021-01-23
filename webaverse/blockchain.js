@@ -203,6 +203,7 @@ const getAddressFromMnemonic = mnemonic => _getWalletFromMnemonic(mnemonic)
 export {
   getBlockchain,
   runSidechainTransaction,
+  runMainnetTransaction,
   getTransactionSignature,
   getAddressFromMnemonic,
 };

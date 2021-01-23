@@ -4,7 +4,7 @@ import Link from 'next/link';
 import AssetCard from './Card';
 import CardSize from '../constants/CardSize.js';
 import { getBlockchain } from '../webaverse/blockchain.js';
-import { addNftCollaborator, removeNftCollaborator, setAssetName, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
+import { resubmitAsset, getStuckAsset, addNftCollaborator, removeNftCollaborator, setAssetName, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { isTokenOnMain, getStores } from '../functions/UIStateFunctions.js'
 import Loader from './Loader';
 
@@ -47,8 +47,13 @@ export default ({
   const [tokenOnMain, setTokenOnMain] = useState(false);
   const [mainnetAddress, setMainnetAddress] = useState(null);
   const [otherNetworkName, setOtherNetworkName] = useState(null);
+  const [stuck, setStuck] = useState(false);
 
   useEffect(() => {
+    getOtherData();
+  }, []);
+
+  const getOtherData = () => {
     (async () => {
       const tokenOnMain = await isTokenOnMain(id);
       setTokenOnMain(tokenOnMain);
@@ -57,7 +62,13 @@ export default ({
       const { getOtherNetworkName } = await getBlockchain();
       setOtherNetworkName(getOtherNetworkName());
     })();
-  }, []);
+    (async () => {
+      const isStuck = getStuckAsset("NFT", id, globalState.address);
+      if (isStuck) {
+        setStuck(true);
+      }
+    })();
+  }
 
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
@@ -119,11 +130,13 @@ export default ({
   const handleSuccess = () => {
     console.log("success!");
     getData();
+    getOtherData();
     setLoading(false);
   }
   const handleError = (err) => {
     console.error("error", err);
     getData();
+    getOtherData();
     setLoading(false);
   }
 
@@ -346,7 +359,7 @@ export default ({
                         </div>
                         )}
                     </div>),
-                    (userOwnsThisAsset || tokenOnMain) && (<div className="Accordion">
+                    (isStuck || userOwnsThisAsset || tokenOnMain) && (<div className="Accordion">
                         <div className="accordionTitle" onClick={() => setToggleTradeOpen(!toggleTradeOpen)}>
                             <span className="accordionTitleValue">Trade</span>
                             <span className={`accordionIcon ${toggleTradeOpen ? 'reverse' : ''}`}></span>
@@ -354,6 +367,7 @@ export default ({
                         {toggleTradeOpen && (
                         <div className="accordionDropdown">
                           {[
+                            isStuck && (<button className="assetDetailsButton" onClick={() => resubmitAsset("NFT", id, globalState.address, handleSuccess, handleError)}>Resubmit Transfer</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To {otherNetworkName}</button>),
                             tokenOnMain && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),

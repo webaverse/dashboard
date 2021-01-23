@@ -18,7 +18,7 @@ export default ({ data }) => {
   }, [id]);
 
   const getData = () => {
-    if (id && !token) {
+    if (id) {
       (async () => {
         const data = await getToken(id);
         setToken(data);

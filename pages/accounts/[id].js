@@ -29,7 +29,7 @@ export default ({ data }) => {
   }, [id]);
 
   const getData = () => {
-    if (id && !profile && !balance && !inventory && !store && !loadout) {
+    if (id && !profile || !balance || !inventory || !store || !loadout) {
       (async () => {
         const profile = await getProfileForCreator(id);
         setProfile(profile);

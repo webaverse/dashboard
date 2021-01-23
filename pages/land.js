@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Head from 'next/head';
 import { useAppContext } from "../libs/contextLib";
 import { getLands } from "../functions/UIStateFunctions.js";
 import LandCardGrid from "../components/LandCardGrid";
@@ -17,6 +18,14 @@ export default () => {
 
   return (
     <div className="container">
+      <Head>
+        <title>Land | Webaverse</title>
+        <meta name="description" content={"Check out the land in Webaverse."} />
+        <meta property="og:title" content={"Land | Webaverse"} />
+        <meta property="og:image" content={"./preview.png"} />
+        <meta name="theme-color" content="#c4005d" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
       { lands ?
         <LandCardGrid data={lands} globalState={globalState} />
       :

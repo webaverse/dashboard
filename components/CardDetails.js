@@ -31,7 +31,8 @@ export default ({
     storeId,
     hideDetails,
     globalState,
-    assetType
+    assetType,
+    getData
 }) => {
 
   const [toggleViewOpen, setToggleViewOpen] = useState(true);
@@ -114,11 +115,11 @@ export default ({
 
   const handleSuccess = () => {
     console.log("success!");
-    window.location.reload();
+    getData();
   }
   const handleError = (err) => {
     console.log("error", err);
-    window.location.reload();
+    getData();
   }
 
   const handleSetAssetName = (e) => {

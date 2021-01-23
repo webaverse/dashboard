@@ -13,13 +13,17 @@ export default ({ data }) => {
   const [land, setLand] = useState(null);
 
   useEffect(() => {
+    getData();
+  }, [id]);
+
+  const getData = () => {
     if (id && !land) {
       (async () => {
         const data = await getLand(id);
         setLand(data);
       })();
     }
-  }, [id]);
+  }
 
   return (
     <>
@@ -53,6 +57,7 @@ export default ({ data }) => {
              ownerAddress={land.owner.address}
              globalState={globalState}
              networkType='webaverse'
+             getData={getData}
            />
         </>
       :

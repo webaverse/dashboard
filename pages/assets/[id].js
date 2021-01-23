@@ -13,13 +13,17 @@ export default () => {
   const [token, setToken] = useState(null);
 
   useEffect(() => {
+    getData();
+  }, [id]);
+
+  const getData = () => {
     if (id && !token) {
       (async () => {
         const data = await getToken(id);
         setToken(data);
       })();
     }
-  }, [id]);
+  }
 
   return (
     <>
@@ -55,6 +59,7 @@ export default () => {
              minterUsername={token.minter.username}
              globalState={globalState}
              networkType='webaverse'
+             getData={getData}
            />
         </>
       :

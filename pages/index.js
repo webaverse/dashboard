@@ -29,7 +29,7 @@ export default () => {
   return (
     <>
       <Head>
-        <title>Members | Webaverse</title>
+        <title>Webaverse</title>
         <meta name="description" content={"An open virtual world built with existing communities.."} />
         <meta property="og:title" content={"Webaverse"} />
         <meta property="og:image" content={"https://webaverse.com/webaverse.png"} />

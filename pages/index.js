@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 import { getTokens, getLands } from "../functions/UIStateFunctions.js";
 import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
@@ -27,6 +28,14 @@ export default () => {
 
   return (
     <>
+      <Head>
+        <title>Members | Webaverse</title>
+        <meta name="description" content={"An open virtual world built with existing communities.."} />
+        <meta property="og:title" content={"Webaverse"} />
+        <meta property="og:image" content={"./preview.png"} />
+        <meta name="theme-color" content="#c4005d" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
       <Hero
         heroBg="/hero.gif"
         title="Webaverse"

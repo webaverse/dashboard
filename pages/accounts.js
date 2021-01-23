@@ -25,7 +25,7 @@ export default () => {
         <title>Members | Webaverse</title>
         <meta name="description" content={"Check out the awesome members on Webaverse."} />
         <meta property="og:title" content={"Members | Webaverse"} />
-        <meta property="og:image" content={"./preview.png"} />
+        <meta property="og:image" content={"/webaverse.png"} />
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>

@@ -25,6 +25,10 @@ export default () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    init();
+  }, [id]);
+
+  const init = () => {
     if (id && !profile && !balance && !inventory && !store && !loadout) {
       (async () => {
         const profile = await getProfileForCreator(id);
@@ -47,7 +51,7 @@ export default () => {
         setLoadout(loadout);
       })();
     }
-  }, [id]);
+
 
   const handleViewToggle = (view) => {
     setSelectedView(view);
@@ -61,7 +65,7 @@ export default () => {
     console.log("success!");
     setLoading(false);
     if (window != "undefined") {
-      location.reload();
+      init();
     }
   }
 

@@ -62,7 +62,6 @@ export default ({ data }) => {
              networkType='webaverse'
              getData={getData}
            />
-        </>
       :
         <Loader loading={true} />
       }

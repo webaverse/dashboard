@@ -170,6 +170,20 @@ const getTransactionSignature = async (chainName, contractName, transactionHash)
   return null;
 };
 
+const runMainnetTransaction = async (contractName, method, ...args) => {
+  const { contracts } = await getBlockchain();
+
+  const address = await getMainnetAddress();
+  if (address) {
+    const m = contracts.front[contractName].methods[method];
+    m.apply(m, args).send({
+      from: address,
+    });
+  } else {
+    throw new Error('no addresses passed by web3');
+  }
+};
+
 const _getWalletFromMnemonic = mnemonic => hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic))
   .derivePath(`m/44'/60'/0'/0/0`)
   .getWallet();

@@ -50,9 +50,6 @@ export default () => {
 
   const handleFilesMagically = async (files) => {
     setLoading(true);
-    console.log("got files", files);
-    console.log("got files[0]", files[0]);
-    console.log("got files[0].name", files[0].name);
     if (files.length > 1) {
       const filesArray = Array.from(files)
       const wbn = await makeWbn(filesArray);
@@ -71,7 +68,6 @@ export default () => {
 
   const makePhysicsBake = async (file) => {
     if (file && getExt(file[0].name) === "glb") {
-      setLoading(true);
       const bin = await makeBin(file);
 
       const manifest = {

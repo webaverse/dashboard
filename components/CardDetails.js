@@ -52,6 +52,7 @@ export default ({
   useEffect(() => {
     if (globalState.loginToken) {
       getOtherData();
+      getData();
     }
   }, [globalState]);
 

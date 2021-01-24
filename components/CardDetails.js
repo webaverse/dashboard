@@ -63,7 +63,7 @@ export default ({
       setOtherNetworkName(getOtherNetworkName());
     })();
     (async () => {
-      const isStuck = getStuckAsset("NFT", id, globalState.address);
+      const isStuck = getStuckAsset("NFT", id, globalState);
       if (isStuck) {
         setStuck(true);
       }
@@ -367,7 +367,7 @@ export default ({
                         {toggleTradeOpen && (
                         <div className="accordionDropdown">
                           {[
-                            stuck && (<button className="assetDetailsButton" onClick={() => resubmitAsset("NFT", id, globalState.address, handleSuccess, handleError)}>Resubmit Transfer</button>),
+                            stuck && (<button className="assetDetailsButton" onClick={() => resubmitAsset("NFT", id, globalState, handleSuccess, handleError)}>Resubmit Transfer</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To {otherNetworkName}</button>),
                             tokenOnMain && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),

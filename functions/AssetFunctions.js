@@ -145,10 +145,11 @@ export const resubmitAsset = async (tokenName, tokenIdNum, globalState, successC
 
     try {
       await runMainnetTransaction(tokenName + 'Proxy', 'withdraw', to, tokenId, timestamp, r, s, v);
-      successCallback();
+      return;
     } catch (err) {
       console.log("mainnet transaction error", err);
       errorCallback(err);
+      return err;
     }
   }
 }

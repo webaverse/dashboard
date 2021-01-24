@@ -37,13 +37,13 @@ const getBlockchain = async () => {
       web3.back = web3.mainnetsidechain;
       addressFront = addresses.mainnet;
       addressBack = addresses.mainnetsidechain;
-      networkName = 'main';
+      networkName = 'mainnet';
     } else {
       web3.front = web3.rinkeby;
       web3.back = web3.rinkebysidechain;
       addressFront = addresses.rinkeby;
       addressBack = addresses.rinkebysidechain;
-      networkName = 'side';
+      networkName = 'rinkeby';
     }
   }
 
@@ -180,7 +180,7 @@ const getTransactionSignature = async (chainName, contractName, transactionHash)
 };
 
 const runMainnetTransaction = async (contractName, method, ...args) => {
-  const { contracts } = await getBlockchain();
+  const { contracts, getMainnetAddress } = await getBlockchain();
 
   const address = await getMainnetAddress();
   if (address) {

@@ -6,9 +6,17 @@ import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 
-export const getStuckAsset = async (tokenName, tokenId, sidechainAddress) => {
+export const getStuckAsset = async (tokenName, tokenId, globalState) => {
+  if (!globalState.loginToken) return null;
   const { contracts, getNetworkName, getMainnetAddress } = await getBlockchain();
+  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(globalState.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+  const address = wallet.getAddressString();
 
+  console.log("got getStuckAsset", {
+    "tokenName": tokenName,
+    "tokenId": tokenId,
+    "address": address
+  });
   const mainnetAddress = await getMainnetAddress();
   const networkName = getNetworkName();
 
@@ -49,9 +57,13 @@ export const getStuckAsset = async (tokenName, tokenId, sidechainAddress) => {
       toBlock: 'latest',
     }),
   ]);
+  console.log(otherDepositedEntries);
+  console.log(otherDepositedEntries[otherDepositedEntries.length-1])
+  return otherDepositedEntries[otherDepositedEntries.length-1];
 
-  const withdrew = withdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === sidechainAddress && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
-  const deposited = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === sidechainAddress && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+/*
+  const withdrew = withdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+  const deposited = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
 
   let chainStatus;
   if (withdrew && deposited) {
@@ -67,8 +79,8 @@ export const getStuckAsset = async (tokenName, tokenId, sidechainAddress) => {
   }
   console.log("chainStatus", chainStatus);
 
-  const otherWithdrew = otherWithdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === sidechainAddress && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
-  const otherDeposited = otherDepositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === sidechainAddress && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+  const otherWithdrew = otherWithdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+  const otherDeposited = otherDepositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
 
   let otherChainStatus;
   if (otherWithdrew && otherDeposited) {
@@ -88,34 +100,40 @@ export const getStuckAsset = async (tokenName, tokenId, sidechainAddress) => {
     console.log("deposited", deposited);
     return deposited;
   } else if (chainStatus === "withdrew" && otherChainStatus === "deposited") {
-    console.log("withdrew", withdrew);
-    return withdrew;
+//    console.log("withdrew", withdrew);
+    console.log("deposited", deposited);
+    return deposited;
   } else if (chainStatus === "withdrew" && otherChainStatus === "withdrew") {
     console.log("withdrew", withdrew);
     return otherWithdrew;
   }
 
   return null;
+*/
 }
 
-export const resubmitAsset = async (tokenName, tokenId, globalState, successCallback, errorCallback) => {
+export const resubmitAsset = async (tokenName, tokenIdNum, globalState, successCallback, errorCallback) => {
   const { getNetworkName } = await getBlockchain();
-  let {transactionHash, blockNumber, returnValues: {to}} = await getStuckAsset(tokenName, tokenId, globalState.address);
+  let {transactionHash, blockNumber, returnValues: {to, tokenId}} = await getStuckAsset(tokenName, tokenIdNum, globalState);
 
   to = to.toLowerCase();
   tokenId = parseInt(tokenId, 10);
+
   if (to === globalState.address) {
-//    _addText('Deposited: ' + transactionHash + ' @ ' + blockNumber + ' ' + tokenId + ' -> ' + to);
     const networkName = getNetworkName();
-    const fullChainName = networkName;
+    const fullChainName = networkName + 'sidechain';
 
     const res = await fetch(`https://sign.exokit.org/${fullChainName}/${tokenName}/${transactionHash}`);
     const signatureJson = await res.json();
     const {timestamp, r, s, v} = signatureJson;
+
+    console.log("got signatureJson", signatureJson);
     try {
       await runMainnetTransaction(tokenName + 'Proxy', 'withdraw', to, tokenId, timestamp, r, s, v);
-      successCallback();
+      console.log("success runmainnet transaction");
+//      successCallback();
     } catch (err) {
+      console.log("mainnet transaction error", err);
       errorCallback(err);
     }
   }

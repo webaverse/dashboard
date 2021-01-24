@@ -12,11 +12,6 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(globalState.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
 
-  console.log("got getStuckAsset", {
-    "tokenName": tokenName,
-    "tokenId": tokenId,
-    "address": address
-  });
   const mainnetAddress = await getMainnetAddress();
   const networkName = getNetworkName();
 
@@ -57,9 +52,26 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
       toBlock: 'latest',
     }),
   ]);
+
+/*
+  console.log(depositedEntries);
+  console.log(withdrewEntries);
   console.log(otherDepositedEntries);
-  console.log(otherDepositedEntries[otherDepositedEntries.length-1])
-  return otherDepositedEntries[otherDepositedEntries.length-1];
+  console.log(otherWithdrewEntries);
+
+  const deposited = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+
+  console.log("deposited", deposited);
+  const withdrew = withdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+  console.log("withdrew", withdrew);
+  const otherWithdrew = otherWithdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+  console.log("otherWithdrew", otherWithdrew);
+  const otherDeposited = otherDepositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
+  console.log("otherDeposited", otherDeposited);
+*/
+
+  const deposits = depositedEntries[depositedEntries.length-1];
+  return deposits;
 
 /*
   const withdrew = withdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
@@ -114,7 +126,10 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
 
 export const resubmitAsset = async (tokenName, tokenIdNum, globalState, successCallback, errorCallback) => {
   const { getNetworkName } = await getBlockchain();
-  let {transactionHash, blockNumber, returnValues: {to, tokenId}} = await getStuckAsset(tokenName, tokenIdNum, globalState);
+  const stuckAsset = await getStuckAsset(tokenName, tokenIdNum, globalState);
+  if (!stuckAsset) return null;
+
+  let {transactionHash, blockNumber, returnValues: {to, tokenId}} = stuckAsset;
 
   to = to.toLowerCase();
   tokenId = parseInt(tokenId, 10);
@@ -127,11 +142,9 @@ export const resubmitAsset = async (tokenName, tokenIdNum, globalState, successC
     const signatureJson = await res.json();
     const {timestamp, r, s, v} = signatureJson;
 
-    console.log("got signatureJson", signatureJson);
     try {
       await runMainnetTransaction(tokenName + 'Proxy', 'withdraw', to, tokenId, timestamp, r, s, v);
-      console.log("success runmainnet transaction");
-//      successCallback();
+      successCallback();
     } catch (err) {
       console.log("mainnet transaction error", err);
       errorCallback(err);

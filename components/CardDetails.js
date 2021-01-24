@@ -359,7 +359,7 @@ export default ({
                         </div>
                         )}
                     </div>),
-                    (stuck || userOwnsThisAsset || tokenOnMain) && (<div className="Accordion">
+                    (userOwnsThisAsset || tokenOnMain) && (<div className="Accordion">
                         <div className="accordionTitle" onClick={() => setToggleTradeOpen(!toggleTradeOpen)}>
                             <span className="accordionTitleValue">Trade</span>
                             <span className={`accordionIcon ${toggleTradeOpen ? 'reverse' : ''}`}></span>
@@ -367,7 +367,7 @@ export default ({
                         {toggleTradeOpen && (
                         <div className="accordionDropdown">
                           {[
-                            stuck && (<button className="assetDetailsButton" onClick={() => resubmitAsset("NFT", id, globalState, handleSuccess, handleError)}>Resubmit Transfer</button>),
+                            false && stuck && (<button className="assetDetailsButton" onClick={() => resubmitAsset("NFT", id, globalState, handleSuccess, handleError)}>Resubmit Transfer</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To {otherNetworkName}</button>),
                             tokenOnMain && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSellAsset}>Sell This Item</button>),

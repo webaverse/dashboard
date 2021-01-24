@@ -184,12 +184,14 @@ const runMainnetTransaction = async (contractName, method, ...args) => {
 
   const address = await getMainnetAddress();
   if (address) {
-    const m = contracts.front[contractName].methods[method];
+    const m = await contracts.front[contractName].methods[method];
     m.apply(m, args).send({
       from: address,
     });
+    return m;
   } else {
     throw new Error('no addresses passed by web3');
+    return Error('no addresses passed by web3');
   }
 };
 

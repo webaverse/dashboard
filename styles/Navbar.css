@@ -198,7 +198,7 @@
   .navbarIcon {
     float: right;
     display: block;
-    margin-left: auto;
+    margin-left: 20px;
     margin-top: auto;
     margin-bottom: auto;
   }

@@ -1,3 +1,4 @@
+import Web3 from 'web3';
 import React, { useState, useEffect } from 'react'
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -5,7 +6,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
-import { setName, getLoadout, withdrawFlux, depositFlux } from "../../functions/AssetFunctions.js";
+import { resubmitAsset, getStuckAsset, setName, getLoadout, withdrawFlux, depositFlux } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
@@ -23,10 +24,13 @@ export default ({ data }) => {
   const [store, setStore] = useState(null);
   const [selectedView, setSelectedView] = useState("inventory");
   const [loading, setLoading] = useState(false);
+  const [stuck, setStuck] = useState(false);
 
   useEffect(() => {
-    getData();
-  }, [id]);
+    if (globalState.loginToken) {
+      getData();
+    }
+  }, [globalState]);
 
   const getData = () => {
     if (id && !profile || !balance || !inventory || !store || !loadout) {
@@ -43,16 +47,21 @@ export default ({ data }) => {
         setStore(store);
       })();
       (async () => {
-        const balance = await getBalance(id);
-        setBalance(balance);
-      })();
-      (async () => {
         const loadout = await getLoadout(id);
         setLoadout(loadout);
       })();
     }
+    (async () => {
+      const isStuck = await getStuckAsset("FT", null, globalState);
+      if (isStuck) {
+        setStuck(true);
+      }
+    })();
+    (async () => {
+      const balance = await getBalance(id);
+      setBalance(balance);
+    })();
   }
-
 
   const handleViewToggle = (view) => {
     setSelectedView(view);
@@ -203,6 +212,13 @@ export default ({ data }) => {
           {[
             (<a key="fluxToMainnetButton" className="button" onClick={handleDeposit}>
               Transfer FLUX to mainnet
+            </a>),
+            stuck && (<a key="fluxToMainnetButton" className="button" onClick={async () => {
+              setLoading(true);
+              await resubmitAsset("FT", null, globalState, handleSuccess, handleError);
+              handleSuccess();
+            }}>
+              Resubmit FLUX transfer
             </a>),
             (<a key="fluxButton" className="button" onClick={handleWithdraw}>
               Transfer FLUX from mainnet

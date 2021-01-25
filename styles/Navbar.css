@@ -174,7 +174,7 @@
   transition: all 1s ease;
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1327px) {
   .desktop {
     display: flex;
   }
@@ -182,7 +182,7 @@
     display: none;
   }
 }
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 1327px) {
   .mobile {
     display: flex;
   }
@@ -190,7 +190,7 @@
     display: none;
   }
 }
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 1327px) {
   .rightMenuContainer,
   .navbarFluxContainer {
     display: none !important;
@@ -208,7 +208,7 @@
   }
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 1327px) {
   .rightMenuContainer.responsive {position: relative;}
   .rightMenuContainer.responsive a.icon {
     position: absolute;

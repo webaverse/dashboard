@@ -31,6 +31,7 @@ const Navbar = () => {
             <a className={`item`} href="https://docs.webaverse.com">Docs</a>
             <a className={`item`} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
             <a className={`item`} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
+            <a className={`item`} target="_blank" href="https://discord.com/oauth2/authorize?client_id=758956702669209611&permissions=0&scope=bot">Bot</a>
           </div>
 {/*
           <div onClick={() => setDropdown(false)} className={`rightMenuContainer desktop`}>

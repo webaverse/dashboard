@@ -70,7 +70,12 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
   console.log("otherDeposited", otherDeposited);
 */
 
-  const depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString());
+  let depositedFiltered;
+  if (tokenId) {
+    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString());
+  } else {
+    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address);
+  }
   const deposits = depositedFiltered[depositedFiltered.length-1];
   return deposits;
 

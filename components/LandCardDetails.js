@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAppContext } from "../libs/contextLib";
 import CardSize from '../constants/CardSize.js';
-import { removeLandCollaborator, addLandCollaborator, getLandHash, deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawLand, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
+import { resubmitAsset, getStuckAsset, removeLandCollaborator, addLandCollaborator, getLandHash, deployLand, depositLand, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawLand, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { getLandMain, getStores } from '../functions/UIStateFunctions.js'
 import { getBlockchain } from '../webaverse/blockchain.js'
 import Loader from './Loader';
@@ -50,11 +50,14 @@ export default ({
   const [openHologram, setOpenHologram] = useState(false);
   const [address, setAddress] = useState(null);
   const [otherNetworkName, setOtherNetworkName] = useState(null);
+  const [stuck, setStuck] = useState(false);
 
   useEffect(() => {
-    getData();
-    getOtherData();
-  },  []);
+    if (globalState.loginToken) {
+      getData();
+      getOtherData();
+    }
+  },  [globalState]);
 
   const getOtherData = () => {
     (async () => {
@@ -69,6 +72,12 @@ export default ({
       const { addresses, getOtherNetworkName } = await getBlockchain();
       setAddress(addresses);
       setOtherNetworkName(getOtherNetworkName());
+    })();
+    (async () => {
+      const isStuck = await getStuckAsset("LAND", id, globalState);
+      if (isStuck) {
+        setStuck(true);
+      }
     })();
   }
 
@@ -130,13 +139,17 @@ export default ({
     }
   }
 
-  const handleSuccess = () => {
-    console.log("success!");
-    getData();
+  const handleSuccess = async () => {
+    console.log("success");
+    await getData();
+    await getOtherData();
+    setLoading(false);
   }
   const handleError = (err) => {
     console.log("error", err);
     getData();
+    getOtherData();
+    setLoading(false);
   }
 
   const handleWithdraw = async (e) => {
@@ -287,7 +300,11 @@ export default ({
                         </div>
                         )}
                     </div>),
-                    userOwnsThisAsset && (<div className="Accordion">
+                    (
+                      (stuck && ((!landMainnetAddress || landMainnetAddress.includes("0x0000000") || landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]))) )
+                      || (userOwnsThisAsset)
+                      || (landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]))
+                    ) && (<div className="Accordion">
                         <div className="accordionTitle" onClick={() => setToggleEditOpen(!toggleEditOpen)}>
                             <span className="accordionTitleValue">Edit</span>
                             <span className={`accordionIcon ${toggleEditOpen ? 'reverse' : ''}`}></span>
@@ -295,6 +312,11 @@ export default ({
                         {toggleEditOpen && (
                         <div className="accordionDropdown">
                           {[
+                            stuck && (!landMainnetAddress || landMainnetAddress.includes("0x0000000") || landMainnetAddress.includes(address["rinkeby"]["LANDProxy"])) && !userOwnsThisAsset && (<button className="assetDetailsButton" onClick={async () => {
+                              setLoading(true);
+                              await resubmitAsset("LAND", id, globalState, handleSuccess, handleError);
+                              handleSuccess();
+                            }}>Resubmit Transfer</button>),
                             landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeploy}>Deploy Content</button>),

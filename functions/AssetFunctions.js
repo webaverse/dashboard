@@ -53,81 +53,15 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
     }),
   ]);
 
-/*
-  console.log(depositedEntries);
-  console.log(withdrewEntries);
-  console.log(otherDepositedEntries);
-  console.log(otherWithdrewEntries);
-
-  const deposited = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
-
-  console.log("deposited", deposited);
-  const withdrew = withdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
-  console.log("withdrew", withdrew);
-  const otherWithdrew = otherWithdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
-  console.log("otherWithdrew", otherWithdrew);
-  const otherDeposited = otherDepositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
-  console.log("otherDeposited", otherDeposited);
-*/
-
   let depositedFiltered;
   if (tokenId) {
     depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString());
   } else {
     depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address);
   }
+
   const deposits = depositedFiltered[depositedFiltered.length-1];
   return deposits;
-
-/*
-  const withdrew = withdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
-  const deposited = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
-
-  let chainStatus;
-  if (withdrew && deposited) {
-    if (withdrew.blockNumber > deposited.blockNumber) {
-      chainStatus = "withdrew";
-    } else if (deposited.blockNumber > withdrew.blockNumber) {
-      chainStatus = "deposited";
-    }
-  } else if (withdrew && !deposited) {
-    chainStatus = "withdrew";
-  } else if (!withdrew && deposited) {
-    chainStatus = "deposited";
-  }
-  console.log("chainStatus", chainStatus);
-
-  const otherWithdrew = otherWithdrewEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
-  const otherDeposited = otherDepositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString()).sort((a, b) => b.transactionIndex - a.transactionIndex)[0];
-
-  let otherChainStatus;
-  if (otherWithdrew && otherDeposited) {
-    if (otherWithdrew.blockNumber > otherDeposited.blockNumber) {
-      otherChainStatus = "withdrew";
-    } else if (otherDeposited.blockNumber > otherWithdrew.blockNumber) {
-      otherChainStatus = "deposited";
-    }
-  } else if (otherWithdrew && !otherDeposited) {
-    otherChainStatus = "withdrew";
-  } else if (!otherWithdrew && otherDeposited) {
-    otherChainStatus = "deposited";
-  }
-  console.log("otherChainStatus", otherChainStatus);
-
-  if (chainStatus === "deposited" && !otherChainStatus) {
-    console.log("deposited", deposited);
-    return deposited;
-  } else if (chainStatus === "withdrew" && otherChainStatus === "deposited") {
-//    console.log("withdrew", withdrew);
-    console.log("deposited", deposited);
-    return deposited;
-  } else if (chainStatus === "withdrew" && otherChainStatus === "withdrew") {
-    console.log("withdrew", withdrew);
-    return otherWithdrew;
-  }
-
-  return null;
-*/
 }
 
 export const resubmitAsset = async (tokenName, tokenIdNum, globalState, successCallback, errorCallback) => {
@@ -135,8 +69,14 @@ export const resubmitAsset = async (tokenName, tokenIdNum, globalState, successC
   const stuckAsset = await getStuckAsset(tokenName, tokenIdNum, globalState);
   if (!stuckAsset) return null;
 
-  let {transactionHash, blockNumber, returnValues: {to, tokenId}} = stuckAsset;
+  let {transactionHash, blockNumber, returnValues, returnValues: {to, tokenId}} = stuckAsset;
 
+  if (!to) {
+    to = returnValues[0];
+  }
+  if (!tokenId) {
+    tokenId = returnValues[1];
+  }
   to = to.toLowerCase();
   tokenId = parseInt(tokenId, 10);
 

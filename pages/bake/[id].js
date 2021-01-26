@@ -5,13 +5,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router'
 import { Container, Row, Col } from 'react-grid-system';
 import { FileDrop } from 'react-file-drop';
-import { useAppContext } from "../libs/contextLib";
-import { mintNft, setAvatar, setHomespace } from '../functions/AssetFunctions.js';
-import { storageHost } from "../webaverse/constants";
-import Loader from '../components/Loader';
-import AssetCard from '../components/Card';
-import { makeWbn, makeBin } from "../webaverse/build";
-import { blobToFile, getExt } from "../webaverse/util";
+import { useAppContext } from "../../libs/contextLib";
+import { mintNft, setAvatar, setHomespace } from '../../functions/AssetFunctions.js';
+import { storageHost } from "../../webaverse/constants";
+import Loader from '../../components/Loader';
+import AssetCard from '../../components/Card';
+import { makeWbn, makeBin } from "../../webaverse/build";
+import { blobToFile, getExt } from "../../webaverse/util";
 
 export default () => {
   const router = useRouter();
@@ -38,15 +38,17 @@ export default () => {
     const fileNameData = id.split(".")[1];
     const extNameData = id.split(".")[2];
 
-    const newIpfsUrl = "https://ipfs.exokit.org/" + hash + "/" + fileName + "." + extName);
-    setIpfsUrl(newIpfsUrl);
+    if (hashData && fileNameData && extNameData) {
+      const newIpfsUrl = "https://ipfs.exokit.org/" + hashData + "/" + fileNameData + "." + extNameData;
+      setIpfsUrl(newIpfsUrl);
 
-    fetch(newIpfsUrl);
-    .then( res => res.blob() )
-    .then( blob => {
-      const glbFile = blobToFile(blob, "scene.glb");
-      makePhysicsBake(glbFile);
-    });
+      fetch(newIpfsUrl)
+      .then( res => res.blob() )
+      .then( blob => {
+        const glbFile = blobToFile(blob, "scene.glb");
+        makePhysicsBake(glbFile);
+      });
+    }
   }
 
 
@@ -86,7 +88,7 @@ export default () => {
 
   const makePhysicsBake = async (file) => {
     if (file && getExt(file.name) === "glb") {
-      const bin = await makeBin(file);
+      const bin = await makeBin([file]);
 
       const manifest = {
         "xr_type": "webxr-site@0.0.1",
@@ -135,5 +137,10 @@ export default () => {
     else console.warn("Didnt upload file");
   };
 
-  return (<Loader loading={true} />);
+  return (<>
+    <Head>
+      <script type="text/javascript" src="/geometry.js"></script>
+    </Head>
+    <Loader loading={true} />
+  </>)
 }

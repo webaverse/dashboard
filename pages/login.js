@@ -34,6 +34,15 @@ export default () => {
     const newState = await pullUser(state);
 
     if (play) {
+      const storedLoginToken = await storage.get("loginToken");
+
+      if (storedLoginToken) {
+        if (!window.confirm("Do you want to overwrite your existing login?")) {
+          router.push("/");
+          return;
+        }
+      }
+
       await storage.set("loginToken", { mnemonic: key });
       if (realmId != "") {
         window.location.href = "https://app.webaverse.com/?r=room-" + realmId;
@@ -41,6 +50,15 @@ export default () => {
         window.location.href = "https://app.webaverse.com";
       }
     } else {
+      const storedLoginToken = await storage.get("loginToken");
+
+      if (storedLoginToken) {
+        if (!window.confirm("Do you want to overwrite your existing login?")) {
+          router.push("/");
+          return;
+        }
+      }
+
       setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
       router.push("/accounts/" + state.address);
     }
@@ -56,8 +74,6 @@ export default () => {
       (async () => {
         try {
           const res = await fetch(`https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
-          console.log("got res!", res);
-          console.log("got status!", res.headers.get("status"));
           if (res.status !== 200) {
             throw "Login did not work, got response: " + res.status;
           }

@@ -28,11 +28,9 @@ const Navbar = () => {
             <Link href="/map"><a className={`item`}>Map</a></Link>
             <Link href="/accounts"><a className={`item`}>Members</a></Link>
             <Link href="/mint"><a className={`item`}>Mint</a></Link>
-            <a className={`item`} target="_blank" href="https://editaverse.com/projects/new">Editor</a>
             <a className={`item`} href="https://docs.webaverse.com">Docs</a>
             <a className={`item`} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
             <a className={`item`} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
-            <a className={`item`} target="_blank" href="https://discord.com/oauth2/authorize?client_id=758956702669209611&permissions=0&scope=bot">Bot</a>
           </div>
 {/*
           <div onClick={() => setDropdown(false)} className={`rightMenuContainer desktop`}>

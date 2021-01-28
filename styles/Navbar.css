@@ -10,6 +10,8 @@
   border-color: transparent;
   transition: background-color .5s ease,border-color .5s ease;
   background: #18141a;
+  padding: 0 8%;
+  box-sizing: border-box
 }
 .navbar .navbarContainer {
   position: relative;
@@ -18,8 +20,6 @@
   height: 100%;
   background-color: transparent;
   transition: background-color .25s ease;
-  margin-left: 25px;
-  margin-right: 25px;
   display: block;
 }
 .navbar .navbarContainer .navbarMenu {

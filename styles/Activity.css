@@ -1,0 +1,33 @@
+.activityTableContainer {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid #312936;
+  border-radius: .5rem;
+  flex: 1 1;
+  background-color: #211c2454;
+  padding: 15px;
+  box-shadow: 0px 0px 5px #312936;
+}
+.activityTableEntry {
+  max-width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: bottom;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.activityTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+.activityTable tr {
+  border-bottom: 1px solid #312936;
+}

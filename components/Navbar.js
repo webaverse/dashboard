@@ -28,6 +28,7 @@ const Navbar = () => {
             <Link href="/map"><a className={`item`}>Map</a></Link>
             <Link href="/accounts"><a className={`item`}>Members</a></Link>
             <Link href="/mint"><a className={`item`}>Mint</a></Link>
+            <Link href="/activity"><a className={`item`}>Activity</a></Link>
             <a className={`item`} href="https://docs.webaverse.com">Docs</a>
             <a className={`item`} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
             <a className={`item`} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>

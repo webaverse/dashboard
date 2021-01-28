@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link'
 import MenuIcon from '@material-ui/icons/Menu';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useAppContext } from "../libs/contextLib";
 
 const Navbar = () => {
@@ -21,6 +22,7 @@ const Navbar = () => {
               Webaverse
             </Link>
           </div>
+{/*
           <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
             <a className={`item`} href="https://app.webaverse.com">Play</a>
             <Link href="/assets"><a className={`item`}>Browse</a></Link>
@@ -33,13 +35,13 @@ const Navbar = () => {
             <a className={`item`} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
             <a className={`item`} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
           </div>
-{/*
-          <div onClick={() => setDropdown(false)} className={`rightMenuContainer desktop`}>
+*/}
+          <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
             <div className="navbarTopLevelMenuOption">
               <a className="navbarLinkItem item" href="https://app.webaverse.com">Play</a>
             </div>
             <div className="navbarTopLevelMenuOption">
-              <a className="navbarLinkItem item" href="https://docs.webaverse.com">Learn</a>
+              <a className="navbarLinkItem item" href="https://docs.webaverse.com">Learn<ExpandMoreIcon /></a>
               <div className="navbarSubMenuContainer">
                 <div className="navbarSubMenu">
                   <div className="navbarSubMenuLeftbar">
@@ -51,7 +53,7 @@ const Navbar = () => {
               </div>
             </div>
             <div className="navbarTopLevelMenuOption">
-              <Link href="/assets"><a className="navbarLinkItem item">Market</a></Link>
+              <Link href="/assets"><a className="navbarLinkItem item">Market<ExpandMoreIcon /></a></Link>
               <div className="navbarSubMenuContainer">
                 <div className="navbarSubMenu">
                   <div className="navbarSubMenuLeftbar">
@@ -67,7 +69,6 @@ const Navbar = () => {
               <Link href="/mint"><a className="navbarLinkItem item">Mint</a></Link>
             </div>
           </div>
-*/}
           <div onClick={() => setDropdown(false)} className={`navbarFluxContainer desktop`}>
             <a className="navbarFluxSymbol">
               山

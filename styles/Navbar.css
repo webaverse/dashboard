@@ -58,7 +58,7 @@
   border: none;
   margin: 0 .85714286em;
   background: 0 0;
-  transition: color .1s ease;
+  transition: color .3s ease;
   vertical-align: middle;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
@@ -132,34 +132,41 @@
 }
 
 .rightMenuContainer {
-  transition: all 1s ease;
+  transition: all .3s ease;
 }
-.navbarSubMenuContainer {
+.rightMenuContainer .navbarTopLevelMenuOption .navbarSubMenuContainer {
   position: fixed;
-  width: 100%;
-  height: 50px;
   background: #18141a;
   left: 0;
   top: 63px;
   display: none;
-  transition: all 1s ease;
+  transition: all .3s ease;
   padding-top: 25px;
+  border-top: 1px solid #c4005d;
+  padding: 0 8%;
+  box-shadow: 0px 0px 5px #312936;
+  box-sizing: border-box;
+  margin: 0 8%;
+  width: 84%;
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 .navbarTopLevelMenuOption {
   height: 100%;
   display: flex;
-  transition: all 1s ease;
+  transition: all .3s ease;
 }
 .navbarTopLevelMenuOption:hover .navbarSubMenuContainer {
   display: block;
 }
+.navbarLinkItem.item {
+  transition: all .3s ease;
+}
 .item:hover {
-  text-decoration: underline;
-  text-decoration-color: #c4005d;
-  text-underline-position: under;
+  color: #c4005d;
 }
 .navbarSubMenuLinkItem:hover {
-  transition: all 1s ease;
+  transition: all .3s ease;
   background: #312936;
 }
 .navbarLinkItem {
@@ -171,10 +178,10 @@
   width: fit-content;
   height: 100%;
   cursor: pointer;
-  transition: all 1s ease;
+  transition: all .3s ease;
 }
 
-@media screen and (min-width: 1327px) {
+@media screen and (min-width: 918px) {
   .desktop {
     display: flex;
   }
@@ -182,7 +189,7 @@
     display: none;
   }
 }
-@media screen and (max-width: 1327px) {
+@media screen and (max-width: 918px) {
   .mobile {
     display: flex;
   }
@@ -190,7 +197,7 @@
     display: none;
   }
 }
-@media screen and (max-width: 1327px) {
+@media screen and (max-width: 918px) {
   .rightMenuContainer,
   .navbarFluxContainer {
     display: none !important;
@@ -208,7 +215,7 @@
   }
 }
 
-@media screen and (max-width: 1327px) {
+@media screen and (max-width: 918px) {
   .rightMenuContainer.responsive {position: relative;}
   .rightMenuContainer.responsive a.icon {
     position: absolute;

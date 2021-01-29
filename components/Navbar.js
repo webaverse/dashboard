@@ -41,8 +41,8 @@ const Navbar = () => {
               <a className="navbarLinkItem item" href="https://app.webaverse.com">Play</a>
             </div>
             <div className="navbarTopLevelMenuOption">
-              <a className="navbarLinkItem item" href="https://docs.webaverse.com">Learn<ExpandMoreIcon /></a>
-              <div className="navbarSubMenuContainer">
+              <div onClick={e => e.preventDefault} className={`navbarLinkItem item ${dropdown ? "responsive" : ""}`}>Learn<ExpandMoreIcon /></div>
+              <div className={`navbarSubMenuContainer ${dropdown ? "responsive" : ""}`}>
                 <div className="navbarSubMenu">
                   <div className="navbarSubMenuLeftbar">
                     <a className={`navbarSubMenuLinkItem item`} href="https://docs.webaverse.com">Docs</a>
@@ -53,20 +53,30 @@ const Navbar = () => {
               </div>
             </div>
             <div className="navbarTopLevelMenuOption">
-              <Link href="/assets"><a className="navbarLinkItem item">Market<ExpandMoreIcon /></a></Link>
-              <div className="navbarSubMenuContainer">
+              <div onClick={e => e.preventDefault} className={`navbarLinkItem item ${dropdown ? "responsive" : ""}`}>Market<ExpandMoreIcon /></div>
+              <div className={`navbarSubMenuContainer ${dropdown ? "responsive" : ""}`}>
                 <div className="navbarSubMenu">
                   <div className="navbarSubMenuLeftbar">
                     <Link href="/assets"><a className={`navbarSubMenuLinkItem item`}>Browse</a></Link>
                     <Link href="/land"><a className={`navbarSubMenuLinkItem item`}>Land</a></Link>
                     <Link href="/map"><a className={`navbarSubMenuLinkItem item`}>Map</a></Link>
                     <Link href="/accounts"><a className={`navbarSubMenuLinkItem item`}>Accounts</a></Link>
+                    <Link href="/activity"><a className={`navbarSubMenuLinkItem item`}>Activity</a></Link>
                   </div>
                 </div>
               </div>
             </div>
             <div className="navbarTopLevelMenuOption">
-              <Link href="/mint"><a className="navbarLinkItem item">Mint</a></Link>
+              <div onClick={e => e.preventDefault} className={`navbarLinkItem item ${dropdown ? "responsive" : ""}`}>Create<ExpandMoreIcon /></div>
+              <div className={`navbarSubMenuContainer ${dropdown ? "responsive" : ""}`}>
+                <div className="navbarSubMenu">
+                  <div className="navbarSubMenuLeftbar">
+                    <Link href="/mint"><a className={`navbarSubMenuLinkItem item`}>Mint</a></Link>
+                    <a className={`navbarSubMenuLinkItem item`} href="https://editaverse.com">Editor</a>
+                    <a className={`navbarSubMenuLinkItem item`} href="https://voxel.editaverse.com">Voxel Editor</a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div onClick={() => setDropdown(false)} className={`navbarFluxContainer desktop`}>

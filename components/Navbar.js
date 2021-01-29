@@ -74,6 +74,7 @@ const Navbar = () => {
                     <Link href="/mint"><a className={`navbarSubMenuLinkItem item`}>Mint</a></Link>
                     <a className={`navbarSubMenuLinkItem item`} href="https://editaverse.com">Editor</a>
                     <a className={`navbarSubMenuLinkItem item`} href="https://voxel.editaverse.com">Voxel Editor</a>
+                    <a className={`navbarSubMenuLinkItem item`} href="https://discord.com/oauth2/authorize?client_id=758956702669209611&permissions=0&scope=bot">Discord Bot</a>
                   </div>
                 </div>
               </div>

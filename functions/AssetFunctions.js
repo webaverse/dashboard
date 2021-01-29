@@ -50,34 +50,34 @@ export const getSidechainActivity = async (page) => {
   const latest = await web3[networkName + "sidechain"].eth.getBlockNumber();
   const [
     accountMetadataEntries,
-//    nftProxyDepositedEntries,
+    nftProxyDepositedEntries,
   ] = await Promise.all([
     contracts['back']['FT'].getPastEvents('Transfer', {
       fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
       toBlock: parseInt(latest-(page*(latest-(latest/1.05)))),
     }),
-/*
     contracts['back']['NFT'].getPastEvents('Transfer', {
-      fromBlock: latest-100000,
-      toBlock: 'latest',
+      fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
+      toBlock: parseInt(latest-(page*(latest-(latest/1.05)))),
     }),
-*/
   ]);
 
-  //let activity = [].concat(accountMetadataEntries, nftProxyDepositedEntries);
+  let activity = [].concat(accountMetadataEntries, nftProxyDepositedEntries);
 /*
   console.log("fromBlock", parseInt(latest-((page+1)*(latest-(latest/1.05)))));
   console.log("toBlock", parseInt(latest-(page*(latest-(latest/1.05)))));
   console.log("activity", accountMetadataEntries);
   console.log("activity sorted", sorted);
 */
-  const sorted = accountMetadataEntries.sort((a, b)=>{
-    return b.blockNumber - a.blockNumber;
+  const activityWithTimestamp = await Promise.all(activity.map(async entry => {
+    entry.timestamp = await getTimeByBlock(entry.transactionHash);
+    return entry;
+  }));
+  const activitySortedWithTimestamp = activityWithTimestamp.sort((a, b)=>{
+    return b.timestamp - a.timestamp;
   });
 
-  let activity = [].concat(sorted);
-
-  return activity;
+  return activitySortedWithTimestamp;
 }
 
 export const getStuckAsset = async (tokenName, tokenId, globalState) => {

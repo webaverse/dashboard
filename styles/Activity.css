@@ -10,11 +10,17 @@
   padding: 0 8%;
   flex-direction: column;
 }
-.activityContainerTop {
+.activityTableContainerTop {
   display: flex;
   flex-direction: row;
   margin-top: 5px;
   margin-bottom: 50px;
+}
+.activityTableContainerBottom {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+  margin-top: 50px;
 }
 .activityTableContainerTopLeft {
   display: flex;
@@ -26,9 +32,25 @@
 .activityContainer h1 {
   text-align: left;
 }
-.activityTableContainerTop {
-  display: flex;
-  flex-direction: row;
+.activityTableContainerTopButton,
+.activityTableContainerTopButtonStatic {
+  border-top-left-radius: .35rem;
+  border-bottom-left-radius: .35rem;
+  border-top-right-radius: .35rem;
+  border-bottom-right-radius: .35rem;
+  padding: .3rem .6rem;
+  font-size: .71094rem;
+  background-color: rgb(196 0 93 / .8);
+  transition: all .3s ease-in-out;
+  margin: 2.5px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.activityTableContainerTopButton:hover {
+    background-color: #d4055a;
 }
 .activityTableContainer {
   position: relative;

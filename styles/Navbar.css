@@ -156,6 +156,7 @@
   display: flex;
   transition: all .3s ease;
 }
+
 .navbarTopLevelMenuOption:hover .navbarSubMenuContainer {
   display: block;
 }
@@ -195,6 +196,26 @@
   }
   .desktop {
     display: none;
+  }
+  .navbarSubMenuContainer.responsive {
+    display: block !important;
+    position: relative !important;
+    top: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .navbarSubMenuContainer.responsive .navbarSubMenuLeftbar {
+    display: flex;
+    flex-direction: column;
+  }
+  .navbarTopLevelMenuOption {
+    flex-wrap: wrap;
+    margin: auto;
+  }
+  .navbarLinkItem.responsive {
+    display: none !important;
   }
 }
 @media screen and (max-width: 918px) {
@@ -239,6 +260,8 @@
   .rightMenuContainer.responsive a {
     font-size: 1em;
     padding: 20px 0;
+    text-align: left;
+    width: 100px;
   }
   .accountPicture.responsive {
     display: flex;

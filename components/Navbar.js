@@ -48,6 +48,7 @@ const Navbar = () => {
                     <a className={`navbarSubMenuLinkItem item`} href="https://docs.webaverse.com">Docs</a>
                     <a className={`navbarSubMenuLinkItem item`} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
                     <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
+                    <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://twitter.com/webaverse">Twitter</a>
                   </div>
                 </div>
               </div>

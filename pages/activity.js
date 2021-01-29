@@ -100,7 +100,7 @@ export default ({ data }) => {
                       </>
                     :
                       <>
-                      <td><span className="activityTableEntry"><Link href={"/assets/" + entry.returnValues["tokenId"]}>{`NFT #${entry.returnValues["tokenId"]}`}</Link></span></td>
+                      <td><span className="activityTableEntry"><Link href={`${entry.type === "LAND" ? "/land/" : "/assets/"}` + entry.returnValues["tokenId"]}>{`${entry.type === "LAND" ? "LAND" : "NFT"} #${entry.returnValues["tokenId"]}`}</Link></span></td>
                       <td><span className="activityTableEntry">1</span></td>
                       </>
                     }

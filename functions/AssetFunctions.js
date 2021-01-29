@@ -53,8 +53,8 @@ export const getSidechainActivity = async (page) => {
 //    nftProxyDepositedEntries,
   ] = await Promise.all([
     contracts['back']['FT'].getPastEvents('Transfer', {
-      fromBlock: parseInt(latest-(page*(latest-(latest/1.05)))),
-      toBlock: 'latest',
+      fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
+      toBlock: parseInt(latest-(page*(latest-(latest/1.05)))),
     }),
 /*
     contracts['back']['NFT'].getPastEvents('Transfer', {
@@ -65,7 +65,18 @@ export const getSidechainActivity = async (page) => {
   ]);
 
   //let activity = [].concat(accountMetadataEntries, nftProxyDepositedEntries);
-  let activity = [].concat(accountMetadataEntries);
+/*
+  console.log("fromBlock", parseInt(latest-((page+1)*(latest-(latest/1.05)))));
+  console.log("toBlock", parseInt(latest-(page*(latest-(latest/1.05)))));
+  console.log("activity", accountMetadataEntries);
+  console.log("activity sorted", sorted);
+*/
+  const sorted = accountMetadataEntries.sort((a, b)=>{
+    return b.blockNumber - a.blockNumber;
+  });
+
+  let activity = [].concat(sorted);
+
   return activity;
 }
 

@@ -45,8 +45,8 @@ const Navbar = () => {
               <div className={`navbarSubMenuContainer ${dropdown ? "responsive" : ""}`}>
                 <div className="navbarSubMenu">
                   <div className="navbarSubMenuLeftbar">
-                    <a className={`navbarSubMenuLinkItem item`} href="https://docs.webaverse.com">Docs</a>
-                    <a className={`navbarSubMenuLinkItem item`} href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
+                    <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://docs.webaverse.com">Docs</a>
+                    <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
                     <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
                     <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://twitter.com/webaverse">Twitter</a>
                   </div>
@@ -73,9 +73,9 @@ const Navbar = () => {
                 <div className="navbarSubMenu">
                   <div className="navbarSubMenuLeftbar">
                     <Link href="/mint"><a className={`navbarSubMenuLinkItem item`}>Mint</a></Link>
-                    <a className={`navbarSubMenuLinkItem item`} href="https://editaverse.com">Editor</a>
-                    <a className={`navbarSubMenuLinkItem item`} href="https://voxel.editaverse.com">Voxel Editor</a>
-                    <a className={`navbarSubMenuLinkItem item`} href="https://discord.com/oauth2/authorize?client_id=758956702669209611&permissions=0&scope=bot">Discord Bot</a>
+                    <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://editaverse.com">Editor</a>
+                    <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://voxel.editaverse.com">Voxel Editor</a>
+                    <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://discord.com/oauth2/authorize?client_id=758956702669209611&permissions=0&scope=bot">Discord Bot</a>
                   </div>
                 </div>
               </div>

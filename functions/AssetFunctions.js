@@ -49,8 +49,9 @@ export const getSidechainActivity = async (page) => {
   const networkName = getNetworkName();
   const latest = await web3[networkName + "sidechain"].eth.getBlockNumber();
   const [
-    accountMetadataEntries,
-    nftProxyDepositedEntries,
+    ftTransferEntries,
+    nftTransferEntries,
+    landTransferEntries,
   ] = await Promise.all([
     contracts['back']['FT'].getPastEvents('Transfer', {
       fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
@@ -60,9 +61,15 @@ export const getSidechainActivity = async (page) => {
       fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
       toBlock: parseInt(latest-(page*(latest-(latest/1.05)))),
     }),
+    contracts['back']['LAND'].getPastEvents('Transfer', {
+      fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
+      toBlock: parseInt(latest-(page*(latest-(latest/1.05)))),
+    }),
+
   ]);
 
-  let activity = [].concat(accountMetadataEntries, nftProxyDepositedEntries);
+  await Promise.all(landTransferEntries.map(entry => entry.type = "LAND"));
+  let activity = [].concat(ftTransferEntries, nftTransferEntries, landTransferEntries);
 /*
   console.log("fromBlock", parseInt(latest-((page+1)*(latest-(latest/1.05)))));
   console.log("toBlock", parseInt(latest-(page*(latest-(latest/1.05)))));

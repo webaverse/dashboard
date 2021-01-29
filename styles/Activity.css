@@ -88,3 +88,10 @@
 .activityTable tr {
   border-bottom: 1px solid #312936;
 }
+.smallerTableData {
+  width: 500px;
+  text-align: left;
+}
+.largerTableData {
+  text-align: left;
+}

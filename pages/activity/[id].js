@@ -3,32 +3,34 @@ import Link from 'next/link';
 import Head from 'next/head';
 import LandCardDetails from "../../components/LandCardDetails";
 import Loader from "../../components/Loader";
-import { getSidechainActivity, getSidechainActivityMaxBlock } from "../../functions/AssetFunctions";
+import { getTxData } from "../../functions/AssetFunctions";
 import { useAppContext } from "../../libs/contextLib";
+import { useRouter } from 'next/router';
 
-export default ({ data }) => {
-  console.log('got data', data);
+export default () => {
+  const router = useRouter();
+  const { id } = router.query;
   const { globalState, setGlobalState } = useAppContext();
   const [loading, setLoading] = useState(false);
-  const [activity, setActivity] = useState(data.activityData);
+  const [activity, setActivity] = useState();
   const [page, setPage] = useState(1);
   const [maxBlock, setMaxBlock] = useState(1);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const data = await getData(page);
+      const data = await getTxData(id);
+      console.log("got DATA", data);
+
+      setData([
+        ["Transaction Hash:", data.transactionHash],
+        ["Block:", data.blockNumber],
+        ["To:", data.returnValues.from, "/accounts/" + data.returnValues.from],
+        ["To:", data.returnValues.to, "/accounts/" + data.returnValues.to],
+        ["Value:", data.returnValues.value],
+      ]);
     })();
   }, []);
-
-  useEffect(() => {
-    getData(page);
-  }, [page]);
-
-  const getData = async (page) => {
-    const activityData = await getSidechainActivity(page);
-    setActivity(activityData);
-    setLoading(false);
-  }
 
   const time2TimeAgo = (ts) => {
       var d=new Date();
@@ -59,40 +61,30 @@ export default ({ data }) => {
           <div>
             <h1>Activity Detail</h1>
           </div>
-          <div className="activityTableContainer">
+          <div className="activityDetailTableContainer">
             <table className="activityTable">
-              <tr>
-                <th className="smallerTableData">
-                  <div className="smallerTableData">
-                    <span className="activityTableEntry">
-                      entry.transactionHash
-                    </span>
-                  </div>
-                </th>
-                <th className="largerTableData">
-                  <div className="largerTableData">
-                    <span className="activityTableEntry">
-                      entry.transactionHash
-                    </span>
-                  </div>
-                </th>
-              </tr>
-              <tr>
-                <td>
-                  <div className="smallerTableData">
-                    <span className="activityTableEntry">
-                      entry.transactionHash
-                    </span>
-                  </div>
-                </td>
-                <td>
-                  <div className="largerTableData">
-                    <span className="activityTableEntry">
-                      entry.transactionHash
-                    </span>
-                  </div>
-                </td>
-              </tr>
+              {data.map(entry =>
+                <tr>
+                  <td>
+                    <div className="smallerTableData">
+                      <div className="activityTableEntry">
+                        {entry[0]}
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="largerTableData">
+                      <div className="activityTxTableEntry">
+                        { entry[2] ?
+                          <Link href={entry[2]}>{entry[1]}</Link>
+                        :
+                          <>{entry[1]}</>
+                        }
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              )}
             </table>
           </div>
         </div>

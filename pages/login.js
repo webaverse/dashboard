@@ -69,11 +69,15 @@ export default () => {
     const id = new URLSearchParams(window.location.search).get("id") || "";
     const play = new URLSearchParams(window.location.search).get("play") || false;
     const realmId = new URLSearchParams(window.location.search).get("realmId") || "";
+    const arrivingFromTwitter = new URLSearchParams(window.location.search).get("twitter") || false;
 
     if (code || id || play) {
       (async () => {
         try {
-          const res = await fetch(`https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
+          const res = await fetch(
+            arrivingFromTwitter ?
+            `https://login.exokit.org/?twittercode=${code}&twitterid=${id}` :
+            `https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
           if (res.status !== 200) {
             throw "Login did not work, got response: " + res.status;
           }

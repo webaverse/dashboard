@@ -55,15 +55,15 @@ export const getSidechainActivity = async (page) => {
   ] = await Promise.all([
     contracts['back']['FT'].getPastEvents('Transfer', {
       fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
-      toBlock: parseInt(latest-(page*(latest-(latest/1.05)))),
+      toBlock: page === 1 ? "latest" : parseInt(latest-(page*(latest-(latest/1.05)))),
     }),
     contracts['back']['NFT'].getPastEvents('Transfer', {
       fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
-      toBlock: parseInt(latest-(page*(latest-(latest/1.05)))),
+      toBlock: page === 1 ? "latest" : parseInt(latest-(page*(latest-(latest/1.05)))),
     }),
     contracts['back']['LAND'].getPastEvents('Transfer', {
       fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
-      toBlock: parseInt(latest-(page*(latest-(latest/1.05)))),
+      toBlock: page === 1 ? "latest" : parseInt(latest-(page*(latest-(latest/1.05)))),
     }),
 
   ]);

@@ -86,7 +86,6 @@ export default ({ data }) => {
               <tr>
                 <th>Txn Hash</th>
                 <th>Block</th>
-                <th>Age</th>
                 <th>From</th>
                 <th>To</th>
                 <th>Value</th>
@@ -97,7 +96,6 @@ export default ({ data }) => {
                   <tr>
                     <td><span className="activityTableEntry"><Link href={"/activity/" + entry.transactionHash}>{entry.transactionHash}</Link></span></td>
                     <td><span className="activityTableEntry">{entry.blockNumber}</span></td>
-                    <td><span className="activityTableEntry">{time2TimeAgo(entry.timestamp)}</span></td>
                     <td><span className="activityTableEntry"><Link href={"/accounts/" + entry.returnValues["from"]}>{entry.returnValues["from"]}</Link></span></td>
                     <td><span className="activityTableEntry"><Link href={"/accounts/" + entry.returnValues["to"]}>{entry.returnValues["to"]}</Link></span></td>
                     <td><span className="activityTableEntry">{entry.returnValues["value"]} FLUX</span></td>

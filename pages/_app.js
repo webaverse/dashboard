@@ -20,6 +20,7 @@ import '../styles/ProfileCards.css';
 import '../styles/Profile.css';
 import '../styles/Mint.css';
 import '../styles/IFrame.css';
+import '../styles/Activity.css';
 
 //Binding events
 Router.events.on('routeChangeStart', () => NProgress.start());

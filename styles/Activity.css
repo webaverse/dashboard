@@ -1,0 +1,105 @@
+.activityContainer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 8%;
+  flex-direction: column;
+}
+.activityTableContainerTop {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  margin-bottom: 50px;
+}
+.activityTableContainerBottom {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+  margin-top: 50px;
+}
+.activityTableContainerTopLeft {
+  display: flex;
+  flex: 1 1;
+}
+.activityTableContainerTopRight {
+  display: flex;
+}
+.activityContainer h1 {
+  text-align: left;
+}
+.activityTableContainerTopButton,
+.activityTableContainerTopButtonStatic {
+  border-top-left-radius: .35rem;
+  border-bottom-left-radius: .35rem;
+  border-top-right-radius: .35rem;
+  border-bottom-right-radius: .35rem;
+  padding: .3rem .6rem;
+  font-size: .71094rem;
+  background-color: rgb(196 0 93 / .8);
+  transition: all .3s ease-in-out;
+  margin: 2.5px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.activityTableContainerTopButton:hover {
+    background-color: #d4055a;
+}
+.activityTableContainer,
+.activityDetailTableContainer {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid #312936;
+  border-radius: .5rem;
+  flex: 1 1;
+  background-color: #211c2454;
+  padding: 15px;
+  box-shadow: 0px 0px 5px #312936;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+.activityDetailTableContainer {
+  overflow-x: hidden;
+}
+.activityTableEntry,
+.activityTxTableEntry {
+  max-width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: bottom;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.activityTxTableEntry {
+  max-width: unset;
+}
+.activityTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+.activityTable tr {
+  border-bottom: 1px solid #312936;
+}
+.smallerTableData {
+  width: 150px;
+  text-align: left;
+}
+.largerTableData {
+  text-align: left;
+}

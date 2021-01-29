@@ -6,6 +6,69 @@ import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 
+export const getTxData = async (txHash) => {
+  const { web3, contracts, getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName() + 'sidechain';
+
+  const tx = await web3[networkName].eth.getTransaction(txHash);
+  const events = await contracts['back']['FT'].getPastEvents('Transfer', {
+    fromBlock: tx.blockNumber,
+    toBlock: tx.blockNumber,
+  });
+
+  const txFound = events.find(obj => {
+    return obj.transactionHash === txHash;
+  })
+
+  return txFound;
+}
+
+export const getSidechainActivityMaxBlock = async () => {
+  const { web3, contracts, getNetworkName } = await getBlockchain();
+
+  const networkName = getNetworkName();
+  const latest = await web3[networkName + "sidechain"].eth.getBlockNumber();
+
+  return latest;
+}
+
+export const getTimeByBlock = async (txHash) => {
+  const { web3, getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName() + 'sidechain';
+
+
+  const blockN = await web3[networkName].eth.getTransaction(txHash);
+  const blockData = await web3[networkName].eth.getBlock(blockN.blockNumber)
+
+  return blockData.timestamp;
+}
+
+export const getSidechainActivity = async (page) => {
+  const { web3, contracts, getNetworkName, getMainnetAddress } = await getBlockchain();
+
+  const networkName = getNetworkName();
+  const latest = await web3[networkName + "sidechain"].eth.getBlockNumber();
+  const [
+    accountMetadataEntries,
+//    nftProxyDepositedEntries,
+  ] = await Promise.all([
+    contracts['back']['FT'].getPastEvents('Transfer', {
+      fromBlock: parseInt(latest-(page*(latest-(latest/1.05)))),
+      toBlock: 'latest',
+    }),
+/*
+    contracts['back']['NFT'].getPastEvents('Transfer', {
+      fromBlock: latest-100000,
+      toBlock: 'latest',
+    }),
+*/
+  ]);
+
+  //let activity = [].concat(accountMetadataEntries, nftProxyDepositedEntries);
+  let activity = [].concat(accountMetadataEntries);
+  return activity;
+}
+
 export const getStuckAsset = async (tokenName, tokenId, globalState) => {
   if (!globalState.loginToken) return null;
   const { contracts, getNetworkName, getMainnetAddress } = await getBlockchain();

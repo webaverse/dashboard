@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import LandCardDetails from "../components/LandCardDetails";
 import Loader from "../components/Loader";
-import { getSidechainActivity } from "../functions/AssetFunctions";
+import { getSidechainActivity, getSidechainActivityMaxBlock } from "../functions/AssetFunctions";
 import { useAppContext } from "../libs/contextLib";
 
 export default ({ data }) => {
@@ -11,38 +11,36 @@ export default ({ data }) => {
   const { globalState, setGlobalState } = useAppContext();
   const [loading, setLoading] = useState(false);
   const [activity, setActivity] = useState(data.activityData);
+  const [page, setPage] = useState(1);
+  const [maxBlock, setMaxBlock] = useState(1);
 
   useEffect(() => {
     (async () => {
-      const data = await getData();
-      console.log("got data", data);
+      const data = await getData(page);
     })();
   }, []);
 
-  const getData = async () => {
-    const activityData = await getSidechainActivity();
+  useEffect(() => {
+    getData(page);
+  }, [page]);
+
+  const getData = async (page) => {
+    const activityData = await getSidechainActivity(page);
     setActivity(activityData);
     setLoading(false);
   }
 
-  function time2TimeAgo(ts) {
-      // This function computes the delta between the
-      // provided timestamp and the current time, then test
-      // the delta for predefined ranges.
-  
-      var d=new Date();  // Gets the current time
-      var nowTs = Math.floor(d.getTime()/1000); // getTime() returns milliseconds, and we need seconds, hence the Math.floor and division by 1000
+  const time2TimeAgo = (ts) => {
+      var d=new Date();
+      var nowTs = Math.floor(d.getTime()/1000);
       var seconds = nowTs-ts;
-  
-      // more that two days
+
       if (seconds > 2*24*3600) {
          return "a few days ago";
       }
-      // a day
       if (seconds > 24*3600) {
          return "yesterday";
       }
-  
       if (seconds > 3600) {
          return "a few hours ago";
       }
@@ -57,8 +55,33 @@ export default ({ data }) => {
   return (
     <>
       { !loading ?
-        <div className="container">
+        <div className="activityContainer">
+          <div>
+            <h1>Activity</h1>
+          </div>
           <div className="activityTableContainer">
+            <div className="activityTableContainerTop">
+              <div className="activityTableContainerTopLeft">
+              </div>
+              <div className="activityTableContainerTopRight">
+                { page > 1 ? <>
+                  <div onClick={() => setPage(1)} className="activityTableContainerTopButton">
+                    First
+                  </div>
+                  <div onClick={() => setPage(page-1)} className="activityTableContainerTopButton">
+                    {'<'}
+                  </div>
+                </> :
+                  null
+                }
+                <div className="activityTableContainerTopButtonStatic">
+                  Page {page}
+                </div>
+                <div onClick={() => setPage(page+1)} className="activityTableContainerTopButton">
+                  {'>'}
+                </div>
+              </div>
+            </div>
             <table className="activityTable">
               <tr>
                 <th>Txn Hash</th>
@@ -83,6 +106,28 @@ export default ({ data }) => {
                 })
               }
             </table>
+            <div className="activityTableContainerBottom">
+              <div className="activityTableContainerTopLeft">
+              </div>
+              <div className="activityTableContainerTopRight">
+                { page > 1 ? <>
+                  <div onClick={() => setPage(1)} className="activityTableContainerTopButton">
+                    First
+                  </div>
+                  <div onClick={() => setPage(page-1)} className="activityTableContainerTopButton">
+                    {'<'}
+                  </div>
+                </> :
+                  null
+                }
+                <div className="activityTableContainerTopButtonStatic">
+                  Page {page}
+                </div>
+                <div onClick={() => setPage(page+1)} className="activityTableContainerTopButton">
+                  {'>'}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       :

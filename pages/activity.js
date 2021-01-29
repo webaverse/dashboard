@@ -95,7 +95,7 @@ export default ({ data }) => {
                 activity.map(entry => {
                   return(
                   <tr>
-                    <td><span className="activityTableEntry">{entry.transactionHash}</span></td>
+                    <td><span className="activityTableEntry"><Link href={"/activity/" + entry.transactionHash}>{entry.transactionHash}</Link></span></td>
                     <td><span className="activityTableEntry">{entry.blockNumber}</span></td>
                     <td><span className="activityTableEntry">{time2TimeAgo(entry.timestamp)}</span></td>
                     <td><span className="activityTableEntry"><Link href={"/accounts/" + entry.returnValues["from"]}>{entry.returnValues["from"]}</Link></span></td>

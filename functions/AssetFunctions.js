@@ -6,6 +6,23 @@ import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 
+export const getTxData = async (txHash) => {
+  const { web3, contracts, getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName() + 'sidechain';
+
+  const tx = await web3[networkName].eth.getTransaction(txHash);
+  const events = await contracts['back']['FT'].getPastEvents('Transfer', {
+    fromBlock: tx.blockNumber,
+    toBlock: tx.blockNumber,
+  });
+
+  const txFound = events.find(obj => {
+    return obj.transactionHash === txHash;
+  })
+
+  return txFound;
+}
+
 export const getSidechainActivityMaxBlock = async () => {
   const { web3, contracts, getNetworkName } = await getBlockchain();
 
@@ -21,9 +38,7 @@ export const getTimeByBlock = async (txHash) => {
 
 
   const blockN = await web3[networkName].eth.getTransaction(txHash);
-  console.log("got blockN", blockN);
   const blockData = await web3[networkName].eth.getBlock(blockN.blockNumber)
-  console.log("got blockData", blockData);
 
   return blockData.timestamp;
 }
@@ -33,8 +48,6 @@ export const getSidechainActivity = async (page) => {
 
   const networkName = getNetworkName();
   const latest = await web3[networkName + "sidechain"].eth.getBlockNumber();
-  console.log("fromBlock", parseInt(latest-(page*(latest-(latest/1.05)))));
-  console.log("got latest", latest);
   const [
     accountMetadataEntries,
 //    nftProxyDepositedEntries,
@@ -53,7 +66,6 @@ export const getSidechainActivity = async (page) => {
 
   //let activity = [].concat(accountMetadataEntries, nftProxyDepositedEntries);
   let activity = [].concat(accountMetadataEntries);
-  console.log("got activity", activity);
   return activity;
 }
 

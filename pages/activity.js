@@ -7,9 +7,8 @@ import { getSidechainActivity, getSidechainActivityMaxBlock } from "../functions
 import { useAppContext } from "../libs/contextLib";
 
 export default ({ data }) => {
-  console.log('got data', data);
   const { globalState, setGlobalState } = useAppContext();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [activity, setActivity] = useState(data.activityData);
   const [page, setPage] = useState(1);
   const [maxBlock, setMaxBlock] = useState(1);
@@ -28,6 +27,7 @@ export default ({ data }) => {
     const activityData = await getSidechainActivity(page);
     setActivity(activityData);
     setLoading(false);
+    console.log('got data', activityData);
   }
 
   const time2TimeAgo = (ts) => {
@@ -84,24 +84,31 @@ export default ({ data }) => {
             </div>
             <table className="activityTable">
               <tr>
-                <th>Txn Hash</th>
-                <th>Block</th>
+                <th>Item</th>
+                <th>Quantity</th>
                 <th>From</th>
                 <th>To</th>
-                <th>Value</th>
+                <th>Date</th>
               </tr>
               {
-                activity.map(entry => {
-                  return(
+                activity.map(entry =>
                   <tr>
-                    <td><span className="activityTableEntry"><Link href={"/activity/" + entry.transactionHash}>{entry.transactionHash}</Link></span></td>
-                    <td><span className="activityTableEntry">{entry.blockNumber}</span></td>
+                    { entry.returnValues["value"] ?
+                      <>
+                      <td><span className="activityTableEntry">FLUX</span></td>
+                      <td><span className="activityTableEntry">{entry.returnValues["value"]}</span></td>
+                      </>
+                    :
+                      <>
+                      <td><span className="activityTableEntry"><Link href={"/assets/" + entry.returnValues["tokenId"]}>{`NFT #${entry.returnValues["tokenId"]}`}</Link></span></td>
+                      <td><span className="activityTableEntry">1</span></td>
+                      </>
+                    }
                     <td><span className="activityTableEntry"><Link href={"/accounts/" + entry.returnValues["from"]}>{entry.returnValues["from"]}</Link></span></td>
                     <td><span className="activityTableEntry"><Link href={"/accounts/" + entry.returnValues["to"]}>{entry.returnValues["to"]}</Link></span></td>
-                    <td><span className="activityTableEntry">{entry.returnValues["value"]} FLUX</span></td>
+                    <td><span className="activityTableEntry"><Link href={"/activity/" + entry.transactionHash}>{time2TimeAgo(entry.timestamp)}</Link></span></td>
                   </tr>
-                  )
-                })
+                )
               }
             </table>
             <div className="activityTableContainerBottom">

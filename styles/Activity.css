@@ -1,3 +1,35 @@
+.activityContainer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 8%;
+  flex-direction: column;
+}
+.activityContainerTop {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  margin-bottom: 50px;
+}
+.activityTableContainerTopLeft {
+  display: flex;
+  flex: 1 1;
+}
+.activityTableContainerTopRight {
+  display: flex;
+}
+.activityContainer h1 {
+  text-align: left;
+}
+.activityTableContainerTop {
+  display: flex;
+  flex-direction: row;
+}
 .activityTableContainer {
   position: relative;
   display: -ms-flexbox;
@@ -15,6 +47,7 @@
   box-shadow: 0px 0px 5px #312936;
   overflow-x: scroll;
   overflow-y: hidden;
+  max-width: 100%;
 }
 .activityTableEntry {
   max-width: 150px;

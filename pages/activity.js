@@ -94,6 +94,14 @@ export default ({ data }) => {
               </tr>
               {
                 activity.map(entry => {
+                  let contract;
+                  if (entry.returnValues["value"]) {
+                    contract = "FT";
+                  } else if (entry.type === "LAND") {
+                    contract = "LAND";
+                  } else {
+                    contract = "NFT";
+                  }
 
                   return (
                   <tr>
@@ -110,7 +118,7 @@ export default ({ data }) => {
                     }
                     <td><span className="activityTableEntry"><Link href={"/accounts/" + entry.returnValues["from"]}>{entry.returnValues["from"]}</Link></span></td>
                     <td><span className="activityTableEntry"><Link href={"/accounts/" + entry.returnValues["to"]}>{entry.returnValues["to"]}</Link></span></td>
-                    <td><span className="activityTableEntry"><Link href={"/activity/" + entry.transactionHash}><a>{time2TimeAgo(entry.timestamp)}<div className="activityTableEntryIconContainer"><OpenInNewIcon /></div></a></Link></span></td>
+                    <td><span className="activityTableEntry"><Link href={"/activity/" + entry.transactionHash + "." + contract}><a>{time2TimeAgo(entry.timestamp)}<div className="activityTableEntryIconContainer"><OpenInNewIcon /></div></a></Link></span></td>
                   </tr>
                 )
               })

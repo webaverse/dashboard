@@ -6,12 +6,12 @@ import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 
-export const getTxData = async (txHash) => {
+export const getTxData = async (txHash, contract) => {
   const { web3, contracts, getNetworkName } = await getBlockchain();
   const networkName = getNetworkName() + 'sidechain';
 
   const tx = await web3[networkName].eth.getTransaction(txHash);
-  const events = await contracts['back']['FT'].getPastEvents('Transfer', {
+  const events = await contracts['back'][contract].getPastEvents('Transfer', {
     fromBlock: tx.blockNumber,
     toBlock: tx.blockNumber,
   });

@@ -9,7 +9,7 @@
   z-index: 20;
   border-color: transparent;
   transition: background-color .5s ease,border-color .5s ease;
-  background: #18141a;
+  background: #181818;
   padding: 0 8%;
   box-sizing: border-box
 }
@@ -136,7 +136,7 @@
 }
 .rightMenuContainer .navbarTopLevelMenuOption .navbarSubMenuContainer {
   position: fixed;
-  background: #18141a;
+  background: #181818;
   left: 0;
   top: 63px;
   display: none;
@@ -254,7 +254,7 @@
     display: flex !important;
     width: 100%;
     text-align: center;
-    background-color: #18141a;
+    background-color: #181818;
     width: 100%;
   }
   .rightMenuContainer.responsive a {

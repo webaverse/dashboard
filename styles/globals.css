@@ -16,11 +16,9 @@ body {
   min-height: 100vh; 
   position: relative;
   margin: 0;
-}
-body {
   font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   color: #fff;
-  background-color: #18141a;
+  background-color: #181818;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
   text-align: center;

@@ -13,20 +13,20 @@
   overflow-x: scroll;
 }
 .mainRow {
-  scrollbar-face-color: #18141a;
-  scrollbar-base-color: #18141a;
-  scrollbar-3dlight-color: #18141a;
-  scrollbar-highlight-color: #18141a;
+  scrollbar-face-color: #181818;
+  scrollbar-base-color: #181818;
+  scrollbar-3dlight-color: #181818;
+  scrollbar-highlight-color: #181818;
   scrollbar-track-color: #000;
   scrollbar-arrow-color: #000;
-  scrollbar-shadow-color: #18141a;
-  scrollbar-dark-shadow-color: #18141a;
+  scrollbar-shadow-color: #181818;
+  scrollbar-dark-shadow-color: #181818;
 }
 .mainRow::-webkit-scrollbar { width: auto; height: 10px;}
-.mainRow::-webkit-scrollbar-track {  background-color: #18141a;}
+.mainRow::-webkit-scrollbar-track {  background-color: #181818;}
 .mainRow::-webkit-scrollbar-track-piece { background-color: #000; border-radius: 5px;}
 .mainRow::-webkit-scrollbar-thumb {  background-color: lightgray; border-radius: 5px;}
-.mainRow::-webkit-scrollbar-corner { background-color: #18141a;}
+.mainRow::-webkit-scrollbar-corner { background-color: #181818;}
 .mainRow::-webkit-resizer { background-color: #c4005d;}
 
 .small {

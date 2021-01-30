@@ -19,7 +19,9 @@ export default () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getTxData(id);
+      const tx = id.split(".")[0] || id;
+      const contract = id.split(".")[1] || "NFT";
+      const data = await getTxData(tx, contract);
       console.log("got DATA", data);
 
       setData([

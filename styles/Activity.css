@@ -76,15 +76,16 @@
   overflow-x: hidden;
 }
 .activityTableEntry,
+.activityTableEntry a,
 .activityTxTableEntry {
   max-width: 150px;
   text-overflow: ellipsis;
   overflow: hidden;
-  display: inline-block;
   white-space: nowrap;
   vertical-align: bottom;
   padding-top: 20px;
   padding-bottom: 20px;
+  display: flex;
 }
 .activityTxTableEntry {
   max-width: unset;
@@ -96,10 +97,22 @@
 .activityTable tr {
   border-bottom: 1px solid #312936;
 }
+.activityTable th {
+  text-align: left;
+}
 .smallerTableData {
   width: 150px;
   text-align: left;
 }
 .largerTableData {
   text-align: left;
+}
+.activityTableEntryIconContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.activityTableEntryIconContainer svg{
+  height: .8em;
+  width: .8em;
 }

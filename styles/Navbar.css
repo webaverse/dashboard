@@ -182,7 +182,7 @@
   transition: all .3s ease;
 }
 
-@media screen and (min-width: 960px) {
+@media screen and (min-width: 1203px) {
   .desktop {
     display: flex;
   }
@@ -190,7 +190,7 @@
     display: none;
   }
 }
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 1203px) {
   .mobile {
     display: flex;
   }
@@ -218,7 +218,7 @@
     display: none !important;
   }
 }
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 1203px) {
   .rightMenuContainer,
   .navbarFluxContainer {
     display: none !important;
@@ -236,7 +236,7 @@
   }
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 1203px) {
   .rightMenuContainer.responsive {position: relative;}
   .rightMenuContainer.responsive a.icon {
     position: absolute;

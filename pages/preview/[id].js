@@ -11,6 +11,7 @@ export default () => {
   const [hash, setHash] = useState(null);
   const [fileName, setFileName] = useState(null);
   const [extName, setExtName] = useState(null);
+  const [backLink, setBackLink] = useState(null);
 
   if (id && !isTokenId && !isHashId) {
     if (isNaN(parseInt(id)) === false) {
@@ -20,6 +21,8 @@ export default () => {
       const hashData = id.split(".")[0];
       const fileNameData = id.split(".")[1];
       const extNameData = id.split(".")[2];
+      const backLinkData = id.split(".")[3];
+      setBackLink(backLinkData);
 
       if (hashData && fileNameData && extNameData) {
         setHash(hashData);
@@ -46,7 +49,7 @@ export default () => {
           </div>
         </>),
         hash && fileName && extName && previewId && isHashId && (<>
-          <Link href={"/mint"}>
+          <Link href={`/${backLink || "mint"}`}>
             <a className="button">
               Go back
             </a>

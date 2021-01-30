@@ -5,6 +5,7 @@ import LandCardDetails from "../components/LandCardDetails";
 import Loader from "../components/Loader";
 import { getSidechainActivity, getSidechainActivityMaxBlock } from "../functions/AssetFunctions";
 import { useAppContext } from "../libs/contextLib";
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
 export default ({ data }) => {
   const { globalState, setGlobalState } = useAppContext();
@@ -91,7 +92,9 @@ export default ({ data }) => {
                 <th>Date</th>
               </tr>
               {
-                activity.map(entry =>
+                activity.map(entry => {
+
+                  return (
                   <tr>
                     { entry.returnValues["value"] ?
                       <>
@@ -106,10 +109,11 @@ export default ({ data }) => {
                     }
                     <td><span className="activityTableEntry"><Link href={"/accounts/" + entry.returnValues["from"]}>{entry.returnValues["from"]}</Link></span></td>
                     <td><span className="activityTableEntry"><Link href={"/accounts/" + entry.returnValues["to"]}>{entry.returnValues["to"]}</Link></span></td>
-                    <td><span className="activityTableEntry"><Link href={"/activity/" + entry.transactionHash}>{time2TimeAgo(entry.timestamp)}</Link></span></td>
+                    <td><span className="activityTableEntry"><Link href={"/activity/" + entry.transactionHash}><a>{time2TimeAgo(entry.timestamp)}<div className="activityTableEntryIconContainer"><OpenInNewIcon /></div></a></Link></span></td>
                   </tr>
                 )
-              }
+              })
+            }
             </table>
             <div className="activityTableContainerBottom">
               <div className="activityTableContainerTopLeft">

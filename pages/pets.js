@@ -137,7 +137,10 @@ export default () => {
               <script type="text/javascript" src="/geometry.js"></script>
             </Head>
             <FileDrop
-              onDrop={(files, e) => handleFilesMagically(files)}
+              onDrop={(files, e) => {
+                handleFilesMagically(files);
+                e.preventDefault();
+              }}
             >
               Drop glb here to mint a pet
               <label htmlFor="input-file" className="button">Or Upload</label>

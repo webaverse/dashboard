@@ -4,6 +4,7 @@ import Head from 'next/head';
 import LandCardDetails from "../components/LandCardDetails";
 import Loader from "../components/Loader";
 import { getSidechainActivity, getSidechainActivityMaxBlock } from "../functions/AssetFunctions";
+import { getToken, getLand } from "../functions/UIStateFunctions";
 import { useAppContext } from "../libs/contextLib";
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
@@ -103,7 +104,7 @@ export default ({ data }) => {
                       </>
                     :
                       <>
-                      <td><span className="activityTableEntry"><Link href={`${entry.type === "LAND" ? "/land/" : "/assets/"}` + entry.returnValues["tokenId"]}>{`${entry.type === "LAND" ? "LAND" : "NFT"} #${entry.returnValues["tokenId"]}`}</Link></span></td>
+                      <td><span className="activityTableEntry"><Link href={`${entry.type === "LAND" ? "/land/" : "/assets/"}` + entry.returnValues["tokenId"]}><a>{`${entry.type === "LAND" ? "LAND" : "NFT"} #${entry.returnValues["tokenId"]}`}</a></Link></span></td>
                       <td><span className="activityTableEntry">1</span></td>
                       </>
                     }

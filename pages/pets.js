@@ -81,7 +81,7 @@ export default () => {
 
       const modelBlob = new Blob([file[0]], {type: file[0].type});
       const model = blobToFile(modelBlob, file[0].name);
-      const files = [model, bin, manifestFile];
+      const files = [model, manifestFile];
 
       const wbn = await makeWbn(files);
       handleFileUpload(wbn);

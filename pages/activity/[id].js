@@ -20,16 +20,26 @@ export default () => {
   useEffect(() => {
     (async () => {
       const tx = id.split(".")[0] || id;
-      const contract = id.split(".")[1] || "NFT";
+      let contract = id.split(".")[1] || "NFT";
+      let contractUrl = "";
       const data = await getTxData(tx, contract);
-      console.log("got DATA", data);
+      if (contract === "FT") {
+        contract = "FLUX";
+      } if (contract === "NFT") {
+        contract = "Item #" + data.returnValues["tokenId"];
+        contractUrl = "/assets/" + data.returnValues["tokenId"];
+      } if (contract === "LAND") {
+        contract = "Land #" + data.returnValues["tokenId"];
+        contractUrl = "/land/" + data.returnValues["tokenId"];
+      }
 
       setData([
         ["Transaction Hash:", data.transactionHash],
         ["Block:", data.blockNumber],
-        ["To:", data.returnValues.from, "/accounts/" + data.returnValues.from],
+        ["From:", data.returnValues.from, "/accounts/" + data.returnValues.from],
         ["To:", data.returnValues.to, "/accounts/" + data.returnValues.to],
-        ["Value:", data.returnValues.value],
+        ["Type:", contract, contractUrl],
+        ["Value:", data.returnValues.value || "1"],
       ]);
     })();
   }, []);

@@ -107,7 +107,7 @@ export default () => {
         .then(data => {
           setHash(data.hash);
           setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
-          router.push('/preview/' + data.hash + "." + fileName + "." + extName, ".pets");
+          router.push('/preview/' + data.hash + "." + fileName + "." + extName + ".pets");
         })
         .catch(error => {
           console.error(error)

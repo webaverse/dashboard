@@ -129,7 +129,6 @@ input {
   .mintingOptionsContainer {
     position: absolute;
     max-width: 339px;
-    background: rgb(24 20 26 / 1);
     text-shadow: 0 0 black;
     border-radius: 10px;
     top: 100px;

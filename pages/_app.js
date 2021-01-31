@@ -21,6 +21,7 @@ import '../styles/Profile.css';
 import '../styles/Mint.css';
 import '../styles/IFrame.css';
 import '../styles/Activity.css';
+import '../styles/CardColumn.css';
 
 //Binding events
 Router.events.on('routeChangeStart', () => NProgress.start());

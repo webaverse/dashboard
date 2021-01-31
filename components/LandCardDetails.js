@@ -141,7 +141,7 @@ export default ({
     }
   }
 
-  const handleSuccess = async () => {
+  const handleSuccess = async (msg) => {
     addToast("Success!", { appearance: 'success', autoDismiss: true, });
     await getData();
     await getOtherData();

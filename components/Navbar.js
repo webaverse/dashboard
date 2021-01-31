@@ -51,6 +51,7 @@ const Navbar = () => {
                     <Link href="/land"><a className={`navbarSubMenuLinkItem item`}>Land</a></Link>
                     <Link href="/map"><a className={`navbarSubMenuLinkItem item`}>Map</a></Link>
                     <Link href="/accounts"><a className={`navbarSubMenuLinkItem item`}>Accounts</a></Link>
+                    <Link href="/tv/1"><a className={`navbarSubMenuLinkItem item`}>TV</a></Link>
                   </div>
                 </div>
               </div>

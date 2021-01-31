@@ -226,7 +226,7 @@ export default ({
     else alert("No address given.");
   }
 
-  const handleResubmit = () => {
+  const handleResubmit = async () => {
     await resubmitAsset("LAND", id, globalState, handleSuccess, handleError);
   }
 

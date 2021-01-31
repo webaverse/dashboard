@@ -1,5 +1,6 @@
 import Web3 from 'web3';
 import React, { useContext, useState, useEffect } from 'react';
+import { useToasts } from 'react-toast-notifications';
 import Link from 'next/link';
 import { useAppContext } from "../libs/contextLib";
 import CardSize from '../constants/CardSize.js';
@@ -36,6 +37,7 @@ export default ({
     assetType,
     getData
 }) => {
+  const { addToast } = useToasts();
   const { globalState, setGlobalState } = useAppContext();
 
   const [toggleViewOpen, setToggleViewOpen] = useState(true);
@@ -140,13 +142,13 @@ export default ({
   }
 
   const handleSuccess = async () => {
-    console.log("success");
+    addToast("Success!", { appearance: 'success', autoDismiss: true, });
     await getData();
     await getOtherData();
     setLoading(false);
   }
   const handleError = (err) => {
-    console.log("error", err);
+    addToast("Error: " + err, { appearance: 'error', autoDismiss: true, });
     getData();
     getOtherData();
     setLoading(false);
@@ -157,15 +159,14 @@ export default ({
       e.preventDefault();
     }
 
-    setLoading(true);
+    addToast("Starting transfer...", { appearance: 'info', autoDismiss: true, });
 
     try {
       const mainnetAddress = await loginWithMetaMask(handleWithdraw);
       if (mainnetAddress) {
         await withdrawLand(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
-        handleSuccess();
       } else {
-        setLoading(false);
+        handleError("No address from MetaMask.");
       }
     } catch (err) {
       handleError(err.toString());
@@ -178,18 +179,17 @@ export default ({
       e.preventDefault();
     }
 
-    setLoading(true);
+    addToast("Starting transfer...", { appearance: 'info', autoDismiss: true, });
 
     try {
       const mainnetAddress = await loginWithMetaMask(handleDeposit);
       const ethConnected = await ethEnabled();
       if (mainnetAddress) {
-        await depositLand(id, mainnetAddress, globalState);
-        handleSuccess();
+        await depositLand(id, mainnetAddress, globalState, handleSuccess, handleError);
       } if (ethConnected) {
         setPending(true);
       } else {
-        setLoading(false);
+        handleError("No address from MetaMask.");
       }
     } catch (err) {
       handleError(err.toString());
@@ -200,8 +200,8 @@ export default ({
    const contentId = prompt("What is the id for the NFT you want to deploy?", "");
 
     if (contentId) {
+      addToast("Deploying to land item #" + contentId, { appearance: 'info', autoDismiss: true, });
       deployLand(id, contentId, handleSuccess, handleError, globalState);
-      setLoading(true);
     }
     else alert("You need to give an NFT id.");
   }
@@ -210,8 +210,8 @@ export default ({
    const address = prompt("What is the address of the collaborator to add?", "0x0");
 
     if (address) {
+      addToast("Adding collaborator " + address, { appearance: 'info', autoDismiss: true, });
       addLandCollaborator(id, address, handleSuccess, handleError, globalState);
-      setLoading(true);
     }
     else alert("No address given.");
   }
@@ -220,10 +220,14 @@ export default ({
    const address = prompt("What is the address of the collaborator to remove?", "0x0");
 
     if (address) {
+      addToast("Removing collaborator " + address, { appearance: 'info', autoDismiss: true, });
       removeLandCollaborator(id, address, handleSuccess, handleError, globalState);
-      setLoading(true);
     }
     else alert("No address given.");
+  }
+
+  const handleResubmit = () => {
+    await resubmitAsset("LAND", id, globalState, handleSuccess, handleError);
   }
 
   return (
@@ -312,11 +316,7 @@ export default ({
                         {toggleEditOpen && (
                         <div className="accordionDropdown">
                           {[
-                            stuck && (!landMainnetAddress || landMainnetAddress.includes("0x0000000") || landMainnetAddress.includes(address["rinkeby"]["LANDProxy"])) && !userOwnsThisAsset && (<button className="assetDetailsButton" onClick={async () => {
-                              setLoading(true);
-                              await resubmitAsset("LAND", id, globalState, handleSuccess, handleError);
-                              handleSuccess();
-                            }}>Resubmit Transfer</button>),
+                            stuck && (!landMainnetAddress || landMainnetAddress.includes("0x0000000") || landMainnetAddress.includes(address["rinkeby"]["LANDProxy"])) && !userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleResubmit}>Resubmit Transfer</button>),
                             landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeploy}>Deploy Content</button>),

@@ -705,14 +705,17 @@ export const withdrawAsset = async (tokenId, mainnetAddress, address, state, suc
 
   const { r, s, v } = signature;
 
-  await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'withdraw', address, tokenId.v, timestamp.v, r, s, v);
-
-  successCallback();
+  try {
+    const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'withdraw', address, tokenId.v, timestamp.v, r, s, v);
+    successCallback(receipt);
+  } catch (err) {
+    handleError(err);
+  }
 
   return;
 }
 
-export const depositAsset = async (tokenId, networkType, mainnetAddress, address, state) => {
+export const depositAsset = async (tokenId, networkType, mainnetAddress, address, state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   // Deposit to mainnet
   if (networkType === 'webaverse') {
@@ -735,13 +738,18 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
 
       const { r, s, v } = signature;
 
-      await contracts.front.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
-        from: mainnetAddress,
-      });
+      try {
+        const receipt = await contracts.front.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
+          from: mainnetAddress,
+        });
+        handleSuccess(receipt);
+      } catch (err) {
+        handleError(err);
+      }
 
       return;
     } else {
-      console.log('failed to parse', JSON.stringify(ethNftIdInput.value));
+      handleError('failed to parse', JSON.stringify(ethNftIdInput.value));
     }
   }  else {
     const id = parseInt(tokenId, 10);
@@ -778,8 +786,13 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
 
     const { timestamp, r, s, v } = signature;
 
-    await runSidechainTransaction('NFTProxy', 'withdraw', myAddress, tokenId.v, hash.v, filename.v, description.v, timestamp, r, s, v);
+    try {
+      const receipt = await runSidechainTransaction('NFTProxy', 'withdraw', myAddress, tokenId.v, hash.v, filename.v, description.v, timestamp, r, s, v);
+    } catch (err) {
+      handleError(err);
+    }
 
+    handleSuccess(receipt);
     return;
   }
 }

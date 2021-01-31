@@ -101,11 +101,11 @@ export default ({
       if (network === "rinkeby") {
         return true;
       } else {
-        alert("You need to be on the Rinkeby network.");
+        handleError("You need to be on the Rinkeby network.");
         return false;
       }
     }
-    alert("Please install MetaMask to use Webaverse!");
+    handleError("Please install MetaMask to use Webaverse!");
     return false;
   }
 
@@ -133,7 +133,10 @@ export default ({
     }
   }
 
-  const handleSuccess = () => {
+  const handleSuccess = (msg) => {
+    if (typeof msg === "object") {
+      msg = JSON.stringify(msg);
+    }
     addToast("Success!", { appearance: 'success', autoDismiss: true, })
     getData();
     getOtherData();
@@ -226,8 +229,6 @@ export default ({
       e.preventDefault();
     }
 
-    setLoading(true);
-
     try {
       const mainnetAddress = await loginWithMetaMask(handleDeposit);
       if (mainnetAddress) {
@@ -245,20 +246,21 @@ export default ({
    const address = prompt("What is the address of the collaborator to add?", "0x0");
 
     if (address) {
+      addToast("Adding collaborator: " + address, { appearance: 'info', autoDismiss: true, });
       addNftCollaborator(hash, address, handleSuccess, handleError, globalState);
-      setLoading(true);
     }
-    else alert("No address given.");
+    else handleError("No address given.");
   }
 
   const handleRemoveCollaborator = () => {
    const address = prompt("What is the address of the collaborator to remove?", "0x0");
 
     if (address) {
+      addToast("Removing collaborator: " + address, { appearance: 'info', autoDismiss: true, });
       removeNftCollaborator(hash, address, handleSuccess, handleError, globalState);
       setLoading(true);
     }
-    else alert("No address given.");
+    else handleError("No address given.");
   }
 
 

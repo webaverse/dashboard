@@ -41,7 +41,7 @@ const Navbar = () => {
               <a className="navbarLinkItem item" href="https://app.webaverse.com">Play</a>
             </div>
             <div className="navbarTopLevelMenuOption">
-              <Link href="/assets"><a className={`navbarSubMenuLinkItem item`}>Items</a></Link>
+              <Link href="/assets"><a className={`navbarLinkItem item`}>Items</a></Link>
             </div>
             <div className="navbarTopLevelMenuOption">
               <div onClick={e => e.preventDefault} className={`navbarLinkItem item ${dropdown ? "responsive" : ""}`}>World<ExpandMoreIcon /></div>

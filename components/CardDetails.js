@@ -1,5 +1,6 @@
 import Web3 from 'web3';
 import React, { useContext, useState, useEffect } from 'react';
+import { useToasts } from 'react-toast-notifications';
 import Link from 'next/link';
 import AssetCard from './Card';
 import CardSize from '../constants/CardSize.js';
@@ -35,6 +36,8 @@ export default ({
     assetType,
     getData
 }) => {
+
+  const { addToast } = useToasts();
 
   const [toggleViewOpen, setToggleViewOpen] = useState(true);
   const [toggleEditOpen, setToggleEditOpen] = useState(false);
@@ -131,13 +134,13 @@ export default ({
   }
 
   const handleSuccess = () => {
-    console.log("success!");
+    addToast("Success!", { appearance: 'success', autoDismiss: true, })
     getData();
     getOtherData();
     setLoading(false);
   }
   const handleError = (err) => {
-    console.error("error", err);
+    addToast("Error: " + err, { appearance: 'error', autoDismiss: true, })
     getData();
     getOtherData();
     setLoading(false);
@@ -145,36 +148,36 @@ export default ({
 
   const handleSetAssetName = (e) => {
     e.preventDefault();
-    setLoading(true);
     const name = prompt("What would you like to name this asset?", "");
+    addToast("Setting item name to: " + name, { appearance: 'info', autoDismiss: true, });
     setAssetName(name, hash, globalState, handleSuccess, handleError);
   }
 
   const handleSetAvatar = (e) => {
-      e.preventDefault();
-      setLoading(true);
-      setAvatar(id, globalState, handleSuccess, handleError)
+    e.preventDefault();
+    addToast("Setting avatar to this item", { appearance: 'info', autoDismiss: true, });
+    setAvatar(id, globalState, handleSuccess, handleError)
   }
 
   const handleSetHomespace = (e) => {
-      e.preventDefault();
-      setLoading(true);
-      setHomespace(id, globalState, handleSuccess, handleError);
+    e.preventDefault();
+    addToast("Setting homespace to this item", { appearance: 'info', autoDismiss: true, });
+    setHomespace(id, globalState, handleSuccess, handleError);
   }
 
   const addToLoadout = async (e) => {
     e.preventDefault();
-    setLoading(true);
     const loadoutNum = prompt("What loadout number do you want to add this to?", "1");
+    addToast("Setting this item to loadout number " + loadoutNum, { appearance: 'info', autoDismiss: true, });
     await setLoadoutState(id, loadoutNum, globalState);
-    setLoading(false);
+    addToast("Successfully added item to loadout number " + loadoutNum + "!", { appearance: 'success', autoDismiss: true, });
   }
 
   const handleBuyAsset = (e) => {
     e.preventDefault();
-    setLoading(true);
     var r = confirm("You are about to buy this, are you sure?");
     if (r == true) {
+      addToast("Buying this item...", { appearance: 'info', autoDismiss: true, });
       buyAsset(storeId, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
     } else {
       handleError("canceled delete");
@@ -183,9 +186,9 @@ export default ({
 
   const handleDeleteAsset = (e) => {
     e.preventDefault();
-    setLoading(true);
     var r = confirm("You are about to permanently delete this, are you sure?");
     if (r == true) {
+      addToast("Deleting this item...", { appearance: 'info', autoDismiss: true, });
       deleteAsset(id, globalState.loginToken.mnemonic, handleSuccess, handleError);
     } else {
       handleError("canceled delete");
@@ -194,8 +197,8 @@ export default ({
 
   const handleSellAsset = (e) => {
     e.preventDefault();
-    setLoading(true);
     const sellPrice = prompt("How much would you like to sell this for?", "10");
+    addToast("Selling this item for " + sellPrice + " FLUX.", { appearance: 'info', autoDismiss: true, });
     sellAsset(id, sellPrice, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
@@ -204,15 +207,13 @@ export default ({
       e.preventDefault();
     }
 
-    setLoading(true);
-
     try {
       const mainnetAddress = await loginWithMetaMask(handleWithdraw);
       if (mainnetAddress) {
+        addToast("Starting transfer of this item.", { appearance: 'info', autoDismiss: true, });
         await withdrawAsset(id, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
-        handleSuccess();
       } else {
-        setLoading(false);
+        handleError("No address received from MetaMask.");
       }
     } catch (err) {
       handleError(err.toString());
@@ -230,10 +231,10 @@ export default ({
     try {
       const mainnetAddress = await loginWithMetaMask(handleDeposit);
       if (mainnetAddress) {
-        await depositAsset(id, 'webaverse', mainnetAddress, globalState.address, globalState);
-        handleSuccess();
+        addToast("Starting transfer of this item.", { appearance: 'info', autoDismiss: true, });
+        await depositAsset(id, 'webaverse', mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
       } else {
-        setLoading(false);
+        handleError("No address received from MetaMask.");
       }
     } catch (err) {
       handleError(err.toString());

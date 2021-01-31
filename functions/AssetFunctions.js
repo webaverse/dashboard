@@ -640,14 +640,17 @@ export const withdrawLand = async (tokenId, mainnetAddress, address, state, succ
 
   const { r, s, v } = signature;
 
-  await runSidechainTransaction(state.loginToken.mnemonic)('LANDProxy', 'withdraw', address, tokenId.v, timestamp.v, r, s, v);
-
-  successCallback();
+  try {
+    const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('LANDProxy', 'withdraw', address, tokenId.v, timestamp.v, r, s, v);
+    successCallback(receipt);
+  } catch (err) {
+    handleError(err);
+  }
 
   return;
 }
 
-export const depositLand = async (tokenId, mainnetAddress, state) => {
+export const depositLand = async (tokenId, mainnetAddress, state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
@@ -672,9 +675,14 @@ export const depositLand = async (tokenId, mainnetAddress, state) => {
 
     const { r, s, v } = signature;
 
-    await contracts.front.LANDProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
-      from: mainnetAddress,
-    });
+    try {
+      const receipt = await contracts.front.LANDProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
+        from: mainnetAddress,
+      });
+      handleSuccess(receipt);
+    } catch (err) {
+      handleError(err);
+    }
 
     return;
   }

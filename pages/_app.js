@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ToastProvider } from 'react-toast-notifications'
 import Head from 'next/head';
 import Router from 'next/router';
 import NProgress from 'nprogress'; //nprogress module
@@ -32,14 +33,16 @@ const App = ({ Component, pageProps }) => {
 
   return (
     <AppWrapper>
-      <Head>
-        <link rel="shortcut icon" href="/favicon.ico" />
-      </Head>
-      <Navbar />
-      <div className="appContainer">
-        <Component {...pageProps} />
-      </div>
-      <Footer />
+      <ToastProvider>
+        <Head>
+          <link rel="shortcut icon" href="/favicon.ico" />
+        </Head>
+        <Navbar />
+        <div className="appContainer">
+          <Component {...pageProps} />
+        </div>
+        <Footer />
+      </ToastProvider>
     </AppWrapper>
   )
 }

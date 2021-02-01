@@ -73,6 +73,7 @@ const Navbar = () => {
                   <div className="navbarSubMenuLeftbar">
                     <Link href="/mint"><a className={`navbarSubMenuLinkItem item`}>Item</a></Link>
                     <Link href="/pets"><a className={`navbarSubMenuLinkItem item`}>Pet</a></Link>
+                    <Link href="/pets"><a className={`navbarSubMenuLinkItem item`}>Flying Pet</a></Link>
                     <Link href="/mounts"><a className={`navbarSubMenuLinkItem item`}>Mount</a></Link>
                     <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://editaverse.com">World Editor</a>
                     <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://voxel.editaverse.com">Voxel Editor</a>

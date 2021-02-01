@@ -145,7 +145,7 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
   return deposits;
 }
 
-export const resubmitAsset = async (tokenName, tokenIdNum, globalState, successCallback, errorCallback) => {
+export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSuccess, handleError) => {
   const { getNetworkName } = await getBlockchain();
   const stuckAsset = await getStuckAsset(tokenName, tokenIdNum, globalState);
   if (!stuckAsset) return null;
@@ -174,13 +174,13 @@ export const resubmitAsset = async (tokenName, tokenIdNum, globalState, successC
       return;
     } catch (err) {
       console.log("mainnet transaction error", err);
-      errorCallback(err);
+      handleError(err);
       return err;
     }
   }
 }
 
-export const deleteAsset = async (id, mnemonic, successCallback, errorCallback) => {
+export const deleteAsset = async (id, mnemonic, handleSuccess, handleError) => {
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
 
@@ -192,15 +192,15 @@ export const deleteAsset = async (id, mnemonic, successCallback, errorCallback) 
 
     if(result) console.log("Result of delete transaction:", result);
 
-    if (successCallback)
-      successCallback(result);
+    if (handleSuccess)
+      handleSuccess(result);
   } catch (error) {
-    if (errorCallback)
-      errorCallback(error);
+    if (handleError)
+      handleError(error);
   }
 }
 
-export const buyAsset = async (id, networkType, mnemonic, successCallback, errorCallback) => {
+export const buyAsset = async (id, networkType, mnemonic, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
@@ -227,15 +227,15 @@ export const buyAsset = async (id, networkType, mnemonic, successCallback, error
 
     const result = await runSidechainTransaction(mnemonic)('Trade', 'buy', id);
 
-    if (successCallback)
-      successCallback(result);
+    if (handleSuccess)
+      handleSuccess(result);
   } catch (error) {
-    if (errorCallback)
-      errorCallback(error);
+    if (handleError)
+      handleError(error);
   }
 };
 
-export const sellAsset = async (id, price, networkType, mnemonic, successCallback, errorCallback) => {
+export const sellAsset = async (id, price, networkType, mnemonic, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   try {
     const network = networkType.toLowerCase() === 'mainnet' ? 'mainnet' : 'sidechain';
@@ -243,15 +243,15 @@ export const sellAsset = async (id, price, networkType, mnemonic, successCallbac
     await runSidechainTransaction(mnemonic)('NFT', 'setApprovalForAll', contracts[network]['Trade']._address, true);
     const result = await runSidechainTransaction(mnemonic)('Trade', 'addStore', id, price);
 
-    if (successCallback)
-      successCallback(result);
+    if (handleSuccess)
+      handleSuccess(result);
   } catch (error) {
-    if (errorCallback)
-      errorCallback(error);
+    if (handleError)
+      handleError(error);
   }
 };
 
-export const cancelSale = async (id, networkType, successCallback, errorCallback) => {
+export const cancelSale = async (id, networkType, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   try {
     const network = networkType.toLowerCase() === 'mainnet' ? 'mainnet' : 'sidechain';
@@ -260,35 +260,35 @@ export const cancelSale = async (id, networkType, successCallback, errorCallback
     await runSidechainTransaction(mnemonic)('Trade', 'removeStore', id);
 
     console.log("No buy asset logic");
-    if (successCallback)
-      successCallback();
+    if (handleSuccess)
+      handleSuccess();
   } catch (error) {
-    if (errorCallback)
-      errorCallback(error);
+    if (handleError)
+      handleError(error);
   }
 };
 
-export const setAssetName = async (name, hash, state, successCallback, errorCallback) => {
+export const setAssetName = async (name, hash, state, handleSuccess, handleError) => {
   if (!state.loginToken)
     throw new Error('not logged in');
   try {
     await Promise.all([
       runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setMetadata', hash, 'name', name),
     ]);
-    if (successCallback)
-      successCallback();
+    if (handleSuccess)
+      handleSuccess();
 
     return;
   } catch (error) {
-    if (errorCallback) {
-      errorCallback(error);
+    if (handleError) {
+      handleError(error);
       return;
     }
   }
 };
 
 
-export const setName = async (name, state, successCallback, errorCallback) => {
+export const setName = async (name, state, handleSuccess, handleError) => {
   if (!state.loginToken)
     throw new Error('not logged in');
   try {
@@ -296,21 +296,21 @@ export const setName = async (name, state, successCallback, errorCallback) => {
     await Promise.all([
       runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'name', name),
     ]);
-    if (successCallback)
-      successCallback();
+    if (handleSuccess)
+      handleSuccess();
 
     const newState = {...state, name };
     return newState;
   } catch (error) {
-    if (errorCallback) {
-      errorCallback(error);
+    if (handleError) {
+      handleError(error);
       return state;
     }
   }
 };
 
 
-export const setAvatar = async (id, state, successCallback, errorCallback) => {
+export const setAvatar = async (id, state, handleSuccess, handleError) => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
@@ -329,20 +329,20 @@ export const setAvatar = async (id, state, successCallback, errorCallback) => {
       runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'avatarExt', ext),
       runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'avatarPreview', preview),
     ]);
-    if (successCallback)
-      successCallback();
+    if (handleSuccess)
+      handleSuccess();
 
     const newState = {...state, avatarPreview: preview };
     return newState;
   } catch (error) {
-    if (errorCallback) {
-      errorCallback(error);
+    if (handleError) {
+      handleError(error);
       return state;
     }
   }
 };
 
-export const removeNftCollaborator = async (hash, address, successCallback, errorCallback, state) => {
+export const removeNftCollaborator = async (hash, address, handleSuccess, handleError, state) => {
   const mnemonic = state.loginToken.mnemonic;
 
   if (address) {
@@ -356,16 +356,16 @@ export const removeNftCollaborator = async (hash, address, successCallback, erro
     }
 
     if (status) {
-      successCallback();
+      handleSuccess();
     } else {
-      errorCallback(transactionHash);
+      handleError(transactionHash);
     }
   } else {
-    errorCallback("No address given.");
+    handleError("No address given.");
   }
 }
 
-export const addNftCollaborator = async (hash, address, successCallback, errorCallback, state) => {
+export const addNftCollaborator = async (hash, address, handleSuccess, handleError, state) => {
   const mnemonic = state.loginToken.mnemonic;
 
   if (address) {
@@ -379,12 +379,12 @@ export const addNftCollaborator = async (hash, address, successCallback, errorCa
     }
 
     if (status) {
-      successCallback();
+      handleSuccess();
     } else {
-      errorCallback(transactionHash);
+      handleError(transactionHash);
     }
   } else {
-    errorCallback("No address given.");
+    handleError("No address given.");
   }
 }
 
@@ -395,7 +395,7 @@ export const getLandHash = async (id) => {
   return hash;
 }
 
-export const removeLandCollaborator = async (tokenId, address, successCallback, errorCallback, state) => {
+export const removeLandCollaborator = async (tokenId, address, handleSuccess, handleError, state) => {
   const mnemonic = state.loginToken.mnemonic;
 
   if (address) {
@@ -409,16 +409,16 @@ export const removeLandCollaborator = async (tokenId, address, successCallback, 
     }
 
     if (status) {
-      successCallback();
+      handleSuccess();
     } else {
-      errorCallback(transactionHash);
+      handleError(transactionHash);
     }
   } else {
-    errorCallback("No address given.");
+    handleError("No address given.");
   }
 }
 
-export const addLandCollaborator = async (tokenId, address, successCallback, errorCallback, state) => {
+export const addLandCollaborator = async (tokenId, address, handleSuccess, handleError, state) => {
   const mnemonic = state.loginToken.mnemonic;
 
   if (address) {
@@ -432,17 +432,17 @@ export const addLandCollaborator = async (tokenId, address, successCallback, err
     }
 
     if (status) {
-      successCallback();
+      handleSuccess();
     } else {
-      errorCallback(transactionHash);
+      handleError(transactionHash);
     }
   } else {
-    errorCallback("No address given.");
+    handleError("No address given.");
   }
 }
 
 
-export const deployLand = async (tokenId, contentId, successCallback, errorCallback, state) => {
+export const deployLand = async (tokenId, contentId, handleSuccess, handleError, state) => {
   const mnemonic = state.loginToken.mnemonic;
 
   if (!isNaN(contentId)) {
@@ -456,16 +456,16 @@ export const deployLand = async (tokenId, contentId, successCallback, errorCallb
     }
 
     if (status) {
-      successCallback();
+      handleSuccess();
     } else {
-      errorCallback(transactionHash);
+      handleError(transactionHash);
     }
   } else {
-    errorCallback("Invalid NFT ID");
+    handleError("Invalid NFT ID");
   }
 }
 
-export const mintNft = async (hash, name, ext, description, quantity, successCallback, errorCallback, state) => {
+export const mintNft = async (hash, name, ext, description, quantity, handleSuccess, handleError, state) => {
   const { web3, contracts } = await getBlockchain();
   const  mnemonic = state.loginToken.mnemonic;
   const address = state.address;
@@ -503,18 +503,18 @@ export const mintNft = async (hash, name, ext, description, quantity, successCal
       transactionHash = result.transactionHash;
       const tokenId = new web3['back'].utils.BN(result.logs[0].topics[3].slice(2), 16).toNumber();
       tokenIds = [tokenId, tokenId + quantity - 1];
-      successCallback(tokenId);
+      handleSuccess(tokenId);
     }
   } catch (err) {
     console.warn(err);
     status = false;
     transactionHash = '0x0';
     tokenIds = [];
-    errorCallback(err);
+    handleError(err);
   }
 };
 
-export const setHomespace = async (id, state, successCallback, errorCallback) => {
+export const setHomespace = async (id, state, handleSuccess, handleError) => {
   if (!state.loginToken)
     throw new Error('not logged in');
   const { getNetworkName } = await getBlockchain();
@@ -534,21 +534,21 @@ export const setHomespace = async (id, state, successCallback, errorCallback) =>
       runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'homeSpaceExt', ext),
       runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', address, 'homeSpacePreview', preview),
     ]);
-    if (successCallback !== undefined)
-      successCallback();
+    if (handleSuccess !== undefined)
+      handleSuccess();
 
     const newState = {...state, homeSpacePreview: preview };
     return newState;
   } catch (err) {
     console.log("ERROR: ", err);
-    if (errorCallback !== undefined)
-      errorCallback();
+    if (handleError !== undefined)
+      handleError();
 
     return state;
   }
 };
 
-export const depositFlux = async (amount, mainnetAddress, state, successCallback, errorCallback) => {
+export const depositFlux = async (amount, mainnetAddress, state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
@@ -571,15 +571,15 @@ export const depositFlux = async (amount, mainnetAddress, state, successCallback
     await contracts.front.FTProxy.methods.withdraw(mainnetAddress, amount, timestamp.v, r, s, v).send({
       from: mainnetAddress,
     });
-    successCallback();
+    handleSuccess();
   } catch (err) {
-    errorCallback(err);
+    handleError(err);
   }
 
   return;
 }
 
-export const withdrawFlux = async (amount, mainnetAddress, address, state, successCallback, errorCallback) => {
+export const withdrawFlux = async (amount, mainnetAddress, address, state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   // Withdraw from mainnet
   amount = parseInt(amount, 10);
@@ -606,16 +606,16 @@ export const withdrawFlux = async (amount, mainnetAddress, address, state, succe
 
   try {
     await runSidechainTransaction(state.loginToken.mnemonic)('FTProxy', 'withdraw', address, amount.v, timestamp.v, r, s, v);
-    successCallback();
+    handleSuccess();
   } catch (err) {
-    errorCallback(err);
+    handleError(err);
   }
 
   return;
 }
 
 
-export const withdrawLand = async (tokenId, mainnetAddress, address, state, successCallback, errorCallback) => {
+export const withdrawLand = async (tokenId, mainnetAddress, address, state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   // Withdraw from mainnet
   const id = parseInt(tokenId, 10);
@@ -642,7 +642,7 @@ export const withdrawLand = async (tokenId, mainnetAddress, address, state, succ
 
   try {
     const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('LANDProxy', 'withdraw', address, tokenId.v, timestamp.v, r, s, v);
-    successCallback(receipt);
+    handleSuccess(receipt, `/activity/${receipt.transactionHash}.LAND`);
   } catch (err) {
     handleError(err);
   }
@@ -679,7 +679,7 @@ export const depositLand = async (tokenId, mainnetAddress, state, handleSuccess,
       const receipt = await contracts.front.LANDProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
         from: mainnetAddress,
       });
-      handleSuccess(receipt);
+      handleSuccess(receipt, `/activity/${receipt.transactionHash}.LAND`);
     } catch (err) {
       handleError(err);
     }
@@ -688,7 +688,7 @@ export const depositLand = async (tokenId, mainnetAddress, state, handleSuccess,
   }
 }
 
-export const withdrawAsset = async (tokenId, mainnetAddress, address, state, successCallback, errorCallback) => {
+export const withdrawAsset = async (tokenId, mainnetAddress, address, state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   // Withdraw from mainnet
   const id = parseInt(tokenId, 10);
@@ -715,7 +715,7 @@ export const withdrawAsset = async (tokenId, mainnetAddress, address, state, suc
 
   try {
     const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'withdraw', address, tokenId.v, timestamp.v, r, s, v);
-    successCallback(receipt);
+    handleSuccess(receipt, `/activity/${receipt.transactionHash}.NFT`);
   } catch (err) {
     handleError(err);
   }
@@ -750,7 +750,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
         const receipt = await contracts.front.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
           from: mainnetAddress,
         });
-        handleSuccess(receipt);
+        handleSuccess(receipt, `/activity/${receipt.transactionHash}.NFT`);
       } catch (err) {
         handleError(err);
       }

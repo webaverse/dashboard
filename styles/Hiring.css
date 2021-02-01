@@ -1,0 +1,11 @@
+.hiringLogo {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+.hiringContainer {
+  min-width: 40%;
+  margin: 0 auto;
+  max-width: 60%;
+  text-align: left;
+}

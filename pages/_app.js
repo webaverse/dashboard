@@ -23,6 +23,7 @@ import '../styles/Mint.css';
 import '../styles/IFrame.css';
 import '../styles/Activity.css';
 import '../styles/CardColumn.css';
+import '../styles/Hiring.css';
 
 //Binding events
 Router.events.on('routeChangeStart', () => NProgress.start());

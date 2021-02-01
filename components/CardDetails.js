@@ -133,11 +133,11 @@ export default ({
     }
   }
 
-  const handleSuccess = (msg) => {
+  const handleSuccess = (msg, link) => {
     if (typeof msg === "object") {
       msg = JSON.stringify(msg);
     }
-    addToast("Success!", { appearance: 'success', autoDismiss: true, })
+    addToast("Success!", { link: link, appearance: 'success', autoDismiss: true, })
     getData();
     getOtherData();
     setLoading(false);

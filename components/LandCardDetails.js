@@ -146,8 +146,8 @@ export default ({
        msg = JSON.stringify(msg);
      }
     addToast("Success!", { link: link, appearance: 'success', autoDismiss: true, });
-    await getData();
-    await getOtherData();
+    getData();
+    getOtherData();
     setLoading(false);
   }
   const handleError = (err) => {

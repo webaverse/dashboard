@@ -66,13 +66,15 @@ export default () => {
   const makePetWbn = async (file) => {
     if (file && getExt(file[0].name) === "glb") {
       const walkAnimation = prompt("What is the name of the walk animation for this pet?", "");
+      const idleAnimation = prompt("What is the name of the idle animation for this pet?", "");
       const manifest = {
         "xr_type": "webxr-site@0.0.1",
         "start_url": file[0].name,
         "components": [
           {
             "type": "pet",
-            "walkAnimation": walkAnimation,
+            "walkAnimation": walkAnimation != "" ? walkAnimation : null,
+            "idleAnimation": idleAnimation != "" ? idleAnimation : null,
           }
         ]
       };

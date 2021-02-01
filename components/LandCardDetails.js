@@ -141,8 +141,11 @@ export default ({
     }
   }
 
-  const handleSuccess = async (msg) => {
-    addToast("Success!", { appearance: 'success', autoDismiss: true, });
+  const handleSuccess = (msg, link) => {
+     if (typeof msg === "object") {
+       msg = JSON.stringify(msg);
+     }
+    addToast("Success!", { link: link, appearance: 'success', autoDismiss: true, });
     await getData();
     await getOtherData();
     setLoading(false);

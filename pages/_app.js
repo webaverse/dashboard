@@ -7,9 +7,9 @@ import 'nprogress/nprogress.css'; //styles of nprogress
 import { AppWrapper } from "../libs/contextLib";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import CustomToast from "../components/CustomToast";
 
 import '../styles/globals.css';
-
 import '../styles/Navbar.css';
 import '../styles/Footer.css';
 import '../styles/Card.css';
@@ -33,7 +33,7 @@ const App = ({ Component, pageProps }) => {
 
   return (
     <AppWrapper>
-      <ToastProvider>
+      <ToastProvider components={{ Toast: CustomToast }}>
         <Head>
           <link rel="shortcut icon" href="/favicon.ico" />
         </Head>

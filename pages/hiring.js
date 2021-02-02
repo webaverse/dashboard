@@ -12,7 +12,7 @@ export default function Hiring() {
             For many years, there has been a value void for creators creating amazing virtual world content.
             <br />
             <br />
-            We are solving this by riding the growing wave of NFT and cryptoart, and opening up exciting new asset classes of 3d items that live across virtual worlds. 
+            We are solving this by riding the growing wave of NFT and cryptoart, synthesizing a new asset class of 3d items that live across virtual worlds.
           </p>
         </div>
         <div>
@@ -25,6 +25,16 @@ export default function Hiring() {
             <br />
             <br />
             The architecture of Webaverse is following the trajectory to "Web3". Item ownership and provenance is on the Ethereum blockchain, files are hosted on IPFS (Interplanetary File System), and the interface is built on existing open web standards.
+          </p>
+        </div>
+        <div>
+          <h2>Why work here?</h2>
+          <p>
+            You are working directly with the founders, with 30 years of industry experience between us.
+            You will be working on the forefront of digital culture and science fiction made real.
+            <br />
+            <br />
+            This is a full time position. We offer stock options and benefits.
           </p>
         </div>
         <div style={{ paddingTop: "10px" }}>

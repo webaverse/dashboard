@@ -4,7 +4,6 @@ export default function Hiring() {
     <>
       <img className="hiringLogo" src="/webaverse.png" />
       <div className="hiringContainer">
-        <h1 style={{ textAlign: "center", fontSize: "3rem" }}>Webaverse</h1>
         <div>
           <h2>Why Webaverse?</h2>
           <p>
@@ -37,7 +36,7 @@ export default function Hiring() {
             This is a full time position. We offer stock options and benefits.
           </p>
         </div>
-        <div style={{ paddingTop: "10px" }}>
+        <div>
           <h2>Interested?</h2>
           <p>Send us an email at <a href="mailto:hello@webaverse.com">hello@webaverse.com</a></p>
           <p>or join our Discord <a target="_blank" href="https://discord.gg/R5wqYhvv53">here</a>.</p>

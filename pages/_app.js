@@ -24,6 +24,7 @@ import '../styles/IFrame.css';
 import '../styles/Activity.css';
 import '../styles/CardColumn.css';
 import '../styles/Hiring.css';
+import '../styles/ProgressBar.css';
 
 //Binding events
 Router.events.on('routeChangeStart', () => NProgress.start());

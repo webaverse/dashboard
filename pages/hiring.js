@@ -30,7 +30,7 @@ export default function Hiring() {
         <div>
           <h2>Why work here?</h2>
           <p>
-            You are working directly with the founders, with 30 years of industry experience between us.
+            You will be working directly with the founders, with 30 years of industry experience between us.
             You will be working on the forefront of digital culture and science fiction made real.
             <br />
             <br />

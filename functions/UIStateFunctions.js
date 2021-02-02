@@ -20,7 +20,6 @@ export const getNetworkNameFromHostName = (hostname) => {
 export const getBalance = async (address) => {
   const { web3, contracts } = await getBlockchain();
   try {
-    console.log("address", address);
     const result = await contracts['back']['FT'].methods.balanceOf(address).call();
     return result;
   } catch (error) {
@@ -246,8 +245,6 @@ export const getStores = async () => {
         price,
       };
       sales[tokenId] = entry;
-
-      console.log('got store', store, entry);
 
       let booth = booths.find(booth => booth.seller === seller);
       if (!booth) {

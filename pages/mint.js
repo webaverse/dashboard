@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios';
 import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -10,6 +11,7 @@ import { mintNft, setAvatar, setHomespace } from '../functions/AssetFunctions.js
 import { storageHost } from "../webaverse/constants";
 import Loader from '../components/Loader';
 import AssetCard from '../components/Card';
+import ProgressBar from '../components/ProgressBar';
 import { makeWbn, makeBin } from "../webaverse/build";
 import { blobToFile, getExt } from "../webaverse/util";
 
@@ -31,6 +33,9 @@ export default () => {
   const [hash, setHash] = useState(null);
   const [loading, setLoading] = useState(true);
   const [init, setInit] = useState(false);
+  const [percentage, setPercentage] = useState(0);
+  const [progress,   setProgress] = useState(null);
+  const [loadingMessage, setLoadingMessage] = useState("Loading...");
 
   if (!init && loading && globalState && globalState.init === true) {
     setLoading(false);
@@ -98,6 +103,60 @@ export default () => {
         setExtName(extName);
         setName(fileName);
 
+        const documentStyles = document.documentElement.style;
+        let progress = 0;
+
+        setLoading('true');
+        setProgress('in-progress');
+
+        axios({
+          method: 'post',
+          url: storageHost,
+          data: file,
+          onUploadProgress(progressEvent) {
+            progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+            setPercentage(progress);
+            console.log("progress", progress);
+            documentStyles.setProperty('--progress', `${progress}%`);
+
+            if (progress > 0 && progress < 10) {
+              setLoadingMessage("Blurring Reality Lines");
+            } else if (progress > 10 && progress < 20) {
+              setLoadingMessage("Preparing Captive Simulators");
+            } else if (progress > 20 && progress < 30) {
+              setLoadingMessage("Destabilizing Orbital Payloads");
+            } else if (progress > 30 && progress < 40) {
+              setLoadingMessage("Reticulating 3-Dimensional Splines");
+            } else if (progress > 40 && progress < 50) {
+              setLoadingMessage("Inserting Chaos Generator");
+            } else if (progress > 50 && progress < 60) {
+              setLoadingMessage("Initializing Secret Societies");
+            } else if (progress > 60 && progress < 70) {
+              setLoadingMessage("Recycling Hex Decimals");
+            } else if (progress > 70 && progress < 80) {
+              setLoadingMessage("Locating Misplaced Calculations");
+            } else if (progress > 80 && progress < 90) {
+              setLoadingMessage("Simulating Program Execution");
+            } else if (progress > 90) {
+              setLoadingMessage("Composing Melodic Euphony");
+            } else {
+              setLoadingMessage("Composing Melodic Euphony");
+            }
+          }
+        })
+        .then(data => {
+          data = data.data;
+          console.log("got data", data);
+          setProgress('finished');
+          setHash(data.hash);
+          setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
+          router.push('/preview/' + data.hash + "." + fileName + "." + extName);
+        })
+        .catch(error => {
+          console.error(error)
+        });
+
+/*
         fetch(storageHost, {
           method: 'POST',
           body: file
@@ -111,6 +170,7 @@ export default () => {
         .catch(error => {
           console.error(error)
         })
+*/
       }
       reader.readAsDataURL(file);
     }
@@ -118,7 +178,10 @@ export default () => {
   };
 
   return (<>{loading ?
-    <Loader loading={loading} />
+    progress === "in-progress" ?
+      <ProgressBar loadingMessage={loadingMessage} percentage={percentage} progress={progress} />
+    :
+      <Loader loading={true} />
   :
     <>
       {[

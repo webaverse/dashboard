@@ -181,6 +181,7 @@ export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSu
 }
 
 export const deleteAsset = async (id, mnemonic, handleSuccess, handleError) => {
+  const { contracts } = await getBlockchain();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
 
@@ -188,6 +189,9 @@ export const deleteAsset = async (id, mnemonic, handleSuccess, handleError) => {
     const network = 'sidechain';
     const burnAddress = "0x000000000000000000000000000000000000dEaD";
 
+    const currentHash = await contracts.back.NFT.methods.getHash(id).call();
+    const r = Math.random().toString(36).substring(16);
+    const updateHashResult = await runSidechainTransaction(mnemonic)('NFT', 'updateHash', currentHash, r);
     const result = await runSidechainTransaction(mnemonic)('NFT', 'transferFrom', address, burnAddress, id);
 
     if(result) console.log("Result of delete transaction:", result);

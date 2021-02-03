@@ -62,8 +62,11 @@ export default () => {
     } else if (files.length === 1) {
       if (getExt(files[0].name) === "glb") {
         makePhysicsBake(files);
-      } else {
+      } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) {
         handleFileUpload(files[0]);
+      } else {
+        alert("Use one of the support file formats: png, glb, vrm");
+        setLoading(false);
       }
     } else {
       alert("No files uploaded!");

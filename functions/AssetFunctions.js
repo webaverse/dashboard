@@ -190,7 +190,7 @@ export const deleteAsset = async (id, mnemonic, handleSuccess, handleError) => {
     const burnAddress = "0x000000000000000000000000000000000000dEaD";
 
     const currentHash = await contracts.back.NFT.methods.getHash(id).call();
-    const r = Math.random().toString(36).substring(16);
+    const r = Math.random().toString(36);
     const updateHashResult = await runSidechainTransaction(mnemonic)('NFT', 'updateHash', currentHash, r);
     const result = await runSidechainTransaction(mnemonic)('NFT', 'transferFrom', address, burnAddress, id);
 

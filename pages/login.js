@@ -36,7 +36,7 @@ export default () => {
     if (play) {
       const storedLoginToken = await storage.get("loginToken");
 
-      if (storedLoginToken) {
+      if (storedLoginToken.mnemonic && storedLoginToken.mnemonic != state.loginToken.mnemonic) {
         if (!window.confirm("Do you want to overwrite your existing login?")) {
           router.push("/");
           return;
@@ -52,7 +52,7 @@ export default () => {
     } else {
       const storedLoginToken = await storage.get("loginToken");
 
-      if (storedLoginToken) {
+      if (storedLoginToken.mnemonic && storedLoginToken.mnemonic != state.loginToken.mnemonic) {
         if (!window.confirm("Do you want to overwrite your existing login?")) {
           router.push("/");
           return;

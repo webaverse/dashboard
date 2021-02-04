@@ -18,7 +18,12 @@ const getBlockchain = async () => {
   } = addresses;
   let {Account: AccountAbi, FT: FTAbi, FTProxy: FTProxyAbi, NFT: NFTAbi, NFTProxy: NFTProxyAbi, Trade: TradeAbi, LAND:LANDAbi, LANDProxy: LANDProxyAbi } = abis;
 
-  const injectedWeb3 = typeof window !== 'undefined' ? new Web3(window.ethereum) : new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/420"));
+  let injectedWeb3;
+  if (typeof window !== 'undefined' && window.ethereum) {
+    injectedWeb3 = new Web3(window.ethereum);
+  } else {
+    injectedWeb3 = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/0bb8f708513d45a1881ec056c7296df9"));
+  }
 
   const web3 = {
     mainnet: injectedWeb3,
@@ -80,7 +85,7 @@ const getBlockchain = async () => {
   const getOtherNetworkName = () => networkName === 'main' ? 'Mainnet' : 'Rinkeby';
 
   const getMainnetAddress = async () => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && window.ethereum) {
       const [address] = await window.ethereum.enable();
       return address || null;
     } else {

@@ -9,7 +9,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CustomToast from "../components/CustomToast";
 
+// global css
 import '../styles/globals.css';
+
+// components css
 import '../styles/Navbar.css';
 import '../styles/Footer.css';
 import '../styles/Card.css';
@@ -18,14 +21,18 @@ import '../styles/CardGrid.css';
 import '../styles/LandCard.css';
 import '../styles/LandCardGrid.css';
 import '../styles/ProfileCards.css';
-import '../styles/Profile.css';
-import '../styles/Mint.css';
 import '../styles/IFrame.css';
-import '../styles/Activity.css';
 import '../styles/CardColumn.css';
-import '../styles/Hiring.css';
 import '../styles/ProgressBar.css';
 import '../styles/Stripe.css';
+import '../styles/FluxPack.css';
+
+// page css
+import '../styles/Profile.css';
+import '../styles/Mint.css';
+import '../styles/Activity.css';
+import '../styles/Hiring.css';
+import '../styles/Flux.css';
 
 //Binding events
 Router.events.on('routeChangeStart', () => NProgress.start());

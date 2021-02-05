@@ -25,12 +25,8 @@ export default function CheckoutForm() {
     if (!init && globalState && globalState.loginToken && globalState.loginToken.mnemonic) {
       const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(globalState.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
       const address = wallet.getAddressString();
-      console.log("mnemonic", globalState.loginToken.mnemonic);
-      console.log("wallet", wallet);
-      console.log("address", address);
       setInit(true);
 
-      // Create PaymentIntent as soon as the page loads
       window
         .fetch("http://54.183.189.132:4242/create-payment-intent", {
           method: "POST",

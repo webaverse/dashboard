@@ -9,7 +9,7 @@ import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 
-export default function CheckoutForm() {
+export default function CheckoutForm({ fluxAmount }) {
   const { globalState, setGlobalState } = useAppContext();
 
   const [succeeded, setSucceeded] = useState(false);
@@ -35,7 +35,7 @@ export default function CheckoutForm() {
           },
           body: JSON.stringify(
             {
-              items: [{ id: "xl-tshirt" }],
+              fluxAmount:fluxAmount, 
               address: address
             }
           )
@@ -92,6 +92,7 @@ export default function CheckoutForm() {
     <form id="payment-form" onSubmit={handleSubmit}>
       <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
       <button
+        className="stripeCheckoutFormButton"
         disabled={processing || disabled || succeeded}
         id="submit"
       >
@@ -111,13 +112,8 @@ export default function CheckoutForm() {
       )}
       {/* Show a success message upon completion */}
       <p className={succeeded ? "result-message" : "result-message hidden"}>
-        Payment succeeded, see the result in your
-        <a
-          href={`https://dashboard.stripe.com/test/payments`}
-        >
-          {" "}
-          Stripe dashboard.
-        </a> Refresh the page to pay again.
+        Payment succeeded!
+        Refresh the page to see your new FLUX balance.
       </p>
     </form>
   );

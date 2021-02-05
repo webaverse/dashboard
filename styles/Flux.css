@@ -1,0 +1,13 @@
+.fluxTitle {
+  font-size: 3rem;
+  text-align: left;
+  padding: 0 8%;
+}
+.fluxPageContainer {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1;
+  padding: 0 8%;
+  flex-wrap: wrap;
+  justify-content: center;
+}

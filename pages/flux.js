@@ -9,22 +9,22 @@ export default function Flux() {
   const [costUsd, setCostUsd] = useState(null);
 
   useEffect(() => {
-    if (choosePack === "500") {
-      setFluxAmount("500");
+    if (choosePack === "50") {
+      setFluxAmount("50");
       setCostUsd("USD $4.99");
-    } else if (choosePack === "1000") {
-      setFluxAmount("1000");
+    } else if (choosePack === "100") {
+      setFluxAmount("100");
       setCostUsd("USD $9.99");
-    } else if (choosePack === "2800") {
-      setFluxAmount("2800");
+    } else if (choosePack === "280") {
+      setFluxAmount("280");
       setBonusAmount("12");
       setCostUsd("USD $24.99");
-    } else if (choosePack === "5000") {
-      setFluxAmount("5000");
+    } else if (choosePack === "500") {
+      setFluxAmount("500");
       setBonusAmount("25");
       setCostUsd("USD $39.99");
-    } else if (choosePack === "13500") {
-      setFluxAmount("13500");
+    } else if (choosePack === "1350") {
+      setFluxAmount("1350");
       setBonusAmount("35");
       setCostUsd("USD $99.99");
     }

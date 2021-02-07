@@ -189,12 +189,12 @@ export default ({
 
   const handleDeleteAsset = (e) => {
     e.preventDefault();
-    var r = confirm("You are about to permanently delete this, are you sure?");
+    var r = confirm("You are about to permanently burn this item, are you sure?");
     if (r == true) {
-      addToast("Deleting this item...", { appearance: 'info', autoDismiss: true, });
+      addToast("Burning this item...", { appearance: 'info', autoDismiss: true, });
       deleteAsset(id, globalState.loginToken.mnemonic, handleSuccess, handleError);
     } else {
-      handleError("canceled delete");
+      handleError("Canceled burn.");
     }
   }
 
@@ -343,7 +343,7 @@ export default ({
                         <div className="accordionDropdown">
                           {[
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAssetName}>Change Asset Name</button>),
-                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeleteAsset}>Delete This Item</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeleteAsset}>Burn This Item</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleAddCollaborator}>Add Collaborator</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleRemoveCollaborator}>Remove Collaborator</button>),
                           ]}

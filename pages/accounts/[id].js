@@ -1,18 +1,20 @@
 import Web3 from 'web3';
 import React, { useState, useEffect } from 'react'
 import Head from 'next/head';
+import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { Container, Row, Col } from 'react-grid-system';
 import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
-import { resubmitAsset, getStuckAsset, setName, getLoadout, withdrawFlux, depositFlux } from "../../functions/AssetFunctions.js";
+import { addMainnetAddress, resubmitAsset, getStuckAsset, setName, getLoadout, withdrawFlux, depositFlux } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
 import ProfileHeader from "../../components/Profile";
 
 export default ({ data }) => {
+  const { addToast } = useToasts();
   const history = useHistory();
   const router = useRouter()
   const { id } = router.query;
@@ -71,7 +73,11 @@ export default ({ data }) => {
     setGlobalState({ ...globalState, logout: "true" });
   }
 
-  const handleSuccess = () => {
+  const handleSuccess = (msg, link) => {
+    if (typeof msg === "object") {
+      msg = JSON.stringify(msg);
+    }
+    addToast("Success!", { link: link, appearance: 'success', autoDismiss: true, });
     console.log("success!");
     setLoading(false);
     if (window != "undefined") {
@@ -80,8 +86,15 @@ export default ({ data }) => {
   }
 
   const handleError = (err) => {
+    addToast("Error: " + err, { appearance: 'error', autoDismiss: true, })
     console.log("error", err);
     setLoading(false);
+  }
+
+
+  const handleAddMainnetAddress = async () => {
+    addToast("Connecting mainnet address.", { appearance: 'info', autoDismiss: true, });
+    await addMainnetAddress(globalState, handleSuccess, handleError);
   }
 
   const ethEnabled = () => {
@@ -210,6 +223,9 @@ export default ({ data }) => {
         selectedView === "settings" && globalState && globalState.address == id.toLowerCase() && (
           <div key="settingsButtonsContainer" className="settingsButtonsContainer">
           {[
+            (<a key="connectMainnetAddressButton" className="button" onClick={handleAddMainnetAddress}>
+              Connect mainnet address
+            </a>),
             (<a key="fluxToMainnetButton" className="button" onClick={handleDeposit}>
               Transfer FLUX to mainnet
             </a>),

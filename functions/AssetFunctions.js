@@ -820,7 +820,7 @@ export const getLoadout = async (address) => {
   return loadout;
 }
 
-export const setLoadoutState = async (id, index, state) => {
+export const setLoadoutState = async (id, index, state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   if (!state.loginToken) {
     throw new Error('not logged in');
@@ -848,7 +848,36 @@ export const setLoadoutState = async (id, index, state) => {
     itemPreview
   ]);
 
-  await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'loadout', JSON.stringify(loadout));
+  try {
+    await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'loadout', JSON.stringify(loadout));
+    handleSuccess("Successfully added item to loadout number " + index + ".");
+  } catch(err) {
+    handleError(err);
+  }
+
+  return { ...state, loadout: JSON.stringify(loadout) };
+};
+export const clearLoadoutState = async (index, state, handleSuccess, handleError) => {
+  const { web3, contracts } = await getBlockchain();
+  if (!state.loginToken) {
+    throw new Error('not logged in');
+    return state;
+  }
+
+  const loadout = await getLoadout(state.address);
+  loadout.splice(index - 1, 1, [
+    '',
+    '',
+    '',
+    ''
+  ]);
+
+  try {
+    await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'loadout', JSON.stringify(loadout));
+    handleSuccess();
+  } catch(err) {
+    handleError(err);
+  }
 
   return { ...state, loadout: JSON.stringify(loadout) };
 };

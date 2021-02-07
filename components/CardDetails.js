@@ -5,7 +5,7 @@ import Link from 'next/link';
 import AssetCard from './Card';
 import CardSize from '../constants/CardSize.js';
 import { getBlockchain } from '../webaverse/blockchain.js';
-import { resubmitAsset, getStuckAsset, addNftCollaborator, removeNftCollaborator, setAssetName, deleteAsset, setLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
+import { resubmitAsset, getStuckAsset, addNftCollaborator, removeNftCollaborator, setAssetName, deleteAsset, setLoadoutState, clearLoadoutState, setAvatar, setHomespace, withdrawAsset, depositAsset, cancelSale, sellAsset, buyAsset } from '../functions/AssetFunctions.js'
 import { isTokenOnMain, getStores } from '../functions/UIStateFunctions.js'
 import Loader from './Loader';
 
@@ -168,12 +168,18 @@ export default ({
     setHomespace(id, globalState, handleSuccess, handleError);
   }
 
+  const clearLoadout = async (e) => {
+    e.preventDefault();
+    const loadoutNum = prompt("What loadout number do you want to clear?", "");
+    addToast("Clearing loadout number: " + loadoutNum, { appearance: 'info', autoDismiss: true, });
+    await clearLoadoutState(loadoutNum, globalState, handleSuccess, handleError);
+  }
+
   const addToLoadout = async (e) => {
     e.preventDefault();
     const loadoutNum = prompt("What loadout number do you want to add this to?", "1");
     addToast("Setting this item to loadout number " + loadoutNum, { appearance: 'info', autoDismiss: true, });
-    await setLoadoutState(id, loadoutNum, globalState);
-    addToast("Successfully added item to loadout number " + loadoutNum + "!", { appearance: 'success', autoDismiss: true, });
+    await setLoadoutState(id, loadoutNum, globalState, handleSuccess, handleError);
   }
 
   const handleBuyAsset = (e) => {
@@ -361,6 +367,7 @@ export default ({
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetAvatar}>Set As Avatar</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleSetHomespace}>Set As Homespace</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={addToLoadout}>Add To Loadout</button>),
+                            userOwnsThisAsset && (<button className="assetDetailsButton" onClick={clearLoadout}>Clear From Loadout</button>),
                           ]}
                         </div>
                         )}

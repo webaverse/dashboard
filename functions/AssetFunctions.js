@@ -242,9 +242,7 @@ export const buyAsset = async (id, networkType, mnemonic, handleSuccess, handleE
 export const sellAsset = async (id, price, networkType, mnemonic, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   try {
-    const network = networkType.toLowerCase() === 'mainnet' ? 'mainnet' : 'sidechain';
-
-    await runSidechainTransaction(mnemonic)('NFT', 'setApprovalForAll', contracts[network]['Trade']._address, true);
+    await runSidechainTransaction(mnemonic)('NFT', 'setApprovalForAll', contracts['back']['Trade']._address, true);
     const result = await runSidechainTransaction(mnemonic)('Trade', 'addStore', id, price);
 
     if (handleSuccess)

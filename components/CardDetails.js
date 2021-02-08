@@ -29,6 +29,7 @@ export default ({
     minterAddress,
     minterUsername,
     networkType,
+    isMainnet,
     buyPrice,
     storeId,
     hideDetails,
@@ -77,7 +78,10 @@ export default ({
   }
 
   let userOwnsThisAsset, userCreatedThisAsset;
-  if (globalState && globalState.address) {
+  if (globalState && globalState.address && isMainnet) {
+    userOwnsThisAsset = false;
+    userCreatedThisAsset = minterAddress.toLowerCase() === globalState.address.toLowerCase();
+  } else if (globalState && globalState.address) {
     userOwnsThisAsset = ownerAddress.toLowerCase() === globalState.address.toLowerCase();
     userCreatedThisAsset = minterAddress.toLowerCase() === globalState.address.toLowerCase();
   } else {

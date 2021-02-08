@@ -23,6 +23,7 @@ export default ({
                 <AssetCard
                    key={asset.id}
                    id={asset.id}
+                   isMainnet={asset.isMainnet}
                    assetName={asset.name}
                    description={asset.description}
                    image={asset.image}

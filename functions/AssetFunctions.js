@@ -918,7 +918,9 @@ export const addMainnetAddress = async (state, handleSuccess, handleError) => {
 
   try {
     await loginWithMetaMask();
-    await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'mainnetAddress', mainnetAddress);
+
+    const signature = await window.web3.eth.personal.sign("Connecting mainnet address.", mainnetAddress, "test password!")
+    await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'mainnetAddress', signature);
     handleSuccess();
   } catch(err) {
     handleError(err);

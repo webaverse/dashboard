@@ -42,14 +42,14 @@ export default function Hiring() {
           <h2>Roles</h2>
           <p>If a role interests you, just click to learn more.</p>
           <ul>
-            <li><Link href="/3dengineer"><a>3D Engineer</a></Link></li>
-            <li><Link href="/blockchainengineer"><a>Blockchain Engineer</a></Link></li>
-            <li><Link href="/infrastructureengineer"><a>Infrastructure Engineer</a></Link></li>
-            <li><Link href="/shaderartist"><a>Shader Artist</a></Link></li>
-            <li><Link href="/avatarartist"><a>Avatar Artist</a></Link></li>
-            <li><Link href="/worldartist"><a>World Artist</a></Link></li>
-            <li><Link href="/artist"><a>Artist</a></Link></li>
-            <li><Link href="/tester"><a>Tester</a></Link></li>
+            <li><Link href="/hiring/3dengineer"><a>3D Engineer</a></Link></li>
+            <li><Link href="/hiring/blockchainengineer"><a>Blockchain Engineer</a></Link></li>
+            <li><Link href="/hiring/infrastructureengineer"><a>Infrastructure Engineer</a></Link></li>
+            <li><Link href="/hiring/shaderartist"><a>Shader Artist</a></Link></li>
+            <li><Link href="/hiring/avatarartist"><a>Avatar Artist</a></Link></li>
+            <li><Link href="/hiring/worldartist"><a>World Artist</a></Link></li>
+            <li><Link href="/hiring/artist"><a>Artist</a></Link></li>
+            <li><Link href="/hiring/tester"><a>Tester</a></Link></li>
           </ul>
         </div>
         <div>

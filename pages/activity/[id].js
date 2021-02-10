@@ -23,14 +23,21 @@ export default () => {
       let contract = id.split(".")[1] || "NFT";
       let contractUrl = "";
       const data = await getTxData(tx, contract);
-      if (contract === "FT") {
-        contract = "FLUX";
-      } if (contract === "NFT") {
-        contract = "Item #" + data.returnValues["tokenId"];
-        contractUrl = "/assets/" + data.returnValues["tokenId"];
-      } if (contract === "LAND") {
-        contract = "Land #" + data.returnValues["tokenId"];
-        contractUrl = "/land/" + data.returnValues["tokenId"];
+
+      switch (contract) {
+        case "FT": 
+          contract = "FLUX";
+          break;
+        case "NFT": 
+          contract = "Item #" + data.returnValues["tokenId"];
+          contractUrl = "/assets/" + data.returnValues["tokenId"];
+          break;
+        case "LAND":
+          contract = "Land #" + data.returnValues["tokenId"];
+          contractUrl = "/land/" + data.returnValues["tokenId"];
+          break;
+        default:
+          break;
       }
 
       setData([

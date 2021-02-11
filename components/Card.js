@@ -22,15 +22,16 @@ export default ({
   minterUsername,
   cardSize,
   networkType,
+  isMainnet,
   glow,
   imageView,
 }) => {
 
   let networkIcon;
-  if (networkType === "webaverse") {
-    networkIcon = "/icon-webaverse.svg";
-  } else if (networkType === "ethereum") {
+  if (isMainnet) {
     networkIcon = "/icon-ethereum.svg";
+  } else {
+    networkIcon = "/icon-webaverse.svg";
   }
 
   let extIcon;
@@ -76,6 +77,9 @@ export default ({
             <span className={`cardAssetName cardName ${cardSize}`}>#{id} - {assetName}</span>
           </div>
           <div className={`upperCardInfoRight upperCardInfoRight ${cardSize}`}>
+            <div className={`itemType ext ${cardSize} ext_${ext}`}>
+              <img className={`itemTypeIcon itemTypeIcon ${cardSize}`} src={networkIcon} />
+            </div>
             <div className={`itemType ext ${cardSize} ext_${ext}`}>
               <img className={`itemTypeIcon itemTypeIcon ${cardSize}`} src={extIcon} />
               <span className={`itemTypeExt itemTypeExt ${cardSize}`}>.{ext}</span> 

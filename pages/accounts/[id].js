@@ -29,10 +29,8 @@ export default ({ data }) => {
   const [stuck, setStuck] = useState(false);
 
   useEffect(() => {
-    if (globalState.loginToken) {
-      getData();
-    }
-  }, [globalState]);
+    getData();
+  }, []);
 
   const getData = () => {
     if (id && !profile || !balance || !inventory || !store || !loadout) {
@@ -42,7 +40,11 @@ export default ({ data }) => {
       })();
       (async () => {
         const inventory = await getInventoryForCreator(id);
-        setInventory(inventory);
+        if (inventory.length > 0) {
+          setInventory(inventory);
+        } else {
+          setInventory([]);
+        }
       })();
       (async () => {
         const store = await getStoreForCreator(id);

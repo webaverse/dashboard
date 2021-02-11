@@ -40,6 +40,7 @@ export default ({ data }) => {
       { !loading ?
           <CardDetails
              id={token.id}
+             isMainnet={token.isMainnet}
              key={token.id}
              name={token.name}
              description={token.description}

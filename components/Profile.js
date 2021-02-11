@@ -32,8 +32,8 @@ export default ({ loadout, balance, profile }) => {
           <>
             <h1 className="profileText mainName">{profile.name ? profile.name : "Anonymous"}</h1>
             <p className="profileText address">Sidechain: {profile.address ? profile.address : ""}</p>
-            {globalState && globalState.mainnetAddress ?
-              <p className="profileText address">Mainnet: {globalState.mainnetAddress ? globalState.mainnetAddress : ""}</p>
+            {profile.mainnetAddress ?
+              <p className="profileText address">Mainnet: {profile.mainnetAddress ? profile.mainnetAddress : ""}</p>
             : null}
             {balance && balance > 0 ?
               <p className="profileText">FLUX Balance: {balance ? balance : "0"}</p>

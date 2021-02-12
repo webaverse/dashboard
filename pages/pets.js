@@ -1,3 +1,4 @@
+import {GLTFLoader} from '../libs/GLTFLoader.js';
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link';
 import Head from 'next/head';
@@ -65,8 +66,36 @@ export default () => {
 
   const makePetWbn = async (file) => {
     if (file && getExt(file[0].name) === "glb") {
-      const walkAnimation = prompt("What is the name of the walk animation for this pet?", "");
-      const idleAnimation = prompt("What is the name of the idle animation for this pet?", "");
+
+      let o = await new Promise((accept, reject) => {
+        const u = URL.createObjectURL(file[0]);
+        new GLTFLoader().load(u, accept, function onprogress() {}, reject);
+      });
+
+      let walkAnimation, idleAnimation;
+      if (o) {
+        // get walk animation
+        Promise.all(o.animations.map(animation => {
+          if (!walkAnimation) {
+            const result = window.confirm('Is your walk animation called "' + animation.name + '"?');
+            if (result) {
+              walkAnimation = animation.name;
+            }
+          }
+        }));
+        // get idle animation
+        Promise.all(o.animations.map(animation => {
+          if (!idleAnimation) {
+            const result = window.confirm('Is your idle animation called "' + animation.name + '"?');
+            if (result) {
+              idleAnimation = animation.name;
+            }
+          }
+        }));
+      } else {
+        const walkAnimation = prompt("What is the name of the walk animation for this pet?", "");
+        const idleAnimation = prompt("What is the name of the idle animation for this pet?", "");
+      }
       const manifest = {
         "xr_type": "webxr-site@0.0.1",
         "start_url": file[0].name,

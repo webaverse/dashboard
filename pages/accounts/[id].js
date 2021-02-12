@@ -56,12 +56,6 @@ export default ({ data }) => {
       })();
     }
     (async () => {
-      const isStuck = await getStuckAsset("FT", null, globalState);
-      if (isStuck) {
-        setStuck(true);
-      }
-    })();
-    (async () => {
       const balance = await getBalance(id);
       setBalance(balance);
     })();
@@ -225,20 +219,20 @@ export default ({ data }) => {
         selectedView === "settings" && globalState && globalState.address == id.toLowerCase() && (
           <div key="settingsButtonsContainer" className="settingsButtonsContainer">
           {[
-            (<a key="connectMainnetAddressButton" className="button" onClick={handleAddMainnetAddress}>
+            (<a key="connectMainnetAddressButton" className="button" onClick={() => handleAddMainnetAddress()}>
               Connect mainnet address
             </a>),
-            (<a key="fluxToMainnetButton" className="button" onClick={handleDeposit}>
+            (<a key="fluxToMainnetButton" className="button" onClick={() => handleDeposit()}>
               Transfer FLUX to mainnet
             </a>),
-            stuck && (<a key="fluxToMainnetButton" className="button" onClick={async () => {
+            (<a key="fluxToMainnetButton" className="button" onClick={async () => {
               setLoading(true);
               await resubmitAsset("FT", null, globalState, handleSuccess, handleError);
               handleSuccess();
             }}>
               Resubmit FLUX transfer
             </a>),
-            (<a key="fluxButton" className="button" onClick={handleWithdraw}>
+            (<a key="fluxButton" className="button" onClick={() => handleWithdraw()}>
               Transfer FLUX from mainnet
             </a>),
             (<a key="nameChangeButton" className="button" onClick={() => {

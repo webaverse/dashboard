@@ -233,7 +233,7 @@ export default ({ data }) => {
             (<a key="fluxToMainnetButton" className="button" onClick={() => handleDeposit()}>
               Transfer FLUX to mainnet
             </a>),
-            (<a key="fluxToMainnetButton" className="button" onClick={async () => {
+            (<a key="fluxResubmitButton" className="button" onClick={async () => {
               setLoading(true);
               await resubmitAsset("FT", null, globalState, handleSuccess, handleError);
               handleSuccess();

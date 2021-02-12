@@ -77,7 +77,6 @@ const Navbar = () => {
                     <Link href="/mounts"><a className={`navbarSubMenuLinkItem item`}>Mount</a></Link>
                     <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://editaverse.com">World Editor</a>
                     <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://voxel.editaverse.com">Voxel Editor</a>
-                    <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://discord.com/oauth2/authorize?client_id=758956702669209611&permissions=0&scope=bot">Discord Bot</a>
                   </div>
                 </div>
               </div>
@@ -91,6 +90,7 @@ const Navbar = () => {
                     <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://webaverse.github.io/whitepaper/whitepaper.pdf">Whitepaper</a>
                     <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
                     <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://twitter.com/webaverse">Twitter</a>
+                    <Link href="/discordbot"><a className={`navbarSubMenuLinkItem item`}>Discord Bot</a></Link>
                   </div>
                 </div>
               </div>

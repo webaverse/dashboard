@@ -7,7 +7,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
-import { addMainnetAddress, resubmitAsset, getStuckAsset, setName, getLoadout, withdrawFlux, depositFlux } from "../../functions/AssetFunctions.js";
+import { removeMainnetAddress, addMainnetAddress, resubmitAsset, getStuckAsset, setName, getLoadout, withdrawFlux, depositFlux } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
@@ -29,32 +29,32 @@ export default ({ data }) => {
   const [stuck, setStuck] = useState(false);
 
   useEffect(() => {
-    getData();
+    if (id && !profile || !balance || !inventory || !store || !loadout) {
+      getData();
+    }
   }, []);
 
   const getData = () => {
-    if (id && !profile || !balance || !inventory || !store || !loadout) {
-      (async () => {
-        const profile = await getProfileForCreator(id);
-        setProfile(profile);
-      })();
-      (async () => {
-        const inventory = await getInventoryForCreator(id);
-        if (inventory.length > 0) {
-          setInventory(inventory);
-        } else {
-          setInventory([]);
-        }
-      })();
-      (async () => {
-        const store = await getStoreForCreator(id);
-        setStore(store);
-      })();
-      (async () => {
-        const loadout = await getLoadout(id);
-        setLoadout(loadout);
-      })();
-    }
+    (async () => {
+      const profile = await getProfileForCreator(id);
+      setProfile(profile);
+    })();
+    (async () => {
+      const inventory = await getInventoryForCreator(id);
+      if (inventory.length > 0) {
+        setInventory(inventory);
+      } else {
+        setInventory([]);
+      }
+    })();
+    (async () => {
+      const store = await getStoreForCreator(id);
+      setStore(store);
+    })();
+    (async () => {
+      const loadout = await getLoadout(id);
+      setLoadout(loadout);
+    })();
     (async () => {
       const balance = await getBalance(id);
       setBalance(balance);
@@ -91,6 +91,11 @@ export default ({ data }) => {
   const handleAddMainnetAddress = async () => {
     addToast("Connecting mainnet address.", { appearance: 'info', autoDismiss: true, });
     await addMainnetAddress(globalState, handleSuccess, handleError);
+  }
+
+  const handleRemoveMainnetAddress = async () => {
+    addToast("Removing mainnet address.", { appearance: 'info', autoDismiss: true, });
+    await removeMainnetAddress(globalState, handleSuccess, handleError);
   }
 
   const ethEnabled = () => {
@@ -219,6 +224,9 @@ export default ({ data }) => {
         selectedView === "settings" && globalState && globalState.address == id.toLowerCase() && (
           <div key="settingsButtonsContainer" className="settingsButtonsContainer">
           {[
+            profile && profile.mainnetAddress !== "" && (<a key="removeMainnetAddressButton" className="button" onClick={() => handleRemoveMainnetAddress()}>
+              Remove mainnet address
+            </a>),
             (<a key="connectMainnetAddressButton" className="button" onClick={() => handleAddMainnetAddress()}>
               Connect mainnet address
             </a>),

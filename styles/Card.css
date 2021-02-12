@@ -16,6 +16,9 @@ img {
     filter: drop-shadow(0px 0px 4px #000000);
     overflow: hidden;
 }
+.card:hover {
+  transform: translateY(-2px);
+}
 .upperCardInfo {
     background: linear-gradient(90deg, #C4008B 34.8%, #c4005d 100%);
     border-radius: 10px 10px 0px 0px;

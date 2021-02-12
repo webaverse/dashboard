@@ -928,3 +928,15 @@ export const addMainnetAddress = async (state, handleSuccess, handleError) => {
 
   return;
 }
+export const removeMainnetAddress = async (state, handleSuccess, handleError) => {
+  const { web3, contracts } = await getBlockchain();
+
+  try {
+    await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'mainnetAddress', '');
+    handleSuccess();
+  } catch(err) {
+    handleError(err);
+  }
+
+  return;
+}

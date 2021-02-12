@@ -141,4 +141,12 @@ export default () =>
       callToAction="INVITE NOW"
       ctaUrl="https://discord.com/oauth2/authorize?client_id=758956702669209611&permissions=0&scope=bot"
     />
+    <Hero
+      heroBg=""
+      title="Get SILK"
+      subtitle="Want to get some SILK? Just message us in Discord"
+      callToAction="GET SOME SILK"
+      ctaUrl="https://discord.gg/R5wqYhvv53"
+    />
+
   </>

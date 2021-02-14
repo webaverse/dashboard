@@ -33,7 +33,10 @@ export default ({ data }) => {
         <title>{token.name} | Webaverse</title>
         <meta name="description" content={token.description + " | Webaverse"} />
         <meta property="og:title" content={token.name + " | Webaverse"} />
-        <meta property={["webm","mp4"].indexOf(token.properties.ext) >=0 ? "og:video" : "og:image"} content={["gif","webm","mp4"].indexOf(token.properties.ext) >=0 ? token.animation_url : token.image} />
+        <meta property={["webm","mp4"].indexOf(token.properties.ext) >=0 ? "og:video:url" : "og:image"} content={["gif","webm","mp4"].indexOf(token.properties.ext) >=0 ? token.animation_url : token.image} />
+        {["webm","mp4"].indexOf(token.properties.ext) >=0 ?
+          <meta name="og:type" content="video" />
+        : null}
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>

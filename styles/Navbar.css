@@ -95,7 +95,7 @@
 .navbarIcon {
   display: none;
 }
-.navbarFluxContainer {
+.navbarSILKContainer {
   display: flex !important;
   flex-direction: row;
   width: 150px;
@@ -106,20 +106,20 @@
   border: 2px solid #312936 !important;
   height: 24px;
 }
-.navbarFluxSymbol {
+.navbarSILKSymbol {
   padding-right: 5px;
   padding-left: 5px;
   font-size: 0.8em;
   margin-top: 3px;
   color: rgb(196 0 93 / 1);
 }
-.navbarFluxAmount {
+.navbarSILKAmount {
   color: #676370;
   max-width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.navbarFluxPlusContainer {
+.navbarSILKPlusContainer {
   margin-left: auto;
   padding-right: 10px;
   padding-left: 10px;
@@ -127,7 +127,7 @@
   background: rgb(196 0 93 / .8);
   border-radius: 0px 8px 8px 0px;
 }
-.navbarFluxPlusContainer:hover {
+.navbarSILKPlusContainer:hover {
   background-color: #d4055a;
 }
 
@@ -220,7 +220,7 @@
 }
 @media screen and (max-width: 1203px) {
   .rightMenuContainer,
-  .navbarFluxContainer {
+  .navbarSILKContainer {
     display: none !important;
   }
   .navbarIcon {

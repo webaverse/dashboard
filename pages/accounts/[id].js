@@ -7,7 +7,7 @@ import { Container, Row, Col } from 'react-grid-system';
 import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
-import { removeMainnetAddress, addMainnetAddress, resubmitAsset, getStuckAsset, setName, getLoadout, withdrawFlux, depositFlux } from "../../functions/AssetFunctions.js";
+import { removeMainnetAddress, addMainnetAddress, resubmitAsset, getStuckAsset, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
@@ -141,9 +141,9 @@ export default ({ data }) => {
     try {
       const ethAccount = await loginWithMetaMask(handleWithdraw);
       if (ethAccount) {
-        const amount = prompt("How much FLUX do you want to transfer?", "10");
+        const amount = prompt("How much SILK do you want to transfer?", "10");
         const mainnetAddress = prompt("What mainnet address do you want to transfer to?", "0x0");
-        await depositFlux(amount, mainnetAddress, globalState, handleSuccess, handleError);
+        await depositSILK(amount, mainnetAddress, globalState, handleSuccess, handleError);
         handleSuccess();
       } else {
         setLoading(false);
@@ -164,9 +164,9 @@ export default ({ data }) => {
     try {
       const ethAccount = await loginWithMetaMask(handleWithdraw);
       if (ethAccount) {
-        const amount = prompt("How much FLUX do you want to transfer?", "10");
+        const amount = prompt("How much SILK do you want to transfer?", "10");
         const mainnetAddress = prompt("What mainnet address do you want to transfer from?", "0x0");
-        await withdrawFlux(amount, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
+        await withdrawSILK(amount, mainnetAddress, globalState.address, globalState, handleSuccess, handleError);
         handleSuccess();
       } else {
         setLoading(false);
@@ -230,18 +230,18 @@ export default ({ data }) => {
             (<a key="connectMainnetAddressButton" className="button" onClick={() => handleAddMainnetAddress()}>
               Connect mainnet address
             </a>),
-            (<a key="fluxToMainnetButton" className="button" onClick={() => handleDeposit()}>
-              Transfer FLUX to mainnet
+            (<a key="SILKToMainnetButton" className="button" onClick={() => handleDeposit()}>
+              Transfer SILK to mainnet
             </a>),
-            (<a key="fluxResubmitButton" className="button" onClick={async () => {
+            (<a key="SILKResubmitButton" className="button" onClick={async () => {
               setLoading(true);
               await resubmitAsset("FT", null, globalState, handleSuccess, handleError);
               handleSuccess();
             }}>
-              Resubmit FLUX transfer
+              Resubmit SILK transfer
             </a>),
-            (<a key="fluxButton" className="button" onClick={() => handleWithdraw()}>
-              Transfer FLUX from mainnet
+            (<a key="SILKButton" className="button" onClick={() => handleWithdraw()}>
+              Transfer SILK from mainnet
             </a>),
             (<a key="nameChangeButton" className="button" onClick={() => {
               const name = prompt("What is your name?", "Satoshi");

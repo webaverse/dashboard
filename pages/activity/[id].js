@@ -110,7 +110,7 @@ export default () => {
 export async function getServerSideProps({ params }) {
 /*
   const data = await getSidechainActivity();
-  const activityData = JSON.parse(JSON.stringify(data)); 
+  const activityData = JSON.parse(JSON.stringify(data));
 */
   const activityData = [];
 

@@ -54,7 +54,7 @@ export default ({
             <div className={`lowerCardInfoTopLeft lowerCardInfoTopLeft ${cardSize}`}>
               <div className="lowerCardInfoTopClear"></div>
             </div>
-            <span className={`greaseLoadedIntoAsset greaseLoadedIntoAsset ${cardSize}`}>{`${buyPrice ? "岾 " + buyPrice : ""} ${buyPrice ? "FLUX" : ""}`}</span>
+            <span className={`greaseLoadedIntoAsset greaseLoadedIntoAsset ${cardSize}`}>{`${buyPrice ? "岾 " + buyPrice : ""} ${buyPrice ? "SILK" : ""}`}</span>
           </div>
         </div>
       </div>

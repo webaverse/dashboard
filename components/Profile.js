@@ -36,7 +36,7 @@ export default ({ loadout, balance, profile }) => {
               <p className="profileText address">Mainnet: {profile.mainnetAddress ? profile.mainnetAddress : ""}</p>
             : null}
             {balance && balance > 0 ?
-              <p className="profileText">FLUX Balance: {balance ? balance : "0"}</p>
+              <p className="profileText">SILK Balance: {balance ? balance : "0"}</p>
             : null}
           </>
         </div>

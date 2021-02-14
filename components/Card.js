@@ -8,6 +8,7 @@ export default ({
   image,
   hash,
   external_url,
+  animation_url,
   filename,
   buyPrice,
   ext,
@@ -26,6 +27,10 @@ export default ({
   glow,
   imageView,
 }) => {
+
+  if (ext === "gif") {
+    image = animation_url;
+  }
 
   let networkIcon;
   if (isMainnet) {

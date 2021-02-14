@@ -96,15 +96,15 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-          <div onClick={() => setDropdown(false)} className={`navbarFluxContainer desktop`}>
-            <a className="navbarFluxSymbol">
+          <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>
+            <a className="navbarSILKSymbol">
               山
             </a>
-            <a className="navbarFluxAmount">
+            <a className="navbarSILKAmount">
               {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}
             </a>
-            <div className={`navbarFluxPlusContainer noselect`}>
-              <a className="navbarFluxPlus">
+            <div className={`navbarSILKPlusContainer noselect`}>
+              <a className="navbarSILKPlus">
                 +
               </a>
             </div>

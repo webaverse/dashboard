@@ -107,7 +107,7 @@ export default ({ data }) => {
                   <tr>
                     { entry.returnValues["value"] ?
                       <>
-                      <td><span className="activityTableEntry">FLUX</span></td>
+                      <td><span className="activityTableEntry">SILK</span></td>
                       <td><span className="activityTableEntry">{entry.returnValues["value"]}</span></td>
                       </>
                     :

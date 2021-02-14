@@ -33,7 +33,7 @@ export default ({ data }) => {
         <title>{token.name} | Webaverse</title>
         <meta name="description" content={token.description + " | Webaverse"} />
         <meta property="og:title" content={token.name + " | Webaverse"} />
-        <meta property="og:image" content={token.image} />
+        <meta property="og:image" content={token.properties.ext === "gif" ? token.animation_url : token.image} />
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
@@ -48,6 +48,7 @@ export default ({ data }) => {
              buyPrice={token.buyPrice}
              storeId={token.storeId}
              hash={token.properties.hash}
+             animation_url={token.animation_url}
              external_url={token.external_url}
              filename={token.properties.filename}
              ext={token.properties.ext}

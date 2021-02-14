@@ -136,7 +136,7 @@ export default () => {
                     <label>Quantity</label>
                     <input type="number" value={quantity} onChange={handleQuantityChange} />
                 <a className={`button noselect mintButton`} onClick={handleMintNftButton}>
-                  Mint for {10*quantity} FLUX
+                  Mint for {10*quantity} SILK
                 </a>
               </div>
             </div>

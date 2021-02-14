@@ -15,6 +15,7 @@ export default ({
     description,
     image,
     hash,
+    animation_url,
     external_url,
     filename,
     ext,
@@ -205,7 +206,7 @@ export default ({
   const handleSellAsset = (e) => {
     e.preventDefault();
     const sellPrice = prompt("How much would you like to sell this for?", "10");
-    addToast("Selling this item for " + sellPrice + " FLUX.", { appearance: 'info', autoDismiss: true, });
+    addToast("Selling this item for " + sellPrice + " SILK.", { appearance: 'info', autoDismiss: true, });
     sellAsset(id, sellPrice, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 
@@ -291,6 +292,7 @@ export default ({
                 key={id}
                 assetName={name}
                 ext={ext}
+                animation_url={animation_url}
                 description={description}
                 buyPrice={buyPrice}
                 image={image}

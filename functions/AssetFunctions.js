@@ -551,7 +551,7 @@ export const setHomespace = async (id, state, handleSuccess, handleError) => {
   }
 };
 
-export const depositFlux = async (amount, mainnetAddress, state, handleSuccess, handleError) => {
+export const depositSILK = async (amount, mainnetAddress, state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
@@ -582,7 +582,7 @@ export const depositFlux = async (amount, mainnetAddress, state, handleSuccess, 
   return;
 }
 
-export const withdrawFlux = async (amount, mainnetAddress, address, state, handleSuccess, handleError) => {
+export const withdrawSILK = async (amount, mainnetAddress, address, state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   // Withdraw from mainnet
   amount = parseInt(amount, 10);

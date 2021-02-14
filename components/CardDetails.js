@@ -15,6 +15,7 @@ export default ({
     description,
     image,
     hash,
+    animation_url,
     external_url,
     filename,
     ext,
@@ -291,6 +292,7 @@ export default ({
                 key={id}
                 assetName={name}
                 ext={ext}
+                animation_url={animation_url}
                 description={description}
                 buyPrice={buyPrice}
                 image={image}

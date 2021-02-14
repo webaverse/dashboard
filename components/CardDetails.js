@@ -206,7 +206,7 @@ export default ({
   const handleSellAsset = (e) => {
     e.preventDefault();
     const sellPrice = prompt("How much would you like to sell this for?", "10");
-    addToast("Selling this item for " + sellPrice + " FLUX.", { appearance: 'info', autoDismiss: true, });
+    addToast("Selling this item for " + sellPrice + " SILK.", { appearance: 'info', autoDismiss: true, });
     sellAsset(id, sellPrice, 'sidechain', globalState.loginToken.mnemonic, handleSuccess, handleError);
   }
 

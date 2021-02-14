@@ -28,7 +28,11 @@ export default ({
   imageView,
 }) => {
 
-  if (ext === "gif") {
+  let video = false;
+  if (["webm","mp4"].indexOf(ext) >=0) {
+    image = animation_url;
+    video = true;
+  } else if (ext === "gif") {
     image = animation_url;
   }
 
@@ -93,7 +97,10 @@ export default ({
         </div>
         <div className={`assetImage assetImage ${cardSize}`}>
           { !imageView || imageView === "2d" ?
-            <img src={image} />
+            video ?
+              <video autoPlay loop src={image} />
+            :
+              <img src={image} />
           :
             <video autoPlay loop src={image.replace(/\.[^.]*$/, '.webm')} />
           }

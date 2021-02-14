@@ -29,6 +29,7 @@ export default ({
                    image={asset.image}
                    hash={asset.properties.hash}
                    external_url={asset.external_url}
+                   animation_url={asset.animation_url}
                    filename={asset.properties.filename}
                    ext={asset.properties.ext}
                    totalSupply={asset.totalSupply}

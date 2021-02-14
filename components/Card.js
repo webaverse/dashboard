@@ -98,7 +98,7 @@ export default ({
         <div className={`assetImage assetImage ${cardSize}`}>
           { !imageView || imageView === "2d" ?
             video ?
-              <video autoPlay loop src={image} />
+              <video autoPlay playsInLine controls loop src={image} />
             :
               <img src={image} />
           :

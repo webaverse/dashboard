@@ -320,7 +320,7 @@ export const setAvatar = async (id, state, handleSuccess, handleError) => {
   if (!state.loginToken)
     throw new Error('not logged in');
   try {
-    const res = await fetch(`${networkName !== "main" ? `https://rinkebyall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
+    const res = await fetch(`${networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
     const token = await res.json();
     const { name, ext, hash } = token.properties;
     const url = `${storageHost}/${hash.slice(2)}`;
@@ -525,7 +525,7 @@ export const setHomespace = async (id, state, handleSuccess, handleError) => {
 
   try {
 
-    const res = await fetch(`${networkName !== "main" ? `https://rinkebyall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
+    const res = await fetch(`${networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
     const token = await res.json();
     const { name, ext, hash } = token.properties;
     const url = `${storageHost}/${hash.slice(2)}`;

@@ -52,10 +52,10 @@ const getBlockchain = async () => {
     }
   }
 
-  if (typeof window !== 'undefined') {
-    _setMainChain(/^main\./.test(location.hostname));
-  } else {
+  if (typeof window !== 'undefined' && /^rinkeby\./.test(location.hostname)) {
     _setMainChain(false);
+  } else {
+    _setMainChain(true);
   }
 
   const contracts = {

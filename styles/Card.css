@@ -81,8 +81,9 @@ img {
 .assetImage,
 .assetImage video {
     background-color: lightgray;
-    width: 16em;
-    height: 16em;
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
 }
 
 .lowerCardInfo {

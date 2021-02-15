@@ -15,8 +15,6 @@ const getBlockchain = async () => {
   let {
     mainnet: {Account: AccountAddress, FT: FTAddress, NFT: NFTAddress, FTProxy: FTProxyAddress, NFTProxy: NFTProxyAddress, Trade: TradeAddress, LAND: LANDAddress, LANDProxy: LANDProxyAddress },
     mainnetsidechain: {Account: AccountAddressSidechain, FT: FTAddressSidechain, NFT: NFTAddressSidechain, FTProxy: FTProxyAddressSidechain, NFTProxy: NFTProxyAddressSidechain, Trade: TradeAddressSidechain, LAND: LANDAddressSidechain, LANDProxy: LANDProxyAddressSidechain },
-    rinkeby: {Account: AccountAddress, FT: FTAddress, NFT: NFTAddress, FTProxy: FTProxyAddress, NFTProxy: NFTProxyAddress, Trade: TradeAddress, LAND: LANDAddress, LANDProxy: LANDProxyAddress },
-    rinkebysidechain: {Account: AccountAddressSidechain, FT: FTAddressSidechain, NFT: NFTAddressSidechain, FTProxy: FTProxyAddressSidechain, NFTProxy: NFTProxyAddressSidechain, Trade: TradeAddressSidechain, LAND: LANDAddressSidechain, LANDProxy: LANDProxyAddressSidechain },
   } = addresses;
   let {Account: AccountAbi, FT: FTAbi, FTProxy: FTProxyAbi, NFT: NFTAbi, NFTProxy: NFTProxyAbi, Trade: TradeAbi, LAND:LANDAbi, LANDProxy: LANDProxyAbi } = abis;
 

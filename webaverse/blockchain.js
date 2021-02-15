@@ -13,8 +13,8 @@ const getBlockchain = async () => {
    const abis = await fetch('https://contracts.webaverse.com/config/abi.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
 
   let {
-    rinkeby: {Account: AccountAddress, FT: FTAddress, NFT: NFTAddress, FTProxy: FTProxyAddress, NFTProxy: NFTProxyAddress, Trade: TradeAddress, LAND: LANDAddress, LANDProxy: LANDProxyAddress },
-    rinkebysidechain: {Account: AccountAddressSidechain, FT: FTAddressSidechain, NFT: NFTAddressSidechain, FTProxy: FTProxyAddressSidechain, NFTProxy: NFTProxyAddressSidechain, Trade: TradeAddressSidechain, LAND: LANDAddressSidechain, LANDProxy: LANDProxyAddressSidechain },
+    mainnet: {Account: AccountAddress, FT: FTAddress, NFT: NFTAddress, FTProxy: FTProxyAddress, NFTProxy: NFTProxyAddress, Trade: TradeAddress, LAND: LANDAddress, LANDProxy: LANDProxyAddress },
+    mainnetsidechain: {Account: AccountAddressSidechain, FT: FTAddressSidechain, NFT: NFTAddressSidechain, FTProxy: FTProxyAddressSidechain, NFTProxy: NFTProxyAddressSidechain, Trade: TradeAddressSidechain, LAND: LANDAddressSidechain, LANDProxy: LANDProxyAddressSidechain },
   } = addresses;
   let {Account: AccountAbi, FT: FTAbi, FTProxy: FTProxyAbi, NFT: NFTAbi, NFTProxy: NFTProxyAbi, Trade: TradeAbi, LAND:LANDAbi, LANDProxy: LANDProxyAbi } = abis;
 
@@ -22,7 +22,7 @@ const getBlockchain = async () => {
   if (typeof window !== 'undefined' && window.ethereum) {
     injectedWeb3 = new Web3(window.ethereum);
   } else {
-    injectedWeb3 = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/0bb8f708513d45a1881ec056c7296df9"));
+    injectedWeb3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/0bb8f708513d45a1881ec056c7296df9"));
   }
 
   const web3 = {
@@ -52,10 +52,10 @@ const getBlockchain = async () => {
     }
   }
 
-  if (typeof window !== 'undefined') {
-    _setMainChain(/^main\./.test(location.hostname));
-  } else {
+  if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
     _setMainChain(false);
+  } else {
+    _setMainChain(true);
   }
 
   const contracts = {

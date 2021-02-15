@@ -106,10 +106,10 @@ export default ({
       window.web3 = new Web3(window.ethereum);
       window.ethereum.enable();
       const network = await window.web3.eth.net.getNetworkType();
-      if (network === "rinkeby") {
+      if (network === "mainnet") {
         return true;
       } else {
-        alert("You need to be on the Rinkeby network.");
+        alert("You need to be on the Mainnet network.");
         return false;
       }
     }
@@ -302,15 +302,15 @@ export default ({
                             (<a target="_blank" href={external_url}><button className="assetDetailsButton">Visit on Street</button></a>),
                             landHash && (<a target="_blank" href={"https://app.webaverse.com/?t=" + landHash}><button className="assetDetailsButton">Open hologram</button></a>),
                             landHash && name && (<a target="_blank" href={"https://app.webaverse.com?u=" + landHash + "&r=" + name.replace(/\s+/g, '-')}><button className="assetDetailsButton">Enter parcel</button></a>),
-                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]) && (<a target="_blank" href={"https://testnets.opensea.io/assets/" + address["rinkeby"]["LAND"] + "/" + id}><button className="assetDetailsButton">View on OpenSea</button></a>),
+                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["mainnet"]["LANDProxy"]) && (<a target="_blank" href={"https://testnets.opensea.io/assets/" + address["mainnet"]["LAND"] + "/" + id}><button className="assetDetailsButton">View on OpenSea</button></a>),
                           ]}
                         </div>
                         )}
                     </div>),
                     (
-                      (stuck && ((!landMainnetAddress || landMainnetAddress.includes("0x0000000") || landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]))) )
+                      (stuck && ((!landMainnetAddress || landMainnetAddress.includes("0x0000000") || landMainnetAddress.includes(address["mainnet"]["LANDProxy"]))) )
                       || (userOwnsThisAsset)
-                      || (landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]))
+                      || (landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["mainnet"]["LANDProxy"]))
                     ) && (<div className="Accordion">
                         <div className="accordionTitle" onClick={() => setToggleEditOpen(!toggleEditOpen)}>
                             <span className="accordionTitleValue">Edit</span>
@@ -319,8 +319,8 @@ export default ({
                         {toggleEditOpen && (
                         <div className="accordionDropdown">
                           {[
-                            stuck && (!landMainnetAddress || landMainnetAddress.includes("0x0000000") || landMainnetAddress.includes(address["rinkeby"]["LANDProxy"])) && !userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleResubmit}>Resubmit Transfer</button>),
-                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["rinkeby"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From {otherNetworkName}</button>),
+                            stuck && (!landMainnetAddress || landMainnetAddress.includes("0x0000000") || landMainnetAddress.includes(address["mainnet"]["LANDProxy"])) && !userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleResubmit}>Resubmit Transfer</button>),
+                            landMainnetAddress && !landMainnetAddress.includes("0x0000000") && !landMainnetAddress.includes(address["mainnet"]["LANDProxy"]) && (<button className="assetDetailsButton" onClick={handleWithdraw}>Transfer From {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeposit}>Transfer To {otherNetworkName}</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleDeploy}>Deploy Content</button>),
                             userOwnsThisAsset && (<button className="assetDetailsButton" onClick={handleAddCollaborator}>Add Collaborator</button>),

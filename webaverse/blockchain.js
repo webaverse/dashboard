@@ -52,7 +52,7 @@ const getBlockchain = async () => {
     }
   }
 
-  if (typeof window !== 'undefined' && /^rinkeby\./.test(location.hostname)) {
+  if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
     _setMainChain(false);
   } else {
     _setMainChain(true);

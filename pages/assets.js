@@ -22,10 +22,11 @@ export default ({ data }) => {
   const fetchData = async () => {
     const newData = await getTokens(start, end);
 
-    if (newData[newData.length-1].minter.address === "0x0000000000000000000000000000000000000000") {
+    if (!newData[newData.length-1] || newData[newData.length-1].minter.address === "0x0000000000000000000000000000000000000000") {
       setHasMore(false);
       return;
     }
+
 
     setCardData(cardData.concat(newData));
     setStart(start+20);

@@ -1,0 +1,11 @@
+.dropLogo {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+.dropContainer {
+  min-width: 40%;
+  margin: 0 auto;
+  max-width: 60%;
+  text-align: left;
+}

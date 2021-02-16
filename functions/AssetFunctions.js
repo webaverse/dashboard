@@ -755,7 +755,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
         });
         handleSuccess(receipt, `/activity/${receipt.transactionHash}.NFT`);
       } catch (err) {
-        handleError(err);
+        handleError(JSON.stringify(err));
       }
 
       return;

@@ -174,8 +174,7 @@ export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSu
       await runMainnetTransaction(tokenName + 'Proxy', 'withdraw', to, tokenId, timestamp, r, s, v);
       return;
     } catch (err) {
-      console.log("mainnet transaction error", err);
-      handleError(err);
+      handleError(err.message);
       return err;
     }
   }
@@ -755,7 +754,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
         });
         handleSuccess(receipt, `/activity/${receipt.transactionHash}.NFT`);
       } catch (err) {
-        handleError(JSON.stringify(err));
+        handleError(err.message);
       }
 
       return;
@@ -800,7 +799,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
     try {
       const receipt = await runSidechainTransaction('NFTProxy', 'withdraw', myAddress, tokenId.v, hash.v, filename.v, description.v, timestamp, r, s, v);
     } catch (err) {
-      handleError(err);
+      handleError(err.message);
     }
 
     handleSuccess(receipt);

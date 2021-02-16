@@ -63,6 +63,10 @@ export default ({
 
   const getOtherData = () => {
     (async () => {
+      const isStuck = await getStuckAsset('NFT', id, globalState);
+      setStuck(isStuck);
+    })();
+    (async () => {
       const tokenOnMain = await isTokenOnMain(id);
       setTokenOnMain(tokenOnMain);
     })();
@@ -267,7 +271,6 @@ export default ({
     }
     else handleError("No address given.");
   }
-
 
   return (
     <>

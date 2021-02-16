@@ -36,6 +36,7 @@ const getBlockchain = async () => {
   let addressFront = null;
   let addressBack = null;
   let networkName = '';
+  let common = null;
   function _setMainChain(isMainChain) {
     if (isMainChain) {
       web3.front = web3.mainnet;
@@ -50,6 +51,15 @@ const getBlockchain = async () => {
       addressBack = addresses.rinkebysidechain;
       networkName = 'rinkeby';
     }
+    common = Common.forCustomChain(
+      'mainnet',
+      {
+        name: 'geth',
+        networkId: 1,
+        chainId: isMainChain ? 1338 : 1337,
+      },
+      'petersburg',
+    );
   }
 
   if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
@@ -82,7 +92,7 @@ const getBlockchain = async () => {
   };
 
   const getNetworkName = () => networkName;
-  const getOtherNetworkName = () => networkName === 'main' ? 'Mainnet' : 'Rinkeby';
+  const getOtherNetworkName = () => networkName === 'mainnet' ? 'Mainnet' : 'Rinkeby';
 
   const getMainnetAddress = async () => {
     if (typeof window !== "undefined" && window.ethereum) {
@@ -93,7 +103,7 @@ const getBlockchain = async () => {
     }
   };
 
-  return { web3, contracts, addresses, getNetworkName, getOtherNetworkName, getMainnetAddress };
+  return { web3, contracts, addresses, common, getNetworkName, getOtherNetworkName, getMainnetAddress, };
 }
 
 const transactionQueue = {
@@ -117,7 +127,7 @@ const transactionQueue = {
   },
 };
 const runSidechainTransaction = mnemonic => async (contractName, method, ...args) => {
-  const { web3, contracts } = await getBlockchain();
+  const { web3, contracts, common } = await getBlockchain();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
   const privateKey = wallet.getPrivateKeyString();
@@ -141,15 +151,7 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
     gasLimit: '0x' + new web3['back'].utils.BN(8000000).toString(16),
     data,
   }, {
-    common: Common.forCustomChain(
-      'mainnet',
-      {
-        name: 'geth',
-        networkId: 1,
-        chainId: 1337,
-      },
-      'petersburg',
-    ),
+    common,
   }).sign(privateKeyBytes);
   const rawTx = '0x' + tx.serialize().toString('hex');
   const receipt = await web3['back'].eth.sendSignedTransaction(rawTx);

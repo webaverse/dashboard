@@ -63,6 +63,12 @@ export default ({
 
   const getOtherData = () => {
     (async () => {
+      const isStuck = await getStuckAsset('NFT', id, globalState);
+      if (isStuck) {
+        setStuck(true);
+      }
+    })();
+    (async () => {
       const tokenOnMain = await isTokenOnMain(id);
       setTokenOnMain(tokenOnMain);
     })();
@@ -97,7 +103,7 @@ export default ({
       window.web3 = new Web3(window.ethereum);
       window.ethereum.enable();
       const network = await window.web3.eth.net.getNetworkType();
-      if (network === "mainnet") {
+      if (network === "main") {
         return true;
       } else {
         handleError("You need to be on the Mainnet network.");
@@ -267,7 +273,6 @@ export default ({
     }
     else handleError("No address given.");
   }
-
 
   return (
     <>

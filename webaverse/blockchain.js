@@ -82,7 +82,7 @@ const getBlockchain = async () => {
   };
 
   const getNetworkName = () => networkName;
-  const getOtherNetworkName = () => networkName === 'main' ? 'Mainnet' : 'Rinkeby';
+  const getOtherNetworkName = () => networkName === 'mainnet' ? 'Mainnet' : 'Rinkeby';
 
   const getMainnetAddress = async () => {
     if (typeof window !== "undefined" && window.ethereum) {

@@ -64,7 +64,9 @@ export default ({
   const getOtherData = () => {
     (async () => {
       const isStuck = await getStuckAsset('NFT', id, globalState);
-      setStuck(isStuck);
+      if (isStuck) {
+        setStuck(true);
+      }
     })();
     (async () => {
       const tokenOnMain = await isTokenOnMain(id);

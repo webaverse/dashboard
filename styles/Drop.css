@@ -1,11 +1,60 @@
-.dropLogo {
-  width: 100px;
-  height: 100px;
+.drop-container {
+  margin: 0 auto;
+  padding: 40px 0px;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.drop-container .drop-header {
+  font-weight: 400;
+}
+
+.drop-container .lightsaber-card {
+  max-width: 300px;
+  margin: 0 auto;
+  height: auto;
+}
+
+.drop-container .drop-info {
+  padding: 0px 40px;
   margin: 0 auto;
 }
-.dropContainer {
-  min-width: 40%;
-  margin: 0 auto;
-  max-width: 60%;
-  text-align: left;
+
+.drop-container .moreinfo-btn {
+  height: 40px;
+  width: 120px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: transparent;
+  color: white;
+  border: 2px white solid;
+  outline: none;
+}
+
+.drop-container .season-container {
+  padding: 20px;
+  width: 100%;
+}
+
+.drop-container .drop-list-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.drop-container .drop-card {
+  background: white;
+  width: 30%;
+  margin: 10px;
+  height: 350px;
+}
+
+.drop-container .drop-card.foggy {
+  background: grey;
+}
+
+.drop-container .season-header {
+  width: 100%;
+  font-size: 40px;
+  font-weight: 400;
 }

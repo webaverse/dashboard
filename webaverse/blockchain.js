@@ -13,8 +13,8 @@ const getBlockchain = async () => {
    const abis = await fetch('https://contracts.webaverse.com/config/abi.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
 
   let {
-    rinkeby: {Account: AccountAddress, FT: FTAddress, NFT: NFTAddress, FTProxy: FTProxyAddress, NFTProxy: NFTProxyAddress, Trade: TradeAddress, LAND: LANDAddress, LANDProxy: LANDProxyAddress },
-    rinkebysidechain: {Account: AccountAddressSidechain, FT: FTAddressSidechain, NFT: NFTAddressSidechain, FTProxy: FTProxyAddressSidechain, NFTProxy: NFTProxyAddressSidechain, Trade: TradeAddressSidechain, LAND: LANDAddressSidechain, LANDProxy: LANDProxyAddressSidechain },
+    mainnet: {Account: AccountAddress, FT: FTAddress, NFT: NFTAddress, FTProxy: FTProxyAddress, NFTProxy: NFTProxyAddress, Trade: TradeAddress, LAND: LANDAddress, LANDProxy: LANDProxyAddress },
+    mainnetsidechain: {Account: AccountAddressSidechain, FT: FTAddressSidechain, NFT: NFTAddressSidechain, FTProxy: FTProxyAddressSidechain, NFTProxy: NFTProxyAddressSidechain, Trade: TradeAddressSidechain, LAND: LANDAddressSidechain, LANDProxy: LANDProxyAddressSidechain },
   } = addresses;
   let {Account: AccountAbi, FT: FTAbi, FTProxy: FTProxyAbi, NFT: NFTAbi, NFTProxy: NFTProxyAbi, Trade: TradeAbi, LAND:LANDAbi, LANDProxy: LANDProxyAbi } = abis;
 
@@ -22,7 +22,7 @@ const getBlockchain = async () => {
   if (typeof window !== 'undefined' && window.ethereum) {
     injectedWeb3 = new Web3(window.ethereum);
   } else {
-    injectedWeb3 = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/0bb8f708513d45a1881ec056c7296df9"));
+    injectedWeb3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/0bb8f708513d45a1881ec056c7296df9"));
   }
 
   const web3 = {
@@ -36,6 +36,7 @@ const getBlockchain = async () => {
   let addressFront = null;
   let addressBack = null;
   let networkName = '';
+  let common = null;
   function _setMainChain(isMainChain) {
     if (isMainChain) {
       web3.front = web3.mainnet;
@@ -50,12 +51,21 @@ const getBlockchain = async () => {
       addressBack = addresses.rinkebysidechain;
       networkName = 'rinkeby';
     }
+    common = Common.forCustomChain(
+      'mainnet',
+      {
+        name: 'geth',
+        networkId: 1,
+        chainId: isMainChain ? 1338 : 1337,
+      },
+      'petersburg',
+    );
   }
 
-  if (typeof window !== 'undefined') {
-    _setMainChain(/^main\./.test(location.hostname));
-  } else {
+  if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
     _setMainChain(false);
+  } else {
+    _setMainChain(true);
   }
 
   const contracts = {
@@ -93,7 +103,7 @@ const getBlockchain = async () => {
     }
   };
 
-  return { web3, contracts, addresses, getNetworkName, getOtherNetworkName, getMainnetAddress };
+  return { web3, contracts, addresses, common, getNetworkName, getOtherNetworkName, getMainnetAddress, };
 }
 
 const transactionQueue = {
@@ -117,7 +127,7 @@ const transactionQueue = {
   },
 };
 const runSidechainTransaction = mnemonic => async (contractName, method, ...args) => {
-  const { web3, contracts } = await getBlockchain();
+  const { web3, contracts, common } = await getBlockchain();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
   const privateKey = wallet.getPrivateKeyString();
@@ -141,15 +151,7 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
     gasLimit: '0x' + new web3['back'].utils.BN(8000000).toString(16),
     data,
   }, {
-    common: Common.forCustomChain(
-      'mainnet',
-      {
-        name: 'geth',
-        networkId: 1,
-        chainId: 1337,
-      },
-      'petersburg',
-    ),
+    common,
   }).sign(privateKeyBytes);
   const rawTx = '0x' + tx.serialize().toString('hex');
   const receipt = await web3['back'].eth.sendSignedTransaction(rawTx);

@@ -62,22 +62,3 @@ export default () => {
     </>
   )
 }
-
-
-export async function getServerSideProps(context) {
-  const tokens1 = await getTokens(1, 100, context.req.headers.host);
-  const tokens2 = await getTokens(100, 200, context.req.headers.host);
-  const tokens = tokens1.concat(tokens2);
-
-  const avatars = tokens.filter(o => o.properties.ext.toLowerCase().includes("vrm"));
-  const art = tokens.filter(o => o.properties.ext.toLowerCase().includes("png"));
-  const models = tokens.filter(o => o.properties.ext.toLowerCase().includes("glb"));
-
-  return { props: { 
-    data: {
-      avatars,
-      art,
-      models
-    }
-  } }
-}

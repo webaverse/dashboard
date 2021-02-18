@@ -30,7 +30,7 @@ export default () => {
     <>
       <Head>
         <title>Webaverse</title>
-        <meta name="description" content={"An open virtual world built with existing communities.."} />
+        <meta name="description" content={"The virtual world built with NFTs."} />
         <meta property="og:title" content={"Webaverse"} />
         <meta property="og:image" content={"https://webaverse.com/webaverse.png"} />
         <meta name="theme-color" content="#c4005d" />
@@ -39,8 +39,8 @@ export default () => {
       <Hero
         heroBg="/hero.gif"
         title="Webaverse"
-        subtitle="An open virtual world built with existing communities."
-        callToAction="Explore"
+        subtitle="The virtual world built with NFTs"
+        callToAction="Play"
         ctaUrl="https://app.webaverse.com"
       />
       <div className="container">

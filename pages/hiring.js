@@ -47,7 +47,7 @@ export default function Hiring() {
             <li><Link href="/hiring/infrastructureengineer"><a>Infrastructure Engineer</a></Link></li>
             <li><Link href="/hiring/shaderartist"><a>Shader Artist</a></Link></li>
             <li><Link href="/hiring/avatarartist"><a>Avatar Artist</a></Link></li>
-            <li><Link href="/hiring/worldartist"><a>World Artist</a></Link></li>
+            <li><Link href="/hiring/environmentartist"><a>Environment Artist</a></Link></li>
             <li><Link href="/hiring/artist"><a>Artist</a></Link></li>
             <li><Link href="/hiring/tester"><a>Tester</a></Link></li>
           </ul>

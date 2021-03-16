@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { Container, Row, Col } from 'react-grid-system';
 import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
-import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
+import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance, getToken } from "../../functions/UIStateFunctions.js";
 import { removeMainnetAddress, addMainnetAddress, resubmitAsset, getStuckAsset, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
@@ -26,7 +26,42 @@ export default ({ data }) => {
   const [store, setStore] = useState(null);
   const [selectedView, setSelectedView] = useState("inventory");
   const [loading, setLoading] = useState(false);
-  const [stuck, setStuck] = useState(false);
+  const [stuckId, setStuckId] = useState(null);
+  const [stuckInventory, setStuckInventory] = useState(null)
+
+  useEffect(() => {
+    if (globalState.loginToken) {
+        getOtherData();
+    }
+}, [globalState]);
+
+const getOtherData = () => {
+    (async () => {
+        const isStuck = await getStuckAsset("NFT", id, globalState);
+        console.log('here')
+        console.log(isStuck)
+        if (isStuck) {
+            setStuckId(isStuck.returnValues[1]);
+        }
+    })();
+};
+
+useEffect(()=>{
+  if (stuckId){
+    (async () => {
+      const data = await getToken(stuckId);
+      setStuckInventory(data)
+    })();
+  }
+},[stuckId])
+
+useEffect(()=>{
+  if (stuckInventory){
+    let arr = [...inventory]
+    arr.push(stuckInventory)
+    setInventory(arr)
+  }
+},[stuckInventory])
 
   useEffect(() => {
     if (id && !profile || !balance || !inventory || !store || !loadout) {
@@ -41,6 +76,8 @@ export default ({ data }) => {
     })();
     (async () => {
       const inventory = await getInventoryForCreator(id);
+      console.log('here inventory')
+      console.log(inventory)
       if (inventory.length > 0) {
         setInventory(inventory);
       } else {

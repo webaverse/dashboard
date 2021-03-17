@@ -3,11 +3,9 @@ import React, { useState, useEffect } from 'react'
 import Head from 'next/head';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
-import { Container, Row, Col } from 'react-grid-system';
-import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance, getToken } from "../../functions/UIStateFunctions.js";
-import { removeMainnetAddress, addMainnetAddress, resubmitAsset, getStuckAsset, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
+import { removeMainnetAddress, addMainnetAddress, resubmitAsset, getStuckAssets, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
@@ -15,7 +13,6 @@ import ProfileHeader from "../../components/Profile";
 
 export default ({ data }) => {
   const { addToast } = useToasts();
-  const history = useHistory();
   const router = useRouter()
   const { id } = router.query;
   const { globalState, setGlobalState } = useAppContext();
@@ -26,7 +23,7 @@ export default ({ data }) => {
   const [store, setStore] = useState(null);
   const [selectedView, setSelectedView] = useState("inventory");
   const [loading, setLoading] = useState(false);
-  const [stuckId, setStuckId] = useState(null);
+  const [stuckIds, setStuckIds] = useState([]);
   const [stuckInventory, setStuckInventory] = useState(null)
 
   useEffect(() => {
@@ -37,28 +34,37 @@ export default ({ data }) => {
 
 const getOtherData = () => {
     (async () => {
-        const isStuck = await getStuckAsset("NFT", id, globalState);
-        console.log('here')
-        console.log(isStuck)
+        const isStuck = await getStuckAssets("NFT", id, globalState);
+
         if (isStuck) {
-            setStuckId(isStuck.returnValues[1]);
+          let arr = []
+          isStuck.map(asset => {
+            arr.push(parseInt(asset.returnValues[1]))
+          })
+          setStuckIds(arr);
         }
     })();
 };
 
 useEffect(()=>{
-  if (stuckId){
+  if (stuckIds){
     (async () => {
-      const data = await getToken(stuckId);
-      setStuckInventory(data)
+      let arr = []
+      await Promise.all(stuckIds.map(async id => {
+        const data = await getToken(id);
+        arr.push(data)
+      }))
+      setStuckInventory(arr)
     })();
   }
-},[stuckId])
+},[stuckIds])
 
 useEffect(()=>{
-  if (stuckInventory){
+  if (stuckInventory && inventory){
     let arr = [...inventory]
-    arr.push(stuckInventory)
+    if (stuckInventory.length > 0) {
+      arr.push(...stuckInventory)
+    }
     setInventory(arr)
   }
 },[stuckInventory])
@@ -76,8 +82,6 @@ useEffect(()=>{
     })();
     (async () => {
       const inventory = await getInventoryForCreator(id);
-      console.log('here inventory')
-      console.log(inventory)
       if (inventory.length > 0) {
         setInventory(inventory);
       } else {

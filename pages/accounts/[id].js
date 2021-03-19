@@ -37,6 +37,7 @@ const getOtherData = () => {
         const isStuck = await getStuckAssets("NFT", id, globalState);
 
         if (isStuck) {
+          // get stuck asset IDs
           let arr = []
           isStuck.map(asset => {
             arr.push(parseInt(asset.returnValues[1]))
@@ -47,6 +48,7 @@ const getOtherData = () => {
 };
 
 useEffect(()=>{
+  // request the stuck assets' data from the blockchain & store them in stuckInventory
   if (stuckIds){
     (async () => {
       let arr = []
@@ -60,6 +62,7 @@ useEffect(()=>{
 },[stuckIds])
 
 useEffect(()=>{
+  // append the stuckInventory assets to the inventory
   if (stuckInventory && inventory){
     let arr = [...inventory]
     if (stuckInventory.length > 0) {

@@ -219,7 +219,7 @@ export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSu
   to = to.toLowerCase();
   tokenId = parseInt(tokenId, 10);
 
-  if (to === globalState.address) {
+  if (to === returnValues[0].toLowerCase()) {
     const networkName = getNetworkName();
     const fullChainName = networkName + 'sidechain';
 

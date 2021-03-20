@@ -11,12 +11,13 @@ export default function Hiring() {
           <p>
             We're building the actual metaverse on the web. We're VC funded and actively hiring.
             The tech is 7 years in the making, and it's open source.
-            You can log in and chop down trees with your laser sword.
+            You can log in and chop down you're friend's garden with your laser sword.
             You can upload your avatar to Discord and dance your visemes off in the VR mirror.
             You can use the Blender plugin to export a digital pet and feed it your cryptoart.
             You can walk from Cryptovoxels to Decentraland and join a friend with a link.
             None of these are the metaverse. But when you get a group of people together to do this, it might turn into one.
-            That's what we're doing and you should join us.
+            Webaverse is funded through cryptoart that becomes a permanent fixure of the world we're building.
+            If you feel the same, you should join us.
             Q: Are you destroying the environment with NFTs?
             A: No, we run a fast ETH sidechain. It's basically a database you can replicate with ETH tools, free for you and cheap for us. We remain compatible with ETH for the people who don't care about the environment (fair enough).
             <br />

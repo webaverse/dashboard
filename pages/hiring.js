@@ -19,7 +19,7 @@ export default function Hiring() {
             Webaverse is funded through cryptoart that becomes a permanent fixure of the world we're building.
             If you feel the same, you should join us.
             Q: Are you destroying the environment with NFTs?
-            A: No, we run a fast ETH sidechain. It's basically a database you can replicate with ETH tools, free for you and cheap for us. We remain compatible with ETH for the people who don't care about the environment (fair enough).
+            A: No, we run a custom ETH sidechain. It's basically a database you can replicate with ETH tools, free for you and cheap for us. We remain compatible with ETH for the people who don't care about the environment (fair enough).
             <br />
           </p>
         </div>

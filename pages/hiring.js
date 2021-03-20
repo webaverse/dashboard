@@ -9,8 +9,10 @@ export default function Hiring() {
         <div>
           <h2>Why Webaverse?</h2>
           <p>
-            After 7 years of metaverse experiments, we have all of the key pieces in place to build the metaverse.
-            For many years, there has been a value void for creators creating amazing virtual world content.
+            We're building the actual metaverse on the web.
+            It is based on the concept of owning digital assets.
+            You can log in and have fun with NFTs but that's not the metaverse.
+            It's the metaverse because you can load assets from NFt contracts.
             <br />
             <br />
             We are solving this by riding the growing wave of NFT and cryptoart, synthesizing a new asset class of 3d items that live across virtual worlds.

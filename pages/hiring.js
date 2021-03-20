@@ -18,15 +18,18 @@ export default function Hiring() {
             None of these are the metaverse. But when you get a group of people together to do this, it might turn into one.
             Webaverse is funded through cryptoart that becomes a permanent fixure of the world we're building.
             If you feel the same, you should join us.
-            Q: Are you destroying the environment with NFTs?
-            A: No, we run a custom ETH sidechain. It's basically a database you can replicate with ETH tools, free for you and cheap for us. We remain compatible with ETH for the people who don't care about the environment (fair enough).
             <br />
           </p>
         </div>
         <div>
+          <h2>Environment FAQ</h2>
+          <p>
+            Q: Are you destroying the environment with NFTs?
+            A: No, we run an ETH sidechain. It's basically a database you can replicate with ETH tools, free for you and cheap for us. We remain compatible with ETH for the people who don't care about the environment (fair enough).
+          </p>
           <h2>What is Webaverse?</h2>
           <p>
-            Interactive items that live in a virtual world, built on open standards, that you truly own, with an engaging game-like experience.
+            Interactive items that live in a virtual world, built on open standards, that you truly own, with a fun game-like experience.
             <br />
             <br />
             Webaverse is not only a foundation for an open, functional metaverse economy. We are looking at the best ideas from the most popular games right now so that it is an experience that is fun and one that you will spend a lot of time in.
@@ -42,12 +45,12 @@ export default function Hiring() {
             You will be working on the forefront of digital culture and science fiction made real.
             <br />
             <br />
-            This is a full time position. We offer stock options and benefits.
+            These are full time positions. We offer stock options.
           </p>
         </div>
         <div>
           <h2>Roles</h2>
-          <p>If a role interests you, just click to learn more.</p>
+          <p>Here are roles we need filled. The ideal candidate has unique cross-cutting experience, like we do.</p>
           <ul>
             <li><Link href="/hiring/3dengineer"><a>3D Engineer</a></Link></li>
             <li><Link href="/hiring/blockchainengineer"><a>Blockchain Engineer</a></Link></li>

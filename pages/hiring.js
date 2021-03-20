@@ -45,7 +45,7 @@ export default function Hiring() {
             You will be working on the forefront of digital culture and science fiction made real.
             <br />
             <br />
-            These are full time positions. We offer stock options.
+            These are full time positions. We offer stock.
           </p>
         </div>
         <div>

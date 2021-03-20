@@ -9,15 +9,15 @@ export default function Hiring() {
         <div>
           <h2>Why Webaverse?</h2>
           <p>
-            We're building the actual metaverse on the web. We're VC funded and actively hiring.
-            The tech is 7 years in the making, and it's open source.
-            You can log in and chop down you're friend's garden with your laser sword.
-            You can upload your avatar to Discord and dance your visemes off in the VR mirror.
-            You can use the Blender plugin to export a digital pet and feed it your cryptoart.
-            You can walk from Cryptovoxels to Decentraland and join a friend with a link.
-            None of these are the metaverse. But when you get a group of people together to do this, it might turn into one.
-            Webaverse is funded through cryptoart that becomes a permanent fixure of the world we're building.
-            If you feel the same, you should join us.
+            We're building the actual metaverse on the web. We're VC funded and actively hiring.<br/>
+            The tech is 7 years in the making, and it's open source.<br/>
+            You can log in and chop down you're friend's garden with your laser sword.<br/>
+            You can upload your avatar to Discord and dance your visemes off in the VR mirror.<br/>
+            You can use the Blender plugin to export a digital pet and feed it your cryptoart.<br/>
+            You can walk from Cryptovoxels to Decentraland and join a friend with a link.<br/>
+            None of these are the metaverse. But when you get a group of people together to do this, it might turn into one.<br/>
+            Webaverse is funded through cryptoart that becomes a permanent fixure of the world we're building.<br/>
+            If you feel the same, you should join us.<br/>
             <br />
           </p>
         </div>
@@ -45,21 +45,21 @@ export default function Hiring() {
             You will be working on the forefront of digital culture and science fiction made real.
             <br />
             <br />
-            These are full time positions. We offer stock.
+            These are full time positions. You are early -- we offer stock.
           </p>
         </div>
         <div>
           <h2>Roles</h2>
           <p>Here are roles we need filled. The ideal candidate has unique cross-cutting experience, like we do.</p>
           <ul>
-            <li><Link href="/hiring/3dengineer"><a>3D Engineer</a></Link></li>
+            <li><Link href="/hiring/gamengineer"><a>WebGL Game Engineer</a></Link></li>
+            <li><Link href="/hiring/frontendengineer"><a>Frontend engineer (React)</a></Link></li>
+            <li><Link href="/hiring/3dartist"><a>3D Artist (Blender)</a></Link></li>
+            <li><Link href="/hiring/designer"><a>Brand Designer </a></Link></li>
             <li><Link href="/hiring/blockchainengineer"><a>Blockchain Engineer</a></Link></li>
             <li><Link href="/hiring/infrastructureengineer"><a>Infrastructure Engineer</a></Link></li>
-            <li><Link href="/hiring/shaderartist"><a>Shader Artist</a></Link></li>
             <li><Link href="/hiring/avatarartist"><a>Avatar Artist</a></Link></li>
-            <li><Link href="/hiring/environmentartist"><a>Environment Artist</a></Link></li>
-            <li><Link href="/hiring/artist"><a>Artist</a></Link></li>
-            <li><Link href="/hiring/tester"><a>Tester</a></Link></li>
+            <li><Link href="/hiring/userexperience"><a>User Experience Lead</a></Link></li>
           </ul>
         </div>
         <div>

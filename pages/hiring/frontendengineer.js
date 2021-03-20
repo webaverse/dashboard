@@ -5,10 +5,12 @@ export default function Hiring() {
       <img className="hiringLogo" src="/webaverse.png" />
       <div className="hiringContainer">
         <div>
-          <h2>WebGL Game Engineer</h2>
+          <h2>Frontend Engineer (React)</h2>
           <p>
-            We are looking for a game developer / web engineer to help us build out user experiences and features.
-            These include wearables, pets, weapons and game elements, support for mobile devices, PVP zones and many, many other features that users will love.
+            We are looking for a frontend engineer to own our React frontend.
+            Our web3 dapp acts as a metaverse hub, representing digital items as trading cards owned by avatars.
+            The app interfaces with a blockchain, preview servers, IPFS, world servers, and other backend apis.
+            We need a strong engineer to build, optimize, and maintain the app.
           </p>
           <h3>Personality requirements</h3>
           <p>
@@ -23,18 +25,14 @@ export default function Hiring() {
           </p>
           <h3>Requirements</h3>
           <ul>
-            <li>THREE.js</li>
-            <li>WebGL</li>
+            <li>React</li>
             <li>JavaScript</li>
-            <li>WASM</li>
-            <li>WebRTC</li>
-            <li>React / Mithril</li>
-            <li>Kinematics systems</li>
-            <li>ECS and other game engine paradigms</li>
-            <li>Strong browser knowledge</li>
-            <li>Understanding of graphics pipeline</li>
-            <li>GLSL/shaders</li>
-            <li>An taste for fun</li>
+            <li>Next.js</li>
+            <li>Build digital object creation interfaces (pets, wearables, avatars, consumables, scenes)</li>
+            <li>All of the web networking APIs</li>
+            <li>Generate, read, and debug performance profiles</li>
+            <li>Reach through to the backend if needed</li>
+            <li>A taste for fun</li>
             <li>An eye for design</li>
             <li></li>
           </ul>

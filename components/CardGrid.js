@@ -17,6 +17,7 @@ const CardGrid = ({ data, cardSize }) => {
                                     key={asset.id}
                                     id={asset.id}
                                     isMainnet={asset.isMainnet}
+                                    isMatic={asset.isMatic}
                                     assetName={asset.name}
                                     description={asset.description}
                                     image={asset.image}

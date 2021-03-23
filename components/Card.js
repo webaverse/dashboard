@@ -14,6 +14,7 @@ const Card = ({
     minterUsername,
     cardSize,
     isMainnet,
+    isMatic,
     glow,
     imageView,
 }) => {
@@ -28,6 +29,8 @@ const Card = ({
     let networkIcon;
     if (isMainnet) {
         networkIcon = "/icon-ethereum.svg";
+    } else if(isMatic) {
+        networkIcon = "/icon-matic.svg";
     } else {
         networkIcon = "/icon-webaverse.svg";
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import CardDetails from "../../components/CardDetails";
@@ -28,7 +28,7 @@ export default ({ data }) => {
   }
 
   return (
-    <>
+    <Fragment>
       <Head>
         <title>{token.name} | Webaverse</title>
         <meta name="description" content={token.description + " | Webaverse"} />
@@ -60,6 +60,7 @@ export default ({ data }) => {
           <CardDetails
              id={token.id}
              isMainnet={token.isMainnet}
+             isMatic={token.isMatic}
              key={token.id}
              name={token.name}
              description={token.description}
@@ -86,7 +87,7 @@ export default ({ data }) => {
       :
         <Loader loading={true} />
       }
-    </>
+    </Fragment>
   )
 }
 

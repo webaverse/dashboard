@@ -52,10 +52,10 @@ export default function Hiring() {
           <h2>Roles</h2>
           <p>Here are roles we need filled. The ideal candidate has unique cross-cutting experience, like we do.</p>
           <ul>
-            <li><Link href="/hiring/gamengineer"><a>WebGL Game Engineer</a></Link></li>
+            <li><Link href="/hiring/gameengineer"><a>WebGL Game Engineer</a></Link></li>
             <li><Link href="/hiring/frontendengineer"><a>Frontend engineer (React)</a></Link></li>
             <li><Link href="/hiring/3dartist"><a>3D Artist (Blender)</a></Link></li>
-            <li><Link href="/hiring/designer"><a>Brand Designer </a></Link></li>
+            <li><Link href="/hiring/designer"><a>Brand Designer</a></Link></li>
             <li><Link href="/hiring/blockchainengineer"><a>Blockchain Engineer</a></Link></li>
             <li><Link href="/hiring/infrastructureengineer"><a>Infrastructure Engineer</a></Link></li>
             <li><Link href="/hiring/avatarartist"><a>Avatar Artist</a></Link></li>

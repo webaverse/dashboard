@@ -34,7 +34,6 @@ export default function Hiring() {
             <li>Reach through to the backend if needed</li>
             <li>A taste for fun</li>
             <li>An eye for design</li>
-            <li></li>
           </ul>
         </div>
         <div>

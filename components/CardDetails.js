@@ -42,7 +42,7 @@ const CardDetails = ({
   minterAddress,
   minterUsername,
   isMainnet,
-  isMatic,
+  isPolygon,
   buyPrice,
   storeId,
   globalState,
@@ -82,6 +82,7 @@ const CardDetails = ({
       const networkName = getNetworkName();
       setNetworkName(networkName);
 
+      // TOOD
       const res = await fetch(`${networkName !== "main" ? `https://mainnet-tokens.webaverse.com/${id}` : `https://mainnet-tokens.webaverse.com/${id}`}`);
     
       const token = await res.json();

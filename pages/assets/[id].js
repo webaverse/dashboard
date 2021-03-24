@@ -60,7 +60,7 @@ export default ({ data }) => {
           <CardDetails
              id={token.id}
              isMainnet={token.isMainnet}
-             isMatic={token.isMatic}
+             isPolygon={token.isPolygon}
              key={token.id}
              name={token.name}
              description={token.description}

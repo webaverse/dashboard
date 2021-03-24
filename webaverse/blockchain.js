@@ -59,7 +59,7 @@ const getBlockchain = async () => {
     {
       name: 'geth',
       networkId: 1,
-      chainId: !process.env.development ? 1338 : 1337,
+      chainId: isMainChain ? 1338 : 1337,
     },
     'petersburg',
   );

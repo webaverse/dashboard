@@ -5,10 +5,10 @@ export default function Hiring() {
       <img className="hiringLogo" src="/webaverse.png" />
       <div className="hiringContainer">
         <div>
-          <h2>Blockchain Engineer</h2>
+          <h2>WebGL Game Engineer</h2>
           <p>
-            We are looking for a blockchain engineer to develop and maintain our infrastructure for digital items (NFTs).
-            We primarily run on an Ethereum sidechain, but we interface with other chains as well.
+            We are looking for a game developer / web engineer to help us build out user experiences and features.
+            These include wearables, pets, weapons and game elements, support for mobile devices, PVP zones and many, many other features that users will love.
           </p>
           <h3>Personality requirements</h3>
           <p>
@@ -21,18 +21,22 @@ export default function Hiring() {
             Capable of delivering and meeting deadlines without supervision
             Willing to embed with team and build long-term products and relationships
           </p>
-          <h2>Responsibilities</h2>
+          <h3>Requirements</h3>
           <ul>
-            <li>Debugging ETH endpoints</li>
-            <li>Writing and integrating new Solidity contracts</li>
-            <li>Deploy contracts</li>
-            <li>Development of cross-chain signatures</li>
-            <li>Develop and integrate oracles</li>
-            <li>Security auditing</li>
-            <li>Maintain blockchain-enabled apps, such as frontend clients and bots</li>
-            <li>Writing tooling for blockhain insights</li>
-            <li>Maintain<code>geth</code> nodes</li>
-            <li>Debug EVM from chain data</li>
+            <li>THREE.js</li>
+            <li>WebGL</li>
+            <li>JavaScript</li>
+            <li>WASM</li>
+            <li>WebRTC</li>
+            <li>React / Mithril</li>
+            <li>Kinematics systems</li>
+            <li>ECS and other game engine paradigms</li>
+            <li>Strong browser knowledge</li>
+            <li>Understanding of graphics pipeline</li>
+            <li>GLSL/shaders</li>
+            <li>An taste for fun</li>
+            <li>An eye for design</li>
+            <li></li>
           </ul>
         </div>
         <div>

@@ -5,10 +5,12 @@ export default function Hiring() {
       <img className="hiringLogo" src="/webaverse.png" />
       <div className="hiringContainer">
         <div>
-          <h2>Blockchain Engineer</h2>
+          <h2>Frontend Engineer (React)</h2>
           <p>
-            We are looking for a blockchain engineer to develop and maintain our infrastructure for digital items (NFTs).
-            We primarily run on an Ethereum sidechain, but we interface with other chains as well.
+            We are looking for a frontend engineer to own our React frontend.
+            Our web3 dapp acts as a metaverse hub, representing digital items as trading cards owned by avatars.
+            The app interfaces with a blockchain, preview servers, IPFS, world servers, and other backend apis.
+            We need a strong engineer to build, optimize, and maintain the app.
           </p>
           <h3>Personality requirements</h3>
           <p>
@@ -21,18 +23,17 @@ export default function Hiring() {
             Capable of delivering and meeting deadlines without supervision
             Willing to embed with team and build long-term products and relationships
           </p>
-          <h2>Responsibilities</h2>
+          <h3>Requirements</h3>
           <ul>
-            <li>Debugging ETH endpoints</li>
-            <li>Writing and integrating new Solidity contracts</li>
-            <li>Deploy contracts</li>
-            <li>Development of cross-chain signatures</li>
-            <li>Develop and integrate oracles</li>
-            <li>Security auditing</li>
-            <li>Maintain blockchain-enabled apps, such as frontend clients and bots</li>
-            <li>Writing tooling for blockhain insights</li>
-            <li>Maintain<code>geth</code> nodes</li>
-            <li>Debug EVM from chain data</li>
+            <li>React</li>
+            <li>JavaScript</li>
+            <li>Next.js</li>
+            <li>Build digital object creation interfaces (pets, wearables, avatars, consumables, scenes)</li>
+            <li>All of the web networking APIs</li>
+            <li>Generate, read, and debug performance profiles</li>
+            <li>Reach through to the backend if needed</li>
+            <li>A taste for fun</li>
+            <li>An eye for design</li>
           </ul>
         </div>
         <div>

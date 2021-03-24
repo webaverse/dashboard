@@ -5,7 +5,7 @@ import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import Loader from "../components/Loader";
-import Hiring from "../pages/Hiring";
+import Hiring from "../pages/hiring";
 
 export default () => {
     return <Hiring/>

@@ -55,8 +55,6 @@ const CardDetails = ({
     assetType,
     getData,
 }) => {
-    console.log('got unlockable', unlockable);
-  
     const { addToast } = useToasts();
 
     const [toggleViewOpen, setToggleViewOpen] = useState(true);

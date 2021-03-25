@@ -543,8 +543,7 @@ const CardDetails = ({
                                                                     }
                                                                 >
                                                                     <button className="assetDetailsButton">
-                                                                        Try in
-                                                                        Webaverse
+                                                                        Try in Webaverse
                                                                     </button>
                                                                 </Link>,
                                                             ]}

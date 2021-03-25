@@ -72,6 +72,7 @@ const CardDetails = ({
     const [web3, setWeb3] = useState(null);
     const [contracts, setContracts] = useState(null);
     const [stuck, setStuck] = useState(false);
+    const [unlockableSpec, setUnlockableSpec] = useState(null);
 
     useEffect(() => {
         if (globalState.loginToken) {
@@ -410,7 +411,7 @@ const CardDetails = ({
         } else handleError("No address given.");
     };
     const _unlock = async e => {
-      console.log('got unlock event', e);
+      // console.log('got unlock event', e);
 
       // const ethereumSpec = await window.ethereum.enable();
       // const [address] = ethereumSpec;
@@ -459,10 +460,6 @@ const CardDetails = ({
         return j;
       };
       
-      const allTokens = [{
-        id,
-        unlockable,
-      }];
       const [
         mainnetSignature,
         sidechainSignature,
@@ -470,22 +467,12 @@ const CardDetails = ({
         _getMainnetSignature(),
         _getSidechainSignature(),
       ]);
-      for (let i = 0; i < allTokens.length; i++) {
-        const token = allTokens[i];
-        const {id, unlockable} = token;
-
-        const {ok, result} = await _getUnlockable([
-          mainnetSignature,
-          sidechainSignature,
-        ], id);
-        if (ok) {
-          token.unlocked = result;
-        } else {
-          token.unlocked = null;
-        }
-      }
-      
-      console.log('get all tokens', allTokens);
+      const spec = await _getUnlockable([
+        mainnetSignature,
+        sidechainSignature,
+      ], id);
+      // console.log('get all tokens', spec);
+      setUnlockableSpec(spec);
       
       /* unlocksEl.innerHTML = allTokens.map(t => `<li class=token>
         ${t.id} - ${t.properties.hash} - ${t.properties.name} - ${t.properties.ext} - ${t.properties.unlockable} = ${t.unlocked}
@@ -641,12 +628,20 @@ const CardDetails = ({
                                                                         Try in Webaverse
                                                                     </button>
                                                                 </Link>,
-                                                                <button
-                                                                  className="assetDetailsButton"
-                                                                  onClick={e => {_unlock(e);}}
-                                                                >
-                                                                    Unlock content
-                                                                </button>,
+                                                                unlockableSpec ? (
+                                                                  <div
+                                                                    className="assetDetailsButton"
+                                                                  >
+                                                                    {unlockableSpec.ok ? unlockableSpec.result : 'Could not unlock :('}
+                                                                  </div>
+                                                                ) : (
+                                                                  <button
+                                                                    className="assetDetailsButton"
+                                                                    onClick={e => {_unlock(e);}}
+                                                                  >
+                                                                      Unlock content
+                                                                  </button>
+                                                                ),
                                                             ]}
                                                         </div>
                                                     )}

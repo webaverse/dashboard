@@ -23,6 +23,11 @@ import {
 } from "../functions/AssetFunctions.js";
 import { isTokenOnMain, getStores } from "../functions/UIStateFunctions.js";
 import Loader from "./Loader";
+import bip39 from '../libs/bip39.js';
+import hdkeySpec from '../libs/hdkey.js';
+const hdkey = hdkeySpec.default;
+
+const m = "Proof of address.";
 
 const CardDetails = ({
     id,
@@ -32,6 +37,7 @@ const CardDetails = ({
     hash,
     animation_url,
     ext,
+    unlockable,
     totalInEdition,
     numberInEdition,
     totalSupply,
@@ -49,12 +55,15 @@ const CardDetails = ({
     assetType,
     getData,
 }) => {
+    console.log('got unlockable', unlockable);
+  
     const { addToast } = useToasts();
 
     const [toggleViewOpen, setToggleViewOpen] = useState(true);
     const [toggleEditOpen, setToggleEditOpen] = useState(false);
     const [toggleAddOpen, setToggleAddOpen] = useState(false);
     const [toggleTradeOpen, setToggleTradeOpen] = useState(false);
+    const [unlock, setUnlock] = useState(null);
 
     const [loading, setLoading] = useState(false);
     const [imageView, setImageView] = useState("2d");
@@ -62,6 +71,8 @@ const CardDetails = ({
     const [tokenOnMain, setTokenOnMain] = useState(false);
     const [mainnetAddress, setMainnetAddress] = useState(null);
     const [otherNetworkName, setOtherNetworkName] = useState(null);
+    const [web3, setWeb3] = useState(null);
+    const [contracts, setContracts] = useState(null);
     const [stuck, setStuck] = useState(false);
 
     useEffect(() => {
@@ -83,8 +94,10 @@ const CardDetails = ({
             setTokenOnMain(tokenOnMain);
         })();
         (async () => {
-            const { getOtherNetworkName } = await getBlockchain();
+            const { web3, getOtherNetworkName, contracts } = await getBlockchain();
+            setWeb3(web3);
             setOtherNetworkName(getOtherNetworkName());
+            setContracts(contracts);
         })();
     };
 
@@ -113,9 +126,9 @@ const CardDetails = ({
 
     const ethEnabled = async () => {
         if (window.ethereum) {
-            window.web3 = new Web3(window.ethereum);
+            window.mainWeb3 = new Web3(window.ethereum);
             window.ethereum.enable();
-            const network = await window.web3.eth.net.getNetworkType();
+            const network = await window.mainWeb3.eth.net.getNetworkType();
             if (network === "main") {
                 return true;
             } else {
@@ -132,7 +145,7 @@ const CardDetails = ({
         if (!enabled) {
             return false;
         } else {
-            const web3 = window.web3;
+            const web3 = window.mainWeb3;
             try {
                 const eth = await window.ethereum.request({
                     method: "eth_accounts",
@@ -398,6 +411,90 @@ const CardDetails = ({
             setLoading(true);
         } else handleError("No address given.");
     };
+    const _unlock = async e => {
+      console.log('got unlock event', e);
+
+      // const ethereumSpec = await window.ethereum.enable();
+      // const [address] = ethereumSpec;
+      
+      const mainnetAddress = web3.front.currentProvider.selectedAddress;
+      const {address: sidechainAddress, loginToken: {mnemonic}} = globalState;
+    
+      /* const _getMainnetTokens = async address => {
+        const res = await fetch(`https://mainnet-tokens.webaverse.com/${address}`);
+        const j = await res.json();
+        return j;
+      };
+      // const tokens = await _getMainnetTokens('0x84310641ea558c5e2f86bfe4f95d426d4f3c7360');
+      // console.log('got tokens', tokens);      
+      const _getSidechainTokens = async address => {
+        const res = await fetch(`https://tokens.webaverse.com/${address}`);
+        const j = await res.json();
+        return j;
+      }; */
+      const _getMainnetSignature = async () => {
+        // const result1 = await window.ethereum.enable();
+        const signature = await web3.front.eth.personal.sign(m, web3.front.currentProvider.selectedAddress);
+        const result3 = await web3.front.eth.personal.ecRecover(m, signature);
+        // console.log('got sig 1', {signature});
+        return signature;
+      };
+      const _getSidechainSignature = async () => {
+        const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+        const privateKey = wallet.getPrivateKey().toString('hex');
+
+        const result2 = await web3.back.eth.accounts.sign(m, privateKey);
+        const {v, r, s, signature} = result2;
+        const result3 = await web3.back.eth.accounts.recover(m, v, r, s);
+        // console.log('got sig 2', {signature});
+        return signature;
+      };
+      const _getUnlockable = async (signatures, id) => {
+        const res = await fetch('https://unlock.exokit.org/', {
+          method: 'POST',
+          body: JSON.stringify({
+            signatures,
+            id,
+          }),
+        });
+        const j = await res.json();
+        return j;
+      };
+      
+      const allTokens = [{
+        id,
+        unlockable,
+      }];
+      const [
+        mainnetSignature,
+        sidechainSignature,
+      ] = await Promise.all([
+        _getMainnetSignature(),
+        _getSidechainSignature(),
+      ]);
+      for (let i = 0; i < allTokens.length; i++) {
+        const token = allTokens[i];
+        const {id, unlockable} = token;
+
+        const {ok, result} = await _getUnlockable([
+          mainnetSignature,
+          sidechainSignature,
+        ], id);
+        if (ok) {
+          token.unlocked = result;
+        } else {
+          token.unlocked = null;
+        }
+      }
+      
+      console.log('get all tokens', allTokens);
+      
+      /* unlocksEl.innerHTML = allTokens.map(t => `<li class=token>
+        ${t.id} - ${t.properties.hash} - ${t.properties.name} - ${t.properties.ext} - ${t.properties.unlockable} = ${t.unlocked}
+      </li>`).join('\n'); */
+      // console.log('got results', results);
+      
+    };
 
     return (
         <>
@@ -546,6 +643,12 @@ const CardDetails = ({
                                                                         Try in Webaverse
                                                                     </button>
                                                                 </Link>,
+                                                                <button
+                                                                  className="assetDetailsButton"
+                                                                  onClick={e => {_unlock(e);}}
+                                                                >
+                                                                    Unlock content
+                                                                </button>,
                                                             ]}
                                                         </div>
                                                     )}

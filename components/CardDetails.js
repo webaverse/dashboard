@@ -118,6 +118,8 @@ const CardDetails = ({
             const network = await window.web3.eth.net.getNetworkType();
             if (network === "main") {
                 return true;
+            } else if (network === "rinkeby"){
+                return true;
             } else {
                 handleError("You need to be on the Mainnet network.");
                 return false;

@@ -101,8 +101,7 @@ export const getToken = async (id, hostname) => {
     const { getNetworkName } = await getBlockchain();
     networkName = getNetworkName();
   }
-
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
+  const res = await fetch(`${networkName !== "main" ? `https://rinkebysidechain-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
 
 
   const token = await res.json();

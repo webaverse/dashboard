@@ -5,6 +5,7 @@ const hdkey = hdkeySpec.default;
 import ethereumJsTx from '../libs/ethereumjs-tx.js';
 import {makePromise} from './util.js';
 import {storageHost, web3MainnetSidechainEndpoint, web3RinkebySidechainEndpoint} from './constants.js';
+import { LoadingManager } from '../libs/three.module.js';
 const {Transaction, Common} = ethereumJsTx;
 
 const getBlockchain = async () => {
@@ -52,7 +53,7 @@ const getBlockchain = async () => {
       networkName = 'rinkeby';
     }
     common = Common.forCustomChain(
-      'mainnet',
+      isMainChain ? 'mainnet' : 'rinkeby',
       {
         name: 'geth',
         networkId: 1,
@@ -135,9 +136,9 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
 
   const txData = contracts['back'][contractName].methods[method](...args);
   const data = txData.encodeABI();
-  const gas = await txData.estimateGas({
-    from: address,
-  });
+  // const gas = await txData.estimateGas({
+  //   from: address,
+  // });
   let gasPrice = await web3['back'].eth.getGasPrice();
   gasPrice = parseInt(gasPrice, 10);
 
@@ -154,7 +155,8 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
     common,
   }).sign(privateKeyBytes);
   const rawTx = '0x' + tx.serialize().toString('hex');
-  const receipt = await web3['back'].eth.sendSignedTransaction(rawTx);
+  const receipt = await web3['back'].eth.sendSignedTransaction(rawTx, function(err, hash){
+});
   transactionQueue.unlock();
   return receipt;
 };

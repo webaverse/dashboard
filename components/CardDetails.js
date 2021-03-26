@@ -216,13 +216,13 @@ const FileBrowser = ({
         <header>You can edit this bundle</header>
         <div className="tabs">
           <div
-            className="tab selected"
+            className={`tab ${tab === 'files' ? 'selected' : ''}`}
             onClick={() => {
               setTab('files');
             }}
           >Files</div>
           <div
-            className="tab"
+            className={`tab ${tab === 'history' ? 'selected' : ''}`}
             onClick={() => {
               setTab('history');
             }}

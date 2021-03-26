@@ -362,6 +362,21 @@
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+.fileBrowser .wrap .tabs {
+  display: flex;
+}
+.fileBrowser .wrap .tabs .tab {
+  padding: 5px;
+  background-color: #333;
+  border-bottom: 3px solid transparent;
+  flex: 1;
+}
+.fileBrowser .wrap .tabs .tab + .tab {
+  margin-left: 3px;
+}
+.fileBrowser .wrap .tabs .tab.selected {
+  border-bottom-color: #ab47bc;
+}
 .fileBrowser .wrap .file-drop {
   display: flex;
   flex-direction: column;

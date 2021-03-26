@@ -5,7 +5,7 @@ import Link from "next/link";
 import AssetCard from "./Card";
 import { FileDrop } from 'react-file-drop';
 import { getBlockchain } from "../webaverse/blockchain.js";
-import { makeWbn } from "../webaverse/build";
+import { makeWbn, makePhysicsBake } from "../webaverse/build";
 import {
   resubmitAsset,
   getStuckAsset,
@@ -29,7 +29,7 @@ import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
 import wbn from '../wbn.js';
-// import { getExt } from "../webaverse/util";
+import { blobToFile } from "../webaverse/util";
 // import mime from '../libs/mime.js';
 
 const m = "Proof of address.";
@@ -85,9 +85,10 @@ const BundleFileContents = ({
         const response = bundle.getResponse(u);
         const {headers} = response;
         const contentType = headers['content-type'] || 'application/octet-stream';
-        const blob = new Blob([response.body], {
+        let blob = new Blob([response.body], {
           type: contentType,
         });
+        blob = blobToFile(blob, u);
         const blobUrl = URL.createObjectURL(blob);
         const {pathname} = new URL(u);
         fileSpecs.push({
@@ -137,26 +138,30 @@ const FileBrowser = ({
   const [files, setFiles] = useState([]);
   
   const u = _getUrlForHashExt(hash, name, ext);
+  const handleFileUpload = file => {
+    console.log('saving', file);
+  };
   const _save = async () => {
     console.log('clicked save', files);
     
     // setLoading(true);
     if (files.length > 1) {
-      const filesArray = Array.from(files)
+      const filesArray = files.map(f => f.blob);
       const wbn = await makeWbn(filesArray);
       handleFileUpload(wbn);
     } else if (files.length === 1) {
       if (getExt(files[0].name) === "glb") {
-        makePhysicsBake(files);
+        const wbn = makePhysicsBake(files);
+        handleFileUpload(wbn);
       } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) {
         handleFileUpload(files[0]);
       } else {
         alert("Use one of the support file formats: png, glb, vrm");
-        setLoading(false);
+        // setLoading(false);
       }
     } else {
       alert("No files uploaded!");
-      setLoading(false);
+      // setLoading(false);
     }
   };
   

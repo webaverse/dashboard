@@ -473,6 +473,7 @@ const CardDetails = ({
                                                 href={
                                                     `/accounts/` + ownerAddress
                                                 }
+                                                key="owner"
                                             >
                                                 {ownerUsername}
                                             </Link>
@@ -541,6 +542,7 @@ const CardDetails = ({
                                                                         "/preview/" +
                                                                         id
                                                                     }
+                                                                    key="owner"
                                                                 >
                                                                     <button className="assetDetailsButton">
                                                                         Try in Webaverse

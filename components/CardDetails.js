@@ -45,11 +45,8 @@ const FileBrowser = ({
   const isWbn = ext === 'wbn';
   if (isWbn && !filesLoaded) {
     (async () => {
-      // console.log('got url', u);
       const res = await fetch(u);
       const arrayBuffer = await res.arrayBuffer();
-      // debugger;
-      // console.log('got arraybuffer', arrayBuffer);
 
       const fs = [];
       const bundle = new wbn.Bundle(arrayBuffer);

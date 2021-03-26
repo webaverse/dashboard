@@ -154,6 +154,7 @@ const FileBrowser = ({
     const mnemonic = globalState.loginToken.mnemonic;
     const updateHashResult = await runSidechainTransaction(mnemonic)('NFT', 'updateHash', oldHash, newHash);
     // console.log('saving 2', {oldHash, newHash, updateHashResult});
+    closeBrowser();
   };
   const _save = async () => {
     console.log('clicked save', files);

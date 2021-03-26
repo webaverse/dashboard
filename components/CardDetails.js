@@ -458,7 +458,6 @@ const CardDetails = ({
                       </Link>
                     </div>
                     <div className={`detailsBlock detailsBlockSet noselect`}>
-                      {[
                         <div className="Accordion">
                           <div
                             className="accordionTitle"
@@ -498,8 +497,8 @@ const CardDetails = ({
                               ]}
                             </div>
                           )}
-                        </div>,
-                        userOwnsThisAsset && (
+                        </div>
+                        {userOwnsThisAsset && (
                           <div className="Accordion">
                             <div
                               className="accordionTitle"
@@ -551,8 +550,8 @@ const CardDetails = ({
                               </div>
                             )}
                           </div>
-                        ),
-                        userOwnsThisAsset && (
+                        )}
+                        {userOwnsThisAsset && (
                           <div className="Accordion">
                             <div
                               className="accordionTitle"
@@ -604,8 +603,8 @@ const CardDetails = ({
                               </div>
                             )}
                           </div>
-                        ),
-                        (stuck || userOwnsThisAsset || tokenOnMain) && (
+                        )}
+                        {(stuck || userOwnsThisAsset || tokenOnMain) && (
                           <div className="Accordion">
                             <div
                               className="accordionTitle"
@@ -667,10 +666,9 @@ const CardDetails = ({
                               </div>
                             )}
                           </div>
-                        ),
-                      ]}
+                        )}
                     </div>
-                    {globalState.address &&
+                     {globalState.address &&
                       !userOwnsThisAsset &&
                       storeId &&
                       buyPrice && (

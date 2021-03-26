@@ -443,7 +443,6 @@ const CardDetails = ({
                   />
                 </div>
                 <div className="assetDetailsRightColumn">
-                  {[
                     <div className="assetDetailsOwnedBy">
                       <span className={`creatorIcon creatorIcon tooltip`}>
                         <img
@@ -457,7 +456,7 @@ const CardDetails = ({
                       <Link href={`/accounts/` + ownerAddress} key="owner">
                         {ownerUsername}
                       </Link>
-                    </div>,
+                    </div>
                     <div className={`detailsBlock detailsBlockSet noselect`}>
                       {[
                         <div className="Accordion">
@@ -670,8 +669,8 @@ const CardDetails = ({
                           </div>
                         ),
                       ]}
-                    </div>,
-                    globalState.address &&
+                    </div>
+                    {globalState.address &&
                       !userOwnsThisAsset &&
                       storeId &&
                       buyPrice && (
@@ -683,8 +682,8 @@ const CardDetails = ({
                             Buy This Item
                           </button>
                         </div>
-                      ),
-                  ]}
+                      )
+                    }
                 </div>
               </div>
             )}

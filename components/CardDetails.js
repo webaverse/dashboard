@@ -26,8 +26,10 @@ import Loader from "./Loader";
 import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
+import wbn from '../wbn.js';
 
 const m = "Proof of address.";
+const _getUrlForHashExt = (hash, name, ext) => `https://ipfs.exokit.org/ipfs/${hash}/${name}.${ext}`;
 
 const FileBrowser = ({
   name,
@@ -35,14 +37,56 @@ const FileBrowser = ({
   ext,
   closeBrowser,
 }) => {
+  const [files, setFiles] = useState([]);
+  const [filesLoaded, setFilesLoaded] = useState(false);
+  
+  const isWbn = ext === 'wbn';
+  if (isWbn && !filesLoaded) {
+    (async () => {
+      const u = _getUrlForHashExt(hash, name, ext);
+      // console.log('got url', u);
+      const res = await fetch(u);
+      const arrayBuffer = await res.arrayBuffer();
+      // debugger;
+      // console.log('got arraybuffer', arrayBuffer);
+
+      const fs = [];
+      const bundle = new wbn.Bundle(arrayBuffer);
+      const {urls} = bundle;
+
+      for (const u of urls) {
+        const response = bundle.getResponse(u);
+        const {headers} = response;
+        const contentType = headers['content-type'] || 'application/octet-stream';
+        const b = new Blob([response.body], {
+          type: contentType,
+        });
+        const blobUrl = URL.createObjectURL(b);
+        const {pathname} = new URL(u);
+        fs.push({
+          pathname,
+          blobUrl,
+        });
+      }
+      
+      setFiles(fs);
+    })();
+    setFilesLoaded(true);
+  }
+  
   return (
     <div className="fileBrowser">
       <div className="background" onClick={closeBrowser} />
       <div className="wrap">
         <ul>
-          <li>
-           <a href={`https://ipfs.exokit.org/ipfs/${hash}.${ext}`}>{name}.{ext}</a>
-          </li>
+          {isWbn ? files.map((f, i) => (
+            <li>
+             <a href={f.blobUrl} key={i}>{f.pathname}</a>
+            </li>
+          )) : <li>
+             <a href={_getUnlockable(hash, ext)}>{name}.{ext}</a>
+            </li>
+          }
         </ul>
       </div>
     </div>

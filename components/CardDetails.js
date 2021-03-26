@@ -138,8 +138,14 @@ const FileBrowser = ({
   const [files, setFiles] = useState([]);
   
   const u = _getUrlForHashExt(hash, name, ext);
-  const handleFileUpload = file => {
-    console.log('saving', file);
+  const handleFileUpload = async file => {
+    const res = await fetch('https://ipfs.exokit.org/', {
+      method: 'POST',
+      body: file,
+    });
+    const j = await res.json();
+    const {hash} = j;
+    console.log('saving', {hash, file}); // XXX save to the chain
   };
   const _save = async () => {
     console.log('clicked save', files);
@@ -148,13 +154,13 @@ const FileBrowser = ({
     if (files.length > 1) {
       const filesArray = files.map(f => f.blob);
       const wbn = await makeWbn(filesArray);
-      handleFileUpload(wbn);
+      await handleFileUpload(wbn);
     } else if (files.length === 1) {
       if (getExt(files[0].name) === "glb") {
         const wbn = makePhysicsBake(files);
-        handleFileUpload(wbn);
+        await handleFileUpload(wbn);
       } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) {
-        handleFileUpload(files[0]);
+        await handleFileUpload(files[0]);
       } else {
         alert("Use one of the support file formats: png, glb, vrm");
         // setLoading(false);

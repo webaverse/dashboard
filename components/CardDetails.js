@@ -413,7 +413,7 @@ const CardDetails = ({
             {loading ? (
               <Loader loading={loading} />
             ) : (
-              [
+              <div className="assetDetailsContent">
                 <div className="assetDetailsLeftColumn">
                   <AssetCard
                     id={id}
@@ -441,7 +441,7 @@ const CardDetails = ({
                     glow={false}
                     imageView={imageView}
                   />
-                </div>,
+                </div>
                 <div className="assetDetailsRightColumn">
                   {[
                     <div className="assetDetailsOwnedBy">
@@ -685,8 +685,8 @@ const CardDetails = ({
                         </div>
                       ),
                   ]}
-                </div>,
-              ]
+                </div>
+              </div>
             )}
           </div>
         </>

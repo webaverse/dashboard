@@ -23,6 +23,10 @@
 
 }
 
+.assetDetailsContent {
+  display: flex;
+}
+
 .assetDetailsLeftColumn {
     
 }

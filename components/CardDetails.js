@@ -31,21 +31,30 @@ import wbn from '../wbn.js';
 const m = "Proof of address.";
 const _getUrlForHashExt = (hash, name, ext) => `https://ipfs.exokit.org/ipfs/${hash}/${name}.${ext}`;
 
-const FileBrowser = ({
+const FileFileContents = ({
   name,
-  hash,
   ext,
-  closeBrowser,
+  url,
+}) => {
+  return (
+    <ul>
+      <li>
+       <a href={url}>{name}.{ext}</a>
+      </li>
+    </ul>
+  );
+};
+const BundleFileContents = ({
+  name,
+  ext,
+  url,
 }) => {
   const [files, setFiles] = useState([]);
   const [filesLoaded, setFilesLoaded] = useState(false);
   
-  const u = _getUrlForHashExt(hash, name, ext);
-  
-  const isWbn = ext === 'wbn';
-  if (isWbn && !filesLoaded) {
+  if (ext === 'wbn' && !filesLoaded) {
     (async () => {
-      const res = await fetch(u);
+      const res = await fetch(url);
       const arrayBuffer = await res.arrayBuffer();
 
       const fs = [];
@@ -73,19 +82,43 @@ const FileBrowser = ({
   }
   
   return (
+    <ul>
+      {files.map((f, i) => (
+        <li>
+         <a href={f.blobUrl} key={i}>{f.pathname}</a>
+        </li>
+      ))}
+    </ul>
+  );
+};
+const FileBrowser = ({
+  name,
+  hash,
+  ext,
+  closeBrowser,
+}) => {
+  const u = _getUrlForHashExt(hash, name, ext);
+  const _save = async () => {
+    console.log('clicked save');
+  };
+  
+  return (
     <div className="fileBrowser">
       <div className="background" onClick={closeBrowser} />
       <div className="wrap">
-        <ul>
-          {isWbn ? files.map((f, i) => (
-            <li>
-             <a href={f.blobUrl} key={i}>{f.pathname}</a>
-            </li>
-          )) : <li>
-             <a href={u}>{name}.{ext}</a>
-            </li>
-          }
-        </ul>
+        <header>You can edit this bundle</header>
+        {ext === 'wbn' ? <BundleFileContents
+          name={name}
+          ext={ext}
+          url={u}
+        /> : <FileFileContents
+          name={name}
+          ext={ext}
+          url={u}
+        />}
+        <footer>
+          <button onClick={_save}>Save</button>
+        </footer>
       </div>
     </div>
   );

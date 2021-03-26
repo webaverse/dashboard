@@ -345,8 +345,25 @@
   border-radius: 10px;
   flex-direction: column;
 }
+.fileBrowser .wrap header,
+.fileBrowser .wrap footer
+{
+  padding: 10px;
+}
+.fileBrowser .wrap header {
+  display: flex;
+  background-color: #66bb6a;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.fileBrowser .wrap footer {
+  display: flex;
+  background-color: #333;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
 .fileBrowser .wrap ul {
-  
+  flex: 1;
 }
 .fileBrowser .wrap ul li {
   display: flex;

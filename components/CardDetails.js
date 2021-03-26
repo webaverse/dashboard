@@ -139,6 +139,7 @@ const FileBrowser = ({
   const [files, setFiles] = useState([]);
   const [hashes, setHashes] = useState([]);
   const [hashUpdatesLoaded, setHashUpdatesLoaded] = useState(false);
+  const [tab, setTab] = useState('files');
   
   if (!hashUpdatesLoaded) {
     (async () => {
@@ -213,17 +214,57 @@ const FileBrowser = ({
       <div className="background" onClick={closeBrowser} />
       <div className="wrap">
         <header>You can edit this bundle</header>
-        {ext === 'wbn' ? <BundleFileContents
-          name={name}
-          ext={ext}
-          url={u}
-          files={files}
-          setFiles={setFiles}
-        /> : <FileFileContents
-          name={name}
-          ext={ext}
-          url={u}
-        />}
+        <div className="tabs">
+          <div
+            className="tab selected"
+            onClick={() => {
+              setTab('files');
+            }}
+          >Files</div>
+          <div
+            className="tab"
+            onClick={() => {
+              setTab('history');
+            }}
+          >History</div>
+        </div>
+        {(() => {
+          switch (tab) {
+            case 'files': {
+              return (
+                ext === 'wbn' ? <BundleFileContents
+                  name={name}
+                  ext={ext}
+                  url={u}
+                  files={files}
+                  setFiles={setFiles}
+                /> : <FileFileContents
+                  name={name}
+                  ext={ext}
+                  url={u}
+                />
+              );
+            }
+            case 'history': {
+              return (
+                <ul>
+                  {hashes.map(hash => {
+                    return (
+                      <li>
+                        <a href="#" onClick={() => {
+                          console.log('clicked', hash);
+                        }}>{hash}</a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              );
+            }
+            default: {
+              return null;
+            }
+          }
+        })()}
         {ext === 'wbn' ? <footer>
           <button onClick={_save}>Save</button>
         </footer> : null}

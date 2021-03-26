@@ -433,6 +433,7 @@ const CardDetails = ({
       }; */
       const _getMainnetSignature = async () => {
         // const result1 = await window.ethereum.enable();
+        await window.ethereum.enable();
         const signature = await web3.front.eth.personal.sign(m, web3.front.currentProvider.selectedAddress);
         const result3 = await web3.front.eth.personal.ecRecover(m, signature);
         // console.log('got sig 1', {signature});

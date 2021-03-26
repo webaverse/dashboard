@@ -40,10 +40,11 @@ const FileBrowser = ({
   const [files, setFiles] = useState([]);
   const [filesLoaded, setFilesLoaded] = useState(false);
   
+  const u = _getUrlForHashExt(hash, name, ext);
+  
   const isWbn = ext === 'wbn';
   if (isWbn && !filesLoaded) {
     (async () => {
-      const u = _getUrlForHashExt(hash, name, ext);
       // console.log('got url', u);
       const res = await fetch(u);
       const arrayBuffer = await res.arrayBuffer();
@@ -84,7 +85,7 @@ const FileBrowser = ({
              <a href={f.blobUrl} key={i}>{f.pathname}</a>
             </li>
           )) : <li>
-             <a href={_getUnlockable(hash, ext)}>{name}.{ext}</a>
+             <a href={u}>{name}.{ext}</a>
             </li>
           }
         </ul>

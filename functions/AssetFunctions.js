@@ -94,7 +94,6 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(globalState.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
 
-  const mainnetAddress = await getMainnetAddress();
   const networkName = getNetworkName();
 
   let chainName, otherChainName;

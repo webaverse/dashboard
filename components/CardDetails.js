@@ -137,6 +137,34 @@ const FileBrowser = ({
   closeBrowser,
 }) => {
   const [files, setFiles] = useState([]);
+  const [hashes, setHashes] = useState([]);
+  const [hashUpdatesLoaded, setHashUpdatesLoaded] = useState(false);
+  
+  if (!hashUpdatesLoaded) {
+    (async () => {
+      const { web3, contracts, getNetworkName, getMainnetAddress } = await getBlockchain();
+
+      const networkName = getNetworkName();
+      const latest = await web3[networkName + "sidechain"].eth.getBlockNumber();
+      const hashUpdateEntries = await contracts['back']['NFT'].getPastEvents('HashUpdate', {
+        fromBlock: 0,
+        toBlock: latest,
+      });
+      
+      const queue = [hash];
+      for (let i = hashUpdateEntries.length - 1; i >= 0; i--) {
+        const hashUpdateEntry = hashUpdateEntries[i];
+        const {returnValues: {oldHash, newHash}} = hashUpdateEntry;
+        if (queue[queue.length - 1] === newHash) {
+          queue.push(oldHash);
+        }
+      }
+      queue.reverse();
+      // console.log('got hash entries', queue, hashUpdateEntries);
+      setHashes(queue);
+    })();
+    setHashUpdatesLoaded(true);
+  }
   
   const u = _getUrlForHashExt(hash, name, ext);
   const handleFileUpload = async file => {

@@ -98,7 +98,7 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
   const networkName = getNetworkName();
 
   let chainName, otherChainName;
-  if (networkName === "main") {
+  if (networkName === 'main') {
     chainName = 'front';
     otherChainName = 'back';
   } else {

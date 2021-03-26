@@ -362,6 +362,14 @@
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+.fileBrowser .wrap .file-drop {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.fileBrowser .wrap .file-drop .file-drop-target {
+  flex: 1;
+}
 .fileBrowser .wrap ul {
   flex: 1;
 }

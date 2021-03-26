@@ -4,7 +4,7 @@ import { useToasts } from "react-toast-notifications";
 import Link from "next/link";
 import AssetCard from "./Card";
 import { FileDrop } from 'react-file-drop';
-import { getBlockchain } from "../webaverse/blockchain.js";
+import { getBlockchain, runSidechainTransaction } from "../webaverse/blockchain.js";
 import { makeWbn, makePhysicsBake } from "../webaverse/build";
 import {
   resubmitAsset,
@@ -133,6 +133,7 @@ const FileBrowser = ({
   name,
   hash,
   ext,
+  globalState,
   closeBrowser,
 }) => {
   const [files, setFiles] = useState([]);
@@ -144,8 +145,15 @@ const FileBrowser = ({
       body: file,
     });
     const j = await res.json();
-    const {hash} = j;
-    console.log('saving', {hash, file}); // XXX save to the chain
+    const {hash: newHash} = j;
+    const oldHash = hash;
+    // console.log('saving 1', {oldHash, newHash, updateHashResult, file});
+    
+    // const currentHash = await contracts.back.NFT.methods.getHash(id).call();
+    // const r = Math.random().toString(36);
+    const mnemonic = globalState.loginToken.mnemonic;
+    const updateHashResult = await runSidechainTransaction(mnemonic)('NFT', 'updateHash', oldHash, newHash);
+    // console.log('saving 2', {oldHash, newHash, updateHashResult});
   };
   const _save = async () => {
     console.log('clicked save', files);
@@ -967,6 +975,7 @@ const CardDetails = ({
         name={name}
         hash={hash}
         ext={ext}
+        globalState={globalState}
         closeBrowser={() => setFileBrowserOpen(false)}
       /> : null}
     </>

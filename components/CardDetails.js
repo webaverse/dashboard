@@ -17,11 +17,10 @@ import {
     setHomespace,
     withdrawAsset,
     depositAsset,
-    cancelSale,
     sellAsset,
     buyAsset,
 } from "../functions/AssetFunctions.js";
-import { isTokenOnMain, getStores } from "../functions/UIStateFunctions.js";
+import { isTokenOnMain } from "../functions/UIStateFunctions.js";
 import Loader from "./Loader";
 
 const CardDetails = ({
@@ -422,7 +421,7 @@ const CardDetails = ({
                             <Loader loading={loading} />
                         ) : (
                             [
-                                <div className="assetDetailsLeftColumn">
+                                <div className="assetDetailsLeftColumn" key={id}>
                                     <AssetCard
                                         id={id}
                                         key={id}
@@ -452,9 +451,9 @@ const CardDetails = ({
                                         imageView={imageView}
                                     />
                                 </div>,
-                                <div className="assetDetailsRightColumn">
+                                <div className="assetDetailsRightColumn" key={minterAddress}>
                                     {[
-                                        <div className="assetDetailsOwnedBy">
+                                        <div className="assetDetailsOwnedBy" key={ownerAddress}>
                                             <span
                                                 className={`creatorIcon creatorIcon tooltip`}
                                             >
@@ -471,7 +470,7 @@ const CardDetails = ({
                                                 </span>
                                             </span>{" "}
                                             Owned by{" "}
-                                            <Link
+                                            <Link key={1}
                                                 href={
                                                     `/accounts/` + ownerAddress
                                                 }
@@ -481,9 +480,10 @@ const CardDetails = ({
                                         </div>,
                                         <div
                                             className={`detailsBlock detailsBlockSet noselect`}
+                                            key={id}
                                         >
                                             {[
-                                                <div className="Accordion">
+                                                <div className="Accordion" key={1}>
                                                     <div
                                                         className="accordionTitle"
                                                         onClick={() =>
@@ -538,7 +538,7 @@ const CardDetails = ({
                                                                             2d
                                                                         </button>
                                                                     ),
-                                                                <Link
+                                                                <Link key={2}
                                                                     href={
                                                                         "/preview/" +
                                                                         id
@@ -554,7 +554,7 @@ const CardDetails = ({
                                                     )}
                                                 </div>,
                                                 userOwnsThisAsset && (
-                                                    <div className="Accordion">
+                                                    <div className="Accordion" key={2}>
                                                         <div
                                                             className="accordionTitle"
                                                             onClick={() =>
@@ -629,7 +629,7 @@ const CardDetails = ({
                                                     </div>
                                                 ),
                                                 userOwnsThisAsset && (
-                                                    <div className="Accordion">
+                                                    <div className="Accordion" key={3}>
                                                         <div
                                                             className="accordionTitle"
                                                             onClick={() =>
@@ -708,7 +708,7 @@ const CardDetails = ({
                                                 (stuck ||
                                                     userOwnsThisAsset ||
                                                     tokenOnMain) && (
-                                                    <div className="Accordion">
+                                                    <div className="Accordion" key={4}>
                                                         <div
                                                             className="accordionTitle"
                                                             onClick={() =>
@@ -800,7 +800,7 @@ const CardDetails = ({
                                             !userOwnsThisAsset &&
                                             storeId &&
                                             buyPrice && (
-                                                <div className="detailsBlock detailsBlockSet">
+                                                <div className="detailsBlock detailsBlockSet" key={storeId}>
                                                     <button
                                                         className="assetDetailsButton"
                                                         onClick={handleBuyAsset}

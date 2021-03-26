@@ -3,7 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useToasts } from "react-toast-notifications";
 import Link from "next/link";
 import AssetCard from "./Card";
+import { FileDrop } from 'react-file-drop';
 import { getBlockchain } from "../webaverse/blockchain.js";
+import { makeWbn } from "../webaverse/build";
 import {
   resubmitAsset,
   getStuckAsset,
@@ -27,6 +29,8 @@ import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
 import wbn from '../wbn.js';
+// import { getExt } from "../webaverse/util";
+// import mime from '../libs/mime.js';
 
 const m = "Proof of address.";
 const _getUrlForHashExt = (hash, name, ext) => `https://ipfs.exokit.org/ipfs/${hash}/${name}.${ext}`;
@@ -48,16 +52,32 @@ const BundleFileContents = ({
   name,
   ext,
   url,
+  files,
+  setFiles,
 }) => {
-  const [files, setFiles] = useState([]);
   const [filesLoaded, setFilesLoaded] = useState(false);
+  
+  const _fileToFileSpec = file => {
+    /* // const ext = getExt(file.name);
+    const contentType = mime.getType(file.name) || 'application/octet-stream';
+    const blob = new Blob([response.body], {
+      type: contentType,
+    }); */
+    const blobUrl = URL.createObjectURL(file);
+    // const {pathname} = new URL(blobUrl);
+    return {
+      pathname: `/${file.name}`,
+      blob: file,
+      blobUrl,
+    };
+  };
   
   if (ext === 'wbn' && !filesLoaded) {
     (async () => {
       const res = await fetch(url);
       const arrayBuffer = await res.arrayBuffer();
 
-      const fs = [];
+      const fileSpecs = [];
       const bundle = new wbn.Bundle(arrayBuffer);
       const {urls} = bundle;
 
@@ -65,30 +85,47 @@ const BundleFileContents = ({
         const response = bundle.getResponse(u);
         const {headers} = response;
         const contentType = headers['content-type'] || 'application/octet-stream';
-        const b = new Blob([response.body], {
+        const blob = new Blob([response.body], {
           type: contentType,
         });
-        const blobUrl = URL.createObjectURL(b);
+        const blobUrl = URL.createObjectURL(blob);
         const {pathname} = new URL(u);
-        fs.push({
+        fileSpecs.push({
           pathname,
+          blob,
           blobUrl,
         });
       }
       
-      setFiles(fs);
+      setFiles(fileSpecs);
     })();
     setFilesLoaded(true);
   }
   
   return (
-    <ul>
-      {files.map((f, i) => (
-        <li>
-         <a href={f.blobUrl} key={i}>{f.pathname}</a>
-        </li>
-      ))}
-    </ul>
+    <FileDrop
+      onDrop={(fileList, e) => {
+        e.preventDefault();
+        
+        const fileSpecs = files.slice();
+        for (let i = 0; i < fileList.length; i++) {
+          const file = fileList[i];
+          const fileSpec = _fileToFileSpec(file);
+          fileSpecs.push(fileSpec);
+        }
+        setFiles(fileSpecs);
+        
+        // console.log('got file drop', files);
+      }}
+    >
+      <ul>
+        {files.map((f, i) => (
+          <li key={i}>
+           <a href={f.blobUrl} key={i}>{f.pathname}</a>
+          </li>
+        ))}
+      </ul>
+    </FileDrop>
   );
 };
 const FileBrowser = ({
@@ -97,9 +134,30 @@ const FileBrowser = ({
   ext,
   closeBrowser,
 }) => {
+  const [files, setFiles] = useState([]);
+  
   const u = _getUrlForHashExt(hash, name, ext);
   const _save = async () => {
-    console.log('clicked save');
+    console.log('clicked save', files);
+    
+    // setLoading(true);
+    if (files.length > 1) {
+      const filesArray = Array.from(files)
+      const wbn = await makeWbn(filesArray);
+      handleFileUpload(wbn);
+    } else if (files.length === 1) {
+      if (getExt(files[0].name) === "glb") {
+        makePhysicsBake(files);
+      } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) {
+        handleFileUpload(files[0]);
+      } else {
+        alert("Use one of the support file formats: png, glb, vrm");
+        setLoading(false);
+      }
+    } else {
+      alert("No files uploaded!");
+      setLoading(false);
+    }
   };
   
   return (
@@ -111,14 +169,16 @@ const FileBrowser = ({
           name={name}
           ext={ext}
           url={u}
+          files={files}
+          setFiles={setFiles}
         /> : <FileFileContents
           name={name}
           ext={ext}
           url={u}
         />}
-        <footer>
+        {ext === 'wbn' ? <footer>
           <button onClick={_save}>Save</button>
-        </footer>
+        </footer> : null}
       </div>
     </div>
   );

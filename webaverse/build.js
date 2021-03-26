@@ -699,3 +699,27 @@ export async function makeBin (files) {
     return binFile;
   }
 }
+
+export const makePhysicsBake = async (file) => {
+  if (file && getExt(file[0].name) === "glb") {
+    const bin = await makeBin(file);
+
+    const manifest = {
+      "xr_type": "webxr-site@0.0.1",
+      "start_url": file[0].name,
+      "physics_url": bin.name
+    };
+    const blob = new Blob([JSON.stringify(manifest)], {type: "application/json"});
+    const manifestFile = blobToFile(blob, "manifest.json");
+
+    const modelBlob = new Blob([file[0]], {type: file[0].type});
+    const model = blobToFile(modelBlob, file[0].name);
+    const files = [model, bin, manifestFile];
+
+    const wbn = await makeWbn(files);
+    return wbn;
+  } else {
+    alert("Please you a valid .glb model");
+    return null;
+  }
+}

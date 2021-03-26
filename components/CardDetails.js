@@ -585,7 +585,7 @@ const CardDetails = ({
                             unlockableSpec ? (
                               <div className="assetDetailsButton">
                                 {unlockableSpec.ok
-                                  ? unlockableSpec.result
+                                  ? (unlockableSpec.result || '[no unlockable]')
                                   : "Could not unlock :("}
                               </div>
                             ) : (

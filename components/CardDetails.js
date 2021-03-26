@@ -29,6 +29,26 @@ const hdkey = hdkeySpec.default;
 
 const m = "Proof of address.";
 
+const FileBrowser = ({
+  name,
+  hash,
+  ext,
+  closeBrowser,
+}) => {
+  return (
+    <div className="fileBrowser">
+      <div className="background" onClick={closeBrowser} />
+      <div className="wrap">
+        <ul>
+          <li>
+           <a href={`https://ipfs.exokit.org/ipfs/${hash}.${ext}`}>{name}.{ext}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 const CardDetails = ({
   id,
   name,
@@ -73,6 +93,7 @@ const CardDetails = ({
   const [contracts, setContracts] = useState(null);
   const [stuck, setStuck] = useState(false);
   const [unlockableSpec, setUnlockableSpec] = useState(null);
+  const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
 
   useEffect(() => {
     if (globalState.loginToken) {
@@ -404,9 +425,7 @@ const CardDetails = ({
       setLoading(true);
     } else handleError("No address given.");
   };
-  const _unlock = async (e) => {
-    // console.log('got unlock event', e);
-
+  const _unlock = async () => {
     // const ethereumSpec = await window.ethereum.enable();
     // const [address] = ethereumSpec;
 
@@ -479,6 +498,9 @@ const CardDetails = ({
         ${t.id} - ${t.properties.hash} - ${t.properties.name} - ${t.properties.ext} - ${t.properties.unlockable} = ${t.unlocked}
       </li>`).join('\n'); */
     // console.log('got results', results);
+  };
+  const _openFileBrowser = () => {
+    setFileBrowserOpen(true);
   };
 
   return (
@@ -591,13 +613,17 @@ const CardDetails = ({
                             ) : (
                               <button
                                 className="assetDetailsButton"
-                                onClick={(e) => {
-                                  _unlock(e);
-                                }}
+                                onClick={_unlock}
                               >
                                 Unlock content
                               </button>
                             ),
+                            <button
+                              className="assetDetailsButton"
+                              onClick={_openFileBrowser}
+                            >
+                              File browser
+                            </button>
                           ]}
                         </div>
                       )}
@@ -791,6 +817,12 @@ const CardDetails = ({
           </div>
         </>
       )}
+      {fileBrowserOpen ? <FileBrowser
+        name={name}
+        hash={hash}
+        ext={ext}
+        closeBrowser={() => setFileBrowserOpen(false)}
+      /> : null}
     </>
   );
 };

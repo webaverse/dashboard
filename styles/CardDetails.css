@@ -317,3 +317,38 @@
     }
 
 }
+
+.fileBrowser {
+  display: flex;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+}
+.fileBrowser .background {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #0004;
+}
+.fileBrowser .wrap {
+  position: relative;
+  display: flex;
+  width: 800px;
+  height: 400px;
+  background-color: #222;
+  border-radius: 10px;
+  flex-direction: column;
+}
+.fileBrowser .wrap ul {
+  
+}
+.fileBrowser .wrap ul li {
+  display: flex;
+  list-style-type: none;
+}

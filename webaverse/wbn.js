@@ -1,3 +1,8 @@
+const e = {};
+const m = {exports: e};
+(() => {
+const exports = e;
+const module = m;
 // modules are defined as an array
 // [ module function, map of requires ]
 //
@@ -5,8 +10,6 @@
 //
 // anything defined in a previous bundle is accessed via the
 // orig method which is the require for previous bundles
-const exports  = {};
-const module = {exports};
 var parcelRequire = (function (modules, cache, entry, globalName) {
   // Save the require from previous bundle to this closure if any
   var previousRequire = typeof parcelRequire === 'function' && parcelRequire;
@@ -15325,4 +15328,5 @@ var encoder_1 = require("./encoder");
 
 exports.BundleBuilder = encoder_1.BundleBuilder;
 },{"./decoder":"vywm","./encoder":"Nl8V"}]},{},["NTZa"], "wbn")
-export default module.exports;
+})();
+export default m.exports;

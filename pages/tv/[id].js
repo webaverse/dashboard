@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { getTokens } from "../../functions/UIStateFunctions.js";
 import CardColumn from "../../components/CardColumn";
 
-export default () => {
+const Tv = () => {
   const router = useRouter();
   const { id } = router.query;
   const [previewId, setPreviewId] = useState(null);
@@ -72,14 +72,13 @@ export default () => {
 
   return (
     <div className="tvContainer">
-      {[
-        previewId && isTokenId && (<>
-          <div className="IFrameContainer">
-            <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + previewId} />
-          </div>
-        </>),
-        tokens && (<CardColumn data={tokens} cardSize="small" />),
-      ]}
+      {previewId && isTokenId && (<>
+        <div className="IFrameContainer">
+          <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + previewId} />
+        </div>
+      </>)}
+      {tokens && (<CardColumn data={tokens} cardSize="small" />)}
     </div>
   );
 };
+export default Tv;

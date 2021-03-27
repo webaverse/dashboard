@@ -13,7 +13,7 @@ import AssetCard from '../components/Card';
 import { makeWbn, makeBin } from "../webaverse/build";
 import { blobToFile, getExt } from "../webaverse/util";
 
-export default () => {
+const Fly = () => {
   const router = useRouter();
   const { globalState, setGlobalState } = useAppContext();
   const [file, setFile] = useState(null);
@@ -150,4 +150,5 @@ export default () => {
       ]}
     </>
   }</>)
-}
+};
+export default Fly;

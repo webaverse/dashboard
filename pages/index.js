@@ -11,7 +11,7 @@ import Loader from "../components/Loader";
     return <Hiring/>
 } */
 
-export default () => {
+const PagesRoot = () => {
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
     const [models, setModels] = useState(null);
@@ -84,3 +84,4 @@ export default () => {
         </>
     );
 };
+export default PagesRoot;

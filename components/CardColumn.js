@@ -11,7 +11,7 @@ const CardColumn = ({ data, cardSize }) => {
                         return;
                     }
                     return (
-                        <Link href={"/tv/" + asset.id}>
+                        <Link href={"/tv/" + asset.id} key={asset.id}>
                             <a>
                                 <AssetCard
                                     key={asset.id}

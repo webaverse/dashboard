@@ -6,7 +6,7 @@ import Loader from "../../components/Loader";
 import { getLand } from "../../functions/UIStateFunctions";
 import { useAppContext } from "../../libs/contextLib";
 
-export default ({ data }) => {
+const Land = ({ data }) => {
   const router = useRouter()
   const { id } = router.query
   const { globalState, setGlobalState } = useAppContext();
@@ -65,7 +65,8 @@ export default ({ data }) => {
       }
     </>
   )
-}
+};
+export default Land;
 
 export async function getServerSideProps({ params }) {
   const data = await getLand(params.id);

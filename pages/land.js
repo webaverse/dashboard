@@ -5,7 +5,7 @@ import { getLands } from "../functions/UIStateFunctions.js";
 import LandCardGrid from "../components/LandCardGrid";
 import Loader from "../components/Loader";
 
-export default () => {
+const Land = () => {
   const { globalState, setGlobalState } = useAppContext();
   const [lands, setLands] = useState(null);
 
@@ -33,4 +33,5 @@ export default () => {
       }
     </div>
   )
-}
+};
+export default Land;

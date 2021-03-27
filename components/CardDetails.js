@@ -30,10 +30,13 @@ import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
 import wbn from '../wbn.js';
 import { blobToFile } from "../webaverse/util";
+import Clear from '@material-ui/icons/Clear';
+import TextFields from '@material-ui/icons/TextFields';
 // import mime from '../libs/mime.js';
 
 const m = "Proof of address.";
 const _getUrlForHashExt = (hash, name, ext) => `https://ipfs.exokit.org/ipfs/${hash}/${name}.${ext}`;
+const _clone = o => JSON.parse(JSON.stringify(o));
 
 const FileFileContents = ({
   name,
@@ -55,11 +58,13 @@ const BundleFileContents = ({
   files,
   setFiles,
   currentHash,
+  renamingFile,
+  setRenamingFile,
 }) => {
   // const [filesLoaded, setFilesLoaded] = useState(false);
   const [lastUpdateHash, setLastUpdateHash] = useState(null);
   
-  console.log('got bundle file contents call', currentHash, lastUpdateHash);
+  console.log('got bundle file contents call', renamingFile);
   
   const _fileToFileSpec = file => {
     /* // const ext = getExt(file.name);
@@ -107,6 +112,37 @@ const BundleFileContents = ({
     })();
     setLastUpdateHash(currentHash);
   }
+  const _renameFile = (file, index) => {
+    setRenamingFile(file === renamingFile ? null : file);
+  };
+  const _setFileName = (e, index) => {
+    const oldFile = files[index];
+    const newFile = _clone(oldFile);
+    newFile.pathname = e.target.value;
+    
+    const newFiles = files.map(f => {
+      if (f === oldFile) {
+        return newFile;
+      } else {
+        return f;
+      }
+    });
+    // console.log('got shape of file', newFiles);
+    setFiles(newFiles);
+    
+    if (renamingFile === oldFile) {
+      setRenamingFile(newFile);
+    }
+  };
+  const _removeFile = (file, index) => {
+    files.splice(index, 1);
+    setFiles(files);
+  };
+  const _keyDown = e => {
+    if (e.which === 13) {
+      renamingFile && setRenamingFile(null);
+    }
+  };
   
   return (
     <FileDrop
@@ -128,7 +164,13 @@ const BundleFileContents = ({
       <ul>
         {files.map((f, i) => (
           <li key={i}>
-           <a href={f.blobUrl} key={i}>{f.pathname}</a>
+           {renamingFile === f ?
+             <input type="text" value={f.pathname} onChange={e => _setFileName(e, i)} onKeyDown={_keyDown} />
+           :
+             <a href={f.blobUrl} key={i}>{f.pathname}</a>
+           }
+           <nav onClick={() => _renameFile(f, i)}><TextFields/></nav>
+           <nav onClick={() => _removeFile(f, i)}><Clear/></nav>
           </li>
         ))}
       </ul>
@@ -147,8 +189,9 @@ const FileBrowser = ({
   const [tab, setTab] = useState('files');
   const [currentHash, setCurrentHash] = useState(hash);
   const [lastUpdateHash, setLastUpdateHash] = useState(null);
+  const [renamingFile, setRenamingFile] = useState(null);
   
-  console.log('got hash 1.1', {currentHash, lastUpdateHash, ext, extCheck: ext === 'wbn', tab});
+  console.log('got hash 1.1', {renamingFile});
   
   if (lastUpdateHash !== currentHash) {
     (async () => {
@@ -174,8 +217,6 @@ const FileBrowser = ({
     })();
     setLastUpdateHash(currentHash);
   }
-  
-  console.log('got hash 1.2', {currentHash, lastUpdateHash});
   
   const u = _getUrlForHashExt(currentHash, name, ext);
   const handleFileUpload = async file => {
@@ -240,7 +281,7 @@ const FileBrowser = ({
         {(() => {
           switch (tab) {
             case 'files': {
-              const r = (
+              return (
                 ext === 'wbn' ? <BundleFileContents
                   name={name}
                   ext={ext}
@@ -248,6 +289,8 @@ const FileBrowser = ({
                   files={files}
                   currentHash={currentHash}
                   setFiles={setFiles}
+                  renamingFile={renamingFile}
+                  setRenamingFile={setRenamingFile}
                   key={`${name}:${ext}:${hash}`}
                 /> : <FileFileContents
                   name={name}
@@ -255,8 +298,6 @@ const FileBrowser = ({
                   url={u}
                 />
               );
-              console.log('render switch', {tab, extCheck: ext === 'wbn', r});
-              return r;
             }
             case 'history': {
               return (

@@ -401,3 +401,14 @@
   background-color: #333;
   border-radius: 3px;
 }
+.fileBrowser .wrap ul li a,
+.fileBrowser .wrap ul li input[type="text"] {
+  display: flex;
+  margin: 0;
+  margin-right: auto;
+  height: 20px;
+  flex: 1;
+}
+.fileBrowser .wrap ul li input[type="text"] {
+  font: inherit;
+}

@@ -41,7 +41,7 @@ const FileFileContents = ({
   url,
 }) => {
   return (
-    <ul>
+    <ul class="file-contents">
       <li>
        <a href={url}>{name}.{ext}</a>
       </li>
@@ -54,8 +54,12 @@ const BundleFileContents = ({
   url,
   files,
   setFiles,
+  currentHash,
 }) => {
-  const [filesLoaded, setFilesLoaded] = useState(false);
+  // const [filesLoaded, setFilesLoaded] = useState(false);
+  const [lastUpdateHash, setLastUpdateHash] = useState(null);
+  
+  console.log('got bundle file contents call', currentHash, lastUpdateHash);
   
   const _fileToFileSpec = file => {
     /* // const ext = getExt(file.name);
@@ -72,7 +76,8 @@ const BundleFileContents = ({
     };
   };
   
-  if (ext === 'wbn' && !filesLoaded) {
+  // console.log('got hash 2', {currentHash, lastUpdateHash});
+  if (ext === 'wbn' && currentHash !== lastUpdateHash) {
     (async () => {
       const res = await fetch(url);
       const arrayBuffer = await res.arrayBuffer();
@@ -100,7 +105,7 @@ const BundleFileContents = ({
       
       setFiles(fileSpecs);
     })();
-    setFilesLoaded(true);
+    setLastUpdateHash(currentHash);
   }
   
   return (
@@ -139,11 +144,13 @@ const FileBrowser = ({
 }) => {
   const [files, setFiles] = useState([]);
   const [hashes, setHashes] = useState([]);
-  const [hashUpdatesLoaded, setHashUpdatesLoaded] = useState(false);
   const [tab, setTab] = useState('files');
   const [currentHash, setCurrentHash] = useState(hash);
+  const [lastUpdateHash, setLastUpdateHash] = useState(null);
   
-  if (!hashUpdatesLoaded) {
+  console.log('got hash 1.1', {currentHash, lastUpdateHash, ext, extCheck: ext === 'wbn', tab});
+  
+  if (lastUpdateHash !== currentHash) {
     (async () => {
       const { web3, contracts, getNetworkName, getMainnetAddress } = await getBlockchain();
 
@@ -163,13 +170,14 @@ const FileBrowser = ({
         }
       }
       queue.reverse();
-      // console.log('got hash entries', queue, hashUpdateEntries);
       setHashes(queue);
     })();
-    setHashUpdatesLoaded(true);
+    setLastUpdateHash(currentHash);
   }
   
-  const u = _getUrlForHashExt(hash, name, ext);
+  console.log('got hash 1.2', {currentHash, lastUpdateHash});
+  
+  const u = _getUrlForHashExt(currentHash, name, ext);
   const handleFileUpload = async file => {
     const res = await fetch('https://ipfs.exokit.org/', {
       method: 'POST',
@@ -232,12 +240,13 @@ const FileBrowser = ({
         {(() => {
           switch (tab) {
             case 'files': {
-              return (
+              const r = (
                 ext === 'wbn' ? <BundleFileContents
                   name={name}
                   ext={ext}
                   url={u}
                   files={files}
+                  currentHash={currentHash}
                   setFiles={setFiles}
                   key={`${name}:${ext}:${hash}`}
                 /> : <FileFileContents
@@ -246,10 +255,12 @@ const FileBrowser = ({
                   url={u}
                 />
               );
+              console.log('render switch', {tab, extCheck: ext === 'wbn', r});
+              return r;
             }
             case 'history': {
               return (
-                <ul>
+                <ul className="history">
                   {hashes.map((hash, i) => {
                     return (
                       <li className={`history ${hash === currentHash ? 'selected' : ''}`} key={i}>

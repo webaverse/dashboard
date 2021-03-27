@@ -385,8 +385,12 @@
 .fileBrowser .wrap .file-drop .file-drop-target {
   flex: 1;
 }
-.fileBrowser .wrap ul {
+.fileBrowser .wrap .file,
+.fileBrowser .wrap .file-contents,
+.fileBrowser .wrap .history
+{
   flex: 1;
+  overflow: auto;
 }
 .fileBrowser .wrap ul li {
   display: flex;

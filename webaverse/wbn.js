@@ -1,3 +1,6 @@
+const e = {};
+const m = {exports: e};
+(() => {
 const exports = e;
 const module = m;
 // modules are defined as an array
@@ -15325,4 +15328,5 @@ var encoder_1 = require("./encoder");
 
 exports.BundleBuilder = encoder_1.BundleBuilder;
 },{"./decoder":"vywm","./encoder":"Nl8V"}]},{},["NTZa"], "wbn")
-export default module.exports;
+})();
+export default m.exports;

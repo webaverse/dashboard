@@ -6,7 +6,7 @@ import { getCreators } from "../functions/UIStateFunctions.js";
 import ProfileCards from "../components/ProfileCards";
 import Loader from "../components/Loader";
 
-export default () => {
+const Accounts = () => {
   const { globalState, setGlobalState } = useAppContext();
   const [creatorProfiles, setCreatorProfiles] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,4 +36,5 @@ export default () => {
       }
     </div>
   )
-}
+};
+export default Accounts;

@@ -15,7 +15,7 @@ import ProgressBar from '../components/ProgressBar';
 import { makeWbn, makeBin, makePhysicsBake } from "../webaverse/build";
 import { blobToFile, getExt } from "../webaverse/util";
 
-export default () => {
+const Mint = () => {
   const router = useRouter();
   const { globalState, setGlobalState } = useAppContext();
   const [file, setFile] = useState(null);
@@ -193,4 +193,5 @@ export default () => {
       ]}
     </>
   }</>)
-}
+};
+export default Mint;

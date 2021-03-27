@@ -8,7 +8,7 @@ import { getToken, getLand } from "../functions/UIStateFunctions";
 import { useAppContext } from "../libs/contextLib";
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
-export default ({ data }) => {
+const Activity = ({ data }) => {
   const { globalState, setGlobalState } = useAppContext();
   const [loading, setLoading] = useState(true);
   const [activity, setActivity] = useState(data.activityData);
@@ -85,6 +85,7 @@ export default ({ data }) => {
               </div>
             </div>
             <table className="activityTable">
+              <tbody>
               <tr>
                 <th>Item</th>
                 <th>Quantity</th>
@@ -104,7 +105,7 @@ export default ({ data }) => {
                   }
 
                   return (
-                  <tr>
+                  <tr key={entry.id}>
                     { entry.returnValues["value"] ?
                       <>
                       <td><span className="activityTableEntry">SILK</span></td>
@@ -121,8 +122,8 @@ export default ({ data }) => {
                     <td><span className="activityTableEntry"><Link href={"/activity/" + entry.transactionHash + "." + contract}><a>{time2TimeAgo(entry.timestamp)}<div className="activityTableEntryIconContainer"><OpenInNewIcon /></div></a></Link></span></td>
                   </tr>
                 )
-              })
-            }
+              })}
+              </tbody>
             </table>
             <div className="activityTableContainerBottom">
               <div className="activityTableContainerTopLeft">
@@ -153,7 +154,8 @@ export default ({ data }) => {
       }
     </>
   )
-}
+};
+export default Activity;
 
 export async function getServerSideProps({ params }) {
 /*

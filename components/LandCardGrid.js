@@ -36,7 +36,7 @@ const LandCardGrid = ({ data, currentCard, setCurrentCard, cardSize }) => {
                     showCardDetails(asset);
                 }
                 return (
-                    <Link href={"/land/" + asset.id}>
+                    <Link href={"/land/" + asset.id} key={asset.id}>
                         <a>
                             <AssetCard
                                 key={asset.id}

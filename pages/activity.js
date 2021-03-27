@@ -29,7 +29,7 @@ export default ({ data }) => {
     const activityData = await getSidechainActivity(page);
     setActivity(activityData);
     setLoading(false);
-    console.log('got data', activityData);
+    // console.log('got data', activityData);
   }
 
   const time2TimeAgo = (ts) => {

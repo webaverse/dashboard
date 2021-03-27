@@ -7,7 +7,7 @@ import { getTxData } from "../../functions/AssetFunctions";
 import { useAppContext } from "../../libs/contextLib";
 import { useRouter } from 'next/router';
 
-export default () => {
+const Account = () => {
   const router = useRouter();
   const { id } = router.query;
   const { globalState, setGlobalState } = useAppContext();
@@ -105,7 +105,8 @@ export default () => {
       }
     </>
   )
-}
+};
+export default Account;
 
 export async function getServerSideProps({ params }) {
 /*
@@ -117,4 +118,4 @@ export async function getServerSideProps({ params }) {
 //  console.log("got ssr data", data);
 
   return { props: { data: { activityData } } }
-}
+};

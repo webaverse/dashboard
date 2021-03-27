@@ -279,7 +279,7 @@ const FileBrowser = ({
           }
         })()}
         {ext === 'wbn' ? <footer>
-          <button onClick={_save}>Save</button>
+          <button onClick={_save}>Commit</button>
         </footer> : null}
       </div>
     </div>

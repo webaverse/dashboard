@@ -28,7 +28,7 @@ import Loader from "./Loader";
 import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
-import wbn from '../wbn.js';
+import wbn from '../webaverse/wbn.js';
 import { blobToFile, getExt } from "../webaverse/util";
 import Clear from '@material-ui/icons/Clear';
 import TextFields from '@material-ui/icons/TextFields';
@@ -223,7 +223,7 @@ const FileBrowser = ({
   const [lastUpdateHash, setLastUpdateHash] = useState(null);
   const [renamingFile, setRenamingFile] = useState(null);
   
-  console.log('got hash 1.1', {name, hash, ext, files, renamingFile});
+  // console.log('got hash 1.1', {name, hash, ext, files, renamingFile});
   
   if (lastUpdateHash !== currentHash) {
     (async () => {

@@ -238,6 +238,7 @@ const FileBrowser = ({
                   url={u}
                   files={files}
                   setFiles={setFiles}
+                  key={`${name}:${ext}:${hash}`}
                 /> : <FileFileContents
                   name={name}
                   ext={ext}
@@ -248,9 +249,9 @@ const FileBrowser = ({
             case 'history': {
               return (
                 <ul>
-                  {hashes.map(hash => {
+                  {hashes.map((hash, i) => {
                     return (
-                      <li>
+                      <li key={i}>
                         <a href="#" onClick={() => {
                           console.log('clicked', hash);
                         }}>{hash}</a>
@@ -806,29 +807,28 @@ const CardDetails = ({
                       </div>
                       {toggleViewOpen && (
                         <div className="accordionDropdown">
-                          {[
-                            is3d && imageView != "3d" && (
+                            {is3d && imageView != "3d" && (
                               <button
                                 className="assetDetailsButton"
                                 onClick={() => setImageView("3d")}
                               >
                                 See in 3d
                               </button>
-                            ),
-                            is3d && imageView != "2d" && (
+                            )}
+                            {is3d && imageView != "2d" && (
                               <button
                                 className="assetDetailsButton"
                                 onClick={() => setImageView("2d")}
                               >
                                 See in 2d
                               </button>
-                            ),
+                            )}
                             <Link href={"/preview/" + id}>
                               <button className="assetDetailsButton">
                                 Try in Webaverse
                               </button>
-                            </Link>,
-                            unlockableSpec ? (
+                            </Link>
+                            {unlockableSpec ? (
                               <div className="assetDetailsButton">
                                 {unlockableSpec.ok
                                   ? (unlockableSpec.result || '[no unlockable]')
@@ -841,14 +841,13 @@ const CardDetails = ({
                               >
                                 Unlock content
                               </button>
-                            ),
+                            )}
                             <button
                               className="assetDetailsButton"
                               onClick={_openFileBrowser}
                             >
                               File browser
                             </button>
-                          ]}
                         </div>
                       )}
                     </div>

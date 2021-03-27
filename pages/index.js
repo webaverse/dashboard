@@ -11,7 +11,7 @@ import Loader from "../components/Loader";
     return <Hiring/>
 } */
 
-const PagesRoot () => {
+const PagesRoot = () => {
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
     const [models, setModels] = useState(null);

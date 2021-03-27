@@ -1,0 +1,9 @@
+{
+    "presets": ["next/babel"],
+    "ignore": [
+        "node_modules",
+        "libs",
+        "functions",
+        "webaverse"
+    ]
+}

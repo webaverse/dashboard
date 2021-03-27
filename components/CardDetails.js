@@ -32,7 +32,6 @@ import wbn from '../webaverse/wbn.js';
 import { blobToFile, getExt } from "../webaverse/util";
 import Clear from '@material-ui/icons/Clear';
 import TextFields from '@material-ui/icons/TextFields';
-// import mime from '../libs/mime.js';
 
 const m = "Proof of address.";
 const _getUrlForHashExt = (hash, name, ext) => `https://ipfs.exokit.org/ipfs/${hash}/${name}.${ext}`;

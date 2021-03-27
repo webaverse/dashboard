@@ -5,7 +5,7 @@ import { getTokens } from "../functions/UIStateFunctions.js";
 import CardGrid from "../components/CardGrid";
 import Loader from "../components/Loader";
 
-export default ({ data }) => {
+const Asset = ({ data }) => {
   const [hasMore, setHasMore] = useState(true);
   const [start, setStart] = useState(51);
   const [end, setEnd] = useState(60);
@@ -54,4 +54,5 @@ export default ({ data }) => {
       }
     </div>
   )
-}
+};
+export default Asset;

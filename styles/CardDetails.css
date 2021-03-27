@@ -390,5 +390,10 @@
 }
 .fileBrowser .wrap ul li {
   display: flex;
+  padding: 5px;
   list-style-type: none;
+}
+.fileBrowser .wrap ul li.selected {
+  background-color: #333;
+  border-radius: 3px;
 }

@@ -118,6 +118,7 @@ const BundleFileContents = ({
         
         // console.log('got file drop', files);
       }}
+      className="file"
     >
       <ul>
         {files.map((f, i) => (
@@ -140,6 +141,7 @@ const FileBrowser = ({
   const [hashes, setHashes] = useState([]);
   const [hashUpdatesLoaded, setHashUpdatesLoaded] = useState(false);
   const [tab, setTab] = useState('files');
+  const [currentHash, setCurrentHash] = useState(null);
   
   if (!hashUpdatesLoaded) {
     (async () => {
@@ -176,13 +178,9 @@ const FileBrowser = ({
     const j = await res.json();
     const {hash: newHash} = j;
     const oldHash = hash;
-    // console.log('saving 1', {oldHash, newHash, updateHashResult, file});
     
-    // const currentHash = await contracts.back.NFT.methods.getHash(id).call();
-    // const r = Math.random().toString(36);
     const mnemonic = globalState.loginToken.mnemonic;
     const updateHashResult = await runSidechainTransaction(mnemonic)('NFT', 'updateHash', oldHash, newHash);
-    // console.log('saving 2', {oldHash, newHash, updateHashResult});
     closeBrowser();
   };
   const _save = async () => {
@@ -207,6 +205,9 @@ const FileBrowser = ({
       alert("No files uploaded!");
       // setLoading(false);
     }
+  };
+  const _handleHashClick = hash => {
+    setCurrentHash(hash);
   };
   
   return (
@@ -251,9 +252,9 @@ const FileBrowser = ({
                 <ul>
                   {hashes.map((hash, i) => {
                     return (
-                      <li key={i}>
+                      <li className={`history ${hash === currentHash ? 'selected' : ''}`} key={i}>
                         <a href="#" onClick={() => {
-                          console.log('clicked', hash);
+                          _handleHashClick(hash);
                         }}>{hash}</a>
                       </li>
                     );

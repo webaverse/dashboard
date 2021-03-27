@@ -29,7 +29,7 @@ import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
 import wbn from '../wbn.js';
-import { blobToFile } from "../webaverse/util";
+import { blobToFile, getExt } from "../webaverse/util";
 import Clear from '@material-ui/icons/Clear';
 import TextFields from '@material-ui/icons/TextFields';
 // import mime from '../libs/mime.js';
@@ -38,17 +38,34 @@ const m = "Proof of address.";
 const _getUrlForHashExt = (hash, name, ext) => `https://ipfs.exokit.org/ipfs/${hash}/${name}.${ext}`;
 const _clone = o => JSON.parse(JSON.stringify(o));
 
-const FileFileContents = ({
-  name,
-  ext,
-  url,
+class FileInput extends React.Component{
+  componentDidMount(){
+    this.nameInput.focus();
+  }
+  render() {
+    return(
+      <input type="text" ref={(input) => { this.nameInput = input; }}  {...this.props} />
+    );
+  }
+}
+const FileDrop2 = ({
+  onDrop,
+  children,
 }) => {
+  // console.log('got props', {children});
   return (
-    <ul class="file-contents">
-      <li>
-       <a href={url}>{name}.{ext}</a>
-      </li>
-    </ul>
+    <div className="file-drop"
+      onDragOver={e => {
+        console.log('on drag over');
+        e.preventDefault();
+      }}
+      onDrop={e => {
+        e.preventDefault();
+        onDrop(e.dataTransfer.files, e);
+      }}>
+      <div className="file-drop-target"/>
+      {children}
+    </div>
   );
 };
 const BundleFileContents = ({
@@ -61,10 +78,10 @@ const BundleFileContents = ({
   renamingFile,
   setRenamingFile,
 }) => {
-  // const [filesLoaded, setFilesLoaded] = useState(false);
+  // ext = 'glb'; // XXX get rid of this hardcode once the ext is properly set
   const [lastUpdateHash, setLastUpdateHash] = useState(null);
   
-  console.log('got bundle file contents call', renamingFile);
+  // console.log('got bundle file contents call', renamingFile);
   
   const _fileToFileSpec = file => {
     /* // const ext = getExt(file.name);
@@ -82,34 +99,44 @@ const BundleFileContents = ({
   };
   
   // console.log('got hash 2', {currentHash, lastUpdateHash});
-  if (ext === 'wbn' && currentHash !== lastUpdateHash) {
-    (async () => {
-      const res = await fetch(url);
-      const arrayBuffer = await res.arrayBuffer();
+  if (currentHash !== lastUpdateHash) {
+    if (ext === 'wbn') {
+      (async () => {
+        const res = await fetch(url);
+        const arrayBuffer = await res.arrayBuffer();
 
-      const fileSpecs = [];
-      const bundle = new wbn.Bundle(arrayBuffer);
-      const {urls} = bundle;
+        const fileSpecs = [];
+        const bundle = new wbn.Bundle(arrayBuffer);
+        const {urls} = bundle;
 
-      for (const u of urls) {
-        const response = bundle.getResponse(u);
-        const {headers} = response;
-        const contentType = headers['content-type'] || 'application/octet-stream';
-        let blob = new Blob([response.body], {
-          type: contentType,
-        });
-        blob = blobToFile(blob, u);
-        const blobUrl = URL.createObjectURL(blob);
-        const {pathname} = new URL(u);
-        fileSpecs.push({
-          pathname,
-          blob,
-          blobUrl,
-        });
-      }
-      
-      setFiles(fileSpecs);
-    })();
+        for (const u of urls) {
+          const response = bundle.getResponse(u);
+          const {headers} = response;
+          const contentType = headers['content-type'] || 'application/octet-stream';
+          let blob = new Blob([response.body], {
+            type: contentType,
+          });
+          blob = blobToFile(blob, u);
+          const blobUrl = URL.createObjectURL(blob);
+          const {pathname} = new URL(u);
+          fileSpecs.push({
+            pathname,
+            blob,
+            blobUrl,
+          });
+        }
+        
+        setFiles(fileSpecs);
+      })();
+    } else {
+      (async () => {
+        const res = await fetch(url);
+        const blob = await res.blob();
+        blob.name = `${name}.${ext}`;
+        const file = _fileToFileSpec(blob);
+        setFiles([file]);
+      })();
+    }
     setLastUpdateHash(currentHash);
   }
   const _renameFile = (file, index) => {
@@ -135,8 +162,10 @@ const BundleFileContents = ({
     }
   };
   const _removeFile = (file, index) => {
-    files.splice(index, 1);
-    setFiles(files);
+    const localFiles = files.slice();
+    localFiles.splice(index, 1);
+    const newFiles = _clone(localFiles);
+    setFiles(newFiles);
   };
   const _keyDown = e => {
     if (e.which === 13) {
@@ -145,36 +174,39 @@ const BundleFileContents = ({
   };
   
   return (
-    <FileDrop
-      onDrop={(fileList, e) => {
-        e.preventDefault();
-        
-        const fileSpecs = files.slice();
-        for (let i = 0; i < fileList.length; i++) {
-          const file = fileList[i];
-          const fileSpec = _fileToFileSpec(file);
-          fileSpecs.push(fileSpec);
-        }
-        setFiles(fileSpecs);
-        
-        // console.log('got file drop', files);
-      }}
-      className="file"
-    >
-      <ul>
-        {files.map((f, i) => (
-          <li key={i}>
-           {renamingFile === f ?
-             <input type="text" value={f.pathname} onChange={e => _setFileName(e, i)} onKeyDown={_keyDown} />
-           :
-             <a href={f.blobUrl} key={i}>{f.pathname}</a>
-           }
-           <nav onClick={() => _renameFile(f, i)}><TextFields/></nav>
-           <nav onClick={() => _removeFile(f, i)}><Clear/></nav>
-          </li>
-        ))}
-      </ul>
-    </FileDrop>
+    <div className="file">
+      <FileDrop2
+        onDrop={(fileList, e) => {
+          e.preventDefault();
+          
+          console.log('uploaded', fileList);
+          
+          const fileSpecs = files.slice();
+          for (let i = 0; i < fileList.length; i++) {
+            const file = fileList[i];
+            const fileSpec = _fileToFileSpec(file);
+            fileSpecs.push(fileSpec);
+          }
+          setFiles(fileSpecs);
+          
+          // console.log('got file drop', files);
+        }}
+      >
+        <ul>
+          {files.map((f, i) => (
+            <li key={i}>
+             {renamingFile === f ?
+               <FileInput value={f.pathname} onChange={e => _setFileName(e, i)} onKeyDown={_keyDown} />
+             :
+               <a href={f.blobUrl} key={i}>{f.pathname}</a>
+             }
+             <nav onClick={() => _renameFile(f, i)}><TextFields/></nav>
+             <nav onClick={() => _removeFile(f, i)}><Clear/></nav>
+            </li>
+          ))}
+        </ul>
+      </FileDrop2>
+    </div>
   );
 };
 const FileBrowser = ({
@@ -191,7 +223,7 @@ const FileBrowser = ({
   const [lastUpdateHash, setLastUpdateHash] = useState(null);
   const [renamingFile, setRenamingFile] = useState(null);
   
-  console.log('got hash 1.1', {renamingFile});
+  console.log('got hash 1.1', {name, hash, ext, files, renamingFile});
   
   if (lastUpdateHash !== currentHash) {
     (async () => {
@@ -228,8 +260,15 @@ const FileBrowser = ({
     const {hash: newHash} = j;
     const oldHash = hash;
     
+    // console.log('handle file upload', file);
+    // debugger;
+    
+    const ext = getExt(file.name);
+    
     const mnemonic = globalState.loginToken.mnemonic;
     const updateHashResult = await runSidechainTransaction(mnemonic)('NFT', 'updateHash', oldHash, newHash);
+    const setMetadataResult = await runSidechainTransaction(mnemonic)('NFT', 'setMetadata', newHash, 'ext', ext);
+    console.log('file uploaded ok', {oldHash, newHash, ext, updateHashResult, setMetadataResult});
     closeBrowser();
   };
   const _save = async () => {
@@ -238,14 +277,17 @@ const FileBrowser = ({
     // setLoading(true);
     if (files.length > 1) {
       const filesArray = files.map(f => f.blob);
+      // debugger;
       const wbn = await makeWbn(filesArray);
       await handleFileUpload(wbn);
     } else if (files.length === 1) {
-      if (getExt(files[0].name) === "glb") {
-        const wbn = makePhysicsBake(files);
+      if (getExt(files[0].pathname) === "glb") {
+        const filesArray = files.map(f => f.blob);
+        const wbn = await makePhysicsBake(filesArray);
         await handleFileUpload(wbn);
-      } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) {
-        await handleFileUpload(files[0]);
+      } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].pathname)) >= 0) {
+        // debugger;
+        await handleFileUpload(files[0].blob);
       } else {
         alert("Use one of the support file formats: png, glb, vrm");
         // setLoading(false);
@@ -282,7 +324,7 @@ const FileBrowser = ({
           switch (tab) {
             case 'files': {
               return (
-                ext === 'wbn' ? <BundleFileContents
+                <BundleFileContents
                   name={name}
                   ext={ext}
                   url={u}
@@ -292,10 +334,6 @@ const FileBrowser = ({
                   renamingFile={renamingFile}
                   setRenamingFile={setRenamingFile}
                   key={`${name}:${ext}:${hash}`}
-                /> : <FileFileContents
-                  name={name}
-                  ext={ext}
-                  url={u}
                 />
               );
             }

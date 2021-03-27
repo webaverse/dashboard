@@ -77,10 +77,8 @@ const BundleFileContents = ({
   renamingFile,
   setRenamingFile,
 }) => {
-  // ext = 'glb'; // XXX get rid of this hardcode once the ext is properly set
+  const [loading, setLoading] = useState(false);
   const [lastUpdateHash, setLastUpdateHash] = useState(null);
-  
-  // console.log('got bundle file contents call', renamingFile);
   
   const _fileToFileSpec = file => {
     /* // const ext = getExt(file.name);
@@ -99,43 +97,49 @@ const BundleFileContents = ({
   
   // console.log('got hash 2', {currentHash, lastUpdateHash});
   if (currentHash !== lastUpdateHash) {
-    if (ext === 'wbn') {
-      (async () => {
-        const res = await fetch(url);
-        const arrayBuffer = await res.arrayBuffer();
+    (async () => {
+      setLoading(true);
 
-        const fileSpecs = [];
-        const bundle = new wbn.Bundle(arrayBuffer);
-        const {urls} = bundle;
+      try {      
+        if (ext === 'wbn') {
+          const res = await fetch(url);
+          const arrayBuffer = await res.arrayBuffer();
 
-        for (const u of urls) {
-          const response = bundle.getResponse(u);
-          const {headers} = response;
-          const contentType = headers['content-type'] || 'application/octet-stream';
-          let blob = new Blob([response.body], {
-            type: contentType,
-          });
-          blob = blobToFile(blob, u);
-          const blobUrl = URL.createObjectURL(blob);
-          const {pathname} = new URL(u);
-          fileSpecs.push({
-            pathname,
-            blob,
-            blobUrl,
-          });
+          const fileSpecs = [];
+          const bundle = new wbn.Bundle(arrayBuffer);
+          const {urls} = bundle;
+
+          for (const u of urls) {
+            const response = bundle.getResponse(u);
+            const {headers} = response;
+            const contentType = headers['content-type'] || 'application/octet-stream';
+            let blob = new Blob([response.body], {
+              type: contentType,
+            });
+            blob = blobToFile(blob, u);
+            const blobUrl = URL.createObjectURL(blob);
+            const {pathname} = new URL(u);
+            fileSpecs.push({
+              pathname,
+              blob,
+              blobUrl,
+            });
+          }
+          
+          setFiles(fileSpecs);
+        } else {
+          const res = await fetch(url);
+          const blob = await res.blob();
+          blob.name = `${name}.${ext}`;
+          const file = _fileToFileSpec(blob);
+          setFiles([file]);
         }
-        
-        setFiles(fileSpecs);
-      })();
-    } else {
-      (async () => {
-        const res = await fetch(url);
-        const blob = await res.blob();
-        blob.name = `${name}.${ext}`;
-        const file = _fileToFileSpec(blob);
-        setFiles([file]);
-      })();
-    }
+      } catch(err) {
+        console.warn(err);
+      }
+
+      setLoading(false);
+    })();
     setLastUpdateHash(currentHash);
   }
   const _renameFile = (file, index) => {
@@ -172,7 +176,9 @@ const BundleFileContents = ({
     }
   };
   
-  return (
+  return (loading ?
+    <Loader loading={loading} />
+  :
     <div className="file">
       <FileDrop2
         onDrop={(fileList, e) => {
@@ -399,7 +405,7 @@ const CardDetails = ({
   const [unlock, setUnlock] = useState(null);
 
   const [loading, setLoading] = useState(false);
-  const [imageView, setImageView] = useState("2d");
+  const [imageView, setImageView] = useState('2d');
   const [tryOn, setTryOn] = useState(false);
   const [tokenOnMain, setTokenOnMain] = useState(false);
   const [mainnetAddress, setMainnetAddress] = useState(null);

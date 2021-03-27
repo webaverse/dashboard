@@ -141,7 +141,7 @@ const FileBrowser = ({
   const [hashes, setHashes] = useState([]);
   const [hashUpdatesLoaded, setHashUpdatesLoaded] = useState(false);
   const [tab, setTab] = useState('files');
-  const [currentHash, setCurrentHash] = useState(null);
+  const [currentHash, setCurrentHash] = useState(hash);
   
   if (!hashUpdatesLoaded) {
     (async () => {

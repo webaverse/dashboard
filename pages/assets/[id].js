@@ -82,7 +82,7 @@ export default ({ data }) => {
              minterAddress={token.minter.address}
              minterUsername={token.minter.username}
              globalState={globalState}
-             networkType='webaverse'
+             networkType="sidechain"
              getData={getData}
            />
       :

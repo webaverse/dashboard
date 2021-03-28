@@ -3,34 +3,37 @@ import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 import ethereumJsTx from '../libs/ethereumjs-tx.js';
-import {makePromise} from './util.js';
-import { storageHost, web3MainnetSidechainEndpoint, web3RinkebySidechainEndpoint } from './constants.js';
+import { makePromise } from './util.js';
+import { storageHost, web3MainnetSidechainEndpoint, web3TestnetSidechainEndpoint } from './constants.js';
 const { Transaction, Common } = ethereumJsTx;
 
+// TODO: Polygon
+const chainName = 'mainnet'; // TODO: Handle getting the chain we're on here
+
 export const Networks = {
-    mainnet: {
-        displayName: "Mainnet",
-        transferOptions: ["mainnetsidechain"]
-    },
-    mainnetsidechain: {
-        displayName: "Webaverse",
-        transferOptions: ["mainnet", "polygon"]
-    },
-    polygon: {
-      displayName: "Polygon",
-      transferOptions: ["mainnetsidechain"]
-    },
-    rinkeby: {
-      displayName: "Rinkeby",
-      transferOptions: ["rinkebysidechain"]
-    },
-    rinkebysidechain: {
-      displayName: "Webaverse Testnet",
-      transferOptions: ["rinkeby, polygonTestnet"]
-    },
-    polygonTestnet: {
-      displayName: "Polygon Testnet",
-      transferOptions: ["mainnetsidechain"]
+  mainnet: {
+    displayName: "Mainnet",
+    transferOptions: ["mainnetsidechain"]
+  },
+  mainnetsidechain: {
+    displayName: "Webaverse",
+    transferOptions: ["mainnet", "polygon"]
+  },
+  polygon: {
+    displayName: "Polygon",
+    transferOptions: ["mainnetsidechain"]
+  },
+  testnet: {
+    displayName: "Rinkeby Testnet",
+    transferOptions: ["testnetsidechain"]
+  },
+  testnetsidechain: {
+    displayName: "Webaverse Testnet",
+    transferOptions: ["testnet, testnetpolygon"]
+  },
+  testnetpolygon: {
+    displayName: "Polygon Testnet",
+    transferOptions: ["mainnetsidechain"]
   }
 }
 const getBlockchain = async () => {
@@ -39,60 +42,41 @@ const getBlockchain = async () => {
   const abis = await fetch('https://contracts.webaverse.com/config/abi.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
 
   let injectedWeb3 = (typeof window !== 'undefined' && window.ethereum) ?
-    injectedWeb3 = new Web3(window.ethereum):
+    new Web3(window.ethereum) :
     new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/0bb8f708513d45a1881ec056c7296df9"))
 
   const web3 = {
     mainnet: injectedWeb3,
     mainnetsidechain: new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint)),
-    rinkeby: injectedWeb3,
-    rinkebysidechain: new Web3(new Web3.providers.HttpProvider(web3RinkebySidechainEndpoint)),
+    testnet: injectedWeb3,
+    testnetsidechain: new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint)),
     polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/0937c004ab133135c86586b55ca212a6c9ecd224`))
   };
-  let addressFront = null;
-  let addressBack = null;
   let networkName = '';
   let common = null;
-  function _setMainChain(isMainChain) {
-    if (isMainChain) {
-      web3.front = web3.mainnet;
-      web3.back = web3.mainnetsidechain;
-      addressFront = addresses.mainnet;
-      addressBack = addresses.mainnetsidechain;
-      networkName = 'mainnet';
-    } else {
-      web3.front = web3.rinkeby;
-      web3.back = web3.rinkebysidechain;
-      addressFront = addresses.rinkeby;
-      addressBack = addresses.rinkebysidechain;
-      networkName = 'rinkeby';
-    }
+  // TODO: Add polygon
+  function _setMainChain(chainName) {
+    networkName = chainName;
+    let nodeName = 'geth';
+    let networkId = 1;
+    let chainId = 1338; // 1337 for testnet
+    // TODO: 
     common = Common.forCustomChain(
-      isMainChain ? 'mainnet' : 'rinkeby',
+      // TODO: handle polygon, what is going on here?
+      chainName,
       {
-        name: 'geth',
-        networkId: 1,
-        chainId: isMainChain ? 1338 : 1337,
+        name: nodeName,
+        networkId: networkId,
+        chainId: chainId,
       },
       'petersburg',
     );
   }
-
-  const networkName = (typeof window !== 'undefined' && /^test\./.test(location.hostname)) ?
-    'rinkeby' : 'mainnet';
-
-  const common = Common.forCustomChain(
-    'mainnet',
-    {
-      name: 'geth',
-      networkId: 1,
-      chainId: isMainChain ? 1338 : 1337,
-    },
-    'petersburg',
-  );
+  _setMainChain(chainName);
 
   let contracts = {}
-  Object.keys(BlockchainNetwork).forEach(network => {
+  Object.keys(Networks).forEach(network => {
+    console.log("*** Network is", network);
     contracts[network] = {
       Account: new web3[network].eth.Contract(abis.Account, addresses[network].Account),
       FT: new web3[network].eth.Contract(abis.FT, addresses[network].FT),

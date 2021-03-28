@@ -59,4 +59,4 @@ export const presenceHost = 'worlds.webaverse.com';
 export const localstorageHost = 'https://localstorage.webaverse.com';
 export const loginEndpoint = 'https://login.exokit.org';
 export const web3MainnetSidechainEndpoint = 'https://mainnetsidechain.exokit.org';
-export const web3RinkebySidechainEndpoint = 'https://rinkebysidechain.exokit.org';
+export const web3TestnetSidechainEndpoint = 'https://testnetsidechain.exokit.org';

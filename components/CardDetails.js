@@ -471,7 +471,7 @@ const CardDetails = ({
       const network = await window.mainWeb3.eth.net.getNetworkType();
       if (network === "main") {
         return true;
-      } else if (network === "rinkeby"){
+      } else if (network === "testnet"){
         return true;
       }
       else {
@@ -691,7 +691,7 @@ const CardDetails = ({
         });
         await depositAsset(
           id,
-          "webaverse",
+          "sidechain",
           mainnetAddress,
           globalState.address,
           globalState,
@@ -870,7 +870,7 @@ const CardDetails = ({
                     minterUsername={minterUsername}
                     minterAddress={minterAddress}
                     cardSize={""}
-                    networkType="webaverse"
+                    networkType="sidechain"
                     glow={false}
                     imageView={imageView}
                   />
@@ -1136,7 +1136,7 @@ const CardDetails = ({
               </div>
             )}
           </div>
-        </>
+        </Fragment>
       )}
       {fileBrowserOpen ? <FileBrowser
         name={name}
@@ -1145,7 +1145,7 @@ const CardDetails = ({
         globalState={globalState}
         closeBrowser={() => setFileBrowserOpen(false)}
       /> : null}
-    </>
+    </Fragment>
   );
 };
 

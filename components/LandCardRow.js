@@ -30,7 +30,7 @@ const LandCardRow = ({ data, cardSize }) => {
                                     ownerUsername={asset.owner.username}
                                     ownerAddress={asset.owner.address}
                                     cardSize={cardSize}
-                                    networkType="webaverse"
+                                    networkType="sidechain"
                                 />
                             </a>
                         </Link>

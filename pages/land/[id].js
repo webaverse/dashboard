@@ -57,7 +57,7 @@ const Land = ({ data }) => {
              ownerUsername={land.owner.username}
              ownerAddress={land.owner.address}
              globalState={globalState}
-             networkType='webaverse'
+             networkType="sidechain"
              getData={getData}
            />
       :

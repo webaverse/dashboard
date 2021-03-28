@@ -123,7 +123,7 @@ export default () => {
                 minterUsername={globalState.name}
                 minterAddress={globalState.address}
                 cardSize={""}
-                networkType='webaverse'
+                networkType="sidechain"
                 glow={false}
               />
             </div>

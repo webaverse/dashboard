@@ -58,7 +58,7 @@ const LandCardGrid = ({ data, currentCard, setCurrentCard, cardSize }) => {
                                 ownerAddress={asset.owner.address}
                                 cardSize={cardSize}
                                 onClickFunction={() => showCardDetails(asset)}
-                                networkType="webaverse"
+                                networkType="sidechain"
                             />
                         </a>
                     </Link>

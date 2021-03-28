@@ -5,21 +5,7 @@ import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import Loader from "../components/Loader";
-<<<<<<< HEAD
-
-=======
-// import Hiring from "../pages/hiring";
-
-/* export default () => {
-    return <Hiring/>
-} */
-
-<<<<<<< HEAD
->>>>>>> origin/nft
-export default () => {
-=======
 const PagesRoot = () => {
->>>>>>> origin/master
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
     const [models, setModels] = useState(null);
@@ -91,12 +77,5 @@ const PagesRoot = () => {
             </div>
         </Fragment>
     );
-<<<<<<< HEAD
 };
-=======
-};
-<<<<<<< HEAD
->>>>>>> origin/nft
-=======
 export default PagesRoot;
->>>>>>> origin/master

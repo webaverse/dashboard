@@ -347,7 +347,7 @@ const LandCardDetails = ({
                                         minterUsername={minterUsername}
                                         minterAddress={minterAddress}
                                         cardSize={""}
-                                        networkType="webaverse"
+                                        networkType="sidechain"
                                         glow={false}
                                     />
                                 </div>,

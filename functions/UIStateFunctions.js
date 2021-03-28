@@ -87,7 +87,7 @@ export const getTokens = async (start, end, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${start}-${end}` : `https://mainnetall-tokens.webaverse.com/${start}-${end}`}`);
+  const res = await fetch(`${networkName !== "main" ? `https://rinkebyall-tokens.webaverse.com/${start}-${end}` : `https://mainnetall-tokens.webaverse.com/${start}-${end}`}`);
   const tokens = await res.json();
 
   return tokens;
@@ -101,8 +101,7 @@ export const getToken = async (id, hostname) => {
     const { getNetworkName } = await getBlockchain();
     networkName = getNetworkName();
   }
-
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
+  const res = await fetch(`${networkName !== "mainnet" ? `https://rinkebyall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
 
 
   const token = await res.json();
@@ -137,7 +136,7 @@ export const getInventoryForCreator = async (creatorAddress, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${creatorAddress}` : `https://mainnetall-tokens.webaverse.com/${creatorAddress}`}`);
+  const res = await fetch(`${networkName !== "main" ? `https://rinkebyall-tokens.webaverse.com/${creatorAddress}` : `https://mainnetall-tokens.webaverse.com/${creatorAddress}`}`);
 
   const creatorInventory = await res.json();
 

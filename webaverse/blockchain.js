@@ -3,7 +3,7 @@ import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 import ethereumJsTx from '../libs/ethereumjs-tx.js';
-import { makePromise } from './util.js';
+import {makePromise} from './util.js';
 import { storageHost, web3MainnetSidechainEndpoint, web3RinkebySidechainEndpoint } from './constants.js';
 const { Transaction, Common } = ethereumJsTx;
 
@@ -33,7 +33,6 @@ export const Networks = {
       transferOptions: ["mainnetsidechain"]
   }
 }
-
 const getBlockchain = async () => {
   const addresses = await fetch('https://contracts.webaverse.com/config/addresses.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
 
@@ -50,6 +49,34 @@ const getBlockchain = async () => {
     rinkebysidechain: new Web3(new Web3.providers.HttpProvider(web3RinkebySidechainEndpoint)),
     polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/0937c004ab133135c86586b55ca212a6c9ecd224`))
   };
+  let addressFront = null;
+  let addressBack = null;
+  let networkName = '';
+  let common = null;
+  function _setMainChain(isMainChain) {
+    if (isMainChain) {
+      web3.front = web3.mainnet;
+      web3.back = web3.mainnetsidechain;
+      addressFront = addresses.mainnet;
+      addressBack = addresses.mainnetsidechain;
+      networkName = 'mainnet';
+    } else {
+      web3.front = web3.rinkeby;
+      web3.back = web3.rinkebysidechain;
+      addressFront = addresses.rinkeby;
+      addressBack = addresses.rinkebysidechain;
+      networkName = 'rinkeby';
+    }
+    common = Common.forCustomChain(
+      isMainChain ? 'mainnet' : 'rinkeby',
+      {
+        name: 'geth',
+        networkId: 1,
+        chainId: isMainChain ? 1338 : 1337,
+      },
+      'petersburg',
+    );
+  }
 
   const networkName = (typeof window !== 'undefined' && /^test\./.test(location.hostname)) ?
     'rinkeby' : 'mainnet';
@@ -138,9 +165,6 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
 
   const txData = contracts['back'][contractName].methods[method](...args);
   const data = txData.encodeABI();
-  const gas = await txData.estimateGas({
-    from: address,
-  });
   let gasPrice = await web3['back'].eth.getGasPrice();
   gasPrice = parseInt(gasPrice, 10);
 
@@ -161,6 +185,7 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
   transactionQueue.unlock();
   return receipt;
 };
+
 const getTransactionSignature = async (chainName, contractName, transactionHash) => {
   const u = `https://sign.exokit.org/${chainName}/${contractName}/${transactionHash}`;
   for (let i = 0; i < 10; i++) {

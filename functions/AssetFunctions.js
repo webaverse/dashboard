@@ -136,13 +136,70 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
 
   let depositedFiltered;
   if (tokenId) {
-    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString());
+    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === mainnetAddress ? mainnetAddress : address && entry.returnValues[1] === tokenId.toString());
   } else {
-    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address);
+    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === mainnetAddress ? mainnetAddress : address);
   }
 
   const deposits = depositedFiltered[depositedFiltered.length-1];
   return deposits;
+}
+
+export const getStuckAssets = async (tokenName, tokenId, globalState) => {
+  if (!globalState.loginToken) return null;
+  const { contracts, getNetworkName, getMainnetAddress } = await getBlockchain();
+  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(globalState.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+  const address = wallet.getAddressString();
+
+  const mainnetAddress = await getMainnetAddress();
+  const networkName = getNetworkName();
+
+  let chainName, otherChainName;
+  if (networkName === "main") {
+    chainName = 'front';
+    otherChainName = 'back';
+  } else {
+    otherChainName = 'front';
+    chainName = 'back';
+  }
+
+  const contract = contracts[chainName];
+  const proxyContract = contract[tokenName + 'Proxy'];
+  const otherContract = contracts[otherChainName];
+  const otherProxyContract = otherContract[tokenName + 'Proxy'];
+
+  const [
+    depositedEntries,
+    withdrewEntries,
+    otherDepositedEntries,
+    otherWithdrewEntries,
+  ] = await Promise.all([
+    proxyContract.getPastEvents('Deposited', {
+      fromBlock: 0,
+      toBlock: 'latest',
+    }),
+    proxyContract.getPastEvents('Withdrew', {
+      fromBlock: 0,
+      toBlock: 'latest',
+    }),
+    otherProxyContract.getPastEvents('Deposited', {
+      fromBlock: 0,
+      toBlock: 'latest',
+    }),
+    otherProxyContract.getPastEvents('Withdrew', {
+      fromBlock: 0,
+      toBlock: 'latest',
+    }),
+  ]);
+
+  let depositedFiltered;
+  if (tokenId) {
+    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === mainnetAddress ? mainnetAddress : address && entry.returnValues[1] === tokenId.toString());
+  } else {
+    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === mainnetAddress ? mainnetAddress : address);
+  }
+
+  return depositedFiltered;
 }
 
 export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSuccess, handleError) => {
@@ -161,7 +218,7 @@ export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSu
   to = to.toLowerCase();
   tokenId = parseInt(tokenId, 10);
 
-  if (to === globalState.address) {
+  if (to === returnValues[0].toLowerCase()) {
     const networkName = getNetworkName();
     const fullChainName = networkName + 'sidechain';
 
@@ -318,7 +375,7 @@ export const setAvatar = async (id, state, handleSuccess, handleError) => {
   if (!state.loginToken)
     throw new Error('not logged in');
   try {
-    const res = await fetch(`${networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
+    const res = await fetch(`${networkName !== "main" ? `https://rinkebyall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
     const token = await res.json();
     const { name, ext, hash } = token.properties;
     const url = `${storageHost}/${hash.slice(2)}`;
@@ -523,7 +580,7 @@ export const setHomespace = async (id, state, handleSuccess, handleError) => {
 
   try {
 
-    const res = await fetch(`${networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
+    const res = await fetch(`${networkName !== "main" ? `https://rinkebyall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
     const token = await res.json();
     const { name, ext, hash } = token.properties;
     const url = `${storageHost}/${hash.slice(2)}`;

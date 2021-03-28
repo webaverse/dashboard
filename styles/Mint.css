@@ -18,14 +18,14 @@ input {
   margin: 0 auto;
   margin-top: 20px;
 }
-.file-drop {
+.file-drop-container .file-drop {
   /* relatively position the container bc the contents are absolute */
   position: relative;
   height: 100%;
   width: 100%;
 }
 
-.file-drop > .file-drop-target {
+.file-drop-container .file-drop > .file-drop-target {
   font-size: 1.5em;
   /* basic styles */
   position: absolute;
@@ -64,7 +64,7 @@ input {
   text-align: center;
 }
 
-.file-drop > .file-drop-target.file-drop-dragging-over-frame {
+.file-drop-container .file-drop > .file-drop-target.file-drop-dragging-over-frame {
   /* overlay a black mask when dragging over the frame */
   border: none;
   box-shadow: none;
@@ -74,7 +74,7 @@ input {
   color: white;
 }
 
-.file-drop > .file-drop-target.file-drop-dragging-over-target {
+.file-drop-container .file-drop > .file-drop-target.file-drop-dragging-over-target {
   /* turn stuff orange when we are dragging over the target */
   box-shadow: 0 0 13px 5px #c4005d;
   filter: drop-shadow(0px 0px 15px #c4005d);

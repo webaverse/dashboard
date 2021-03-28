@@ -12,10 +12,10 @@ import { storageHost } from "../webaverse/constants";
 import Loader from '../components/Loader';
 import AssetCard from '../components/Card';
 import ProgressBar from '../components/ProgressBar';
-import { makeWbn, makeBin } from "../webaverse/build";
+import { makeWbn, makeBin, makePhysicsBake } from "../webaverse/build";
 import { blobToFile, getExt } from "../webaverse/util";
 
-export default () => {
+const Mint = () => {
   const router = useRouter();
   const { globalState, setGlobalState } = useAppContext();
   const [file, setFile] = useState(null);
@@ -61,7 +61,8 @@ export default () => {
       handleFileUpload(wbn);
     } else if (files.length === 1) {
       if (getExt(files[0].name) === "glb") {
-        makePhysicsBake(files);
+        const wbn = makePhysicsBake(files);
+        handleFileUpload(wbn);
       } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) {
         handleFileUpload(files[0]);
       } else {
@@ -71,29 +72,6 @@ export default () => {
     } else {
       alert("No files uploaded!");
       setLoading(false);
-    }
-  }
-
-  const makePhysicsBake = async (file) => {
-    if (file && getExt(file[0].name) === "glb") {
-      const bin = await makeBin(file);
-
-      const manifest = {
-        "xr_type": "webxr-site@0.0.1",
-        "start_url": file[0].name,
-        "physics_url": bin.name
-      };
-      const blob = new Blob([JSON.stringify(manifest)], {type: "application/json"});
-      const manifestFile = blobToFile(blob, "manifest.json");
-
-      const modelBlob = new Blob([file[0]], {type: file[0].type});
-      const model = blobToFile(modelBlob, file[0].name);
-      const files = [model, bin, manifestFile];
-
-      const wbn = await makeWbn(files);
-      handleFileUpload(wbn);
-    } else {
-      alert("Please you a valid .glb model");
     }
   }
 
@@ -215,4 +193,5 @@ export default () => {
       ]}
     </>
   }</>)
-}
+};
+export default Mint;

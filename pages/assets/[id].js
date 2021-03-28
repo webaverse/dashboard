@@ -55,6 +55,7 @@ export default ({ data }) => {
         :
           <meta name="twitter:card" content="summary_large_image" />
         }
+        <script type="text/javascript" src="/geometry.js"></script>
       </Head>
       { !loading ?
           <CardDetails

@@ -14,8 +14,12 @@ import Loader from "../components/Loader";
     return <Hiring/>
 } */
 
+<<<<<<< HEAD
 >>>>>>> origin/nft
 export default () => {
+=======
+const PagesRoot = () => {
+>>>>>>> origin/master
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
     const [models, setModels] = useState(null);
@@ -91,4 +95,8 @@ export default () => {
 };
 =======
 };
+<<<<<<< HEAD
 >>>>>>> origin/nft
+=======
+export default PagesRoot;
+>>>>>>> origin/master

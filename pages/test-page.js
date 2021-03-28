@@ -6,7 +6,7 @@ import { getCreators } from "../functions/UIStateFunctions.js";
 import ProfileCards from "../components/ProfileCards";
 import Loader from "../components/Loader";
 
-const Accounts = () => {
+const TestPage = () => {
   const { globalState, setGlobalState } = useAppContext();
   const [creatorProfiles, setCreatorProfiles] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -29,12 +29,8 @@ const Accounts = () => {
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      { loading ?
-        <Loader loading={true} />
-      :
-        <ProfileCards profiles={creatorProfiles} />
-      }
+      <div></div>
     </div>
   )
 };
-export default Accounts;
+export default TestPage;

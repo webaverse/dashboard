@@ -413,6 +413,7 @@ const CardDetails = ({
             {loading ? (
               <Loader loading={loading} />
             ) : (
+<<<<<<< HEAD
               [
                 <div className="assetDetailsLeftColumn">
                   <AssetCard
@@ -680,6 +681,406 @@ const CardDetails = ({
                   ]}
                 </div>,
               ]
+=======
+                <>
+                    <div className="assetDetails">
+                        {loading ? (
+                            <Loader loading={loading} />
+                        ) : (
+                            [
+                                <div className="assetDetailsLeftColumn">
+                                    <AssetCard
+                                        id={id}
+                                        key={id}
+                                        assetName={name}
+                                        ext={ext}
+                                        animation_url={animation_url}
+                                        description={description}
+                                        buyPrice={buyPrice}
+                                        image={image}
+                                        hash={hash}
+                                        numberInEdition={numberInEdition}
+                                        totalSupply={totalSupply}
+                                        balance={balance}
+                                        totalInEdition={totalInEdition}
+                                        assetType={assetType}
+                                        ownerAvatarPreview={ownerAvatarPreview}
+                                        ownerUsername={ownerUsername}
+                                        ownerAddress={ownerAddress}
+                                        minterAvatarPreview={
+                                            minterAvatarPreview
+                                        }
+                                        minterUsername={minterUsername}
+                                        minterAddress={minterAddress}
+                                        cardSize={""}
+                                        networkType="webaverse"
+                                        glow={false}
+                                        imageView={imageView}
+                                    />
+                                </div>,
+                                <div className="assetDetailsRightColumn">
+                                    {[
+                                        <div className="assetDetailsOwnedBy">
+                                            <span
+                                                className={`creatorIcon creatorIcon tooltip`}
+                                            >
+                                                <img
+                                                    src={ownerAvatarPreview.replace(
+                                                        /\.[^.]*$/,
+                                                        ".png"
+                                                    )}
+                                                />
+                                                <span
+                                                    className={`creatorName creatorName tooltiptext`}
+                                                >
+                                                    {ownerUsername}
+                                                </span>
+                                            </span>{" "}
+                                            Owned by{" "}
+                                            <Link
+                                                href={
+                                                    `/accounts/` + ownerAddress
+                                                }
+                                            >
+                                                {ownerUsername}
+                                            </Link>
+                                        </div>,
+                                        <div
+                                            className={`detailsBlock detailsBlockSet noselect`}
+                                        >
+                                            {[
+                                                <div className="Accordion">
+                                                    <div
+                                                        className="accordionTitle"
+                                                        onClick={() =>
+                                                            setToggleViewOpen(
+                                                                !toggleViewOpen
+                                                            )
+                                                        }
+                                                    >
+                                                        <span className="accordionTitleValue">
+                                                            View
+                                                        </span>
+                                                        <span
+                                                            className={`accordionIcon ${
+                                                                toggleViewOpen
+                                                                    ? "reverse"
+                                                                    : ""
+                                                            }`}
+                                                        ></span>
+                                                    </div>
+                                                    {toggleViewOpen && (
+                                                        <div className="accordionDropdown">
+                                                            {[
+                                                                is3d &&
+                                                                    imageView !=
+                                                                        "3d" && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={() =>
+                                                                                setImageView(
+                                                                                    "3d"
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            See
+                                                                            in
+                                                                            3d
+                                                                        </button>
+                                                                    ),
+                                                                is3d &&
+                                                                    imageView !=
+                                                                        "2d" && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={() =>
+                                                                                setImageView(
+                                                                                    "2d"
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            See
+                                                                            in
+                                                                            2d
+                                                                        </button>
+                                                                    ),
+                                                                <Link
+                                                                    href={
+                                                                        "/preview/" +
+                                                                        id
+                                                                    }
+                                                                >
+                                                                    <button className="assetDetailsButton">
+                                                                        Try in Webaverse
+                                                                    </button>
+                                                                </Link>,
+                                                            ]}
+                                                        </div>
+                                                    )}
+                                                </div>,
+                                                userOwnsThisAsset && (
+                                                    <div className="Accordion">
+                                                        <div
+                                                            className="accordionTitle"
+                                                            onClick={() =>
+                                                                setToggleEditOpen(
+                                                                    !toggleEditOpen
+                                                                )
+                                                            }
+                                                        >
+                                                            <span className="accordionTitleValue">
+                                                                Edit
+                                                            </span>
+                                                            <span
+                                                                className={`accordionIcon ${
+                                                                    toggleEditOpen
+                                                                        ? "reverse"
+                                                                        : ""
+                                                                }`}
+                                                            ></span>
+                                                        </div>
+                                                        {toggleEditOpen && (
+                                                            <div className="accordionDropdown">
+                                                                {[
+                                                                    userOwnsThisAsset && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                handleSetAssetName
+                                                                            }
+                                                                        >
+                                                                            Change
+                                                                            Asset
+                                                                            Name
+                                                                        </button>
+                                                                    ),
+                                                                    userOwnsThisAsset && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                handleDeleteAsset
+                                                                            }
+                                                                        >
+                                                                            Burn
+                                                                            This
+                                                                            Item
+                                                                        </button>
+                                                                    ),
+                                                                    userOwnsThisAsset && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                handleAddCollaborator
+                                                                            }
+                                                                        >
+                                                                            Add
+                                                                            Collaborator
+                                                                        </button>
+                                                                    ),
+                                                                    userOwnsThisAsset && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                handleRemoveCollaborator
+                                                                            }
+                                                                        >
+                                                                            Remove
+                                                                            Collaborator
+                                                                        </button>
+                                                                    ),
+                                                                ]}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ),
+                                                userOwnsThisAsset && (
+                                                    <div className="Accordion">
+                                                        <div
+                                                            className="accordionTitle"
+                                                            onClick={() =>
+                                                                setToggleAddOpen(
+                                                                    !toggleAddOpen
+                                                                )
+                                                            }
+                                                        >
+                                                            <span className="accordionTitleValue">
+                                                                Add
+                                                            </span>
+                                                            <span
+                                                                className={`accordionIcon ${
+                                                                    toggleAddOpen
+                                                                        ? "reverse"
+                                                                        : ""
+                                                                }`}
+                                                            ></span>
+                                                        </div>
+                                                        {toggleAddOpen && (
+                                                            <div className="accordionDropdown">
+                                                                {[
+                                                                    userOwnsThisAsset && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                handleSetAvatar
+                                                                            }
+                                                                        >
+                                                                            Set
+                                                                            As
+                                                                            Avatar
+                                                                        </button>
+                                                                    ),
+                                                                    userOwnsThisAsset && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                handleSetHomespace
+                                                                            }
+                                                                        >
+                                                                            Set
+                                                                            As
+                                                                            Homespace
+                                                                        </button>
+                                                                    ),
+                                                                    userOwnsThisAsset && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                addToLoadout
+                                                                            }
+                                                                        >
+                                                                            Add
+                                                                            To
+                                                                            Loadout
+                                                                        </button>
+                                                                    ),
+                                                                    userOwnsThisAsset && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                clearLoadout
+                                                                            }
+                                                                        >
+                                                                            Clear
+                                                                            From
+                                                                            Loadout
+                                                                        </button>
+                                                                    ),
+                                                                ]}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ),
+                                                (stuck ||
+                                                    userOwnsThisAsset ||
+                                                    tokenOnMain) && (
+                                                    <div className="Accordion">
+                                                        <div
+                                                            className="accordionTitle"
+                                                            onClick={() =>
+                                                                setToggleTradeOpen(
+                                                                    !toggleTradeOpen
+                                                                )
+                                                            }
+                                                        >
+                                                            <span className="accordionTitleValue">
+                                                                Trade
+                                                            </span>
+                                                            <span
+                                                                className={`accordionIcon ${
+                                                                    toggleTradeOpen
+                                                                        ? "reverse"
+                                                                        : ""
+                                                                }`}
+                                                            ></span>
+                                                        </div>
+                                                        {toggleTradeOpen && (
+                                                            <div className="accordionDropdown">
+                                                                {[
+                                                                    !tokenOnMain &&
+                                                                        !userOwnsThisAsset && (
+                                                                            <button
+                                                                                className="assetDetailsButton"
+                                                                                onClick={() =>
+                                                                                    resubmitAsset(
+                                                                                        "NFT",
+                                                                                        id,
+                                                                                        globalState,
+                                                                                        handleSuccess,
+                                                                                        handleError
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                Resubmit
+                                                                                Transfer
+                                                                            </button>
+                                                                        ),
+                                                                    userOwnsThisAsset && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                handleDeposit
+                                                                            }
+                                                                        >
+                                                                            Transfer
+                                                                            To{" "}
+                                                                            {
+                                                                                otherNetworkName
+                                                                            }
+                                                                        </button>
+                                                                    ),
+                                                                    tokenOnMain && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                handleWithdraw
+                                                                            }
+                                                                        >
+                                                                            Transfer
+                                                                            From{" "}
+                                                                            {
+                                                                                otherNetworkName
+                                                                            }
+                                                                        </button>
+                                                                    ),
+                                                                    userOwnsThisAsset && (
+                                                                        <button
+                                                                            className="assetDetailsButton"
+                                                                            onClick={
+                                                                                handleSellAsset
+                                                                            }
+                                                                        >
+                                                                            Sell
+                                                                            This
+                                                                            Item
+                                                                        </button>
+                                                                    ),
+                                                                ]}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ),
+                                            ]}
+                                        </div>,
+                                        globalState.address &&
+                                            !userOwnsThisAsset &&
+                                            storeId &&
+                                            buyPrice && (
+                                                <div className="detailsBlock detailsBlockSet">
+                                                    <button
+                                                        className="assetDetailsButton"
+                                                        onClick={handleBuyAsset}
+                                                    >
+                                                        Buy This Item
+                                                    </button>
+                                                </div>
+                                            ),
+                                    ]}
+                                </div>,
+                            ]
+                        )}
+                    </div>
+                </>
+>>>>>>> origin/nft
             )}
           </div>
         </Fragment>

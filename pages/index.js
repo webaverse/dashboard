@@ -5,7 +5,16 @@ import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import Loader from "../components/Loader";
+<<<<<<< HEAD
 
+=======
+// import Hiring from "../pages/hiring";
+
+/* export default () => {
+    return <Hiring/>
+} */
+
+>>>>>>> origin/nft
 export default () => {
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
@@ -78,4 +87,8 @@ export default () => {
             </div>
         </Fragment>
     );
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> origin/nft

@@ -19,20 +19,20 @@ export default ({ data }) => {
   const router = useRouter()
   const { id } = router.query;
   const { globalState, setGlobalState } = useAppContext();
-  const [inventory, setInventory] = useState(null);
-  const [balance, setBalance] = useState(null);
-  const [loadout, setLoadout] = useState(null);
+  const [inventory, setInventory] = useState(data.inventory);
+  const [balance, setBalance] = useState(data.balance);
+  const [loadout, setLoadout] = useState(data.loadout);
   const [profile, setProfile] = useState(data.profile);
-  const [store, setStore] = useState(null);
+  const [store, setStore] = useState(data.store);
   const [selectedView, setSelectedView] = useState("inventory");
   const [loading, setLoading] = useState(false);
   const [stuck, setStuck] = useState(false);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (id && !profile || !balance || !inventory || !store || !loadout) {
       getData();
     }
-  }, []);
+  }, []); */
 
   const getData = () => {
     (async () => {
@@ -264,12 +264,28 @@ export default ({ data }) => {
 export async function getServerSideProps(context) {
   const id = context.params.id;
 
-  const profile = await getProfileForCreator(id);
+  const [
+    profile,
+    inventory,
+    store,
+    loadout,
+    balance,
+  ] = await Promise.all([
+    getProfileForCreator(id),
+    getInventoryForCreator(id),
+    getStoreForCreator(id),
+    getLoadout(id),
+    getBalance(id),
+  ]);
 
   return { 
     props: { 
       data: {
-        profile: profile,
+        profile,
+        inventory,
+        store,
+        loadout,
+        balance,
       }
     } 
   }

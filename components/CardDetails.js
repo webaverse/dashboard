@@ -626,40 +626,38 @@ const CardDetails = ({
                         </div>
                         {toggleEditOpen && (
                           <div className="accordionDropdown">
-                            {[
-                              userOwnsThisAsset && (
+                              {userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={handleSetAssetName}
                                 >
                                   Change Asset Name
                                 </button>
-                              ),
-                              userOwnsThisAsset && (
+                              )}
+                              {userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={handleDeleteAsset}
                                 >
                                   Burn This Item
                                 </button>
-                              ),
-                              userOwnsThisAsset && (
+                              )}
+                              {userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={handleAddCollaborator}
                                 >
                                   Add Collaborator
                                 </button>
-                              ),
-                              userOwnsThisAsset && (
+                              )}
+                              {userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={handleRemoveCollaborator}
                                 >
                                   Remove Collaborator
                                 </button>
-                              ),
-                            ]}
+                              )}
                           </div>
                         )}
                       </div>

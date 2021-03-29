@@ -290,7 +290,7 @@ const FileBrowser = ({
     <div className="fileBrowser">
       <div className="background" onClick={closeBrowser} />
       <div className="wrap">
-        {isCollaborator ? <header>You can edit this bundle</header> : null}
+        <header className={`${isCollaborator ? '' : 'disabled'}`}>{isCollaborator ? 'You can edit this bundle' : 'This bundle belongs to someone else'}</header>
         <div className="tabs">
           <div
             className={`tab ${tab === 'files' ? 'selected' : ''}`}

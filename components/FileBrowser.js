@@ -186,6 +186,7 @@ const BundleFileContents = ({
   );
 };
 const FileBrowser = ({
+  id,
   name,
   hash,
   ext,
@@ -198,6 +199,14 @@ const FileBrowser = ({
   const [currentHash, setCurrentHash] = useState(hash);
   const [lastUpdateHash, setLastUpdateHash] = useState(null);
   const [renamingFile, setRenamingFile] = useState(null);
+  const [isCollaborator, setIsCollaborator] = useState(false);
+  
+  useEffect(async () => {
+    const u = `https://tokens.webaverse.com/isCollaborator/${id}/${globalState.address}`;
+    const res = await fetch(u);
+    const newIsCollaborator = await res.json();
+    setIsCollaborator(newIsCollaborator);
+  }, [id, globalState.address]);
   
   // console.log('got hash 1.1', {name, hash, ext, files, renamingFile});
   
@@ -281,7 +290,7 @@ const FileBrowser = ({
     <div className="fileBrowser">
       <div className="background" onClick={closeBrowser} />
       <div className="wrap">
-        <header>You can edit this bundle</header>
+        {isCollaborator ? <header>You can edit this bundle</header> : null}
         <div className="tabs">
           <div
             className={`tab ${tab === 'files' ? 'selected' : ''}`}
@@ -333,9 +342,9 @@ const FileBrowser = ({
             }
           }
         })()}
-        <footer>
+        {isCollaborator ? <footer>
           <button onClick={_save}>Commit</button>
-        </footer>
+        </footer> : null}
       </div>
     </div>
   );

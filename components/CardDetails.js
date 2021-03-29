@@ -800,6 +800,7 @@ const CardDetails = ({
         </>
       )}
       {fileBrowserOpen ? <FileBrowser
+        id={id}
         name={name}
         hash={hash}
         ext={ext}

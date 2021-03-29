@@ -333,9 +333,9 @@ const FileBrowser = ({
             }
           }
         })()}
-        {ext === 'wbn' ? <footer>
+        <footer>
           <button onClick={_save}>Commit</button>
-        </footer> : null}
+        </footer>
       </div>
     </div>
   );

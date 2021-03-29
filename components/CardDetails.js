@@ -193,11 +193,13 @@ const CardDetails = ({
   const handleSetAssetName = (e) => {
     e.preventDefault();
     const name = prompt("What would you like to name this asset?", "");
-    addToast("Setting item name to: " + name, {
-      appearance: "info",
-      autoDismiss: true,
-    });
-    setAssetName(name, hash, globalState, handleSuccess, handleError);
+    if (name !== null) {
+      addToast("Setting item name to: " + name, {
+        appearance: "info",
+        autoDismiss: true,
+      });
+      setAssetName(name, hash, globalState, handleSuccess, handleError);
+    }
   };
 
   const handleSetAvatar = (e) => {

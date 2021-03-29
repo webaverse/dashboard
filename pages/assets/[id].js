@@ -7,6 +7,8 @@ import { getToken } from "../../functions/UIStateFunctions";
 import { useAppContext } from "../../libs/contextLib";
 
 export default ({ data }) => {
+  // console.log('got data', data);
+  
   const router = useRouter()
   const { id } = router.query
   const { globalState, setGlobalState } = useAppContext();

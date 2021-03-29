@@ -734,8 +734,7 @@ const CardDetails = ({
                         </div>
                         {toggleTradeOpen && (
                           <div className="accordionDropdown">
-                            {[
-                              !tokenOnMain && !userOwnsThisAsset && (
+                              {!tokenOnMain && !userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={() =>
@@ -750,32 +749,31 @@ const CardDetails = ({
                                 >
                                   Resubmit Transfer
                                 </button>
-                              ),
-                              userOwnsThisAsset && (
+                              )}
+                              {userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={handleDeposit}
                                 >
                                   Transfer To {otherNetworkName}
                                 </button>
-                              ),
-                              tokenOnMain && (
+                              )}
+                              {tokenOnMain && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={handleWithdraw}
                                 >
                                   Transfer From {otherNetworkName}
                                 </button>
-                              ),
-                              userOwnsThisAsset && (
+                              )}
+                              {userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={handleSellAsset}
                                 >
                                   Sell This Item
                                 </button>
-                              ),
-                            ]}
+                              )}
                           </div>
                         )}
                       </div>

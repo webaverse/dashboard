@@ -7,7 +7,7 @@ import ProfileCards from "../components/ProfileCards";
 import Loader from "../components/Loader";
 
 const Accounts = ({data}) => {
-  console.log('got data', data.creators);
+  // console.log('got data', data.creators);
   
   const { globalState, setGlobalState } = useAppContext();
   const [creatorProfiles, setCreatorProfiles] = useState(data.creators);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getBlockchain, runSidechainTransaction } from "../webaverse/blockchain.js";
 import Loader from "./Loader";
-import wbn from "./wbn";
+import wbn from "../webaverse/wbn.js";
 import Clear from '@material-ui/icons/Clear';
 import TextFields from '@material-ui/icons/TextFields';
 

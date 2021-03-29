@@ -10,18 +10,18 @@ export default ({ data }) => {
   const router = useRouter()
   const { id } = router.query
   const { globalState, setGlobalState } = useAppContext();
-  const [token, setToken] = useState(data);
-  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(data.token);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  /* useEffect(() => {
     getData();
-  }, [id]);
+  }, [id]); */
 
   const getData = () => {
     if (id) {
       (async () => {
-        const data = await getToken(id);
-        setToken(data);
+        const token = await getToken(id);
+        setToken(token);
         setLoading(false);
       })();
     }
@@ -92,7 +92,13 @@ export default ({ data }) => {
 }
 
 export async function getServerSideProps(context) {
-  const data = await getToken(context.params.id);
+  const token = await getToken(context.params.id);
 
-  return { props: { data } }
+  return {
+    props: {
+      data: {
+        token,
+      },
+    },
+  };
 }

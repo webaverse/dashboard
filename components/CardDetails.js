@@ -413,6 +413,7 @@ const CardDetails = ({
     // const ethereumSpec = await window.ethereum.enable();
     // const [address] = ethereumSpec;
 
+    const {web3} = await getBlockchain();
     const mainnetAddress = web3.front.currentProvider.selectedAddress;
     const {
       address: sidechainAddress,

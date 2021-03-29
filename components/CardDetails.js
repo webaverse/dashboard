@@ -679,40 +679,38 @@ const CardDetails = ({
                         </div>
                         {toggleAddOpen && (
                           <div className="accordionDropdown">
-                            {[
-                              userOwnsThisAsset && (
+                              {userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={handleSetAvatar}
                                 >
                                   Set As Avatar
                                 </button>
-                              ),
-                              userOwnsThisAsset && (
+                              )}
+                              {userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={handleSetHomespace}
                                 >
                                   Set As Homespace
                                 </button>
-                              ),
-                              userOwnsThisAsset && (
+                              )}
+                              {userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={addToLoadout}
                                 >
                                   Add To Loadout
                                 </button>
-                              ),
-                              userOwnsThisAsset && (
+                              )}
+                              {userOwnsThisAsset && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={clearLoadout}
                                 >
                                   Clear From Loadout
                                 </button>
-                              ),
-                            ]}
+                              )}
                           </div>
                         )}
                       </div>

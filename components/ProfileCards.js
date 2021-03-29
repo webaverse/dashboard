@@ -2,10 +2,6 @@ import React from "react";
 import Link from "next/link";
 
 const ProfileCards = ({ profiles }) => {
-    if (!profiles) {
-        return null;
-    }
-
     return profiles.map((item, i) => {
         let url, name;
         const image =

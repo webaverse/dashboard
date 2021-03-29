@@ -107,7 +107,7 @@ const Card = ({
             <div className={`assetImage assetImage ${cardSize}`}>
                 {!imageView || imageView === "2d" ? (
                     video ? (
-                        <video autoPlay playsInLine loop muted={cardSize !== ''} controls={cardSize === ''} src={image} />
+                        <video autoPlay playsInline loop muted={cardSize !== ''} controls={cardSize === ''} src={image} />
                     ) : (
                         <img src={image} />
                     )

@@ -13,13 +13,13 @@ const Accounts = ({data}) => {
   const [creatorProfiles, setCreatorProfiles] = useState(data.creators);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  /* useEffect(() => {
     (async () => {
       const data = await getCreators();
       setCreatorProfiles(data);
       setLoading(false);
     })();
-  }, []);
+  }, []); */
 
   return (
     <div className="container">

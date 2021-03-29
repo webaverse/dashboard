@@ -4,8 +4,8 @@ import Head from 'next/head';
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useAppContext } from "../../libs/contextLib";
-import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance, getToken } from "../../functions/UIStateFunctions.js";
-import { removeMainnetAddress, addMainnetAddress, resubmitAsset, getStuckAssets, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
+import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
+import { removeMainnetAddress, addMainnetAddress, resubmitAsset, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
@@ -23,54 +23,7 @@ export default ({ data }) => {
   const [store, setStore] = useState(null);
   const [selectedView, setSelectedView] = useState("inventory");
   const [loading, setLoading] = useState(false);
-  const [stuckIds, setStuckIds] = useState([]);
-  const [stuckInventory, setStuckInventory] = useState(null)
-
-  useEffect(() => {
-    if (globalState.loginToken) {
-        getOtherData();
-    }
-}, [globalState]);
-
-const getOtherData = () => {
-    (async () => {
-        const isStuck = await getStuckAssets("NFT", id, globalState);
-
-        if (isStuck) {
-          // get stuck asset IDs
-          let arr = []
-          isStuck.map(asset => {
-            arr.push(parseInt(asset.returnValues[1]))
-          })
-          setStuckIds(arr);
-        }
-    })();
-};
-
-useEffect(()=>{
-  // request the stuck assets' data from the blockchain & store them in stuckInventory
-  if (stuckIds){
-    (async () => {
-      let arr = []
-      await Promise.all(stuckIds.map(async id => {
-        const data = await getToken(id);
-        arr.push(data)
-      }))
-      setStuckInventory(arr)
-    })();
-  }
-},[stuckIds])
-
-useEffect(()=>{
-  // append the stuckInventory assets to the inventory
-  if (stuckInventory && inventory){
-    let arr = [...inventory]
-    if (stuckInventory.length > 0) {
-      arr.push(...stuckInventory)
-    }
-    setInventory(arr)
-  }
-},[stuckInventory])
+  const [stuck, setStuck] = useState(false);
 
   useEffect(() => {
     if (id && !profile || !balance || !inventory || !store || !loadout) {

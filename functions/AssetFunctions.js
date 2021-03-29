@@ -136,70 +136,13 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
 
   let depositedFiltered;
   if (tokenId) {
-    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === mainnetAddress ? mainnetAddress : address && entry.returnValues[1] === tokenId.toString());
+    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString());
   } else {
-    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === mainnetAddress ? mainnetAddress : address);
+    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address);
   }
 
   const deposits = depositedFiltered[depositedFiltered.length-1];
   return deposits;
-}
-
-export const getStuckAssets = async (tokenName, tokenId, globalState) => {
-  if (!globalState.loginToken) return null;
-  const { contracts, getNetworkName, getMainnetAddress } = await getBlockchain();
-  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(globalState.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
-  const address = wallet.getAddressString();
-
-  const mainnetAddress = await getMainnetAddress();
-  const networkName = getNetworkName();
-
-  let chainName, otherChainName;
-  if (networkName === "main") {
-    chainName = 'front';
-    otherChainName = 'back';
-  } else {
-    otherChainName = 'front';
-    chainName = 'back';
-  }
-
-  const contract = contracts[chainName];
-  const proxyContract = contract[tokenName + 'Proxy'];
-  const otherContract = contracts[otherChainName];
-  const otherProxyContract = otherContract[tokenName + 'Proxy'];
-
-  const [
-    depositedEntries,
-    withdrewEntries,
-    otherDepositedEntries,
-    otherWithdrewEntries,
-  ] = await Promise.all([
-    proxyContract.getPastEvents('Deposited', {
-      fromBlock: 0,
-      toBlock: 'latest',
-    }),
-    proxyContract.getPastEvents('Withdrew', {
-      fromBlock: 0,
-      toBlock: 'latest',
-    }),
-    otherProxyContract.getPastEvents('Deposited', {
-      fromBlock: 0,
-      toBlock: 'latest',
-    }),
-    otherProxyContract.getPastEvents('Withdrew', {
-      fromBlock: 0,
-      toBlock: 'latest',
-    }),
-  ]);
-
-  let depositedFiltered;
-  if (tokenId) {
-    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === mainnetAddress ? mainnetAddress : address && entry.returnValues[1] === tokenId.toString());
-  } else {
-    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === mainnetAddress ? mainnetAddress : address);
-  }
-
-  return depositedFiltered;
 }
 
 export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSuccess, handleError) => {

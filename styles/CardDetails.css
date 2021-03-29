@@ -356,6 +356,9 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
+.fileBrowser .wrap header.disabled {
+  background-color: #ef5350;
+}
 .fileBrowser .wrap footer {
   display: flex;
   margin-top: auto;

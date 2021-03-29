@@ -8,6 +8,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
 import { removeMainnetAddress, addMainnetAddress, resubmitAsset, getStuckAsset, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
+import {mainnetSignatureMessage} from "../../constants/UnlockConstants.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
@@ -89,7 +90,7 @@ export default ({ data }) => {
 
 
   const handleAddMainnetAddress = async () => {
-    addToast("Connecting mainnet address.", { appearance: 'info', autoDismiss: true, });
+    addToast(mainnetSignatureMessage, { appearance: 'info', autoDismiss: true, });
     await addMainnetAddress(globalState, handleSuccess, handleError);
   }
 

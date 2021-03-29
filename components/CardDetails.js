@@ -31,6 +31,7 @@ const hdkey = hdkeySpec.default;
 import wbn from '../webaverse/wbn.js';
 import { blobToFile, getExt } from "../webaverse/util";
 import FileBrowser from './FileBrowser';
+import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 
 const CardDetails = ({
   id,
@@ -434,10 +435,10 @@ const CardDetails = ({
       // const result1 = await window.ethereum.enable();
       await window.ethereum.enable();
       const signature = await web3.front.eth.personal.sign(
-        m,
+        proofOfAddressMessage,
         web3.front.currentProvider.selectedAddress
       );
-      const result3 = await web3.front.eth.personal.ecRecover(m, signature);
+      const result3 = await web3.front.eth.personal.ecRecover(proofOfAddressMessage, signature);
       // console.log('got sig 1', {signature});
       return signature;
     };
@@ -448,9 +449,9 @@ const CardDetails = ({
         .getWallet();
       const privateKey = wallet.getPrivateKey().toString("hex");
 
-      const result2 = await web3.back.eth.accounts.sign(m, privateKey);
+      const result2 = await web3.back.eth.accounts.sign(proofOfAddressMessage, privateKey);
       const { v, r, s, signature } = result2;
-      const result3 = await web3.back.eth.accounts.recover(m, v, r, s);
+      const result3 = await web3.back.eth.accounts.recover(proofOfAddressMessage, v, r, s);
       // console.log('got sig 2', {signature});
       return signature;
     };

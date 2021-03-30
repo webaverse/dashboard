@@ -25,16 +25,16 @@ export const Networks = {
   },
   testnet: {
     displayName: "Rinkeby Testnet",
-    transferOptions: ["testnetsidechain"/*, "testnetpolygon"*/],
+    transferOptions: ["testnetsidechain", "testnetpolygon"],
   },
   testnetsidechain: {
     displayName: "Webaverse Testnet",
     transferOptions: ["testnet"],
-  },
-  /* testnetpolygon: {
+  },testnetpolygon:
+  {
     displayName: "Polygon Testnet",
     transferOptions: ["testnetsidechain"],
-  }, */
+  },
 };
 export const isTokenOnMain = async id => {
   const {contracts, getNetworkName} = await getBlockchain();

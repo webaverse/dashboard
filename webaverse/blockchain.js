@@ -35,9 +35,21 @@ export const Networks = {
     displayName: "Polygon Testnet",
     transferOptions: ["testnetsidechain"],
   }, */
-}
+};
+export const isTokenOnMain = async id => {
+  const {contracts, getNetworkName} = await getBlockchain();
+  const networkName = getNetworkName();
+
+  const res = await fetch(`https://${networkName}-tokens.webaverse.com/${id}`);
+  const token = await res.json();
+
+  const owner = token.owner.address;
+  const tokenOnMain = owner === contracts.front.NFTProxy._address || owner === ("0x0000000000000000000000000000000000000000") ? false : true;
+  return tokenOnMain;
+};
+
 const getBlockchain = async () => {
-  const addresses = await fetch('https://contracts.webaverse.com/config/addresses.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
+  const addresses = await fetch('./contracts/config/addresses.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
 
   const abis = await fetch('https://contracts.webaverse.com/config/abi.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
 
@@ -99,7 +111,7 @@ const getBlockchain = async () => {
     _setChain('mainnet');
   }
 
-  let contracts = {}
+  const contracts = {};
   Object.keys(Networks).forEach(network => {
     console.log("*** Network is", network);
     contracts[network] = {
@@ -112,7 +124,9 @@ const getBlockchain = async () => {
       LAND: new web3[network].eth.Contract(abis.LAND, addresses[network].LAND),
       LANDProxy: new web3[network].eth.Contract(abis.LANDProxy, addresses[network].LANDProxy),
     }
-  })
+  });
+  contracts.front = contracts[networkName];
+  contracts.back = contracts[networkName + 'sidechain'];
 
   const getNetworkName = () => networkName;
 

@@ -18,7 +18,8 @@ export const getNetworkNameFromHostName = (hostname) => {
 }
 
 export const getBalance = async (address) => {
-  const { web3, contracts } = await getBlockchain();
+  const {web3, contracts} = await getBlockchain();
+  // console.log('got back contract', contracts, contracts['back']);
   try {
     const result = await contracts['back']['FT'].methods.balanceOf(address).call();
     return result;

@@ -426,17 +426,7 @@ const CardDetails = ({
       }
     })();
     (async () => {
-      const { contracts, getNetworkName } = await getBlockchain();
-      const networkName = getNetworkName();
-      setNetworkName(networkName);
-
-      // TOOD
-      const res = await fetch(`${networkName !== "main" ? `https://mainnet-tokens.webaverse.com/${id}` : `https://mainnet-tokens.webaverse.com/${id}`}`);
-    
-      const token = await res.json();
-      const owner = token.owner.address;
-      const tokenOnMain = owner === contracts.front.NFTProxy._address || owner === ("0x0000000000000000000000000000000000000000") ? false : true;
-
+      const tokenOnMain = await isTokenOnMain(id);
       setTokenOnMain(tokenOnMain);
     })();
   };

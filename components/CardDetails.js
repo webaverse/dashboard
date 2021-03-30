@@ -405,7 +405,7 @@ const CardDetails = ({
   const [toggleTradeOpen, setToggleTradeOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [imageView, setImageView] = useState("2d");
+  const [imageView, setImageView] = useState('2d');
   const [tryOn, setTryOn] = useState(false);
   const [tokenOnMain, setTokenOnMain] = useState(false);
   const [networkName, setNetworkName] = useState(null);

@@ -6,18 +6,20 @@ import { getCreators } from "../functions/UIStateFunctions.js";
 import ProfileCards from "../components/ProfileCards";
 import Loader from "../components/Loader";
 
-const Accounts = () => {
+const Accounts = ({data}) => {
+  // console.log('got data', data.creators);
+  
   const { globalState, setGlobalState } = useAppContext();
-  const [creatorProfiles, setCreatorProfiles] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [creatorProfiles, setCreatorProfiles] = useState(data.creators);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  /* useEffect(() => {
     (async () => {
       const data = await getCreators();
       setCreatorProfiles(data);
       setLoading(false);
     })();
-  }, []);
+  }, []); */
 
   return (
     <div className="container">
@@ -38,3 +40,15 @@ const Accounts = () => {
   )
 };
 export default Accounts;
+
+export async function getServerSideProps(context) {
+  const creators = await getCreators();
+
+  return { 
+    props: { 
+      data: {
+        creators,
+      }
+    } 
+  }
+}

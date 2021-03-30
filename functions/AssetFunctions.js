@@ -6,6 +6,7 @@ import { getExt } from '../webaverse/util.js';
 import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
+import {mainnetSignatureMessage} from "../constants/UnlockConstants.js";
 
 export const getTxData = async (txHash, contract) => {
   const { web3, contracts, getNetworkName } = await getBlockchain();
@@ -917,7 +918,7 @@ export const addMainnetAddress = async (state, handleSuccess, handleError) => {
   try {
     await loginWithMetaMask();
 
-    const signature = await window.web3.eth.personal.sign("Connecting mainnet address.", mainnetAddress, "test password!")
+    const signature = await window.web3.eth.personal.sign(mainnetSignatureMessage, mainnetAddress, "test password!")
     await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'mainnetAddress', signature);
     handleSuccess();
   } catch(err) {

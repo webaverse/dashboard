@@ -8,6 +8,51 @@ import { infuraKey, polygonVigilKey } from '../constants/ApiKeys.js';
 import { storageHost, web3MainnetSidechainEndpoint, web3TestnetSidechainEndpoint } from './constants.js';
 const { Transaction, Common } = ethereumJsTx;
 
+let addresses = null;
+let abis = null;
+const loadPromise = Promise.all([
+  'https://contracts.webaverse.com/config/addresses.js',
+  'https://contracts.webaverse.com/config/abi.js',
+].map(u =>
+  fetch(u)
+    .then(res => res.text())
+    .then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')))
+)).then(([
+  newAddresses,
+  newAbis,
+]) => {
+  addresses = newAddresses;
+  abis = newAbis;
+  
+  contracts = {};
+  Object.keys(Networks).forEach(network => {
+    console.log("*** Network is", network);
+
+    console.log('got', Object.keys(addresses), network, !!addresses[network]);
+    
+    contracts[network] = {
+      Account: new web3[network].eth.Contract(abis.Account, addresses[network].Account),
+      FT: new web3[network].eth.Contract(abis.FT, addresses[network].FT),
+      FTProxy: new web3[network].eth.Contract(abis.FTProxy, addresses[network].FTProxy),
+      NFT: new web3[network].eth.Contract(abis.NFT, addresses[network].NFT),
+      NFTProxy: new web3[network].eth.Contract(abis.NFTProxy, addresses[network].NFTProxy),
+      Trade: new web3[network].eth.Contract(abis.Trade, addresses[network].Trade),
+      LAND: new web3[network].eth.Contract(abis.LAND, addresses[network].LAND),
+      LANDProxy: new web3[network].eth.Contract(abis.LANDProxy, addresses[network].LANDProxy),
+    }
+  });
+  contracts.front = contracts[networkName];
+  contracts.back = contracts[networkName + 'sidechain'];
+  
+  if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
+    _setChain('testnet');
+  } else if (typeof window !== 'undefined' && /^polygon\./.test(location.hostname)) {
+    _setChain('polygon');
+  } else {
+    _setChain('mainnet');
+  }
+});
+
 export const Networks = {
   mainnet: {
     displayName: "Mainnet",
@@ -46,98 +91,80 @@ export const isTokenOnMain = async id => {
   return tokenOnMain;
 };
 
-const getBlockchain = async () => {
-  const addresses = await fetch('./contracts/config/addresses.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
+let injectedWeb3 = (typeof window !== 'undefined' && window.ethereum) ?
+  new Web3(window.ethereum)
+:
+  new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`))
 
-  const abis = await fetch('https://contracts.webaverse.com/config/abi.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));
+const web3 = {
+  mainnet: injectedWeb3,
+  mainnetsidechain: new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint)),
+  testnet: injectedWeb3,
+  testnetsidechain: new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint)),
+  polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/${polygonVigilKey}`)),
+  front: null,
+  back: null,
+};
+let addressFront = null;
+let addressBack = null;
+let networkName = '';
+let common = null;
+function _setChain(nn) {
+  web3.front = web3[nn];
+  web3.back = web3[nn + 'sidechain'];
+  addressFront = addresses[nn];
+  addressBack = addresses[nn + 'sidechain'];
+  networkName = nn;
 
-  let injectedWeb3 = (typeof window !== 'undefined' && window.ethereum) ?
-    new Web3(window.ethereum) :
-    new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`))
-
-  const web3 = {
-    mainnet: injectedWeb3,
-    mainnetsidechain: new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint)),
-    testnet: injectedWeb3,
-    testnetsidechain: new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint)),
-    polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/${polygonVigilKey}`)),
-    front: null,
-    back: null,
-  };
-  let addressFront = null;
-  let addressBack = null;
-  let networkName = '';
-  let common = null;
-  function _setChain(nn) {
-    web3.front = web3[nn];
-    web3.back = web3[nn + 'sidechain'];
-    addressFront = addresses[nn];
-    addressBack = addresses[nn + 'sidechain'];
-    networkName = nn;
-
-    if (nn === 'mainnet') {
-      common = Common.forCustomChain(
-        'mainnet',
-        {
-          name: 'geth',
-          networkId: 1,
-          chainId: 1338,
-        },
-        'petersburg',
-      );
-    } else if (nn === 'testnet') {
-      common = Common.forCustomChain(
-        'mainnet',
-        {
-          name: 'geth',
-          networkId: 1,
-          chainId: 1337,
-        },
-        'petersburg',
-      );
-    } else if (nn === 'polygon') {
-      // throw new Error('cannot set common properties for polygon yet');
-    } else {
-      throw new Error('unknown network name', nn);
-    }
-  }
-  if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
-    _setChain('testnet');
-  } else if (typeof window !== 'undefined' && /^polygon\./.test(location.hostname)) {
-    _setChain('polygon');
+  if (nn === 'mainnet') {
+    common = Common.forCustomChain(
+      'mainnet',
+      {
+        name: 'geth',
+        networkId: 1,
+        chainId: 1338,
+      },
+      'petersburg',
+    );
+  } else if (nn === 'testnet') {
+    common = Common.forCustomChain(
+      'mainnet',
+      {
+        name: 'geth',
+        networkId: 1,
+        chainId: 1337,
+      },
+      'petersburg',
+    );
+  } else if (nn === 'polygon') {
+    // throw new Error('cannot set common properties for polygon yet');
   } else {
-    _setChain('mainnet');
+    throw new Error('unknown network name', nn);
   }
+}
+let contracts = null;
 
-  const contracts = {};
-  Object.keys(Networks).forEach(network => {
-    console.log("*** Network is", network);
-    contracts[network] = {
-      Account: new web3[network].eth.Contract(abis.Account, addresses[network].Account),
-      FT: new web3[network].eth.Contract(abis.FT, addresses[network].FT),
-      FTProxy: new web3[network].eth.Contract(abis.FTProxy, addresses[network].FTProxy),
-      NFT: new web3[network].eth.Contract(abis.NFT, addresses[network].NFT),
-      NFTProxy: new web3[network].eth.Contract(abis.NFTProxy, addresses[network].NFTProxy),
-      Trade: new web3[network].eth.Contract(abis.Trade, addresses[network].Trade),
-      LAND: new web3[network].eth.Contract(abis.LAND, addresses[network].LAND),
-      LANDProxy: new web3[network].eth.Contract(abis.LANDProxy, addresses[network].LANDProxy),
-    }
-  });
-  contracts.front = contracts[networkName];
-  contracts.back = contracts[networkName + 'sidechain'];
+const getNetworkName = () => networkName;
 
-  const getNetworkName = () => networkName;
+const getMainnetAddress = async () => {
+  if (typeof window !== "undefined" && window.ethereum) {
+    const [address] = await window.ethereum.enable();
+    return address || null;
+  } else {
+    return null;
+  }
+};
 
-  const getMainnetAddress = async () => {
-    if (typeof window !== "undefined" && window.ethereum) {
-      const [address] = await window.ethereum.enable();
-      return address || null;
-    } else {
-      return null;
-    }
+const getBlockchain = async () => {
+  await loadPromise;
+  return {
+    web3,
+    contracts,
+    addresses,
+    common,
+    getNetworkName,
+    getMainnetAddress,
   };
-
-  return { web3, contracts, addresses, common, getNetworkName, getMainnetAddress };
 }
 
 const transactionQueue = {

@@ -4,6 +4,7 @@
         "node_modules",
         "libs",
         "functions",
+        "webaverse",
         "sidechain"
     ]
 }

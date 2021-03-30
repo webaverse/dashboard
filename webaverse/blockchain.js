@@ -98,7 +98,7 @@ const getBlockchain = async () => {
         'petersburg',
       );
     } else if (nn === 'polygon') {
-      throw new Error('cannot set common properties for polygon yet');
+      // throw new Error('cannot set common properties for polygon yet');
     } else {
       throw new Error('unknown network name', nn);
     }

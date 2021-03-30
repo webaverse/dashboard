@@ -4,6 +4,7 @@ import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 import ethereumJsTx from '../libs/ethereumjs-tx.js';
 import { makePromise } from './util.js';
+import { infuraKey, polygonVigilKey } from '../constants/ApiKeys.js';
 import { storageHost, web3MainnetSidechainEndpoint, web3TestnetSidechainEndpoint } from './constants.js';
 const { Transaction, Common } = ethereumJsTx;
 
@@ -55,14 +56,14 @@ const getBlockchain = async () => {
 
   let injectedWeb3 = (typeof window !== 'undefined' && window.ethereum) ?
     new Web3(window.ethereum) :
-    new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/0bb8f708513d45a1881ec056c7296df9"))
+    new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`))
 
   const web3 = {
     mainnet: injectedWeb3,
     mainnetsidechain: new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint)),
     testnet: injectedWeb3,
     testnetsidechain: new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint)),
-    polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/0937c004ab133135c86586b55ca212a6c9ecd224`)),
+    polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/${polygonVigilKey}`)),
     front: null,
     back: null,
   };

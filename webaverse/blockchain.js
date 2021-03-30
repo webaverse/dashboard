@@ -8,9 +8,6 @@ import { infuraKey, polygonVigilKey } from '../constants/ApiKeys.js';
 import { storageHost, web3MainnetSidechainEndpoint, web3TestnetSidechainEndpoint } from './constants.js';
 const { Transaction, Common } = ethereumJsTx;
 
-// TODO: Polygon
-const chainName = 'mainnet'; // TODO: Handle getting the chain we're on here
-
 export const Networks = {
   mainnet: {
     displayName: "Mainnet",

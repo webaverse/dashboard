@@ -50,29 +50,48 @@ const getBlockchain = async () => {
     mainnetsidechain: new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint)),
     testnet: injectedWeb3,
     testnetsidechain: new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint)),
-    polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/0937c004ab133135c86586b55ca212a6c9ecd224`))
+    polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/0937c004ab133135c86586b55ca212a6c9ecd224`)),
+    front: null,
+    back: null,
   };
+  let addressFront = null;
+  let addressBack = null;
   let networkName = '';
   let common = null;
-  // TODO: Add polygon
-  function _setMainChain(chainName) {
-    networkName = chainName;
-    let nodeName = 'geth';
-    let networkId = 1;
-    let chainId = 1338; // 1337 for testnet
-    // TODO: 
-    common = Common.forCustomChain(
-      // TODO: handle polygon, what is going on here?
-      chainName,
-      {
-        name: nodeName,
-        networkId: networkId,
-        chainId: chainId,
-      },
-      'petersburg',
-    );
+  function _setChain(nn) {
+    web3.front = web3[nn];
+    web3.back = web3[nn + 'sidechain'];
+    addressFront = addresses[nn];
+    addressBack = addresses[nn + 'sidechain'];
+    networkName = nn;
+
+    if (nn === 'mainnet') {
+      common = Common.forCustomChain(
+        'mainnet',
+        {
+          name: 'geth',
+          networkId: 1,
+          chainId: 1338,
+        },
+        'petersburg',
+      );
+    } else if (nn === 'testnet') {
+      common = common = Common.forCustomChain(
+        'mainnet',
+        {
+          name: 'geth',
+          networkId: 1,
+          chainId: 1337,
+        },
+        'petersburg',
+      );
+    } else if (nn === 'polygon') {
+      throw new Error('cannot set common properties for polygon yet');
+    } else {
+      throw new Error('unknown network name', nn);
+    }
   }
-  _setMainChain(chainName);
+  _setChain('mainnet');
 
   let contracts = {}
   Object.keys(Networks).forEach(network => {

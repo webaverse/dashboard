@@ -40,7 +40,7 @@ export const getLandMain = async (id) => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnet-land.webaverse.com/${id}` : `https://mainnet-land.webaverse.com/${id}`}`);
+  const res = await fetch(`https://${networkName}-land.webaverse.com/${id}`);
   const tokens = await res.json();
 
   return tokens;
@@ -55,7 +55,7 @@ export const getLands = async (start, end, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetsidechain-land.webaverse.com/${start}-${end}` : `https://mainnetsidechain-land.webaverse.com/${start}-${end}`}`);
+  const res = await fetch(`https://${networkName}sidechain-land.webaverse.com/${start}-${end}`);
 
   const tokens = await res.json();
 
@@ -71,7 +71,7 @@ export const getLand = async (id, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetsidechain-land.webaverse.com/${id}` : `https://mainnetsidechain-land.webaverse.com/${id}`}`);
+  const res = await fetch(`https://${networkName}sidechain-land.webaverse.com/${id}`);
 
   const land = await res.json();
 
@@ -87,7 +87,7 @@ export const getTokens = async (start, end, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://testnetall-tokens.webaverse.com/${start}-${end}` : `https://mainnetall-tokens.webaverse.com/${start}-${end}`}`);
+  const res = await fetch(`https://${networkName}all-tokens.webaverse.com/${start}-${end}`);
   const tokens = await res.json();
 
   return tokens;
@@ -101,8 +101,7 @@ export const getToken = async (id, hostname) => {
     const { getNetworkName } = await getBlockchain();
     networkName = getNetworkName();
   }
-  const res = await fetch(`${networkName !== "mainnet" ? `https://testnetall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
-
+  const res = await fetch(`https://${networkName}all-tokens.webaverse.com/${id}`);
 
   const token = await res.json();
 
@@ -113,7 +112,7 @@ export const getTokenMain = async (id) => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnet-tokens.webaverse.com/${id}` : `https://mainnet-tokens.webaverse.com/${id}`}`);
+  const res = await fetch(`https://${networkName}-tokens.webaverse.com/${id}`);
 
   const token = await res.json();
   return token;
@@ -136,7 +135,7 @@ export const getInventoryForCreator = async (creatorAddress, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://testnetall-tokens.webaverse.com/${creatorAddress}` : `https://mainnetall-tokens.webaverse.com/${creatorAddress}`}`);
+  const res = await fetch(`https://${networkName}all-tokens.webaverse.com/${creatorAddress}`);
 
   const creatorInventory = await res.json();
 
@@ -158,7 +157,7 @@ export const getStoreForCreator = async (creatorAddress, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetsidechain-store.webaverse.com/${creatorAddress}` : `https://mainnetsidechain-store.webaverse.com/${creatorAddress}`}`);
+  const res = await fetch(`https://${networkName}sidechain-store.webaverse.com/${creatorAddress}`);
 
   const creatorBooth = await res.json();
 
@@ -176,7 +175,7 @@ export const getProfileForCreator = async (creatorAddress) => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetsidechain-accounts.webaverse.com/${creatorAddress}` : `https://mainnetsidechain-accounts.webaverse.com/${creatorAddress}`}`);
+  const res = await fetch(`https://${networkName}sidechain-accounts.webaverse.com/${creatorAddress}`);
   const creatorProfile = await res.json();
 
   return creatorProfile;
@@ -191,7 +190,7 @@ export const getBooths = async (page) => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetsidechain-store.webaverse.com/` : `https://mainnetsidechain-store.webaverse.com/`}`);
+  const res = await fetch(`https://${networkName}sidechain-store.webaverse.com/`);
 
   const booths = await res.json();
 
@@ -250,7 +249,7 @@ export const getCreators = async () => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetsidechain-accounts.webaverse.com/` : `https://mainnetsidechain-accounts.webaverse.com/`}`);
+  const res = await fetch(`https://${networkName}sidechain-accounts.webaverse.com/`);
 
   const creators = await res.json();
 
@@ -262,7 +261,7 @@ export const pullUser = async (state) => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetsidechain-accounts.webaverse.com/${address}` : `https://mainnetsidechain-accounts.webaverse.com/${address}`}`);
+  const res = await fetch(`https://${networkName}sidechain-accounts.webaverse.com/${address}`);
   const result = await res.json();
   const newState = {
     ...state,
@@ -278,7 +277,7 @@ export const pullUserObject = async (state) => {
   const networkName = getNetworkName();
 
    const balance = await getBalance(address);
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetsidechain-accounts.webaverse.com/${address}` : `https://mainnetsidechain-accounts.webaverse.com/${address}`}`);
+  const res = await fetch(`https://${networkName}sidechain-accounts.webaverse.com/${address}`);
   const result = await res.json();
   const newState = {
     ...state,

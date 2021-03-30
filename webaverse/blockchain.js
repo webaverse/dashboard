@@ -88,7 +88,7 @@ const getBlockchain = async () => {
         'petersburg',
       );
     } else if (nn === 'testnet') {
-      common = common = Common.forCustomChain(
+      common = Common.forCustomChain(
         'mainnet',
         {
           name: 'geth',

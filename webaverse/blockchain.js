@@ -31,8 +31,8 @@ export const Networks = {
   testnetsidechain: {
     displayName: "Webaverse Testnet",
     transferOptions: ["testnet"],
-  },testnetpolygon:
-  {
+  },
+  testnetpolygon: {
     displayName: "Polygon Testnet",
     transferOptions: ["testnetsidechain"],
   },

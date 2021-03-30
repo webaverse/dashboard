@@ -91,7 +91,13 @@ const getBlockchain = async () => {
       throw new Error('unknown network name', nn);
     }
   }
-  _setChain('mainnet');
+  if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
+    _setChain('testnet');
+  } else if (typeof window !== 'undefined' && /^polygon\./.test(location.hostname)) {
+    _setChain('polygon');
+  } else {
+    _setChain('mainnet');
+  }
 
   let contracts = {}
   Object.keys(Networks).forEach(network => {

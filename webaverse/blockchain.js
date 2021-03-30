@@ -13,28 +13,28 @@ const chainName = 'mainnet'; // TODO: Handle getting the chain we're on here
 export const Networks = {
   mainnet: {
     displayName: "Mainnet",
-    transferOptions: ["mainnetsidechain"]
+    transferOptions: ["mainnetsidechain"],
   },
   mainnetsidechain: {
     displayName: "Webaverse",
-    transferOptions: ["mainnet", "polygon"]
+    transferOptions: ["mainnet", "polygon"],
   },
   polygon: {
     displayName: "Polygon",
-    transferOptions: ["mainnetsidechain"]
+    transferOptions: ["mainnetsidechain"],
   },
   testnet: {
     displayName: "Rinkeby Testnet",
-    transferOptions: ["testnetsidechain"]
+    transferOptions: ["testnetsidechain"/*, "testnetpolygon"*/],
   },
   testnetsidechain: {
     displayName: "Webaverse Testnet",
-    transferOptions: ["testnet, testnetpolygon"]
+    transferOptions: ["testnet"],
   },
-  testnetpolygon: {
+  /* testnetpolygon: {
     displayName: "Polygon Testnet",
-    transferOptions: ["mainnetsidechain"]
-  }
+    transferOptions: ["testnetsidechain"],
+  }, */
 }
 const getBlockchain = async () => {
   const addresses = await fetch('https://contracts.webaverse.com/config/addresses.js').then(res => res.text()).then(s => JSON.parse(s.replace(/^\s*export\s*default\s*/, '')));

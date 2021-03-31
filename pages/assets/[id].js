@@ -6,7 +6,7 @@ import Loader from "../../components/Loader";
 import { getToken } from "../../functions/UIStateFunctions";
 import { useAppContext } from "../../libs/contextLib";
 
-export default ({ data }) => {
+const Asset = ({ data }) => {
   // console.log('got data', data);
   
   const router = useRouter()
@@ -29,7 +29,7 @@ export default ({ data }) => {
     }
   }
 
-  return (
+  return token ? (
     <>
       <Head>
         <title>{token.name} | Webaverse</title>
@@ -90,11 +90,13 @@ export default ({ data }) => {
         <Loader loading={true} />
       }
     </>
-  )
-}
+  ) : null;
+};
+export default Asset;
 
 export async function getServerSideProps(context) {
-  const token = await getToken(context.params.id);
+  const id = /^[0-9]+$/.test(context.params.id) ? parseInt(context.params.id, 10) : NaN;
+  const token = !isNaN(id) ? (await getToken(id)) : null;
 
   return {
     props: {

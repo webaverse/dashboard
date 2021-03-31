@@ -3,9 +3,8 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useToasts } from "react-toast-notifications";
 import Link from "next/link";
 import AssetCard from "./Card";
-import { Networks, getBlockchain } from "../webaverse/blockchain.js";
+import { Networks, getBlockchain, runSidechainTransaction } from "../webaverse/blockchain.js";
 import { FileDrop } from 'react-file-drop';
-import { getBlockchain, runSidechainTransaction } from "../webaverse/blockchain.js";
 import { makeWbn, makePhysicsBake } from "../webaverse/build";
 import {
   resubmitAsset,

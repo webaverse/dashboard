@@ -74,6 +74,7 @@ const CardDetails = ({
   const [unlockableSpec, setUnlockableSpec] = useState(null);
   const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
 
+  // TODO: can we get rid of this?
   useEffect(() => {
     if (globalState.loginToken) {
       getOtherData();

@@ -102,9 +102,8 @@ export const getToken = async (id, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`}`);
-
-
+  const u = networkName !== 'main' ? `https://mainnetall-tokens.webaverse.com/${id}` : `https://mainnetall-tokens.webaverse.com/${id}`;
+  const res = await fetch(u);
   const token = await res.json();
 
   return token;
@@ -150,8 +149,8 @@ export const getInventoryForCreator = async (creatorAddress, hostname) => {
     networkName = getNetworkName();
   }
 
-  const res = await fetch(`${networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${creatorAddress}` : `https://mainnetall-tokens.webaverse.com/${creatorAddress}`}`);
-
+  const u = networkName !== "main" ? `https://mainnetall-tokens.webaverse.com/${creatorAddress}` : `https://mainnetall-tokens.webaverse.com/${creatorAddress}`;
+  const res = await fetch(u);
   const creatorInventory = await res.json();
 
   if (creatorInventory && creatorInventory.length === 1 && creatorInventory[0] === "0") {

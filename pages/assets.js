@@ -5,7 +5,7 @@ import { getTokens } from "../functions/UIStateFunctions.js";
 import CardGrid from "../components/CardGrid";
 import Loader from "../components/Loader";
 
-const Asset = ({ data }) => {
+const Assets = ({ data }) => {
   const [hasMore, setHasMore] = useState(true);
   const [start, setStart] = useState(51);
   const [end, setEnd] = useState(60);
@@ -55,7 +55,7 @@ const Asset = ({ data }) => {
     </div>
   )
 };
-export default Asset;
+export default Assets;
 
 export async function getServerSideProps(context) {
   const tokens = await getTokens(1, 50);

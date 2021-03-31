@@ -27,8 +27,15 @@ const loadPromise = Promise.all([
   contracts = {};
   Object.keys(Networks).forEach(network => {
     console.log("*** Network is", network);
-
     console.log('got', Object.keys(addresses), network, !!addresses[network]);
+    
+    if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
+      _setChain('testnet');
+    } else if (typeof window !== 'undefined' && /^polygon\./.test(location.hostname)) {
+      _setChain('polygon');
+    } else {
+      _setChain('mainnet');
+    }
     
     contracts[network] = {
       Account: new web3[network].eth.Contract(abis.Account, addresses[network].Account),
@@ -43,14 +50,6 @@ const loadPromise = Promise.all([
   });
   contracts.front = contracts[networkName];
   contracts.back = contracts[networkName + 'sidechain'];
-  
-  if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
-    _setChain('testnet');
-  } else if (typeof window !== 'undefined' && /^polygon\./.test(location.hostname)) {
-    _setChain('polygon');
-  } else {
-    _setChain('mainnet');
-  }
 });
 
 export const Networks = {

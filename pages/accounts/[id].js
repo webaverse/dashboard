@@ -12,7 +12,7 @@ import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
 import ProfileHeader from "../../components/Profile";
 
-export default ({ data }) => {
+const Account = ({ data }) => {  
   const { addToast } = useToasts();
   const router = useRouter()
   const { id } = router.query;
@@ -257,7 +257,8 @@ export default ({ data }) => {
       ]}
     </div>
   }</>)
-}
+};
+export default Account;
 
 export async function getServerSideProps(context) {
   const id = context.params.id;

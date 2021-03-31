@@ -13,9 +13,9 @@ const Land = ({ data }) => {
   const [land, setLand] = useState(data);
   const [loading, setLoading] = useState(data);
 
-  useEffect(() => {
+  /* useEffect(() => {
     getData();
-  }, [id]);
+  }, [id]); */
 
   const getData = () => {
     if (id) {
@@ -27,7 +27,7 @@ const Land = ({ data }) => {
     }
   }
 
-  return (
+  return land ? (
     <>
       <Head>
         <title>{land.name} | Webaverse</title>
@@ -37,7 +37,7 @@ const Land = ({ data }) => {
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      { !loading ?
+      {!loading ?
           <LandCardDetails
              id={land.id}
              key={land.id}
@@ -64,12 +64,17 @@ const Land = ({ data }) => {
         <Loader loading={true} />
       }
     </>
-  )
+  ) : null;
 };
 export default Land;
 
 export async function getServerSideProps({ params }) {
-  const data = await getLand(params.id);
+  const id = /^[0-9]+$/.test(params.id) ? parseInt(params.id, 10) : NaN;
+  const data = !isNaN(id) ? (await getLand(id)) : null;
 
-  return { props: { data } }
+  return {
+    props: {
+      data,
+    },
+  };
 }

@@ -27,7 +27,7 @@ const Land = ({ data }) => {
     }
   }
 
-  return (
+  return land ? (
     <>
       <Head>
         <title>{land.name} | Webaverse</title>
@@ -37,39 +37,44 @@ const Land = ({ data }) => {
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      { !loading ?
-          <LandCardDetails
-             id={land.id}
-             key={land.id}
-             name={land.name}
-             description={land.description}
-             image={land.image}
-             buyPrice={land.buyPrice}
-             storeId={land.storeId}
-             hash={land.properties.hash}
-             external_url={land.external_url}
-             filename={land.properties.filename}
-             rarity={land.properties.rarity}
-             ext={land.properties.ext}
-             totalSupply={land.totalSupply}
-             balance={land.balance}
-             ownerAvatarPreview={land.owner.avatarPreview}
-             ownerUsername={land.owner.username}
-             ownerAddress={land.owner.address}
-             globalState={globalState}
-             networkType='webaverse'
-             getData={getData}
-           />
+      {!loading ?
+        <LandCardDetails
+           id={land.id}
+           key={land.id}
+           name={land.name}
+           description={land.description}
+           image={land.image}
+           buyPrice={land.buyPrice}
+           storeId={land.storeId}
+           hash={land.properties.hash}
+           external_url={land.external_url}
+           filename={land.properties.filename}
+           rarity={land.properties.rarity}
+           ext={land.properties.ext}
+           totalSupply={land.totalSupply}
+           balance={land.balance}
+           ownerAvatarPreview={land.owner.avatarPreview}
+           ownerUsername={land.owner.username}
+           ownerAddress={land.owner.address}
+           globalState={globalState}
+           networkType='webaverse'
+           getData={getData}
+        />
       :
         <Loader loading={true} />
       }
     </>
-  )
+  ) : null;
 };
 export default Land;
 
 export async function getServerSideProps({ params }) {
-  const data = await getLand(params.id);
+  const id = /^[0-9]+$/.test(params.id) ? parseInt(params.id, 10) : NaN;
+  const data = !isNaN(id) ? (await getLand(id)) : null;
 
-  return { props: { data } }
+  return {
+    props: {
+      data,
+    },
+  };
 }

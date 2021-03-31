@@ -71,6 +71,8 @@ const CardDetails = ({
   const [tokenOnMain, setTokenOnMain] = useState(false);
   const [networkName, setNetworkName] = useState(null);
   const [stuck, setStuck] = useState(false);
+  const [unlockableSpec, setUnlockableSpec] = useState(null);
+  const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
 
   useEffect(() => {
     if (globalState.loginToken) {

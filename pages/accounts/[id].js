@@ -260,7 +260,7 @@ const Account = ({ data }) => {
       ]}
     </div>
   }</>)
-}
+};
 export default Account;
 
 export async function getServerSideProps(context) {

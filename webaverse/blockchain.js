@@ -27,8 +27,7 @@ const loadPromise = Promise.all([
   contracts = {};
   Object.keys(Networks).forEach(network => {
     console.log("*** Network is", network);
-    console.log('got', Object.keys(addresses), network, !!addresses[network]);
-    
+
     if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
       _setChain('testnet');
     } else if (typeof window !== 'undefined' && /^polygon\./.test(location.hostname)) {

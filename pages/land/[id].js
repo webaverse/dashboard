@@ -13,9 +13,9 @@ const Land = ({ data }) => {
   const [land, setLand] = useState(data);
   const [loading, setLoading] = useState(data);
 
-  useEffect(() => {
+  /* useEffect(() => {
     getData();
-  }, [id]);
+  }, [id]); */
 
   const getData = () => {
     if (id) {

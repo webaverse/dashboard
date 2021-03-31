@@ -3,7 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useToasts } from "react-toast-notifications";
 import Link from "next/link";
 import AssetCard from "./Card";
-import { Networks, getBlockchain, runSidechainTransaction } from "../webaverse/blockchain.js";
+import { Networks, getBlockchain, runSidechainTransaction, isTokenOnMain } from "../webaverse/blockchain.js";
 import { FileDrop } from 'react-file-drop';
 import { makeWbn, makePhysicsBake } from "../webaverse/build";
 import {
@@ -23,7 +23,6 @@ import {
   sellAsset,
   buyAsset,
 } from "../functions/AssetFunctions.js";
-import { isTokenOnMain } from "../functions/UIStateFunctions.js";
 import Loader from "./Loader";
 import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";

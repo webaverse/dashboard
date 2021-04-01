@@ -58,13 +58,13 @@ const Mint = () => {
     if (files.length > 1) {
       const filesArray = Array.from(files)
       const wbn = await makeWbn(filesArray);
-      handleFileUpload(wbn);
+      await handleFileUpload(wbn);
     } else if (files.length === 1) {
       if (getExt(files[0].name) === "glb") {
         const wbn = makePhysicsBake(files);
-        handleFileUpload(wbn);
+        await handleFileUpload(wbn);
       } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) {
-        handleFileUpload(files[0]);
+        await handleFileUpload(files[0]);
       } else {
         alert("Use one of the support file formats: png, glb, vrm");
         setLoading(false);
@@ -75,12 +75,14 @@ const Mint = () => {
     }
   }
 
-  const handleFileUpload = file => {
+  const handleFileUpload = async file => {
     if (file) {
+      console.log(file);
       let reader = new FileReader();
-      reader.onloadend = () => {
-        const extName = getExt(file.name);
-        const fileName = extName ? file.name.slice(0, -(extName.length + 1)) : file.name;
+      reader.onloadend = async () => {
+        const f = await file;
+        const extName = getExt(f.name);
+        const fileName = extName ? f.name.slice(0, -(extName.length + 1)) : f.name;
         setExtName(extName);
         setName(fileName);
 
@@ -93,7 +95,7 @@ const Mint = () => {
         axios({
           method: 'post',
           url: storageHost,
-          data: file,
+          data: f,
           onUploadProgress(progressEvent) {
             progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
             setPercentage(progress);
@@ -153,7 +155,8 @@ const Mint = () => {
         })
 */
       }
-      reader.readAsDataURL(file);
+
+      reader.readAsDataURL(await file);
     }
     else console.warn("Didnt upload file");
   };

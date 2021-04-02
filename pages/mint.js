@@ -61,7 +61,7 @@ const Mint = () => {
       handleFileUpload(wbn);
     } else if (files.length === 1) {
       if (getExt(files[0].name) === "glb") {
-        const wbn = makePhysicsBake(files);
+        const wbn = await makePhysicsBake(files);
         handleFileUpload(wbn);
       } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) {
         handleFileUpload(files[0]);

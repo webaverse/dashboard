@@ -68,7 +68,7 @@ const Profile = ({ loadout, balance, profile }) => {
                                           /\.[^.]*$/,
                                           ".png"
                                       )
-                                    : "./preview.png"
+                                    : "/preview.png"
                             }")`,
                             backgroundSize: "contain",
                             backgroundRepeat: "no-repeat",

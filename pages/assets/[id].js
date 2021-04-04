@@ -91,13 +91,15 @@ const Asset = ({ data }) => {
         <Loader loading={true} />
       }
     </Fragment>
-  ) : null;
+  ) : <div>Token not found.</div>;
 };
 export default Asset;
 
 export async function getServerSideProps(context) {
   const id = /^[0-9]+$/.test(context.params.id) ? parseInt(context.params.id, 10) : NaN;
   const token = !isNaN(id) ? (await getToken(id)) : null;
+  
+  console.log('token', token);
 
   return {
     props: {

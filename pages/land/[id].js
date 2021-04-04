@@ -64,7 +64,7 @@ const Land = ({ data }) => {
         <Loader loading={true} />
       }
     </>
-  ) : null;
+  ) : <div>Token not found.</div>;
 };
 export default Land;
 

@@ -8,6 +8,25 @@ const Navbar = () => {
   const { globalState, setGlobalState } = useAppContext();
   const [dropdown, setDropdown] = useState(false);
 
+  const _switchToSideChain = async e => {
+    await ethereum.enable();
+    await ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [{
+            chainId: "0x53A",
+            chainName: "Webaverse Sidechain",
+            rpcUrls: ['https://mainnetsidechain.exokit.org',],
+            iconUrls: ['https://app.webaverse.com/assets/logo-flat.png'],
+            blockExplorerUrls: ['https://webaverse.com/activity'],
+            nativeCurrency: {
+              name: 'Silk',
+              symbol: 'SILK',
+              decimals: 18,
+            },
+        }],
+    });
+  };
+
   return (
     <div className="navbar">
       <div className="navbarContainer">
@@ -57,10 +76,11 @@ const Navbar = () => {
               </div>
             </div>
             <div className="navbarTopLevelMenuOption">
-              <div onClick={e => e.preventDefault} className={`navbarLinkItem item ${dropdown ? "responsive" : ""}`}>Market<ExpandMoreIcon /></div>
+              <div onClick={e => e.preventDefault} className={`navbarLinkItem item ${dropdown ? "responsive" : ""}`}>Blockchain<ExpandMoreIcon /></div>
               <div className={`navbarSubMenuContainer ${dropdown ? "responsive" : ""}`}>
                 <div className="navbarSubMenu">
                   <div className="navbarSubMenuLeftbar">
+                    <Link href="/activity"><a className={`navbarSubMenuLinkItem item`} onClick={_switchToSideChain}>Sidechain</a></Link>
                     <Link href="/activity"><a className={`navbarSubMenuLinkItem item`}>Activity</a></Link>
                   </div>
                 </div>

@@ -107,6 +107,7 @@ export default () => {
           console.warn('no mnemonic returned from api');
         }
       } catch (err) {
+        console.warn(err);
         setError(err);
       }
     }

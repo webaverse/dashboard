@@ -3,12 +3,11 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useToasts } from "react-toast-notifications";
 import Link from "next/link";
 import AssetCard from "./Card";
-import { Networks, getBlockchain, runSidechainTransaction, isTokenOnMain } from "../webaverse/blockchain.js";
+import { Networks, getBlockchain, runSidechainTransaction } from "../webaverse/blockchain.js";
 import { FileDrop } from 'react-file-drop';
 import { makeWbn, makePhysicsBake } from "../webaverse/build";
 import {
   resubmitAsset,
-  getStuckAsset,
   addNftCollaborator,
   removeNftCollaborator,
   setAssetName,
@@ -50,57 +49,33 @@ const CardDetails = ({
   minterAvatarPreview,
   minterAddress,
   minterUsername,
-  isMainnet,
-  isPolygon,
   buyPrice,
   storeId,
   globalState,
   assetType,
+  networkName,
+  currentLocation,
   getData,
 }) => {
-  const { addToast } = useToasts();
+  if (!networkName) {
+    throw new Error('no network name :' + networkName);
+  }
+  const {addToast} = useToasts();
 
   const [toggleViewOpen, setToggleViewOpen] = useState(true);
   const [toggleEditOpen, setToggleEditOpen] = useState(false);
   const [toggleAddOpen, setToggleAddOpen] = useState(false);
   const [toggleTradeOpen, setToggleTradeOpen] = useState(false);
+  const [toggleTransferOpen, setToggleTransferOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [imageView, setImageView] = useState('2d');
   const [tryOn, setTryOn] = useState(false);
-  const [tokenOnMain, setTokenOnMain] = useState(false);
-  const [networkName, setNetworkName] = useState(null);
-  const [stuck, setStuck] = useState(false);
   const [unlockableSpec, setUnlockableSpec] = useState(null);
   const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
 
-  // TODO: can we get rid of this?
-  useEffect(() => {
-    if (globalState.loginToken) {
-      getOtherData();
-      getData();
-    }
-  }, [globalState]);
-
-  const getOtherData = () => {
-    (async () => {
-      const isStuck = await getStuckAsset("NFT", id, globalState);
-      if (isStuck) {
-        setStuck(true);
-      }
-    })();
-    (async () => {
-      const tokenOnMain = await isTokenOnMain(id);
-      setTokenOnMain(tokenOnMain);
-    })();
-  };
-
   let userOwnsThisAsset, userCreatedThisAsset;
-  if (globalState && globalState.address && isMainnet) {
-    userOwnsThisAsset = false;
-    userCreatedThisAsset =
-      minterAddress.toLowerCase() === globalState.address.toLowerCase();
-  } else if (globalState && globalState.address) {
+  if (globalState && globalState.address) {
     userOwnsThisAsset =
       ownerAddress.toLowerCase() === globalState.address.toLowerCase();
     userCreatedThisAsset =
@@ -173,13 +148,11 @@ const CardDetails = ({
       autoDismiss: true,
     });
     getData();
-    getOtherData();
     setLoading(false);
   };
   const handleError = (err) => {
     addToast("Error: " + err, { appearance: "error", autoDismiss: true });
     getData();
-    getOtherData();
     setLoading(false);
   };
 
@@ -527,7 +500,6 @@ const CardDetails = ({
                     minterUsername={minterUsername}
                     minterAddress={minterAddress}
                     cardSize={""}
-                    networkType="sidechain"
                     glow={false}
                     imageView={imageView}
                   />
@@ -548,7 +520,7 @@ const CardDetails = ({
                     </Link>
                   </div>
                   <div className={`detailsBlock detailsBlockSet noselect`}>
-                    <div className="Accordion" key={1}>
+                    <div className="Accordion">
                       <div
                         className="accordionTitle"
                         onClick={() => setToggleViewOpen(!toggleViewOpen)}
@@ -606,59 +578,8 @@ const CardDetails = ({
                         </div>
                       )}
                     </div>
-                    {userOwnsThisAsset && (
-                      <div className="Accordion" key={2}>
-                        <div
-                          className="accordionTitle"
-                          onClick={() => setToggleEditOpen(!toggleEditOpen)}
-                        >
-                          <span className="accordionTitleValue">Edit</span>
-                          <span
-                            className={`accordionIcon ${
-                              toggleEditOpen ? "reverse" : ""
-                            }`}
-                          ></span>
-                        </div>
-                        {toggleEditOpen && (
-                          <div className="accordionDropdown">
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={handleSetAssetName}
-                                >
-                                  Change Asset Name
-                                </button>
-                              )}
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={handleDeleteAsset}
-                                >
-                                  Burn This Item
-                                </button>
-                              )}
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={handleAddCollaborator}
-                                >
-                                  Add Collaborator
-                                </button>
-                              )}
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={handleRemoveCollaborator}
-                                >
-                                  Remove Collaborator
-                                </button>
-                              )}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {userOwnsThisAsset && (
-                      <div className="Accordion" key={3}>
+                    {(
+                      <div className="Accordion">
                         <div
                           className="accordionTitle"
                           onClick={() => setToggleAddOpen(!toggleAddOpen)}
@@ -708,8 +629,51 @@ const CardDetails = ({
                         )}
                       </div>
                     )}
-                    {(stuck || userOwnsThisAsset || tokenOnMain) && (
-                      <div className="Accordion" key={4}>
+                    {userOwnsThisAsset && (
+                      <div className="Accordion">
+                        <div
+                          className="accordionTitle"
+                          onClick={() => setToggleEditOpen(!toggleEditOpen)}
+                        >
+                          <span className="accordionTitleValue">Edit</span>
+                          <span
+                            className={`accordionIcon ${
+                              toggleEditOpen ? "reverse" : ""
+                            }`}
+                          ></span>
+                        </div>
+                        {toggleEditOpen && (
+                          <div className="accordionDropdown">
+                              <button
+                                className="assetDetailsButton"
+                                onClick={handleSetAssetName}
+                              >
+                                Change Asset Name
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={handleDeleteAsset}
+                              >
+                                Burn This Item
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={handleAddCollaborator}
+                              >
+                                Add Collaborator
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={handleRemoveCollaborator}
+                              >
+                                Remove Collaborator
+                              </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {(userOwnsThisAsset && currentLocation === 'sidechain') && (
+                      <div className="Accordion">
                         <div
                           className="accordionTitle"
                           onClick={() =>
@@ -725,12 +689,39 @@ const CardDetails = ({
                         </div>
                         {toggleTradeOpen && (
                           <div className="accordionDropdown">
-                              {!tokenOnMain && !userOwnsThisAsset && (
+                            <button
+                              className="assetDetailsButton"
+                              onClick={handleSellAsset}
+                            >
+                              Sell item
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {(userOwnsThisAsset && /sidechain/.test(currentLocation)) && (
+                      <div className="Accordion">
+                        <div
+                          className="accordionTitle"
+                          onClick={() =>
+                            setToggleTransferOpen(!toggleTransferOpen)
+                          }
+                        >
+                          <span className="accordionTitleValue">Transfer</span>
+                          <span
+                            className={`accordionIcon ${
+                              toggleTransferOpen ? "reverse" : ""
+                            }`}
+                          ></span>
+                        </div>
+                        {toggleTransferOpen && (
+                          <div className="accordionDropdown">
+                              {(currentLocation === 'mainnetsidechain-stuck') && (
                                 <button
                                   className="assetDetailsButton"
                                   onClick={() =>
-                                    resubmitAsset(
-                                      "NFT",
+                                    resubmitAsset( // XXX multiple cases
+                                      'NFT',
                                       id,
                                       globalState,
                                       handleSuccess,
@@ -738,50 +729,86 @@ const CardDetails = ({
                                     )
                                   }
                                 >
-                                  Resubmit Transfer
+                                  Resubmit to mainchain
                                 </button>
                               )}
-                              {userOwnsThisAsset && (
+                              {(currentLocation === 'mainnet-stuck') && (
                                 <button
                                   className="assetDetailsButton"
-                                  onClick={handleDeposit}
+                                  onClick={() =>
+                                    resubmitAsset( // XXX multiple cases
+                                      'NFT',
+                                      id,
+                                      globalState,
+                                      handleSuccess,
+                                      handleError
+                                    )
+                                  }
                                 >
-                                  Transfer To {otherNetworkName}
+                                  Resubmit to sidechain
                                 </button>
                               )}
-                              {tokenOnMain && (
+                              {(currentLocation === 'polygon-stuck') && (
                                 <button
                                   className="assetDetailsButton"
-                                  onClick={handleWithdraw}
+                                  onClick={() =>
+                                    resubmitAsset( // XXX multiple cases
+                                      'NFT',
+                                      id,
+                                      globalState,
+                                      handleSuccess,
+                                      handleError
+                                    )
+                                  }
                                 >
-                                  Transfer From {otherNetworkName}
+                                  Resubmit to sidechain
                                 </button>
                               )}
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={handleSellAsset}
-                                >
-                                  Sell This Item
-                                </button>
-                              )}
+                              {(() => {
+                                const results = [];
+                                if (!/stuck/.test(currentLocation)) {
+                                  console.log('get network', Networks, currentLocation, Networks[currentLocation]);
+                                  for (const transferOptionNetworkName of Networks[currentLocation].transferOptions) {
+                                    results.push(
+                                      <button
+                                        className="assetDetailsButton"
+                                        onClick={handleDeposit}
+                                        key={transferOptionNetworkName}
+                                      >
+                                        Transfer to {transferOptionNetworkName}
+                                      </button>
+                                    );
+                                  }
+                                  /*{tokenOnMain && (
+                                    <button
+                                      className="assetDetailsButton"
+                                      onClick={handleWithdraw}
+                                    >
+                                      Transfer From {otherNetworkName}
+                                    </button>
+                                  )} */
+                                }
+                                return results;
+                              })()}
                           </div>
                         )}
                       </div>
                     )}
                   </div>
-                  {globalState.address &&
+                  {(
+                    globalState.address &&
                     !userOwnsThisAsset &&
                     storeId &&
-                    buyPrice && (
-                      <div className="detailsBlock detailsBlockSet">
-                        <button
-                          className="assetDetailsButton"
-                          onClick={handleBuyAsset}
-                        >
-                          Buy This Item
-                        </button>
-                      </div>
+                    buyPrice
+                  ) && (
+                    <div className="detailsBlock detailsBlockSet">
+                      <button
+                        className="assetDetailsButton"
+                        onClick={handleBuyAsset}
+                      >
+                        Buy This Item
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>

@@ -85,7 +85,7 @@ export default () => {
         }
         console.log('effect 4');
         const j = await res.json();
-        console.log('effect 5', j);
+        console.log('effect 5');
         const {mnemonic} = j;
         if (mnemonic) {
           console.log('effect 6');

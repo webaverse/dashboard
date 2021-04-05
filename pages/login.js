@@ -15,13 +15,16 @@ export default () => {
   const [error, setError] = useState(null);
 
   const loginWithKey = (key, play, realmId) => {
+    console.log('loginWithKey 1');
     if (bip39.validateMnemonic(key)) {
+      console.log('loginWithKey 2');
       loginWithPrivateKey(key, globalState)
         .then(res => {
+          console.log('loginWithKey 3');
           setInitialState(res, key, play, realmId);
         })
         .catch(err => {
-          console.log(err);
+          console.warn('loginWithKey error', err);
         });
     } else {
       alert("not a valid private key!");
@@ -29,10 +32,15 @@ export default () => {
   }
 
   const setInitialState = async (state, key, play, realmId) => {
+    console.log('setInitialState 1');
+    
     const balance = await getBalance(state.address);
+    console.log('setInitialState 2');
     const newState = await pullUser(state);
+    console.log('setInitialState 3');
 
     if (play) {
+      console.log('setInitialState 4.1');
       const storedLoginToken = await storage.get("loginToken");
 
       if (storedLoginToken.mnemonic && storedLoginToken.mnemonic != state.loginToken.mnemonic) {
@@ -49,6 +57,7 @@ export default () => {
         window.location.href = "https://app.webaverse.com";
       }
     } else {
+      console.log('setInitialState 4.2');
       const storedLoginToken = await storage.get("loginToken");
 
       if (storedLoginToken.mnemonic && storedLoginToken.mnemonic != state.loginToken.mnemonic) {
@@ -57,9 +66,13 @@ export default () => {
           return;
         }
       }
+      
+      console.log('setInitialState 5');
 
       setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
+      console.log('setInitialState 6');
       router.push("/accounts/" + state.address);
+      console.log('setInitialState 7');
     }
   }
 

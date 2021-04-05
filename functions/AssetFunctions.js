@@ -173,6 +173,8 @@ export const getStuckAsset = async (contractName, tokenId) => {
 }
 
 export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSuccess, handleError) => {
+  throw new Error('not implemented');
+  
   const {getNetworkName} = await getBlockchain();
   const stuckAsset = await getStuckAsset(tokenName, tokenIdNum, globalState);
   if (!stuckAsset) return null;

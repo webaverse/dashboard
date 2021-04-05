@@ -89,13 +89,9 @@ export const getSidechainActivity = async (page) => {
   return activitySortedWithTimestamp;
 }
 
-export const getStuckAsset = async (tokenName, tokenId, globalState) => {
-  if (!globalState.loginToken) return null;
-  const { contracts, getNetworkName } = await getBlockchain();
-  const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(globalState.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
-  const address = wallet.getAddressString();
-
-  const networkName = getNetworkName();
+export const getStuckAsset = async (contractName, tokenId) => {
+  const {contracts, getNetworkName} = await getBlockchain();
+  const networkName = await getNetworkName();
 
   let chainName, otherChainName;
   if (networkName === 'main') {
@@ -107,11 +103,11 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
   }
 
   const contract = contracts[chainName];
-  const proxyContract = contract[tokenName + 'Proxy'];
+  const proxyContract = contract[contractName + 'Proxy'];
   const otherContract = contracts[otherChainName];
-  const otherProxyContract = otherContract[tokenName + 'Proxy'];
+  const otherProxyContract = otherContract[contractName + 'Proxy'];
 
-  const [
+  let [
     depositedEntries,
     withdrewEntries,
     otherDepositedEntries,
@@ -134,8 +130,34 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
       toBlock: 'latest',
     }),
   ]);
+  
+  /* onsole.log('got entries 1', {
+    depositedEntries,
+    withdrewEntries,
+    otherDepositedEntries,
+    otherWithdrewEntries,
+  }); */
+  
+  const _filterByTokenId = entry => parseInt(entry.returnValues.tokenId, 10) === tokenId;
+  depositedEntries = depositedEntries.filter(_filterByTokenId);
+  withdrewEntries = withdrewEntries.filter(_filterByTokenId);
+  otherDepositedEntries = otherDepositedEntries.filter(_filterByTokenId);
+  otherWithdrewEntries = otherWithdrewEntries.filter(_filterByTokenId);
+  
+  /* console.log('got entries 2', {
+    depositedEntries,
+    withdrewEntries,
+    otherDepositedEntries,
+    otherWithdrewEntries,
+  }); */
+  
+  const isStuckForward = depositedEntries.length > otherWithdrewEntries.length;
+  const isStuckBackward = otherDepositedEntries.length > withdrewEntries.length;
+  
+  /* const danglingSidechainDeposits = [];
+  const danglingMainnetDeposits = []; */
 
-  let depositedFiltered;
+  /* let depositedFiltered;
   if (tokenId) {
     depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString());
   } else {
@@ -143,11 +165,15 @@ export const getStuckAsset = async (tokenName, tokenId, globalState) => {
   }
 
   const deposits = depositedFiltered[depositedFiltered.length-1];
-  return deposits;
+  return deposits; */
+  return [
+    isStuckForward,
+    isStuckBackward,
+  ];
 }
 
 export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSuccess, handleError) => {
-  const { getNetworkName } = await getBlockchain();
+  const {getNetworkName} = await getBlockchain();
   const stuckAsset = await getStuckAsset(tokenName, tokenIdNum, globalState);
   if (!stuckAsset) return null;
 
@@ -181,7 +207,7 @@ export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSu
 }
 
 export const deleteAsset = async (id, mnemonic, handleSuccess, handleError) => {
-  const { contracts } = await getBlockchain();
+  const {contracts} = await getBlockchain();
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
 

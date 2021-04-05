@@ -14,7 +14,6 @@ export default () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   const loginWithKey = (key, play, realmId) => {
     if (bip39.validateMnemonic(key)) {
       loginWithPrivateKey(key, globalState)

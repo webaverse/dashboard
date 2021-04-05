@@ -264,7 +264,9 @@ export const pullUser = async (state) => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
-  const res = await fetch(`https://${networkName}sidechain-accounts.webaverse.com/${address}`);
+  const u = `https://${networkName}sidechain-accounts.webaverse.com/${address}`;
+  console.log('pull user url', u);
+  const res = await fetch(u);
   const result = await res.json();
   const newState = {
     ...state,

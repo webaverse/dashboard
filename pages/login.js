@@ -63,7 +63,7 @@ export default () => {
     }
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     const code = new URLSearchParams(window.location.search).get("code") || "";
     const id = new URLSearchParams(window.location.search).get("id") || "";
     const play = new URLSearchParams(window.location.search).get("play") || false;
@@ -74,29 +74,27 @@ export default () => {
 
     if (code || id || play) {
       console.log('effect 2');
-      (async () => {
-        try {
-          const res = await fetch(
-            arrivingFromTwitter ?
-            `https://login.exokit.org/?twittercode=${code}&twitterid=${id}` :
-            `https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
-          console.log('effect 3');
-          if (res.status !== 200) {
-            throw "Login did not work, got response: " + res.status;
-          }
-          console.log('effect 4');
-          const j = await res.json();
-          console.log('effect 5');
-          const {mnemonic} = j;
-          if (mnemonic) {
-            loginWithKey(mnemonic, play, realmId);
-          } else {
-            console.warn('no mnemonic returned from api');
-          }
-        } catch (err) {
-          setError(err);
+      try {
+        const res = await fetch(
+          arrivingFromTwitter ?
+          `https://login.exokit.org/?twittercode=${code}&twitterid=${id}` :
+          `https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
+        console.log('effect 3');
+        if (res.status !== 200) {
+          throw "Login did not work, got response: " + res.status;
         }
-      })();
+        console.log('effect 4');
+        const j = await res.json();
+        console.log('effect 5');
+        const {mnemonic} = j;
+        if (mnemonic) {
+          loginWithKey(mnemonic, play, realmId);
+        } else {
+          console.warn('no mnemonic returned from api');
+        }
+      } catch (err) {
+        setError(err);
+      }
     }
     setLoading(false);
   }, []);

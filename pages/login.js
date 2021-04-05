@@ -88,6 +88,7 @@ export default () => {
         console.log('effect 5');
         const {mnemonic} = j;
         if (mnemonic) {
+          console.log('effect 6');
           loginWithKey(mnemonic, play, realmId);
         } else {
           console.warn('no mnemonic returned from api');

@@ -282,7 +282,7 @@ export const pullUserObject = async (state) => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
   
-  console.log('pullUserObject 2', networkName);
+  console.log('pullUserObject 2', networkName, address);
 
   const balance = await getBalance(address);
   const u = `https://${networkName}sidechain-accounts.webaverse.com/${address}`;

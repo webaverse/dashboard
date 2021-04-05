@@ -137,7 +137,7 @@ function _setChain(nn) {
   } else if (nn === 'polygon') {
     // throw new Error('cannot set common properties for polygon yet');
   } else {
-    throw new Error('unknown network name', nn);
+    throw new Error('unknown network name: ' + nn);
   }
 }
 let contracts = null;

@@ -17,12 +17,12 @@ export default () => {
   const loginWithKey = (key, play, realmId) => {
     if (bip39.validateMnemonic(key)) {
       loginWithPrivateKey(key, globalState)
-      .then(res => {
-        setInitialState(res, key, play, realmId);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        .then(res => {
+          setInitialState(res, key, play, realmId);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     } else {
       alert("not a valid private key!");
     }

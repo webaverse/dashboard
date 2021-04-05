@@ -12,12 +12,12 @@ const ProfileCards = ({profiles}) => {
       return;
     }
 
-    if (item.id) {
+    if (/^0x/.test(item.id)) {
+      url = "/accounts/" + item.address;
+      name = item.name ? item.name : "Anonymous";ZZ
+    } else if (item.address) {
       url = "/assets/" + item.id;
       name = item.name;
-    } else if (item.address) {
-      url = "/accounts/" + item.address;
-      name = item.name ? item.name : "Anonymous";
     }
 
     return (

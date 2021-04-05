@@ -21,6 +21,7 @@ export const getBalance = async (address) => {
   const {web3, contracts} = await getBlockchain();
   // console.log('got back contract', contracts, contracts['back']);
   try {
+    console.log('get balance', contracts, contracts['back']['FT'], address);
     const result = await contracts['back']['FT'].methods.balanceOf(address).call();
     return result;
   } catch (error) {

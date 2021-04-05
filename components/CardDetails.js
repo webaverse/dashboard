@@ -767,7 +767,7 @@ const CardDetails = ({
                               {(() => {
                                 const results = [];
                                 if (!/stuck/.test(currentLocation)) {
-                                  console.log('get network', Networks, currentLocation, Networks[currentLocation]);
+                                  // console.log('get network', Networks, currentLocation, Networks[currentLocation]);
                                   for (const transferOptionNetworkName of Networks[currentLocation].transferOptions) {
                                     results.push(
                                       <button

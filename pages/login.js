@@ -94,13 +94,11 @@ export default () => {
             console.warn('no mnemonic returned from api');
           }
         } catch (err) {
-          setLoading(false);
           setError(err);
         }
       })();
-    } else {
-      setLoading(false)
     }
+    setLoading(false);
   }, []);
 
   return (

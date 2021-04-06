@@ -120,9 +120,9 @@ const Asset = ({ data }) => {
              balance={token.balance}
              ownerAvatarPreview={token.owner.avatarPreview}
              ownerUsername={token.owner.username}
-             ownerAddress={token.owner.address}
+             ownerAddress={token.ownerAddress}
              minterAvatarPreview={token.minter.avatarPreview}
-             minterAddress={token.minter.address}
+             minterAddress={token.minterAddress}
              minterUsername={token.minter.username}
              globalState={globalState}
              networkName={networkName}

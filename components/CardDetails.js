@@ -70,6 +70,7 @@ const CardDetails = ({
   const [toggleEditOpen, setToggleEditOpen] = useState(false);
   const [toggleAddOpen, setToggleAddOpen] = useState(false);
   const [toggleTradeOpen, setToggleTradeOpen] = useState(false);
+  const [toggleResubmitOpen, setToggleResubmitOpen] = useState(false);
   const [toggleTransferOpen, setToggleTransferOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -417,6 +418,8 @@ const CardDetails = ({
   const _openFileBrowser = () => {
     setFileBrowserOpen(true);
   };
+  const isStuck = /stuck/.test(currentLocation);
+  const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
 
   return (
     <Fragment>
@@ -663,7 +666,81 @@ const CardDetails = ({
                     )}
                     {(
                       <div className="Accordion">
-                        {userOwnsThisAsset ? (
+                        {(userOwnsThisAsset && isStuck) ? (
+                          <div
+                            className="accordionTitle"
+                            onClick={() =>
+                              setToggleResubmitOpen(!toggleResubmitOpen)
+                            }
+                          >
+                            <span className="accordionTitleValue">Resubmit</span>
+                            <span
+                              className={`accordionIcon ${
+                                toggleResubmitOpen ? "reverse" : ""
+                              }`}
+                            ></span>
+                          </div>
+                        ) : null}    
+                        {toggleResubmitOpen && (
+                          <div className="accordionDropdown">
+                              <button
+                                className="assetDetailsButton"
+                                onClick={async () => {
+                                  const mainnetAddress = await loginWithMetaMask();
+                                  await resubmitAsset(
+                                    currentLocationUnstuck,
+                                    'NFT',
+                                    'mainnet',
+                                    id,
+                                    mainnetAddress,
+                                    handleSuccess,
+                                    handleError
+                                  )
+                                }}
+                              >
+                                Resubmit to mainchain
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={async () => {
+                                  const mainnetAddress = await loginWithMetaMask();
+                                  await resubmitAsset(
+                                    currentLocationUnstuck,
+                                    'NFT',
+                                    'polygon',
+                                    id,
+                                    mainnetAddress,
+                                    handleSuccess,
+                                    handleError
+                                  )
+                                }}
+                              >
+                                Resubmit to polygon
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={async () => {
+                                  const mainnetAddress = await loginWithMetaMask();
+                                  await resubmitAsset(
+                                    currentLocationUnstuck,
+                                    'NFT',
+                                    'mainnetsidechain',
+                                    id,
+                                    mainnetAddress,
+                                    handleSuccess,
+                                    handleError
+                                  )
+                                }}
+                              >
+                                Resubmit to sidechain
+                              </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {(
+                      <div className="Accordion">
+                        {(userOwnsThisAsset && !isStuck) ? (
                           <div
                             className="accordionTitle"
                             onClick={() =>
@@ -680,82 +757,6 @@ const CardDetails = ({
                         ) : null}    
                         {toggleTransferOpen && (
                           <div className="accordionDropdown">
-                              {(currentLocation === 'mainnetsidechain-stuck') && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={async () => {
-                                    const mainnetAddress = await loginWithMetaMask();
-                                    await resubmitAsset(
-                                      'mainnetsidechain',
-                                      'NFT',
-                                      'mainnet',
-                                      id,
-                                      mainnetAddress,
-                                      handleSuccess,
-                                      handleError
-                                    )
-                                  }}
-                                >
-                                  Resubmit to mainchain
-                                </button>
-                              )}
-                              {(currentLocation === 'mainnetsidechain-stuck') && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={async () => {
-                                    const mainnetAddress = await loginWithMetaMask();
-                                    await resubmitAsset(
-                                      'mainnetsidechain',
-                                      'NFT',
-                                      'polygon',
-                                      id,
-                                      mainnetAddress,
-                                      handleSuccess,
-                                      handleError
-                                    )
-                                  }}
-                                >
-                                  Resubmit to polygon
-                                </button>
-                              )}
-                              {(currentLocation === 'mainnet-stuck') && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={async () => {
-                                    const mainnetAddress = await loginWithMetaMask();
-                                    await resubmitAsset(
-                                      'mainnet',
-                                      'NFT',
-                                      'mainnetsidechain',
-                                      id,
-                                      mainnetAddress,
-                                      handleSuccess,
-                                      handleError
-                                    )
-                                  }}
-                                >
-                                  Resubmit to sidechain
-                                </button>
-                              )}
-                              {(currentLocation === 'polygon-stuck') && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={async () => {
-                                    const mainnetAddress = await loginWithMetaMask();
-                                    await resubmitAsset(
-                                      'polygon',
-                                      'NFT',
-                                      'mainnetsidechain',
-                                      id,
-                                      mainnetAddress,
-                                      handleSuccess,
-                                      handleError
-                                    )
-                                  }}
-                                >
-                                  Resubmit to sidechain
-                                </button>
-                              )}
                               {(() => {
                                 const results = [];
                                 if (!/stuck/.test(currentLocation)) {

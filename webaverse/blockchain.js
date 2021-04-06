@@ -79,6 +79,27 @@ export const Networks = {
 :
   new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`)); */
 const web3 = {};
+const _updateWeb3 = async () => {
+  const chainId = await new Web3(window.ethereum).eth.net.getId();
+  let chainNetworkName = null;
+  for (const k in blockchainChainIds) {
+    const v = blockchainChainIds[k];
+    if (v === chainId) {
+      chainNetworkName = k;
+      break;
+    }
+  }
+  if (chainNetworkName === null) {
+    throw new Error('failed to find blockchain chain id ' + chainNetworkName);
+  }
+
+  _resetWeb3();
+  console.log('override chain name 1', chainNetworkName, web3[chainNetworkName].injected);
+  web3[chainNetworkName] = new Web3(window.ethereum);
+  web3[chainNetworkName].injected = true;
+  console.log('override chain name 2', chainNetworkName, web3[chainNetworkName].injected);
+  _updateContracts();
+};
 const _resetWeb3 = () => {
   console.log('reset 1');
   web3.mainnet = new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`));
@@ -256,21 +277,33 @@ const _getWalletFromMnemonic = mnemonic => hdkey.fromMasterSeed(bip39.mnemonicTo
 
 const getAddressFromMnemonic = mnemonic => _getWalletFromMnemonic(mnemonic)
   .getAddressString();
+let ethEnabledFlag = false;
 const ethEnabled = async () => {
-  if (window.ethereum) {
-    window.ethereum.enable();
-    window.mainWeb3 = new Web3(window.ethereum);
-    /* const network = await window.mainWeb3.eth.net.getNetworkType();
-    if (network === "main") {
-      return true;
-    } else if (network === "testnet"){
-      return true;
+  if (!ethEnabledFlag) {
+    ethEnabledFlag = true;
+
+    if (window.ethereum) {
+      await window.ethereum.enable();
+      /* window.ethereum.on('accountsChanged', async accounts => {
+        await _updateWeb3();
+      }); */
+      window.ethereum.on('networkChanged', async accounts => {
+        await _updateWeb3();
+      });
+      await _updateWeb3();
+      // window.mainWeb3 = ;
+      /* const network = await window.mainWeb3.eth.net.getNetworkType();
+      if (network === "main") {
+        return true;
+      } else if (network === "testnet"){
+        return true;
+      } else {
+        throw new Error("You need to be on the Mainnet network, but you are on " 
+        + network);
+      } */
     } else {
-      throw new Error("You need to be on the Mainnet network, but you are on " 
-      + network);
-    } */
-  } else {
-    throw new Error("Please install MetaMask to use Webaverse!");
+      throw new Error("Please install MetaMask to use Webaverse!");
+    }
   }
 };
 const loginWithMetaMask = async () => {
@@ -280,26 +313,6 @@ const loginWithMetaMask = async () => {
       method: 'eth_accounts',
     });
     if (eth && eth[0]) {
-      const chainId = await window.mainWeb3.eth.net.getId();
-      let chainNetworkName = null;
-      for (const k in blockchainChainIds) {
-        const v = blockchainChainIds[k];
-        if (v === chainId) {
-          chainNetworkName = k;
-          break;
-        }
-      }
-      if (chainNetworkName === null) {
-        throw new Error('failed to find blockchain chain id ' + chainNetworkName);
-      }
-
-      _resetWeb3();
-      console.log('override chain name 1', chainNetworkName, web3[chainNetworkName].injected);
-      web3[chainNetworkName] = new Web3(window.ethereum);
-      web3[chainNetworkName].injected = true;
-      console.log('override chain name 2', chainNetworkName, web3[chainNetworkName].injected);
-      _updateContracts();
-
       // setMainnetAddress(eth[0]);
       return eth[0];
     } else {
@@ -335,6 +348,7 @@ const ensureMetamaskChain = async networkName => {
       return null;
     })();
     if (injectedWeb3) {
+      console.log('not injected', web3[networkName], injectedWeb3);
       const chainId = await injectedWeb3.eth.net.getId();
       const expectedChainId = blockchainChainIds[networkName];
       throw new Error(`You are on network ${chainId}, expected ${expectedChainId}`);

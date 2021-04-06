@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import { getAddress } from './UIStateFunctions';
-import { getAddressFromMnemonic, getBlockchain, runSidechainTransaction, runMainnetTransaction, getTransactionSignature } from '../webaverse/blockchain.js';
+import { getAddressFromMnemonic, getBlockchain, runSidechainTransaction, runChainTransaction, getTransactionSignature, blockchainChainIds } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
 import bip39 from '../libs/bip39.js';
@@ -89,9 +89,9 @@ export const getSidechainActivity = async (page) => {
   return activitySortedWithTimestamp;
 }
 
-export const getStuckAsset = async (contractName, tokenId) => {
-  const {contracts, getNetworkName} = await getBlockchain();
-  const networkName = await getNetworkName();
+export const getStuckAsset = async (chainName, contractName, tokenId) => {
+  const {contracts} = await getBlockchain();
+  /* const networkName = await getNetworkName();
 
   let chainName, otherChainName;
   if (networkName === 'main') {
@@ -100,24 +100,24 @@ export const getStuckAsset = async (contractName, tokenId) => {
   } else {
     otherChainName = 'front';
     chainName = 'back';
-  }
+  } */
 
-  const contract = contracts[chainName];
-  const proxyContract = contract[contractName + 'Proxy'];
-  const otherContract = contracts[otherChainName];
-  const otherProxyContract = otherContract[contractName + 'Proxy'];
+  // const contract = contracts[chainName];
+  const proxyContract = contracts[chainName][contractName + 'Proxy'];
+  // const otherContract = contracts[otherChainName];
+  // const otherProxyContract = otherContract[contractName + 'Proxy'];
 
   let [
     depositedEntries,
-    withdrewEntries,
+    /* withdrewEntries,
     otherDepositedEntries,
-    otherWithdrewEntries,
+    otherWithdrewEntries, */
   ] = await Promise.all([
     proxyContract.getPastEvents('Deposited', {
       fromBlock: 0,
       toBlock: 'latest',
     }),
-    proxyContract.getPastEvents('Withdrew', {
+    /* proxyContract.getPastEvents('Withdrew', {
       fromBlock: 0,
       toBlock: 'latest',
     }),
@@ -128,83 +128,54 @@ export const getStuckAsset = async (contractName, tokenId) => {
     otherProxyContract.getPastEvents('Withdrew', {
       fromBlock: 0,
       toBlock: 'latest',
-    }),
+    }), */
   ]);
   
-  /* onsole.log('got entries 1', {
+  /* console.log('got entries 1', {
     depositedEntries,
     withdrewEntries,
     otherDepositedEntries,
     otherWithdrewEntries,
   }); */
   
-  const _filterByTokenId = entry => parseInt(entry.returnValues.tokenId, 10) === tokenId;
-  depositedEntries = depositedEntries.filter(_filterByTokenId);
-  withdrewEntries = withdrewEntries.filter(_filterByTokenId);
-  otherDepositedEntries = otherDepositedEntries.filter(_filterByTokenId);
-  otherWithdrewEntries = otherWithdrewEntries.filter(_filterByTokenId);
+  depositedEntries = depositedEntries.filter(d => {
+    let {returnValues: {tokenId: tokenId2}} = d;
+    tokenId2 = parseInt(tokenId2, 10);
+    return tokenId2 === tokenId;
+  });
   
-  /* console.log('got entries 2', {
-    depositedEntries,
-    withdrewEntries,
-    otherDepositedEntries,
-    otherWithdrewEntries,
-  }); */
-  
-  const isStuckForward = depositedEntries.length > otherWithdrewEntries.length;
-  const isStuckBackward = otherDepositedEntries.length > withdrewEntries.length;
-  
-  /* const danglingSidechainDeposits = [];
-  const danglingMainnetDeposits = []; */
+  const depositedEntry = depositedEntries[depositedEntries.length - 1];
 
-  /* let depositedFiltered;
-  if (tokenId) {
-    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address && entry.returnValues[1] === tokenId.toString());
-  } else {
-    depositedFiltered = depositedEntries.filter(entry => entry.returnValues[0].toLowerCase() === address);
-  }
-
-  const deposits = depositedFiltered[depositedFiltered.length-1];
-  return deposits; */
-  return [
-    isStuckForward,
-    isStuckBackward,
-  ];
+  return depositedEntry ? {
+    transactionHash: depositedEntry.transactionHash,
+  } : null;
 }
 
-export const resubmitAsset = async (tokenName, tokenIdNum, globalState, handleSuccess, handleError) => {
-  throw new Error('not implemented');
-  
-  const {getNetworkName} = await getBlockchain();
-  const stuckAsset = await getStuckAsset(tokenName, tokenIdNum, globalState);
-  if (!stuckAsset) return null;
+export const resubmitAsset = async (networkName, tokenName, destinationNetworkName, tokenId, address, handleSuccess, handleError) => {
+  const {web3, contracts} = await getBlockchain();
+  const stuckAsset = await getStuckAsset(networkName, tokenName, tokenId);
 
-  let {transactionHash, blockNumber, returnValues, returnValues: {to, tokenId}} = stuckAsset;
+  const transactionHash = stuckAsset && stuckAsset.transactionHash;
 
-  if (!to) {
-    to = returnValues[0];
-  }
-  if (!tokenId) {
-    tokenId = returnValues[1];
-  }
-  to = to.toLowerCase();
-  tokenId = parseInt(tokenId, 10);
+  const res = await fetch(`https://sign.exokit.org/${networkName}/${tokenName}/${destinationNetworkName}/${transactionHash}`);
+  const signatureJson = await res.json();
+  const {timestamp, r, s, v} = signatureJson;
 
-  if (to === returnValues[0].toLowerCase()) {
-    const networkName = getNetworkName();
-    const fullChainName = networkName + 'sidechain';
-
-    const res = await fetch(`https://sign.exokit.org/${fullChainName}/${tokenName}/${transactionHash}`);
-    const signatureJson = await res.json();
-    const {timestamp, r, s, v} = signatureJson;
-
-    try {
-      await runMainnetTransaction(tokenName + 'Proxy', 'withdraw', to, tokenId, timestamp, r, s, v);
-      return;
-    } catch (err) {
-      handleError(err.message);
-      return err;
+  // const networkType = await web3[networkName].eth.net.getNetworkType();
+  // console.log('get network type', {networkType});
+  const chainId = await web3[networkName].eth.net.getId();
+  const expectedChainId = blockchainChainIds[networkName];
+  try {
+    if (chainId === expectedChainId) {    
+      await runChainTransaction(destinationNetworkName, tokenName + 'Proxy', address, 'withdraw', address, tokenId, timestamp, r, s, v);
+      // return;
+    } else {
+      throw new Error(`You are on network ${chainId}, expected ${expectedChainId}`);
     }
+  } catch (err) {
+    console.log('failed', err);
+    handleError(err.message);
+    // return err;
   }
 }
 
@@ -227,8 +198,9 @@ export const deleteAsset = async (id, mnemonic, handleSuccess, handleError) => {
     if (handleSuccess)
       handleSuccess(result);
   } catch (error) {
-    if (handleError)
+    if (handleError) {
       handleError(error);
+    }
   }
 }
 
@@ -753,10 +725,10 @@ export const withdrawAsset = async (tokenId, mainnetAddress, address, state, han
   return;
 }
 
-export const depositAsset = async (tokenId, networkType, mainnetAddress, address, state, handleSuccess, handleError) => {
-  const { web3, contracts } = await getBlockchain();
+export const depositAsset = async (tokenId, sourceNetworkName, destinationNetworkName, mainnetAddress, address, state, handleSuccess, handleError) => {
+  const {web3, contracts} = await getBlockchain();
   // Deposit to mainnet
-  if (networkType === "sidechain") {
+  if (sourceNetworkName === 'mainnetsidechain') {
     const id = parseInt(tokenId, 10);
     if (!isNaN(id)) {
       const tokenId = {
@@ -764,20 +736,20 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
         v: new web3['back'].utils.BN(id),
       };
 
-      await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts['back'].NFTProxy._address, true);
+      await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts[sourceNetworkName].NFTProxy._address, true);
 
       const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'deposit', mainnetAddress, tokenId.v);
 
-      const signature = await getTransactionSignature('back', 'NFT', receipt.transactionHash);
+      const signature = await getTransactionSignature(sourceNetworkName, 'NFT', destinationNetworkName, receipt.transactionHash);
       const timestamp = {
         t: 'uint256',
         v: signature.timestamp,
       };
 
-      const { r, s, v } = signature;
+      const {r, s, v} = signature;
 
       try {
-        const receipt = await contracts.front.NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
+        const receipt = await contracts[destinationNetworkName].NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
           from: mainnetAddress,
         });
         handleSuccess(receipt, `/activity/${receipt.transactionHash}.NFT`);
@@ -789,7 +761,7 @@ export const depositAsset = async (tokenId, networkType, mainnetAddress, address
     } else {
       handleError('failed to parse', JSON.stringify(ethNftIdInput.value));
     }
-  }  else {
+  } else {
     const id = parseInt(tokenId, 10);
     const tokenId = {
       t: 'uint256',

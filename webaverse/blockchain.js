@@ -77,7 +77,7 @@ export const Networks = {
     transferOptions: ["testnetsidechain"],
   },
 };
-export const isTokenOnMain = async id => {
+/* export const isTokenOnMain = async id => {
   const {contracts, getNetworkName} = await getBlockchain();
   const networkName = getNetworkName();
 
@@ -87,32 +87,37 @@ export const isTokenOnMain = async id => {
   const owner = token.owner.address;
   const tokenOnMain = owner === contracts.front.NFTProxy._address || owner === ("0x0000000000000000000000000000000000000000") ? false : true;
   return tokenOnMain;
-};
+}; */
 
-const injectedWeb3 = (typeof window !== 'undefined' && window.ethereum) ?
+/* const injectedWeb3 = (typeof window !== 'undefined' && window.ethereum) ?
   new Web3(window.ethereum)
 :
-  new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`));
-const web3 = {
-  mainnet: injectedWeb3,
-  mainnetsidechain: new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint)),
-  testnet: injectedWeb3,
-  testnetsidechain: new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint)),
-  polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/${polygonVigilKey}`)),
-  testnetpolygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mumbai.maticvigil.com/v1/${polygonVigilKey}`)),
-  front: null,
-  back: null,
+  new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`)); */
+const _makeWeb3s = () => {
+  return {
+    mainnet: new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`)),
+    mainnetsidechain: new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint)),
+    testnet: new Web3(new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${infuraKey}`)),
+    testnetsidechain: new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint)),
+    polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/${polygonVigilKey}`)),
+    testnetpolygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mumbai.maticvigil.com/v1/${polygonVigilKey}`)),
+  };
 };
+let web3 = _makeWeb3s();
 let addressFront = null;
 let addressBack = null;
 let networkName = '';
 let common = null;
+/* const _updateChainFrontBack = () => {
+  web3.front = web3[networkName];
+  web3.back = web3[networkName + 'sidechain'];
+}; */
 function _setChain(nn) {
-  web3.front = web3[nn];
-  web3.back = web3[nn + 'sidechain'];
   addressFront = addresses[nn];
   addressBack = addresses[nn + 'sidechain'];
   networkName = nn;
+  
+  // _updateChainFrontBack();
 
   if (nn === 'mainnet') {
     common = Common.forCustomChain(
@@ -186,20 +191,13 @@ const transactionQueue = {
   },
 };
 
-const runMainnetTransaction = async (contractName, method, ...args) => {
-  const { contracts, getMainnetAddress } = await getBlockchain();
-
-  const address = await getMainnetAddress();
-  if (address) {
-    const m = contracts.front[contractName].methods[method];
-    const receipt = await m.apply(m, args).send({
-      from: address,
-    });
-    return receipt;
-  } else {
-    throw new Error('no addresses passed by web3');
-    return Error('no addresses passed by web3');
-  }
+const runChainTransaction = async (chainName, contractName, address, method, ...args) => {
+  const {contracts} = await getBlockchain();
+  const m = contracts[chainName][contractName].methods[method];
+  const receipt = await m.apply(m, args).send({
+    from: address,
+  });
+  return receipt;
 };
 
 const runSidechainTransaction = mnemonic => async (contractName, method, ...args) => {
@@ -235,8 +233,8 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
   return receipt;
 };
 
-const getTransactionSignature = async (chainName, contractName, transactionHash) => {
-  const u = `https://sign.exokit.org/${chainName}/${contractName}/${transactionHash}`;
+const getTransactionSignature = async (chainName, contractName, destinationChainName, transactionHash) => {
+  const u = `https://sign.exokit.org/${chainName}/${contractName}/${destinationChainName}/${transactionHash}`;
   for (let i = 0; i < 10; i++) {
     const signature = await fetch(u).then(res => res.json());
     if (signature) {
@@ -256,11 +254,79 @@ const _getWalletFromMnemonic = mnemonic => hdkey.fromMasterSeed(bip39.mnemonicTo
 
 const getAddressFromMnemonic = mnemonic => _getWalletFromMnemonic(mnemonic)
   .getAddressString();
+const ethEnabled = async () => {
+  if (window.ethereum) {
+    window.ethereum.enable();
+    window.mainWeb3 = new Web3(window.ethereum);
+    /* const network = await window.mainWeb3.eth.net.getNetworkType();
+    if (network === "main") {
+      return true;
+    } else if (network === "testnet"){
+      return true;
+    } else {
+      throw new Error("You need to be on the Mainnet network, but you are on " 
+      + network);
+    } */
+  } else {
+    throw new Error("Please install MetaMask to use Webaverse!");
+  }
+};
+const loginWithMetaMask = async () => {
+  // try {
+    await ethEnabled();
+    const {mainWeb3} = window;
+    const eth = await window.ethereum.request({
+      method: 'eth_accounts',
+    });
+    if (eth && eth[0]) {
+      /* const chainId = await mainWeb3.eth.net.getId();
+      let chainNetworkName = null;
+      for (const k in blockchainChainIds) {
+        const v = blockchainChainIds[k];
+        if (v === chainId) {
+          chainNetworkName = k;
+          break;
+        }
+      }
+      if (chainNetworkName === null) {
+        throw new Error('failed to find blockchain chain id ' + chainNetworkName);
+      }
+
+      web3 = _makeWeb3s();
+      web3[chainNetworkName] = new Web3(window.ethereum); */
+
+      // setMainnetAddress(eth[0]);
+      return eth[0];
+    } else {
+      /* ethereum.on("accountsChanged", (accounts) => {
+        // setMainnetAddress(accounts[0]);
+        func();
+      }); */
+      return null;
+    }
+  /* } catch (err) {
+    handleError(err);
+    return null;
+  } */
+};
+if (typeof window !== 'undefined') {
+  window.getBlockchain = getBlockchain;
+}
+
+const blockchainChainIds = {
+  mainnet: 1,
+  mainnetsidechain: 1338,
+  testnetsidechain: 80001,
+  polygon: 137,
+  testnetpolygon: 137,
+};
 
 export {
   getBlockchain,
   runSidechainTransaction,
-  runMainnetTransaction,
+  runChainTransaction,
   getTransactionSignature,
   getAddressFromMnemonic,
+  loginWithMetaMask,
+  blockchainChainIds,
 };

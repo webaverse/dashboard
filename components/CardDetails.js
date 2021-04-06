@@ -3,7 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useToasts } from "react-toast-notifications";
 import Link from "next/link";
 import AssetCard from "./Card";
-import { Networks, getBlockchain, runSidechainTransaction } from "../webaverse/blockchain.js";
+import {Networks, getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import { FileDrop } from 'react-file-drop';
 import { makeWbn, makePhysicsBake } from "../webaverse/build";
 import {
@@ -56,7 +56,11 @@ const CardDetails = ({
   networkName,
   currentLocation,
   getData,
+  // setMainnetAddress,
 }) => {
+  /* if (typeof setMainnetAddress !== 'function') {
+    throw new Error('no setMainnetAddress method');
+  } */
   if (!networkName) {
     throw new Error('no network name :' + networkName);
   }
@@ -77,9 +81,10 @@ const CardDetails = ({
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
     userOwnsThisAsset =
-      ownerAddress.toLowerCase() === globalState.address.toLowerCase();
+      ownerAddress.toLowerCase() === globalState.address.toLowerCase() || /stuck/.test(currentLocation);
     userCreatedThisAsset =
       minterAddress.toLowerCase() === globalState.address.toLowerCase();
+    // console.log('user owns this asset', currentLocation, ownerAddress.toLowerCase() === globalState.address.toLowerCase(), !/stuck/.test(currentLocation));
   } else {
     userOwnsThisAsset = false;
     userCreatedThisAsset = false;
@@ -92,51 +97,6 @@ const CardDetails = ({
 
   const isForSale =
     buyPrice !== undefined && buyPrice !== null && buyPrice !== "";
-
-  const ethEnabled = async () => {
-    if (window.ethereum) {
-      window.ethereum.enable();
-      window.mainWeb3 = new Web3(window.ethereum);
-      const network = await window.mainWeb3.eth.net.getNetworkType();
-      if (network === "main") {
-        return true;
-      } else if (network === "testnet"){
-        return true;
-      }
-      else {
-        handleError("You need to be on the Mainnet network.");
-        return false;
-      }
-    }
-    handleError("Please install MetaMask to use Webaverse!");
-    return false;
-  };
-
-  const loginWithMetaMask = async (func) => {
-    const enabled = await ethEnabled();
-    if (!enabled) {
-      return false;
-    } else {
-      const web3 = window.mainWeb3;
-      try {
-        const eth = await window.ethereum.request({
-          method: "eth_accounts",
-        });
-        if (eth && eth[0]) {
-          setMainnetAddress(eth[0]);
-          return eth[0];
-        } else {
-          ethereum.on("accountsChanged", (accounts) => {
-            setMainnetAddress(accounts[0]);
-            func();
-          });
-          return false;
-        }
-      } catch (err) {
-        handleError(err);
-      }
-    }
-  };
 
   const handleSuccess = (msg, link) => {
     if (typeof msg === "object") {
@@ -284,7 +244,7 @@ const CardDetails = ({
     }
 
     try {
-      const mainnetAddress = await loginWithMetaMask(handleWithdraw);
+      const mainnetAddress = await loginWithMetaMask();
       if (mainnetAddress) {
         addToast("Starting transfer of this item.", {
           appearance: "info",
@@ -306,33 +266,35 @@ const CardDetails = ({
     }
   };
 
-  const handleDeposit = async (e) => {
-    if (e) {
+  const handleDeposit = (sourceNetworkName, destinationNetworkName) => {
+    const handleDepositLogin = async e => {
       e.preventDefault();
-    }
 
-    try {
-      const mainnetAddress = await loginWithMetaMask(handleDeposit);
-      if (mainnetAddress) {
-        addToast("Starting transfer of this item.", {
-          appearance: "info",
-          autoDismiss: true,
-        });
-        await depositAsset(
-          id,
-          "sidechain",
-          mainnetAddress,
-          globalState.address,
-          globalState,
-          handleSuccess,
-          handleError
-        );
-      } else {
-        handleError("No address received from MetaMask.");
+      try {
+        const mainnetAddress = await loginWithMetaMask();
+        if (mainnetAddress) {
+          addToast("Starting transfer of this item.", {
+            appearance: "info",
+            autoDismiss: true,
+          });
+          await depositAsset(
+            id,
+            sourceNetworkName,
+            destinationNetworkName,
+            mainnetAddress,
+            globalState.address,
+            globalState,
+            handleSuccess,
+            handleError
+          );
+        } else {
+          handleError("No address received from MetaMask.");
+        }
+      } catch (err) {
+        handleError(err.toString());
       }
-    } catch (err) {
-      handleError(err.toString());
-    }
+    };
+    return handleDepositLogin;
   };
 
   const handleAddCollaborator = () => {
@@ -699,51 +661,78 @@ const CardDetails = ({
                         )}
                       </div>
                     )}
-                    {(userOwnsThisAsset && /sidechain/.test(currentLocation)) && (
+                    {(
                       <div className="Accordion">
-                        <div
-                          className="accordionTitle"
-                          onClick={() =>
-                            setToggleTransferOpen(!toggleTransferOpen)
-                          }
-                        >
-                          <span className="accordionTitleValue">Transfer</span>
-                          <span
-                            className={`accordionIcon ${
-                              toggleTransferOpen ? "reverse" : ""
-                            }`}
-                          ></span>
-                        </div>
+                        {userOwnsThisAsset ? (
+                          <div
+                            className="accordionTitle"
+                            onClick={() =>
+                              setToggleTransferOpen(!toggleTransferOpen)
+                            }
+                          >
+                            <span className="accordionTitleValue">Transfer</span>
+                            <span
+                              className={`accordionIcon ${
+                                toggleTransferOpen ? "reverse" : ""
+                              }`}
+                            ></span>
+                          </div>
+                        ) : null}    
                         {toggleTransferOpen && (
                           <div className="accordionDropdown">
                               {(currentLocation === 'mainnetsidechain-stuck') && (
                                 <button
                                   className="assetDetailsButton"
-                                  onClick={() =>
-                                    resubmitAsset( // XXX multiple cases
+                                  onClick={async () => {
+                                    const mainnetAddress = await loginWithMetaMask();
+                                    await resubmitAsset(
+                                      'mainnetsidechain',
                                       'NFT',
+                                      'mainnet',
                                       id,
-                                      globalState,
+                                      mainnetAddress,
                                       handleSuccess,
                                       handleError
                                     )
-                                  }
+                                  }}
                                 >
                                   Resubmit to mainchain
+                                </button>
+                              )}
+                              {(currentLocation === 'mainnetsidechain-stuck') && (
+                                <button
+                                  className="assetDetailsButton"
+                                  onClick={async () => {
+                                    const mainnetAddress = await loginWithMetaMask();
+                                    await resubmitAsset(
+                                      'mainnetsidechain',
+                                      'NFT',
+                                      'polygon',
+                                      id,
+                                      mainnetAddress,
+                                      handleSuccess,
+                                      handleError
+                                    )
+                                  }}
+                                >
+                                  Resubmit to polygon
                                 </button>
                               )}
                               {(currentLocation === 'mainnet-stuck') && (
                                 <button
                                   className="assetDetailsButton"
-                                  onClick={() =>
-                                    resubmitAsset( // XXX multiple cases
+                                  onClick={async () => {
+                                    const mainnetAddress = await loginWithMetaMask();
+                                    await resubmitAsset(
+                                      'mainnet',
                                       'NFT',
+                                      'mainnetsidechain',
                                       id,
-                                      globalState,
+                                      mainnetAddress,
                                       handleSuccess,
                                       handleError
                                     )
-                                  }
+                                  }}
                                 >
                                   Resubmit to sidechain
                                 </button>
@@ -751,15 +740,18 @@ const CardDetails = ({
                               {(currentLocation === 'polygon-stuck') && (
                                 <button
                                   className="assetDetailsButton"
-                                  onClick={() =>
-                                    resubmitAsset( // XXX multiple cases
+                                  onClick={async () => {
+                                    const mainnetAddress = await loginWithMetaMask();
+                                    await resubmitAsset(
+                                      'polygon',
                                       'NFT',
+                                      'mainnetsidechain',
                                       id,
-                                      globalState,
+                                      mainnetAddress,
                                       handleSuccess,
                                       handleError
                                     )
-                                  }
+                                  }}
                                 >
                                   Resubmit to sidechain
                                 </button>
@@ -772,7 +764,7 @@ const CardDetails = ({
                                     results.push(
                                       <button
                                         className="assetDetailsButton"
-                                        onClick={handleDeposit}
+                                        onClick={e => handleDeposit(currentLocation, transferOptionNetworkName)(e)}
                                         key={transferOptionNetworkName}
                                       >
                                         Transfer to {transferOptionNetworkName}

@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import { getAddress } from './UIStateFunctions';
-import { getAddressFromMnemonic, getBlockchain, runSidechainTransaction, runChainTransaction, getTransactionSignature, blockchainChainIds } from '../webaverse/blockchain.js';
+import { getAddressFromMnemonic, getBlockchain, runSidechainTransaction, runChainTransaction, getTransactionSignature, blockchainChainIds, loginWithMetaMask } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
 import bip39 from '../libs/bip39.js';
@@ -13,7 +13,7 @@ export const getTxData = async (txHash, contract) => {
   const networkName = getNetworkName() + 'sidechain';
 
   const tx = await web3[networkName].eth.getTransaction(txHash);
-  const events = await contracts['back'][contract].getPastEvents('Transfer', {
+  const events = await contracts['mainnetsidechain'][contract].getPastEvents('Transfer', {
     fromBlock: tx.blockNumber,
     toBlock: tx.blockNumber,
   });
@@ -55,15 +55,15 @@ export const getSidechainActivity = async (page) => {
     nftTransferEntries,
     landTransferEntries,
   ] = await Promise.all([
-    contracts['back']['FT'].getPastEvents('Transfer', {
+    contracts['mainnetsidechain']['FT'].getPastEvents('Transfer', {
       fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
       toBlock: page === 1 ? "latest" : parseInt(latest-(page*(latest-(latest/1.05)))),
     }),
-    contracts['back']['NFT'].getPastEvents('Transfer', {
+    contracts['mainnetsidechain']['NFT'].getPastEvents('Transfer', {
       fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
       toBlock: page === 1 ? "latest" : parseInt(latest-(page*(latest-(latest/1.05)))),
     }),
-    contracts['back']['LAND'].getPastEvents('Transfer', {
+    contracts['mainnetsidechain']['LAND'].getPastEvents('Transfer', {
       fromBlock: parseInt(latest-((page+1)*(latest-(latest/1.05)))),
       toBlock: page === 1 ? "latest" : parseInt(latest-(page*(latest-(latest/1.05)))),
     }),
@@ -91,16 +91,6 @@ export const getSidechainActivity = async (page) => {
 
 export const getStuckAsset = async (chainName, contractName, tokenId) => {
   const {contracts} = await getBlockchain();
-  /* const networkName = await getNetworkName();
-
-  let chainName, otherChainName;
-  if (networkName === 'main') {
-    chainName = 'front';
-    otherChainName = 'back';
-  } else {
-    otherChainName = 'front';
-    chainName = 'back';
-  } */
 
   // const contract = contracts[chainName];
   const proxyContract = contracts[chainName][contractName + 'Proxy'];
@@ -163,10 +153,11 @@ export const resubmitAsset = async (networkName, tokenName, destinationNetworkNa
 
   // const networkType = await web3[networkName].eth.net.getNetworkType();
   // console.log('get network type', {networkType});
-  const chainId = await web3[networkName].eth.net.getId();
-  const expectedChainId = blockchainChainIds[networkName];
+  const chainId = await web3[destinationNetworkName].eth.net.getId();
+  const expectedChainId = blockchainChainIds[destinationNetworkName];
   try {
-    if (chainId === expectedChainId) {    
+    if (chainId === expectedChainId) {
+      console.log('resubmit asset', destinationNetworkName, web3[destinationNetworkName].lol);
       await runChainTransaction(destinationNetworkName, tokenName + 'Proxy', address, 'withdraw', address, tokenId, timestamp, r, s, v);
       // return;
     } else {
@@ -211,21 +202,21 @@ export const buyAsset = async (id, networkType, mnemonic, handleSuccess, handleE
 
   const fullAmount = {
     t: 'uint256',
-    v: new web3['back'].utils.BN(1e9)
-      .mul(new web3['back'].utils.BN(1e9))
-      .mul(new web3['back'].utils.BN(1e9)),
+    v: new web3['mainnetsidechain'].utils.BN(1e9)
+      .mul(new web3['mainnetsidechain'].utils.BN(1e9))
+      .mul(new web3['mainnetsidechain'].utils.BN(1e9)),
   };
   const fullAmountD2 = {
     t: 'uint256',
-    v: fullAmount.v.div(new web3['back'].utils.BN(2)),
+    v: fullAmount.v.div(new web3['mainnetsidechain'].utils.BN(2)),
   };
 
   try {
     {
-      let allowance = await contracts['back']['FT'].methods.allowance(address, contracts['back']['Trade']._address).call();
-      allowance = new web3['back'].utils.BN(allowance, 10);
+      let allowance = await contracts['mainnetsidechain']['FT'].methods.allowance(address, contracts['mainnetsidechain']['Trade']._address).call();
+      allowance = new web3['mainnetsidechain'].utils.BN(allowance, 10);
       if (allowance.lt(fullAmountD2.v)) {
-        await runSidechainTransaction(mnemonic)('FT', 'approve', contracts['back']['Trade']._address, fullAmount.v);
+        await runSidechainTransaction(mnemonic)('FT', 'approve', contracts['mainnetsidechain']['Trade']._address, fullAmount.v);
       }
     }
 
@@ -242,7 +233,7 @@ export const buyAsset = async (id, networkType, mnemonic, handleSuccess, handleE
 export const sellAsset = async (id, price, networkType, mnemonic, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
   try {
-    await runSidechainTransaction(mnemonic)('NFT', 'setApprovalForAll', contracts['back']['Trade']._address, true);
+    await runSidechainTransaction(mnemonic)('NFT', 'setApprovalForAll', contracts['mainnetsidechain']['Trade']._address, true);
     const result = await runSidechainTransaction(mnemonic)('Trade', 'addStore', id, price);
 
     if (handleSuccess)
@@ -478,19 +469,19 @@ export const mintNft = async (hash, name, ext, description, quantity, handleSucc
 
     const fullAmount = {
       t: 'uint256',
-      v: new web3['back'].utils.BN(1e9)
-        .mul(new web3['back'].utils.BN(1e9))
-        .mul(new web3['back'].utils.BN(1e9)),
+      v: new web3['mainnetsidechain'].utils.BN(1e9)
+        .mul(new web3['mainnetsidechain'].utils.BN(1e9))
+        .mul(new web3['mainnetsidechain'].utils.BN(1e9)),
     };
     const fullAmountD2 = {
       t: 'uint256',
-      v: fullAmount.v.div(new web3['back'].utils.BN(2)),
+      v: fullAmount.v.div(new web3['mainnetsidechain'].utils.BN(2)),
     };
 
-    let allowance = await contracts.back.FT.methods.allowance(address, contracts['back']['NFT']._address).call();
-    allowance = new web3['back'].utils.BN(allowance, 10);
+    let allowance = await contracts['mainnetsidechain'].FT.methods.allowance(address, contracts['mainnetsidechain']['NFT']._address).call();
+    allowance = new web3['mainnetsidechain'].utils.BN(allowance, 10);
     if (allowance.lt(fullAmountD2.v)) {
-      const result = await runSidechainTransaction(mnemonic)('FT', 'approve', contracts['back']['NFT']._address, fullAmount.v);
+      const result = await runSidechainTransaction(mnemonic)('FT', 'approve', contracts['mainnetsidechain']['NFT']._address, fullAmount.v);
       status = result.status;
     } else {
       status = true;
@@ -503,7 +494,7 @@ export const mintNft = async (hash, name, ext, description, quantity, handleSucc
 
       status = result.status;
       transactionHash = result.transactionHash;
-      const tokenId = new web3['back'].utils.BN(result.logs[0].topics[3].slice(2), 16).toNumber();
+      const tokenId = new web3['mainnetsidechain'].utils.BN(result.logs[0].topics[3].slice(2), 16).toNumber();
       tokenIds = [tokenId, tokenId + quantity - 1];
       handleSuccess(tokenId);
     }
@@ -557,11 +548,11 @@ export const depositSILK = async (amount, mainnetAddress, state, handleSuccess, 
   // Withdraw from mainnet
   amount = parseInt(amount, 10);
 
-  await runSidechainTransaction(state.loginToken.mnemonic)('FT', 'approve', contracts['back'].FTProxy._address, amount);
+  await runSidechainTransaction(state.loginToken.mnemonic)('FT', 'approve', contracts['mainnetsidechain'].FTProxy._address, amount);
 
   const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('FTProxy', 'deposit', mainnetAddress, amount);
 
-  const signature = await getTransactionSignature('back', 'FT', receipt.transactionHash);
+  const signature = await getTransactionSignature('mainnetsidechain', 'FT', receipt.transactionHash);
   const timestamp = {
     t: 'uint256',
     v: signature.timestamp,
@@ -662,14 +653,14 @@ export const depositLand = async (tokenId, mainnetAddress, state, handleSuccess,
   if (!isNaN(id)) {
     const tokenId = {
       t: 'uint256',
-      v: new web3['back'].utils.BN(id),
+      v: new web3['mainnetsidechain'].utils.BN(id),
     };
 
-    await runSidechainTransaction(state.loginToken.mnemonic)('LAND', 'setApprovalForAll', contracts['back'].LANDProxy._address, true);
+    await runSidechainTransaction(state.loginToken.mnemonic)('LAND', 'setApprovalForAll', contracts['mainnetsidechain'].LANDProxy._address, true);
 
     const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('LANDProxy', 'deposit', mainnetAddress, tokenId.v);
 
-    const signature = await getTransactionSignature('back', 'LAND', receipt.transactionHash);
+    const signature = await getTransactionSignature('mainnetsidechain', 'LAND', receipt.transactionHash);
     const timestamp = {
       t: 'uint256',
       v: signature.timestamp,
@@ -733,7 +724,7 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
     if (!isNaN(id)) {
       const tokenId = {
         t: 'uint256',
-        v: new web3['back'].utils.BN(id),
+        v: new web3['mainnetsidechain'].utils.BN(id),
       };
 
       await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts[sourceNetworkName].NFTProxy._address, true);
@@ -882,9 +873,9 @@ export const clearLoadoutState = async (index, state, handleSuccess, handleError
   return { ...state, loadout: JSON.stringify(loadout) };
 };
 export const addMainnetAddress = async (state, handleSuccess, handleError) => {
-  const { web3, contracts } = await getBlockchain();
+  const {web3, contracts} = await getBlockchain();
 
-  let mainnetAddress;
+  /* let mainnetAddress;
   const ethEnabled = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -913,10 +904,10 @@ export const addMainnetAddress = async (state, handleSuccess, handleError) => {
         return false;
       }
     }
-  }
+  } */
 
   try {
-    await loginWithMetaMask();
+    mainnetAddress = await loginWithMetaMask();
 
     const signature = await window.web3.eth.personal.sign(mainnetSignatureMessage, mainnetAddress, "test password!")
     await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'mainnetAddress', signature);
@@ -924,8 +915,6 @@ export const addMainnetAddress = async (state, handleSuccess, handleError) => {
   } catch(err) {
     handleError(err);
   }
-
-  return;
 }
 export const removeMainnetAddress = async (state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();

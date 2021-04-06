@@ -23,32 +23,17 @@ const loadPromise = Promise.all([
 ]) => {
   addresses = newAddresses;
   abis = newAbis;
-  
-  contracts = {};
-  Object.keys(Networks).forEach(network => {
-    console.log("*** Network is", network);
 
-    if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
-      _setChain('testnet');
-    } else if (typeof window !== 'undefined' && /^polygon\./.test(location.hostname)) {
-      _setChain('polygon');
-    } else {
-      _setChain('mainnet');
-    }
-    
-    contracts[network] = {
-      Account: new web3[network].eth.Contract(abis.Account, addresses[network].Account),
-      FT: new web3[network].eth.Contract(abis.FT, addresses[network].FT),
-      FTProxy: new web3[network].eth.Contract(abis.FTProxy, addresses[network].FTProxy),
-      NFT: new web3[network].eth.Contract(abis.NFT, addresses[network].NFT),
-      NFTProxy: new web3[network].eth.Contract(abis.NFTProxy, addresses[network].NFTProxy),
-      Trade: new web3[network].eth.Contract(abis.Trade, addresses[network].Trade),
-      LAND: new web3[network].eth.Contract(abis.LAND, addresses[network].LAND),
-      LANDProxy: new web3[network].eth.Contract(abis.LANDProxy, addresses[network].LANDProxy),
-    }
-  });
-  contracts.front = contracts[networkName];
-  contracts.back = contracts[networkName + 'sidechain'];
+  if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
+    _setChain('testnet');
+  } else if (typeof window !== 'undefined' && /^polygon\./.test(location.hostname)) {
+    _setChain('polygon');
+  } else {
+    _setChain('mainnet');
+  }
+  _updateContracts();
+  // contracts.front = contracts[networkName];
+  // contracts.back = contracts[networkName + 'sidechain'];
 });
 
 export const Networks = {
@@ -93,17 +78,36 @@ export const Networks = {
   new Web3(window.ethereum)
 :
   new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`)); */
-const _makeWeb3s = () => {
-  return {
-    mainnet: new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`)),
-    mainnetsidechain: new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint)),
-    testnet: new Web3(new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${infuraKey}`)),
-    testnetsidechain: new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint)),
-    polygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/${polygonVigilKey}`)),
-    testnetpolygon: new Web3(new Web3.providers.HttpProvider(`https://rpc-mumbai.maticvigil.com/v1/${polygonVigilKey}`)),
-  };
+const web3 = {};
+const _resetWeb3 = () => {
+  console.log('reset 1');
+  web3.mainnet = new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`));
+  web3.mainnetsidechain = new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint));
+  web3.testnet = new Web3(new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${infuraKey}`));
+  web3.testnetsidechain = new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint));
+  web3.polygon = new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/${polygonVigilKey}`));
+  web3.testnetpolygon = new Web3(new Web3.providers.HttpProvider(`https://rpc-mumbai.maticvigil.com/v1/${polygonVigilKey}`));
+  web3.mainnet.lol = 1;
+  web3.mainnetsidechain.lol = 1;
+  console.log('reset 2');
 };
-let web3 = _makeWeb3s();
+_resetWeb3();
+const contracts = {};
+const _updateContracts = () => {
+  Object.keys(Networks).forEach(network => {
+    // console.log("*** Network is", network);
+    contracts[network] = {
+      Account: new web3[network].eth.Contract(abis.Account, addresses[network].Account),
+      FT: new web3[network].eth.Contract(abis.FT, addresses[network].FT),
+      FTProxy: new web3[network].eth.Contract(abis.FTProxy, addresses[network].FTProxy),
+      NFT: new web3[network].eth.Contract(abis.NFT, addresses[network].NFT),
+      NFTProxy: new web3[network].eth.Contract(abis.NFTProxy, addresses[network].NFTProxy),
+      Trade: new web3[network].eth.Contract(abis.Trade, addresses[network].Trade),
+      LAND: new web3[network].eth.Contract(abis.LAND, addresses[network].LAND),
+      LANDProxy: new web3[network].eth.Contract(abis.LANDProxy, addresses[network].LANDProxy),
+    }
+  });
+};
 let addressFront = null;
 let addressBack = null;
 let networkName = '';
@@ -145,7 +149,6 @@ function _setChain(nn) {
     throw new Error('unknown network name: ' + nn);
   }
 }
-let contracts = null;
 
 const getNetworkName = () => networkName;
 
@@ -193,6 +196,7 @@ const transactionQueue = {
 
 const runChainTransaction = async (chainName, contractName, address, method, ...args) => {
   const {contracts} = await getBlockchain();
+  console.log('got chain', chainName, contracts[chainName].lol);
   const m = contracts[chainName][contractName].methods[method];
   const receipt = await m.apply(m, args).send({
     from: address,
@@ -205,30 +209,30 @@ const runSidechainTransaction = mnemonic => async (contractName, method, ...args
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
   const privateKey = wallet.getPrivateKeyString();
-  const privateKeyBytes = Uint8Array.from(web3['back'].utils.hexToBytes(privateKey));
+  const privateKeyBytes = Uint8Array.from(web3['mainnetsidechain'].utils.hexToBytes(privateKey));
 
-  const txData = contracts['back'][contractName].methods[method](...args);
+  const txData = contracts['mainnetsidechain'][contractName].methods[method](...args);
   const data = txData.encodeABI();
   const gas = await txData.estimateGas({
     from: address,
   });
-  let gasPrice = await web3['back'].eth.getGasPrice();
+  let gasPrice = await web3['mainnetsidechain'].eth.getGasPrice();
   gasPrice = parseInt(gasPrice, 10);
 
   await transactionQueue.lock();
-  const nonce = await web3['back'].eth.getTransactionCount(address);
+  const nonce = await web3['mainnetsidechain'].eth.getTransactionCount(address);
   let tx = Transaction.fromTxData({
-    to: contracts['back'][contractName]._address,
-    nonce: '0x' + new web3['back'].utils.BN(nonce).toString(16),
-    gas: '0x' + new web3['back'].utils.BN(gas).toString(16),
-    gasPrice: '0x' + new web3['back'].utils.BN(gasPrice).toString(16),
-    gasLimit: '0x' + new web3['back'].utils.BN(8000000).toString(16),
+    to: contracts['mainnetsidechain'][contractName]._address,
+    nonce: '0x' + new web3['mainnetsidechain'].utils.BN(nonce).toString(16),
+    gas: '0x' + new web3['mainnetsidechain'].utils.BN(gas).toString(16),
+    gasPrice: '0x' + new web3['mainnetsidechain'].utils.BN(gasPrice).toString(16),
+    gasLimit: '0x' + new web3['mainnetsidechain'].utils.BN(8000000).toString(16),
     data,
   }, {
     common,
   }).sign(privateKeyBytes);
   const rawTx = '0x' + tx.serialize().toString('hex');
-  const receipt = await web3['back'].eth.sendSignedTransaction(rawTx);
+  const receipt = await web3['mainnetsidechain'].eth.sendSignedTransaction(rawTx);
   transactionQueue.unlock();
   return receipt;
 };
@@ -274,12 +278,11 @@ const ethEnabled = async () => {
 const loginWithMetaMask = async () => {
   // try {
     await ethEnabled();
-    const {mainWeb3} = window;
     const eth = await window.ethereum.request({
       method: 'eth_accounts',
     });
     if (eth && eth[0]) {
-      /* const chainId = await mainWeb3.eth.net.getId();
+      const chainId = await window.mainWeb3.eth.net.getId();
       let chainNetworkName = null;
       for (const k in blockchainChainIds) {
         const v = blockchainChainIds[k];
@@ -292,8 +295,13 @@ const loginWithMetaMask = async () => {
         throw new Error('failed to find blockchain chain id ' + chainNetworkName);
       }
 
-      web3 = _makeWeb3s();
-      web3[chainNetworkName] = new Web3(window.ethereum); */
+      _resetWeb3();
+      console.log('override chain name 1', chainNetworkName, web3[chainNetworkName].lol);
+      // web3.lol = 1;
+      web3[chainNetworkName] = new Web3(window.ethereum);
+      web3[chainNetworkName].lol = 2;
+      console.log('override chain name 2', chainNetworkName, web3[chainNetworkName].lol);
+      _updateContracts();
 
       // setMainnetAddress(eth[0]);
       return eth[0];

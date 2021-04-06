@@ -92,7 +92,7 @@ export default () => {
           arrivingFromTwitter ?
           `https://login.exokit.org/?twittercode=${code}&twitterid=${id}` :
           `https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
-        co// nsole.log('effect 3');
+        // console.log('effect 3');
         if (res.status !== 200) {
           throw "Login did not work, got response: " + res.status;
         }

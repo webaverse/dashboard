@@ -87,8 +87,6 @@ const _resetWeb3 = () => {
   web3.testnetsidechain = new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint));
   web3.polygon = new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/${polygonVigilKey}`));
   web3.testnetpolygon = new Web3(new Web3.providers.HttpProvider(`https://rpc-mumbai.maticvigil.com/v1/${polygonVigilKey}`));
-  web3.mainnet.lol = 1;
-  web3.mainnetsidechain.lol = 1;
   console.log('reset 2');
 };
 _resetWeb3();
@@ -195,8 +193,8 @@ const transactionQueue = {
 };
 
 const runChainTransaction = async (chainName, contractName, address, method, ...args) => {
-  const {contracts} = await getBlockchain();
-  console.log('got chain', chainName, contracts[chainName].lol);
+  const {web3, contracts} = await getBlockchain();
+  // console.log('got chain', chainName, web3[chainName].injected);
   const m = contracts[chainName][contractName].methods[method];
   const receipt = await m.apply(m, args).send({
     from: address,
@@ -296,11 +294,10 @@ const loginWithMetaMask = async () => {
       }
 
       _resetWeb3();
-      console.log('override chain name 1', chainNetworkName, web3[chainNetworkName].lol);
-      // web3.lol = 1;
+      console.log('override chain name 1', chainNetworkName, web3[chainNetworkName].injected);
       web3[chainNetworkName] = new Web3(window.ethereum);
-      web3[chainNetworkName].lol = 2;
-      console.log('override chain name 2', chainNetworkName, web3[chainNetworkName].lol);
+      web3[chainNetworkName].injected = true;
+      console.log('override chain name 2', chainNetworkName, web3[chainNetworkName].injected);
       _updateContracts();
 
       // setMainnetAddress(eth[0]);
@@ -317,9 +314,6 @@ const loginWithMetaMask = async () => {
     return null;
   } */
 };
-if (typeof window !== 'undefined') {
-  window.getBlockchain = getBlockchain;
-}
 
 const blockchainChainIds = {
   mainnet: 1,
@@ -327,6 +321,27 @@ const blockchainChainIds = {
   testnetsidechain: 80001,
   polygon: 137,
   testnetpolygon: 137,
+};
+
+const ensureMetamaskChain = async networkName => {
+  // console.log('check chain ids', chainId, expectedChainId);
+  if (!web3[networkName].injected) {
+    const injectedWeb3 = (() => {
+      for (const networkName in web3) {
+        if (web3[networkName].injected) {
+          return web3[networkName];
+        }
+      }
+      return null;
+    })();
+    if (injectedWeb3) {
+      const chainId = await injectedWeb3.eth.net.getId();
+      const expectedChainId = blockchainChainIds[networkName];
+      throw new Error(`You are on network ${chainId}, expected ${expectedChainId}`);
+    } else {
+      throw new Error(`Metamask is not connected!`);
+    }
+  }
 };
 
 export {
@@ -337,4 +352,5 @@ export {
   getAddressFromMnemonic,
   loginWithMetaMask,
   blockchainChainIds,
+  ensureMetamaskChain,
 };

@@ -380,9 +380,9 @@ const CardDetails = ({
         .getWallet();
       const privateKey = wallet.getPrivateKey().toString("hex");
 
-      const result2 = await web3.back.eth.accounts.sign(proofOfAddressMessage, privateKey);
+      const result2 = await web3['mainnetsidechain'].eth.accounts.sign(proofOfAddressMessage, privateKey);
       const { v, r, s, signature } = result2;
-      const result3 = await web3.back.eth.accounts.recover(proofOfAddressMessage, v, r, s);
+      const result3 = await web3['mainnetsidechain'].eth.accounts.recover(proofOfAddressMessage, v, r, s);
       // console.log('got sig 2', {signature});
       return signature;
     };

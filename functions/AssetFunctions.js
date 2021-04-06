@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import { getAddress } from './UIStateFunctions';
-import { getAddressFromMnemonic, getBlockchain, runSidechainTransaction, runChainTransaction, getTransactionSignature, blockchainChainIds, loginWithMetaMask } from '../webaverse/blockchain.js';
+import { getAddressFromMnemonic, getBlockchain, runSidechainTransaction, runChainTransaction, getTransactionSignature, loginWithMetaMask, ensureMetamaskChain } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
 import bip39 from '../libs/bip39.js';
@@ -151,18 +151,14 @@ export const resubmitAsset = async (networkName, tokenName, destinationNetworkNa
   const signatureJson = await res.json();
   const {timestamp, r, s, v} = signatureJson;
 
-  // const networkType = await web3[networkName].eth.net.getNetworkType();
-  // console.log('get network type', {networkType});
-  const chainId = await web3[destinationNetworkName].eth.net.getId();
-  const expectedChainId = blockchainChainIds[destinationNetworkName];
   try {
-    if (chainId === expectedChainId) {
-      console.log('resubmit asset', destinationNetworkName, web3[destinationNetworkName].lol);
-      await runChainTransaction(destinationNetworkName, tokenName + 'Proxy', address, 'withdraw', address, tokenId, timestamp, r, s, v);
-      // return;
-    } else {
-      throw new Error(`You are on network ${chainId}, expected ${expectedChainId}`);
-    }
+    console.log('resubmit asset 1', destinationNetworkName);
+    
+    await ensureMetamaskChain(destinationNetworkName);
+
+    console.log('resubmit asset 2', destinationNetworkName, web3[destinationNetworkName].lol);
+
+    await runChainTransaction(destinationNetworkName, tokenName + 'Proxy', address, 'withdraw', address, tokenId, timestamp, r, s, v);
   } catch (err) {
     console.log('failed', err);
     handleError(err.message);
@@ -179,7 +175,7 @@ export const deleteAsset = async (id, mnemonic, handleSuccess, handleError) => {
     const network = 'sidechain';
     const burnAddress = "0x000000000000000000000000000000000000dEaD";
 
-    const currentHash = await contracts.back.NFT.methods.getHash(id).call();
+    const currentHash = await contracts['mainnetsidechain'].NFT.methods.getHash(id).call();
     const r = Math.random().toString(36);
     const updateHashResult = await runSidechainTransaction(mnemonic)('NFT', 'updateHash', currentHash, r);
     const result = await runSidechainTransaction(mnemonic)('NFT', 'transferFrom', address, burnAddress, id);
@@ -383,7 +379,7 @@ export const addNftCollaborator = async (hash, address, handleSuccess, handleErr
 
 export const getLandHash = async (id) => {
   const { web3, contracts } = await getBlockchain();
-  const hash = contracts.back.LAND.methods.getSingleMetadata(id, 'hash').call();
+  const hash = contracts['mainnetsidechain'].LAND.methods.getSingleMetadata(id, 'hash').call();
 
   return hash;
 }
@@ -800,7 +796,7 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
 
 export const getLoadout = async (address) => {
   const { web3, contracts } = await getBlockchain();
-  const loadoutString = await contracts.back.Account.methods.getMetadata(address, 'loadout').call();
+  const loadoutString = await contracts['mainnetsidechain'].Account.methods.getMetadata(address, 'loadout').call();
   let loadout = loadoutString ? JSON.parse(loadoutString) : null;
   if (!Array.isArray(loadout)) {
     loadout = [];
@@ -818,13 +814,13 @@ export const setLoadoutState = async (id, index, state, handleSuccess, handleErr
     return state;
   }
 
-  const hash = await contracts.back.NFT.methods.getHash(id).call();
+  const hash = await contracts['mainnetsidechain'].NFT.methods.getHash(id).call();
   const [
     name,
     ext,
   ] = await Promise.all([
-    contracts.back.NFT.methods.getMetadata(hash, 'name').call(),
-    contracts.back.NFT.methods.getMetadata(hash, 'ext').call(),
+    contracts['mainnetsidechain'].NFT.methods.getMetadata(hash, 'name').call(),
+    contracts['mainnetsidechain'].NFT.methods.getMetadata(hash, 'ext').call(),
   ]);
 
   // const itemUrl = `${storageHost}/${hash.slice(2)}${ext ? ('.' + ext) : ''}`;

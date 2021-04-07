@@ -27,7 +27,7 @@ import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
 import wbn from '../webaverse/wbn.js';
-import { blobToFile, getExt } from "../webaverse/util";
+import {blobToFile, getExt} from "../webaverse/util";
 import FileBrowser from './FileBrowser';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 

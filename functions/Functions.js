@@ -1,3 +1,6 @@
+import {toBuffer, fromRpcSig, ecrecover, keccak256, pubToAddress, bufferToHex} from 'ethereumjs-util';
+const Buffer = toBuffer('0x0').constructor;
+
 export function parseQuery(queryString) {
   var query = {};
   var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
@@ -44,4 +47,23 @@ export function getAddressProofs(profile) {
     addressProofs = [];
   }
   return addressProofs;
+}
+
+export async function getAddressesFromProofs(adressProofs, web3, proofOfAddressMessage) {
+  return await Promise.all(adressProofs.map(async signature => {
+    // console.log('got sig 1', signature);
+    
+    try {
+      const {v, r, s} = fromRpcSig(signature);
+      const b = toBuffer(web3.mainnetsidechain.utils.sha3('\x19Ethereum Signed Message:\n' + proofOfAddressMessage.length + proofOfAddressMessage));
+      // console.log('got sig 2', {v, r, s}, [b, v, r, s]);
+      const pubKey = ecrecover(b, v, r, s);
+      // console.log('got sig 3', pubKey);
+      const address = bufferToHex(pubToAddress(pubKey));
+      // console.log('got sig 4', address);
+      return address;
+    } catch(err) {
+      console.warn(err);
+    }
+  }));
 }

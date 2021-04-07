@@ -94,21 +94,21 @@ const _updateWeb3 = async () => {
   }
 
   _resetWeb3();
-  console.log('override chain name 1', chainNetworkName, web3[chainNetworkName].injected);
+  // console.log('override chain name 1', chainNetworkName, web3[chainNetworkName].injected);
   web3[chainNetworkName] = new Web3(window.ethereum);
   web3[chainNetworkName].injected = true;
-  console.log('override chain name 2', chainNetworkName, web3[chainNetworkName].injected);
+  // console.log('override chain name 2', chainNetworkName, web3[chainNetworkName].injected);
   _updateContracts();
 };
 const _resetWeb3 = () => {
-  console.log('reset 1');
+  // console.log('reset 1');
   web3.mainnet = new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`));
   web3.mainnetsidechain = new Web3(new Web3.providers.HttpProvider(web3MainnetSidechainEndpoint));
   web3.testnet = new Web3(new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${infuraKey}`));
   web3.testnetsidechain = new Web3(new Web3.providers.HttpProvider(web3TestnetSidechainEndpoint));
   web3.polygon = new Web3(new Web3.providers.HttpProvider(`https://rpc-mainnet.maticvigil.com/v1/${polygonVigilKey}`));
   web3.testnetpolygon = new Web3(new Web3.providers.HttpProvider(`https://rpc-mumbai.maticvigil.com/v1/${polygonVigilKey}`));
-  console.log('reset 2');
+  // console.log('reset 2');
 };
 _resetWeb3();
 const contracts = {};
@@ -348,7 +348,7 @@ const ensureMetamaskChain = async networkName => {
       return null;
     })();
     if (injectedWeb3) {
-      console.log('not injected', web3[networkName], injectedWeb3);
+      // console.log('not injected', web3[networkName], injectedWeb3);
       const chainId = await injectedWeb3.eth.net.getId();
       const expectedChainId = blockchainChainIds[networkName];
       throw new Error(`You are on network ${chainId}, expected ${expectedChainId}`);

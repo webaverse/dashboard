@@ -67,3 +67,7 @@ export async function getAddressesFromProofs(adressProofs, web3, proofOfAddressM
     }
   }));
 }
+
+export function formatError(err) {
+  return err instanceof Error ? (err + '') : err.message ? err.message : JSON.stringify(err);
+}

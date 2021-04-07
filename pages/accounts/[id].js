@@ -7,7 +7,7 @@ import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
 import { removeMainnetAddress, addMainnetAddress, resubmitAsset, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
 import {mainnetSignatureMessage, proofOfAddressMessage} from "../../constants/UnlockConstants.js";
-import {getAddressProofs, getAddressesFromProofs} from '../../functions/Functions.js';
+import {getAddressProofs, getAddressesFromProofs, formatError} from '../../functions/Functions.js';
 import {getBlockchain} from "../../webaverse/blockchain.js";
 
 import Loader from "../../components/Loader";
@@ -96,8 +96,9 @@ const Account = ({ data }) => {
     }
   }
 
-  const handleError = (err) => {
-    addToast("Error: " + err, { appearance: 'error', autoDismiss: true, })
+  const handleError = err => {
+    console.warn(err);
+    addToast(formatError(err), { appearance: 'error', autoDismiss: true, })
     console.log("error", err);
     setLoading(false);
   }

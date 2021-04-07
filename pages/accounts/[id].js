@@ -7,6 +7,7 @@ import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
 import { removeMainnetAddress, addMainnetAddress, resubmitAsset, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
 import {mainnetSignatureMessage} from "../../constants/UnlockConstants.js";
+import { getAddressProofs } from '../../functions/Functions';
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
@@ -88,7 +89,7 @@ const Account = ({ data }) => {
 
   const handleAddMainnetAddress = async () => {
     addToast(mainnetSignatureMessage, { appearance: 'info', autoDismiss: true, });
-    await addMainnetAddress(globalState, handleSuccess, handleError);
+    await addMainnetAddress(profile, globalState, handleSuccess, handleError);
   }
 
   const handleRemoveMainnetAddress = async () => {
@@ -174,6 +175,7 @@ const Account = ({ data }) => {
     }
 
   }
+  const addressProofs = getAddressProofs(profile);
 
   return (<>
     <Head>
@@ -222,7 +224,7 @@ const Account = ({ data }) => {
         selectedView === "settings" && globalState && globalState.address == id.toLowerCase() && (
           <div key="settingsButtonsContainer" className="settingsButtonsContainer">
           {[
-            profile && profile.mainnetAddress !== "" && (<a key="removeMainnetAddressButton" className="button" onClick={() => handleRemoveMainnetAddress()}>
+            addressProofs.length > 0 && (<a key="removeMainnetAddressButton" className="button" onClick={() => handleRemoveMainnetAddress()}>
               Remove mainnet address
             </a>),
             (<a key="connectMainnetAddressButton" className="button" onClick={() => handleAddMainnetAddress()}>

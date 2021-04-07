@@ -1,12 +1,13 @@
 import Web3 from 'web3';
 import { getAddress } from './UIStateFunctions';
+import { uniquify, getAddressProofs } from './Functions';
 import { getAddressFromMnemonic, getBlockchain, runSidechainTransaction, runChainTransaction, getTransactionSignature, loginWithMetaMask, ensureMetamaskChain } from '../webaverse/blockchain.js';
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
 import bip39 from '../libs/bip39.js';
 import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
-import {mainnetSignatureMessage} from "../constants/UnlockConstants.js";
+import {proofOfAddressMessage} from "../constants/UnlockConstants.js";
 
 export const getTxData = async (txHash, contract) => {
   const { web3, contracts, getNetworkName } = await getBlockchain();
@@ -868,14 +869,30 @@ export const clearLoadoutState = async (index, state, handleSuccess, handleError
 
   return { ...state, loadout: JSON.stringify(loadout) };
 };
-export const addMainnetAddress = async (state, handleSuccess, handleError) => {
+export const addMainnetAddress = async (profile, state, handleSuccess, handleError) => {
   const {web3, contracts} = await getBlockchain();
 
   try {
     const mainnetAddress = await loginWithMetaMask();
+    
+    const injectedWeb3 = (() => {
+      for (const k in web3) {
+        const v = web3[k];
+        if (v.injected) {
+          return v;
+        }
+      }
+      return null;
+    })();
 
-    const signature = await web3.eth.personal.sign(mainnetSignatureMessage, mainnetAddress, "test password!")
-    await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'mainnetAddress', signature);
+    const signature = await injectedWeb3.eth.personal.sign(proofOfAddressMessage, mainnetAddress);
+    let addressProofs = getAddressProofs(profile);
+    addressProofs.push(signature);
+    addressProofs = uniquify(addressProofs);
+
+    console.log('set address proofs', addressProofs);
+
+    await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'addressProofs', JSON.stringify(addressProofs));
     handleSuccess();
   } catch(err) {
     handleError(err);
@@ -885,7 +902,7 @@ export const removeMainnetAddress = async (state, handleSuccess, handleError) =>
   const { web3, contracts } = await getBlockchain();
 
   try {
-    await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'mainnetAddress', '');
+    await runSidechainTransaction(state.loginToken.mnemonic)('Account', 'setMetadata', state.address, 'addressProofs', '');
     handleSuccess();
   } catch(err) {
     handleError(err);

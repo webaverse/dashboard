@@ -8,7 +8,6 @@ import {useAppContext} from "../../libs/contextLib";
 import {getBlockchain} from "../../webaverse/blockchain.js";
 import {getStuckAsset} from "../../functions/AssetFunctions.js";
 import {Networks} from "../../webaverse/blockchain.js";
-import {} from "../../functions/UIStateFunctions.js";
 import {getAddressProofs, getAddressesFromProofs} from '../../functions/Functions.js';
 import {proofOfAddressMessage} from "../../constants/UnlockConstants.js";
 

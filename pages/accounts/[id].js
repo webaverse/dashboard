@@ -15,10 +15,10 @@ import CardGrid from "../../components/CardGrid";
 import ProfileHeader from "../../components/Profile";
 
 const Account = ({ data }) => {  
-  const { addToast } = useToasts();
+  const {addToast} = useToasts();
   const router = useRouter()
-  const { id } = router.query;
-  const { globalState, setGlobalState } = useAppContext();
+  const {id} = router.query;
+  const {globalState, setGlobalState} = useAppContext();
   const [inventory, setInventory] = useState(data.inventory);
   const [balance, setBalance] = useState(data.balance);
   const [loadout, setLoadout] = useState(data.loadout);

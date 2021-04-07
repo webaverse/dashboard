@@ -81,9 +81,10 @@ const CardDetails = ({
   const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
 
   let userOwnsThisAsset, userCreatedThisAsset;
-  if (globalState && globalState.address) {
+  const allAddresses = (globalState.address ? [globalState.address] : []).concat(addresses);
+  if (globalState && allAddresses.length > 0) {
     userOwnsThisAsset =
-      currentOwnerAddress.toLowerCase() === globalState.address.toLowerCase() || /stuck/.test(currentLocation);
+      allAddresses.includes(currentOwnerAddress.toLowerCase()) || /stuck/.test(currentLocation);
     userCreatedThisAsset =
       minterAddress.toLowerCase() === globalState.address.toLowerCase();
     // console.log('user owns this asset', currentLocation, currentOwnerAddress.toLowerCase() === globalState.address.toLowerCase(), !/stuck/.test(currentLocation));

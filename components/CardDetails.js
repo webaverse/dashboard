@@ -560,38 +560,30 @@ const CardDetails = ({
                         </div>
                         {toggleAddOpen && (
                           <div className="accordionDropdown">
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={handleSetAvatar}
-                                >
-                                  Set As Avatar
-                                </button>
-                              )}
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={handleSetHomespace}
-                                >
-                                  Set As Homespace
-                                </button>
-                              )}
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={addToLoadout}
-                                >
-                                  Add To Loadout
-                                </button>
-                              )}
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={clearLoadout}
-                                >
-                                  Clear From Loadout
-                                </button>
-                              )}
+                              <button
+                                className="assetDetailsButton"
+                                onClick={handleSetAvatar}
+                              >
+                                Set As Avatar
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={handleSetHomespace}
+                              >
+                                Set As Homespace
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={addToLoadout}
+                              >
+                                Add To Loadout
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={clearLoadout}
+                              >
+                                Clear From Loadout
+                              </button>
                           </div>
                         )}
                       </div>

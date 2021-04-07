@@ -60,7 +60,7 @@ const Asset = ({ data }) => {
       const {
         web3,
       } = await getBlockchain();
-      
+
       const profile = await getProfileForCreator(globalState.address);
       const addressProofs = getAddressProofs(profile);
       const addresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);

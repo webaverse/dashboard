@@ -296,7 +296,7 @@ const CardDetails = ({
           handleError("No address received from MetaMask.");
         }
       } catch (err) {
-        handleError(err.toString());
+        handleError(err);
       }
     };
     return handleDepositLogin;

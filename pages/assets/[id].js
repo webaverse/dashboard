@@ -124,6 +124,7 @@ const Asset = ({ data }) => {
              minterAvatarPreview={token.minter.avatarPreview}
              minterAddress={token.minter.address}
              minterUsername={token.minter.username}
+             currentOwnerAddress={token.currentOwnerAddress}
              globalState={globalState}
              networkName={networkName}
              currentLocation={token.currentLocation}

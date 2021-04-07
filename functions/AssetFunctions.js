@@ -716,40 +716,87 @@ export const withdrawAsset = async (tokenId, mainnetAddress, address, state, han
 export const depositAsset = async (tokenId, sourceNetworkName, destinationNetworkName, mainnetAddress, address, state, handleSuccess, handleError) => {
   const {web3, contracts} = await getBlockchain();
   // Deposit to mainnet
-  if (sourceNetworkName === 'mainnetsidechain') {
+  // if (sourceNetworkName === 'mainnetsidechain') {
     const id = parseInt(tokenId, 10);
     if (!isNaN(id)) {
-      const tokenId = {
-        t: 'uint256',
-        v: new web3['mainnetsidechain'].utils.BN(id),
-      };
-
-      await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts[sourceNetworkName].NFTProxy._address, true);
-
-      const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'deposit', mainnetAddress, tokenId.v);
-
-      const signature = await getTransactionSignature(sourceNetworkName, 'NFT', destinationNetworkName, receipt.transactionHash);
-      const timestamp = {
-        t: 'uint256',
-        v: signature.timestamp,
-      };
-
-      const {r, s, v} = signature;
-
       try {
-        const receipt = await contracts[destinationNetworkName].NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
-          from: mainnetAddress,
-        });
+        const tokenId = {
+          t: 'uint256',
+          v: new web3['mainnetsidechain'].utils.BN(id),
+        };
+
+        const _deposit = async () => {
+          if (sourceNetworkName === 'mainnetsidechain') {
+            await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts[sourceNetworkName].NFTProxy._address, true);
+            
+            const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'deposit', mainnetAddress, tokenId.v);
+            
+            return receipt.transactionHash;
+          } else {
+            console.log('approve 1', {
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              address,
+            });
+            
+            await contracts[sourceNetworkName].NFT.methods.setApprovalForAll(contracts[sourceNetworkName].NFTProxy._address, true).send({
+              from: mainnetAddress,
+            });;
+            
+            console.log('approve 2', {
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              address,
+            });
+            
+            const receipt = await contracts[sourceNetworkName].NFTProxy.methods.deposit(mainnetAddress, tokenId.v).send({
+              from: mainnetAddress,
+            });
+            
+            console.log('approve 3', {
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              address,
+            });
+            
+            return receipt.transactionHash;
+          }
+        };
+        const transactionHash = await _deposit();
+
+        const signature = await getTransactionSignature(sourceNetworkName, 'NFT', destinationNetworkName, transactionHash);
+        const timestamp = {
+          t: 'uint256',
+          v: signature.timestamp,
+        };
+        const {r, s, v} = signature;
+
+        const _withdraw = async () => {
+          if (destinationNetworkName === 'mainnetsidechain') {
+            const receipt = await contracts[destinationNetworkName].NFTProxy.methods.withdraw(mainnetAddress, tokenId.v, timestamp.v, r, s, v).send({
+              from: mainnetAddress,
+            });
+            return receipt;
+          } else {
+            const receipt = await runSidechainTransaction(state.loginToken.mnemonic)(mainnetAddress, tokenId.v, timestamp.v, r, s, v);
+            return receipt;
+          }
+        };
+        const receipt = await _withdraw();
+
         handleSuccess(receipt, `/activity/${receipt.transactionHash}.NFT`);
       } catch (err) {
-        handleError(err.message);
+        handleError(err);
       }
 
       return;
     } else {
       handleError('failed to parse', JSON.stringify(ethNftIdInput.value));
     }
-  } else {
+  /* } else {
     const id = parseInt(tokenId, 10);
     const tokenIdSpec = {
       t: 'uint256',
@@ -792,7 +839,7 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
 
     handleSuccess(receipt);
     return;
-  }
+  } */
 }
 
 export const getLoadout = async (address) => {

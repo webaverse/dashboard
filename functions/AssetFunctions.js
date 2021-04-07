@@ -751,12 +751,12 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
     }
   } else {
     const id = parseInt(tokenId, 10);
-    const tokenId = {
+    const tokenIdSpec = {
       t: 'uint256',
       v: new web3['front'].utils.BN(id),
     };
 
-    const hashSpec = await contracts.front.NFT.methods.getHash(tokenId.v).call();
+    const hashSpec = await contracts.front.NFT.methods.getHash(Spec.v).call();
     const hash = {
       t: 'uint256',
       v: new web3['front'].utils.BN(hashSpec),

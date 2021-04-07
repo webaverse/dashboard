@@ -343,7 +343,9 @@ const CardDetails = ({
         globalState
       );
       setLoading(true);
-    } else handleError("No address given.");
+    } else {
+      handleError(new Error("No address given."));
+    }
   };
   const _unlock = async () => {
     // const ethereumSpec = await window.ethereum.enable();

@@ -114,7 +114,7 @@ const CardDetails = ({
     getData();
     setLoading(false);
   };
-  const handleError = (err) => {
+  const handleError = err => {
     addToast("Error: " + err, { appearance: "error", autoDismiss: true });
     getData();
     setLoading(false);

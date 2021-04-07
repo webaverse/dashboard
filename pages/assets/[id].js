@@ -3,11 +3,14 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import CardDetails from "../../components/CardDetails";
 import Loader from "../../components/Loader";
-import {getToken} from "../../functions/UIStateFunctions";
+import {getToken, getProfileForCreator} from "../../functions/UIStateFunctions";
 import {useAppContext} from "../../libs/contextLib";
 import {getBlockchain} from "../../webaverse/blockchain.js";
 import {getStuckAsset} from "../../functions/AssetFunctions.js";
 import {Networks} from "../../webaverse/blockchain.js";
+import {} from "../../functions/UIStateFunctions.js";
+import {getAddressProofs, getAddressesFromProofs} from '../../functions/Functions.js';
+import {proofOfAddressMessage} from "../../constants/UnlockConstants.js";
 
 const getData = async id => {
   if (id) {
@@ -51,6 +54,7 @@ const Asset = ({ data }) => {
   // const [stuck, setStuck] = useState(data.stuck);
   // const [tokenOnChains, setTokenOnChains] = useState({});
   const [loading, setLoading] = useState(false);
+  const [addresses, setAddresses] = useState([]);
   
   /* useEffect(async () => {
     const {contracts} = await getBlockchain();
@@ -140,6 +144,7 @@ const Asset = ({ data }) => {
                setNetworkName(networkName);
                setLoading(false);
              }}
+             addresses={addresses}
            />
       :
         <Loader loading={true} />

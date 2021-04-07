@@ -22,6 +22,7 @@ import {
   sellAsset,
   buyAsset,
 } from "../functions/AssetFunctions.js";
+import {formatError} from "../functions/Functions.js";
 import Loader from "./Loader";
 import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
@@ -116,7 +117,7 @@ const CardDetails = ({
   };
   const handleError = err => {
     console.warn(err);
-    addToast("Error: " + err, { appearance: "error", autoDismiss: true });
+    addToast(formatError(err), { appearance: "error", autoDismiss: true });
     getData();
     setLoading(false);
   };

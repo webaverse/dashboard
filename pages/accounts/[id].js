@@ -6,8 +6,9 @@ import { useRouter } from 'next/router';
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
 import { removeMainnetAddress, addMainnetAddress, resubmitAsset, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
-import {mainnetSignatureMessage} from "../../constants/UnlockConstants.js";
-import { getAddressProofs } from '../../functions/Functions';
+import {mainnetSignatureMessage, proofOfAddressMessage} from "../../constants/UnlockConstants.js";
+import {getAddressProofs, getAddressesFromProofs} from '../../functions/Functions.js';
+import {getBlockchain} from "../../webaverse/blockchain.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
@@ -26,12 +27,27 @@ const Account = ({ data }) => {
   const [selectedView, setSelectedView] = useState("inventory");
   const [loading, setLoading] = useState(false);
   const [stuck, setStuck] = useState(false);
+  const [addresses, setAddresses] = useState([]);
 
   /* useEffect(() => {
     if (id && !profile || !balance || !inventory || !store || !loadout) {
       getData();
     }
   }, []); */
+  
+  useEffect(async () => {
+    const {
+      web3,
+    } = await getBlockchain();
+    
+    const addressProofs = getAddressProofs(profile);
+    const addresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
+    // console.log('loaded addresses', addresses);
+    setAddresses(addresses);
+  }, [profile]);
+
+  const addressProofs = getAddressProofs(profile);
+  // console.log('render addresses', addresses);
 
   const getData = () => {
     (async () => {
@@ -175,7 +191,8 @@ const Account = ({ data }) => {
     }
 
   }
-  const addressProofs = getAddressProofs(profile);
+  
+  // console.log('got profile', profile);
 
   return (<>
     <Head>
@@ -192,7 +209,13 @@ const Account = ({ data }) => {
   :
     <div>
       {[
-        (<ProfileHeader key="profileHeader" loadout={loadout} balance={balance} profile={profile} />),
+        (<ProfileHeader
+          key="profileHeader"
+          loadout={loadout}
+          balance={balance}
+          profile={profile}
+          addresses={addresses}
+        />),
         (<div key="profileBodynav" className="profileBodyNav">
           <div className="profileBodyNavContainer">
             {store && store.length > 0 && (

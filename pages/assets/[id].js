@@ -56,6 +56,19 @@ const Asset = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [addresses, setAddresses] = useState([]);
   
+  useEffect(async () => {
+    if (globalState.address) {
+      const {
+        web3,
+      } = await getBlockchain();
+      
+      const profile = await getProfileForCreator(globalState.address);
+      const addressProofs = getAddressProofs(profile);
+      const addresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
+      // console.log('got profile', profile, addresses);
+      setAddresses(addresses);
+    }
+  }, [globalState]);
   /* useEffect(async () => {
     const {contracts} = await getBlockchain();
     

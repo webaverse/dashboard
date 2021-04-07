@@ -49,6 +49,7 @@ const CardDetails = ({
   minterAvatarPreview,
   minterAddress,
   minterUsername,
+  currentOwnerAddress,
   buyPrice,
   storeId,
   globalState,
@@ -82,10 +83,10 @@ const CardDetails = ({
   let userOwnsThisAsset, userCreatedThisAsset;
   if (globalState && globalState.address) {
     userOwnsThisAsset =
-      ownerAddress.toLowerCase() === globalState.address.toLowerCase() || /stuck/.test(currentLocation);
+      currentOwnerAddress.toLowerCase() === globalState.address.toLowerCase() || /stuck/.test(currentLocation);
     userCreatedThisAsset =
       minterAddress.toLowerCase() === globalState.address.toLowerCase();
-    // console.log('user owns this asset', currentLocation, ownerAddress.toLowerCase() === globalState.address.toLowerCase(), !/stuck/.test(currentLocation));
+    // console.log('user owns this asset', currentLocation, currentOwnerAddress.toLowerCase() === globalState.address.toLowerCase(), !/stuck/.test(currentLocation));
   } else {
     userOwnsThisAsset = false;
     userCreatedThisAsset = false;

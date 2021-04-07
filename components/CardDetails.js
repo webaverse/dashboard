@@ -321,7 +321,7 @@ const CardDetails = ({
         handleError,
         globalState
       );
-    } else handleError("No address given.");
+    } else handleError(new Error("No address given."));
   };
 
   const handleRemoveCollaborator = () => {

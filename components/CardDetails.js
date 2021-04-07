@@ -57,6 +57,7 @@ const CardDetails = ({
   networkName,
   currentLocation,
   getData,
+  addresses,
   // setMainnetAddress,
 }) => {
   /* if (typeof setMainnetAddress !== 'function') {

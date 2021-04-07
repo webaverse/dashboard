@@ -871,37 +871,6 @@ export const clearLoadoutState = async (index, state, handleSuccess, handleError
 export const addMainnetAddress = async (state, handleSuccess, handleError) => {
   const {web3, contracts} = await getBlockchain();
 
-  /* let mainnetAddress;
-  const ethEnabled = async () => {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      window.ethereum.enable();
-        return true;
-    }
-    handleError("Please install MetaMask to use Webaverse!");
-    return false;
-  }
-
-  const loginWithMetaMask = async () => {
-    const enabled = await ethEnabled();
-    if (!enabled) {
-      return false;
-    } else {
-      const web3 = window.web3;
-      try {
-        const eth = await window.ethereum.request({ method: 'eth_accounts' });
-        if (eth && eth[0]) {
-          mainnetAddress = eth[0];
-          return eth[0];
-        }
-        return false;
-      } catch(err) {
-        handleError(err);
-        return false;
-      }
-    }
-  } */
-
   try {
     mainnetAddress = await loginWithMetaMask();
 

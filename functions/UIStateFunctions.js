@@ -17,12 +17,12 @@ export const getNetworkNameFromHostName = (hostname) => {
   return networkName;
 }
 
-export const getBalance = async (address) => {
+export const getBalance = async address => {
   const {web3, contracts} = await getBlockchain();
-  // console.log('got back contract', contracts, contracts['back']);
+  // console.log('got back contract', contracts, contracts['mainnetsidechain']);
   try {
-    // console.log('get balance', contracts, contracts['back']['FT'], address);
-    const result = await contracts['back']['FT'].methods.balanceOf(address).call();
+    // console.log('get balance', contracts, contracts['mainnetsidechain']['FT'], address);
+    const result = await contracts['mainnetsidechain']['FT'].methods.balanceOf(address).call();
     return result;
   } catch (error) {
     console.warn(error);
@@ -217,11 +217,11 @@ export const getBooths = async (page) => {
 
 export const getStores = async () => {
   const { web3, contracts } = await getBlockchain();
-  const numStores = await contracts['back']['Trade'].methods.numStores().call();
+  const numStores = await contracts['mainnetsidechain']['Trade'].methods.numStores().call();
   const booths = [];
   const sales = {};
   for (let i = 0; i < numStores; i++) {
-    const store = await contracts['back']['Trade'].methods.getStoreByIndex(i + 1).call();
+    const store = await contracts['mainnetsidechain']['Trade'].methods.getStoreByIndex(i + 1).call();
     if (store.live) {
       const id = parseInt(store.id, 10);
       const seller = store.seller.toLowerCase();

@@ -3,7 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useToasts } from "react-toast-notifications";
 import Link from "next/link";
 import AssetCard from "./Card";
-import { Networks, getBlockchain, runSidechainTransaction } from "../webaverse/blockchain.js";
+import {Networks, getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import { FileDrop } from 'react-file-drop';
 import { makeWbn, makePhysicsBake } from "../webaverse/build";
 import {
@@ -22,12 +22,13 @@ import {
   sellAsset,
   buyAsset,
 } from "../functions/AssetFunctions.js";
+import {formatError} from "../functions/Functions.js";
 import Loader from "./Loader";
 import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
 import wbn from '../webaverse/wbn.js';
-import { blobToFile, getExt } from "../webaverse/util";
+// import {blobToFile, getExt} from "../webaverse/util";
 import FileBrowser from './FileBrowser';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 
@@ -49,6 +50,7 @@ const CardDetails = ({
   minterAvatarPreview,
   minterAddress,
   minterUsername,
+  currentOwnerAddress,
   buyPrice,
   storeId,
   globalState,
@@ -56,7 +58,12 @@ const CardDetails = ({
   networkName,
   currentLocation,
   getData,
+  addresses,
+  // setMainnetAddress,
 }) => {
+  /* if (typeof setMainnetAddress !== 'function') {
+    throw new Error('no setMainnetAddress method');
+  } */
   if (!networkName) {
     throw new Error('no network name :' + networkName);
   }
@@ -66,6 +73,7 @@ const CardDetails = ({
   const [toggleEditOpen, setToggleEditOpen] = useState(false);
   const [toggleAddOpen, setToggleAddOpen] = useState(false);
   const [toggleTradeOpen, setToggleTradeOpen] = useState(false);
+  const [toggleResubmitOpen, setToggleResubmitOpen] = useState(false);
   const [toggleTransferOpen, setToggleTransferOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -75,11 +83,13 @@ const CardDetails = ({
   const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
 
   let userOwnsThisAsset, userCreatedThisAsset;
-  if (globalState && globalState.address) {
+  const allAddresses = (globalState.address ? [globalState.address] : []).concat(addresses);
+  if (globalState && allAddresses.length > 0) {
     userOwnsThisAsset =
-      ownerAddress.toLowerCase() === globalState.address.toLowerCase();
+      allAddresses.includes(currentOwnerAddress.toLowerCase()) || /stuck/.test(currentLocation);
     userCreatedThisAsset =
       minterAddress.toLowerCase() === globalState.address.toLowerCase();
+    // console.log('user owns this asset', currentLocation, currentOwnerAddress.toLowerCase() === globalState.address.toLowerCase(), !/stuck/.test(currentLocation));
   } else {
     userOwnsThisAsset = false;
     userCreatedThisAsset = false;
@@ -93,51 +103,6 @@ const CardDetails = ({
   const isForSale =
     buyPrice !== undefined && buyPrice !== null && buyPrice !== "";
 
-  const ethEnabled = async () => {
-    if (window.ethereum) {
-      window.ethereum.enable();
-      window.mainWeb3 = new Web3(window.ethereum);
-      const network = await window.mainWeb3.eth.net.getNetworkType();
-      if (network === "main") {
-        return true;
-      } else if (network === "testnet"){
-        return true;
-      }
-      else {
-        handleError("You need to be on the Mainnet network.");
-        return false;
-      }
-    }
-    handleError("Please install MetaMask to use Webaverse!");
-    return false;
-  };
-
-  const loginWithMetaMask = async (func) => {
-    const enabled = await ethEnabled();
-    if (!enabled) {
-      return false;
-    } else {
-      const web3 = window.mainWeb3;
-      try {
-        const eth = await window.ethereum.request({
-          method: "eth_accounts",
-        });
-        if (eth && eth[0]) {
-          setMainnetAddress(eth[0]);
-          return eth[0];
-        } else {
-          ethereum.on("accountsChanged", (accounts) => {
-            setMainnetAddress(accounts[0]);
-            func();
-          });
-          return false;
-        }
-      } catch (err) {
-        handleError(err);
-      }
-    }
-  };
-
   const handleSuccess = (msg, link) => {
     if (typeof msg === "object") {
       msg = JSON.stringify(msg);
@@ -150,8 +115,9 @@ const CardDetails = ({
     getData();
     setLoading(false);
   };
-  const handleError = (err) => {
-    addToast("Error: " + err, { appearance: "error", autoDismiss: true });
+  const handleError = err => {
+    console.warn(err);
+    addToast(formatError(err), { appearance: "error", autoDismiss: true });
     getData();
     setLoading(false);
   };
@@ -284,7 +250,7 @@ const CardDetails = ({
     }
 
     try {
-      const mainnetAddress = await loginWithMetaMask(handleWithdraw);
+      const mainnetAddress = await loginWithMetaMask();
       if (mainnetAddress) {
         addToast("Starting transfer of this item.", {
           appearance: "info",
@@ -306,33 +272,35 @@ const CardDetails = ({
     }
   };
 
-  const handleDeposit = async (e) => {
-    if (e) {
+  const handleDeposit = (sourceNetworkName, destinationNetworkName) => {
+    const handleDepositLogin = async e => {
       e.preventDefault();
-    }
 
-    try {
-      const mainnetAddress = await loginWithMetaMask(handleDeposit);
-      if (mainnetAddress) {
-        addToast("Starting transfer of this item.", {
-          appearance: "info",
-          autoDismiss: true,
-        });
-        await depositAsset(
-          id,
-          "sidechain",
-          mainnetAddress,
-          globalState.address,
-          globalState,
-          handleSuccess,
-          handleError
-        );
-      } else {
-        handleError("No address received from MetaMask.");
+      try {
+        const mainnetAddress = await loginWithMetaMask();
+        if (mainnetAddress) {
+          addToast("Starting transfer of this item.", {
+            appearance: "info",
+            autoDismiss: true,
+          });
+          await depositAsset(
+            id,
+            sourceNetworkName,
+            destinationNetworkName,
+            mainnetAddress,
+            globalState.address,
+            globalState,
+            handleSuccess,
+            handleError
+          );
+        } else {
+          handleError("No address received from MetaMask.");
+        }
+      } catch (err) {
+        handleError(err);
       }
-    } catch (err) {
-      handleError(err.toString());
-    }
+    };
+    return handleDepositLogin;
   };
 
   const handleAddCollaborator = () => {
@@ -353,7 +321,7 @@ const CardDetails = ({
         handleError,
         globalState
       );
-    } else handleError("No address given.");
+    } else handleError(new Error("No address given."));
   };
 
   const handleRemoveCollaborator = () => {
@@ -375,7 +343,9 @@ const CardDetails = ({
         globalState
       );
       setLoading(true);
-    } else handleError("No address given.");
+    } else {
+      handleError(new Error("No address given."));
+    }
   };
   const _unlock = async () => {
     // const ethereumSpec = await window.ethereum.enable();
@@ -418,9 +388,9 @@ const CardDetails = ({
         .getWallet();
       const privateKey = wallet.getPrivateKey().toString("hex");
 
-      const result2 = await web3.back.eth.accounts.sign(proofOfAddressMessage, privateKey);
+      const result2 = await web3['mainnetsidechain'].eth.accounts.sign(proofOfAddressMessage, privateKey);
       const { v, r, s, signature } = result2;
-      const result3 = await web3.back.eth.accounts.recover(proofOfAddressMessage, v, r, s);
+      const result3 = await web3['mainnetsidechain'].eth.accounts.recover(proofOfAddressMessage, v, r, s);
       // console.log('got sig 2', {signature});
       return signature;
     };
@@ -455,6 +425,8 @@ const CardDetails = ({
   const _openFileBrowser = () => {
     setFileBrowserOpen(true);
   };
+  const isStuck = /stuck/.test(currentLocation);
+  const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
 
   return (
     <Fragment>
@@ -593,38 +565,30 @@ const CardDetails = ({
                         </div>
                         {toggleAddOpen && (
                           <div className="accordionDropdown">
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={handleSetAvatar}
-                                >
-                                  Set As Avatar
-                                </button>
-                              )}
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={handleSetHomespace}
-                                >
-                                  Set As Homespace
-                                </button>
-                              )}
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={addToLoadout}
-                                >
-                                  Add To Loadout
-                                </button>
-                              )}
-                              {userOwnsThisAsset && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={clearLoadout}
-                                >
-                                  Clear From Loadout
-                                </button>
-                              )}
+                              <button
+                                className="assetDetailsButton"
+                                onClick={handleSetAvatar}
+                              >
+                                Set As Avatar
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={handleSetHomespace}
+                              >
+                                Set As Homespace
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={addToLoadout}
+                              >
+                                Add To Loadout
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={clearLoadout}
+                              >
+                                Clear From Loadout
+                              </button>
                           </div>
                         )}
                       </div>
@@ -699,71 +663,102 @@ const CardDetails = ({
                         )}
                       </div>
                     )}
-                    {(userOwnsThisAsset && /sidechain/.test(currentLocation)) && (
+                    {(
                       <div className="Accordion">
-                        <div
-                          className="accordionTitle"
-                          onClick={() =>
-                            setToggleTransferOpen(!toggleTransferOpen)
-                          }
-                        >
-                          <span className="accordionTitleValue">Transfer</span>
-                          <span
-                            className={`accordionIcon ${
-                              toggleTransferOpen ? "reverse" : ""
-                            }`}
-                          ></span>
-                        </div>
+                        {(userOwnsThisAsset && isStuck) ? (
+                          <div
+                            className="accordionTitle"
+                            onClick={() =>
+                              setToggleResubmitOpen(!toggleResubmitOpen)
+                            }
+                          >
+                            <span className="accordionTitleValue">Resubmit</span>
+                            <span
+                              className={`accordionIcon ${
+                                toggleResubmitOpen ? "reverse" : ""
+                              }`}
+                            ></span>
+                          </div>
+                        ) : null}    
+                        {toggleResubmitOpen && (
+                          <div className="accordionDropdown">
+                              <button
+                                className="assetDetailsButton"
+                                onClick={async () => {
+                                  const mainnetAddress = await loginWithMetaMask();
+                                  await resubmitAsset(
+                                    currentLocationUnstuck,
+                                    'NFT',
+                                    'mainnet',
+                                    id,
+                                    mainnetAddress,
+                                    globalState.loginToken.mnemonic,
+                                    handleSuccess,
+                                    handleError
+                                  )
+                                }}
+                              >
+                                Resubmit to mainchain
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={async () => {
+                                  const mainnetAddress = await loginWithMetaMask();
+                                  await resubmitAsset(
+                                    currentLocationUnstuck,
+                                    'NFT',
+                                    'polygon',
+                                    id,
+                                    mainnetAddress,
+                                    globalState.loginToken.mnemonic,
+                                    handleSuccess,
+                                    handleError
+                                  )
+                                }}
+                              >
+                                Resubmit to polygon
+                              </button>
+                              <button
+                                className="assetDetailsButton"
+                                onClick={async () => {
+                                  const mainnetAddress = await loginWithMetaMask();
+                                  await resubmitAsset(
+                                    currentLocationUnstuck,
+                                    'NFT',
+                                    'mainnetsidechain',
+                                    id,
+                                    mainnetAddress,
+                                    globalState.loginToken.mnemonic,
+                                    handleSuccess,
+                                    handleError
+                                  );
+                                }}
+                              >
+                                Resubmit to sidechain
+                              </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {(
+                      <div className="Accordion">
+                        {(userOwnsThisAsset && !isStuck) ? (
+                          <div
+                            className="accordionTitle"
+                            onClick={() =>
+                              setToggleTransferOpen(!toggleTransferOpen)
+                            }
+                          >
+                            <span className="accordionTitleValue">Transfer</span>
+                            <span
+                              className={`accordionIcon ${
+                                toggleTransferOpen ? "reverse" : ""
+                              }`}
+                            ></span>
+                          </div>
+                        ) : null}    
                         {toggleTransferOpen && (
                           <div className="accordionDropdown">
-                              {(currentLocation === 'mainnetsidechain-stuck') && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={() =>
-                                    resubmitAsset( // XXX multiple cases
-                                      'NFT',
-                                      id,
-                                      globalState,
-                                      handleSuccess,
-                                      handleError
-                                    )
-                                  }
-                                >
-                                  Resubmit to mainchain
-                                </button>
-                              )}
-                              {(currentLocation === 'mainnet-stuck') && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={() =>
-                                    resubmitAsset( // XXX multiple cases
-                                      'NFT',
-                                      id,
-                                      globalState,
-                                      handleSuccess,
-                                      handleError
-                                    )
-                                  }
-                                >
-                                  Resubmit to sidechain
-                                </button>
-                              )}
-                              {(currentLocation === 'polygon-stuck') && (
-                                <button
-                                  className="assetDetailsButton"
-                                  onClick={() =>
-                                    resubmitAsset( // XXX multiple cases
-                                      'NFT',
-                                      id,
-                                      globalState,
-                                      handleSuccess,
-                                      handleError
-                                    )
-                                  }
-                                >
-                                  Resubmit to sidechain
-                                </button>
-                              )}
                               {(() => {
                                 const results = [];
                                 if (!/stuck/.test(currentLocation)) {
@@ -772,7 +767,7 @@ const CardDetails = ({
                                     results.push(
                                       <button
                                         className="assetDetailsButton"
-                                        onClick={handleDeposit}
+                                        onClick={e => handleDeposit(currentLocation, transferOptionNetworkName)(e)}
                                         key={transferOptionNetworkName}
                                       >
                                         Transfer to {transferOptionNetworkName}

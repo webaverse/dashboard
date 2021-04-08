@@ -3,11 +3,13 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import CardDetails from "../../components/CardDetails";
 import Loader from "../../components/Loader";
-import {getToken} from "../../functions/UIStateFunctions";
+import {getToken, getProfileForCreator} from "../../functions/UIStateFunctions";
 import {useAppContext} from "../../libs/contextLib";
 import {getBlockchain} from "../../webaverse/blockchain.js";
 import {getStuckAsset} from "../../functions/AssetFunctions.js";
 import {Networks} from "../../webaverse/blockchain.js";
+import {getAddressProofs, getAddressesFromProofs} from '../../functions/Functions.js';
+import {proofOfAddressMessage} from "../../constants/UnlockConstants.js";
 
 const getData = async id => {
   if (id) {
@@ -51,7 +53,21 @@ const Asset = ({ data }) => {
   // const [stuck, setStuck] = useState(data.stuck);
   // const [tokenOnChains, setTokenOnChains] = useState({});
   const [loading, setLoading] = useState(false);
+  const [addresses, setAddresses] = useState([]);
   
+  useEffect(async () => {
+    if (globalState.address) {
+      const {
+        web3,
+      } = await getBlockchain();
+
+      const profile = await getProfileForCreator(globalState.address);
+      const addressProofs = getAddressProofs(profile);
+      const addresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
+      // console.log('got profile', profile, addresses);
+      setAddresses(addresses);
+    }
+  }, [globalState]);
   /* useEffect(async () => {
     const {contracts} = await getBlockchain();
     
@@ -124,6 +140,7 @@ const Asset = ({ data }) => {
              minterAvatarPreview={token.minter.avatarPreview}
              minterAddress={token.minterAddress}
              minterUsername={token.minter.username}
+             currentOwnerAddress={token.currentOwnerAddress}
              globalState={globalState}
              networkName={networkName}
              currentLocation={token.currentLocation}
@@ -139,6 +156,7 @@ const Asset = ({ data }) => {
                setNetworkName(networkName);
                setLoading(false);
              }}
+             addresses={addresses}
            />
       :
         <Loader loading={true} />

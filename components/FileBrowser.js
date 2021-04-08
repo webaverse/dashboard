@@ -217,7 +217,7 @@ const FileBrowser = ({
 
       const networkName = getNetworkName();
       const latest = await web3[networkName + "sidechain"].eth.getBlockNumber();
-      const hashUpdateEntries = await contracts['back']['NFT'].getPastEvents('HashUpdate', {
+      const hashUpdateEntries = await contracts['mainnetsidechain']['NFT'].getPastEvents('HashUpdate', {
         fromBlock: 0,
         toBlock: latest,
       });

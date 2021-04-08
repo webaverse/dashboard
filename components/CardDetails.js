@@ -728,7 +728,7 @@ const CardDetails = ({
                                     mainnetAddress,
                                     handleSuccess,
                                     handleError
-                                  )
+                                  );
                                 }}
                               >
                                 Resubmit to sidechain

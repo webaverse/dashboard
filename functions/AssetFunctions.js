@@ -9,6 +9,9 @@ import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 import {proofOfAddressMessage} from "../constants/UnlockConstants.js";
 
+import {toBuffer, fromRpcSig, ecrecover, keccak256, pubToAddress, bufferToHex} from 'ethereumjs-util';
+const Buffer = toBuffer('0x0').constructor;
+
 export const getTxData = async (txHash, contract) => {
   const { web3, contracts, getNetworkName } = await getBlockchain();
   const networkName = getNetworkName() + 'sidechain';
@@ -146,37 +149,88 @@ export const getStuckAsset = async (chainName, contractName, tokenId) => {
   } : null;
 }
 
-export const resubmitAsset = async (networkName, tokenName, destinationNetworkName, tokenId, address, mnemonic, handleSuccess, handleError) => {
+export const resubmitAsset = async (networkName, tokenName, destinationNetworkName, tokenId, address, mainnetAddress, mnemonic, handleSuccess, handleError) => {
   const {
     web3,
     contracts,
   } = await getBlockchain();
-  const stuckAsset = await getStuckAsset(networkName, tokenName, tokenId);
 
+  const stuckAsset = await getStuckAsset(networkName, tokenName, tokenId);
   const transactionHash = stuckAsset && stuckAsset.transactionHash;
+
+  const sourceAddress = networkName === 'mainnetsidechain' ? address : mainnetAddress;
+  const destinationAddress = destinationNetworkName === 'mainnetsidechain' ? address : mainnetAddress;
 
   const res = await fetch(`https://sign.exokit.org/${networkName}/${tokenName}/${destinationNetworkName}/${transactionHash}`);
   const signatureJson = await res.json();
   const {timestamp, r, s, v} = signatureJson;
 
+  /* {
+    // const {v, r, s} = fromRpcSig(signature);
+    const b = toBuffer(web3.mainnetsidechain.utils.sha3('\x19Ethereum Signed Message:\n' + proofOfAddressMessage.length + proofOfAddressMessage));
+    // console.log('got sig 2', {v, r, s}, [b, v, r, s]);
+    const pubKey = ecrecover(b, v, r, s);
+    // console.log('got sig 3', pubKey);
+    const address = bufferToHex(pubToAddress(pubKey));
+    // console.log('got sig 4', address);
+    return address;
+  } */
+
   try {
     console.log('resubmit asset 1', destinationNetworkName);
     
     if (destinationNetworkName === 'mainnetsidechain') {
-      console.log('resubmit 2');
-      await runSidechainTransaction(mnemonic)(tokenName + 'Proxy', 'withdraw', address, tokenId, timestamp, r, s, v);
-      console.log('resubmit 3');
+      console.log('resubmit 2', {
+        destinationAddress,
+        tokenId,
+        timestamp,
+        r,
+        s,
+        v,
+      });
+      await runSidechainTransaction(mnemonic)(tokenName + 'Proxy', 'withdraw', destinationAddress, tokenId, timestamp, r, s, v);
+      console.log('resubmit 3', {
+        destinationAddress,
+        tokenId,
+        timestamp,
+        r,
+        s,
+        v,
+      });
     } else {
+      console.log('resubmit 4', {
+        destinationAddress,
+        tokenId,
+        timestamp,
+        r,
+        s,
+        v,
+      });
       await ensureMetamaskChain(destinationNetworkName);
 
-      // console.log('resubmit asset 2', destinationNetworkName, web3[destinationNetworkName].lol);
+      console.log('resubmit 5', {
+        destinationAddress,
+        tokenId,
+        timestamp,
+        r,
+        s,
+        v,
+      });
 
-      await runChainTransaction(destinationNetworkName, tokenName + 'Proxy', address, 'withdraw', address, tokenId, timestamp, r, s, v);
+      await runChainTransaction(destinationNetworkName, tokenName + 'Proxy', destinationAddress, 'withdraw', destinationAddress, tokenId, timestamp, r, s, v);
+      
+      console.log('resubmit 6', {
+        destinationAddress,
+        tokenId,
+        timestamp,
+        r,
+        s,
+        v,
+      });
     }
   } catch (err) {
     console.log('failed', err);
     handleError(err.message);
-    // return err;
   }
 }
 
@@ -617,6 +671,9 @@ export const withdrawSILK = async (amount, mainnetAddress, address, state, handl
   return;
 }
 
+export const resubmitSILK = () => {
+  throw new Error('silk resubmit not implemented');
+};
 
 export const withdrawLand = async (tokenId, mainnetAddress, address, state, handleSuccess, handleError) => {
   const { web3, contracts } = await getBlockchain();
@@ -733,8 +790,8 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
     const id = parseInt(tokenId, 10);
     if (!isNaN(id)) {
       try {
-        const sourceAddress = sourceNetworkName === 'mainnetsidechain' ? state.address : mainnetAddress;
-        const destinationAddress = destinationNetworkName === 'mainnetsidechain' ? state.address : mainnetAddress;
+        const sourceAddress = sourceNetworkName === 'mainnetsidechain' ? address : mainnetAddress;
+        const destinationAddress = destinationNetworkName === 'mainnetsidechain' ? address : mainnetAddress;
         
         const tokenId = {
           t: 'uint256',

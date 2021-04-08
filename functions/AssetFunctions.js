@@ -733,6 +733,7 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
     const id = parseInt(tokenId, 10);
     if (!isNaN(id)) {
       try {
+        const sourceAddress = sourceNetworkName === 'mainnetsidechain' ? state.address : mainnetAddress;
         const destinationAddress = destinationNetworkName === 'mainnetsidechain' ? state.address : mainnetAddress;
         
         const tokenId = {

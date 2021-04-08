@@ -556,8 +556,7 @@ const LandCardDetails = ({
                                                                                     handleResubmit
                                                                                 }
                                                                             >
-                                                                                Resubmit
-                                                                                Transfer
+                                                                                Resubmit to mainnetsidechain
                                                                             </button>
                                                                         ),
                                                                     landMainnetAddress &&

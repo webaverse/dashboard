@@ -7,6 +7,7 @@
   width: 100%;
   box-sizing: content-box;
   z-index: 20;
+  background-color: #FFF;
   border-color: transparent;
   transition: background-color .5s ease,border-color .5s ease;
   padding: 0 8%;
@@ -45,7 +46,7 @@
   margin-right: auto;
 }
 .navbar .item {
-  text-shadow: 0 0 0.2em rgba(0,0,0,.5);
+  /* text-shadow: 0 0 0.2em rgba(0,0,0,.5); */
   font-weight: 400;
   color: #676370;
   border-radius: 6px;

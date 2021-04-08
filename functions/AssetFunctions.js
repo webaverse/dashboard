@@ -794,9 +794,9 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
         const destinationAddress = destinationNetworkName === 'mainnetsidechain' ? address : mainnetAddress;
         
         if (sourceNetworkName !== 'mainnetsidechain') {
-          await ensureMetamaskChain(sourceAddress);
+          await ensureMetamaskChain(sourceNetworkName);
         }
-        if (destinationAddress !== 'mainnetsidechain') {
+        if (destinationNetworkName !== 'mainnetsidechain') {
           await ensureMetamaskChain(destinationNetworkName);
         }
 

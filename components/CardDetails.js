@@ -692,6 +692,7 @@ const CardDetails = ({
                                     'mainnet',
                                     id,
                                     mainnetAddress,
+                                    globalState.loginToken.mnemonic,
                                     handleSuccess,
                                     handleError
                                   )
@@ -709,6 +710,7 @@ const CardDetails = ({
                                     'polygon',
                                     id,
                                     mainnetAddress,
+                                    globalState.loginToken.mnemonic,
                                     handleSuccess,
                                     handleError
                                   )
@@ -726,6 +728,7 @@ const CardDetails = ({
                                     'mainnetsidechain',
                                     id,
                                     mainnetAddress,
+                                    globalState.loginToken.mnemonic,
                                     handleSuccess,
                                     handleError
                                   );

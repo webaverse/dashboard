@@ -108,7 +108,7 @@ const LandCardDetails = ({
     const isForSale =
         buyPrice !== undefined && buyPrice !== null && buyPrice !== "";
 
-    const ethEnabled = async () => {
+    /* const ethEnabled = async () => {
         if (window.ethereum) {
             window.web3 = new Web3(window.ethereum);
             window.ethereum.enable();
@@ -148,7 +148,7 @@ const LandCardDetails = ({
                 handleError(err);
             }
         }
-    };
+    }; */
 
     const handleSuccess = (msg, link) => {
         if (typeof msg === "object") {

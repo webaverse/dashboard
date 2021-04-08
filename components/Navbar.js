@@ -9,6 +9,8 @@ const Navbar = () => {
   const [dropdown, setDropdown] = useState(false);
 
   const _switchToSideChain = async e => {
+    e.preventDefault();
+    
     await ethereum.enable();
     await ethereum.request({
         method: "wallet_addEthereumChain",

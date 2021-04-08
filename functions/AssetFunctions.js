@@ -815,8 +815,13 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
               sourceAddress,
               destinationAddress,
             });
-            await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts[sourceNetworkName].NFTProxy._address, true);
             
+            const isApprovedForAll = await contracts[sourceNetworkName].NFT.methods.isApprovedForAll(sourceAddress, contracts[sourceNetworkName].NFTProxy._address).call();
+            
+            if (!isApprovedForAll) {
+              await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts[sourceNetworkName].NFTProxy._address, true);
+            }
+
             console.log('deposit A 2', {
               sourceNetworkName,
               destinationNetworkName,
@@ -849,9 +854,13 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
             
             await ensureMetamaskChain(sourceNetworkName);
             
-            await contracts[sourceNetworkName].NFT.methods.setApprovalForAll(contracts[sourceNetworkName].NFTProxy._address, true).send({
-              from: mainnetAddress,
-            });;
+            const isApprovedForAll = await contracts[sourceNetworkName].NFT.methods.isApprovedForAll(sourceAddress, contracts[sourceNetworkName].NFTProxy._address).call();
+            
+            if (!isApprovedForAll) {
+              await contracts[sourceNetworkName].NFT.methods.setApprovalForAll(contracts[sourceNetworkName].NFTProxy._address, true).send({
+                from: mainnetAddress,
+              });
+            }
             
             console.log('deposit B 2', {
               sourceNetworkName,

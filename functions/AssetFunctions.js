@@ -163,7 +163,9 @@ export const resubmitAsset = async (networkName, tokenName, destinationNetworkNa
     console.log('resubmit asset 1', destinationNetworkName);
     
     if (destinationNetworkName === 'mainnetsidechain') {
+      console.log('resubmit 2');
       await runSidechainTransaction(mnemonic)(tokenName + 'Proxy', 'withdraw', address, tokenId, timestamp, r, s, v);
+      console.log('resubmit 3');
     } else {
       await ensureMetamaskChain(destinationNetworkName);
 

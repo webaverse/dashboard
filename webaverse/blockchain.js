@@ -24,6 +24,7 @@ const loadPromise = Promise.all([
   addresses = newAddresses;
   abis = newAbis;
 
+  _resetWeb3();
   if (typeof window !== 'undefined' && /^test\./.test(location.hostname)) {
     _setChain('testnet');
   } else if (typeof window !== 'undefined' && /^polygon\./.test(location.hostname)) {
@@ -32,8 +33,13 @@ const loadPromise = Promise.all([
     _setChain('mainnet');
   }
   _updateContracts();
-  // contracts.front = contracts[networkName];
-  // contracts.back = contracts[networkName + 'sidechain'];
+  
+  for (const k in web3) {
+    web3Raw[k] = web3[k];
+  }
+  for (const k in web3) {
+    contractsRaw[k] = contracts[k];
+  }
 });
 
 export const Networks = {
@@ -79,6 +85,7 @@ export const Networks = {
 :
   new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`)); */
 const web3 = {};
+const web3Raw = {};
 const _updateWeb3 = async () => {
   const chainId = await new Web3(window.ethereum).eth.net.getId();
   let chainNetworkName = null;
@@ -110,8 +117,9 @@ const _resetWeb3 = () => {
   web3.testnetpolygon = new Web3(new Web3.providers.HttpProvider(`https://rpc-mumbai.maticvigil.com/v1/${polygonVigilKey}`));
   // console.log('reset 2');
 };
-_resetWeb3();
+// _resetWeb3();
 const contracts = {};
+const contractsRaw = {};
 const _updateContracts = () => {
   Object.keys(Networks).forEach(network => {
     // console.log("*** Network is", network);
@@ -184,7 +192,9 @@ const getBlockchain = async () => {
   await loadPromise;
   return {
     web3,
+    web3Raw,
     contracts,
+    contractsRaw,
     addresses,
     common,
     getNetworkName,

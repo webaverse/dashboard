@@ -5,7 +5,7 @@ import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 import { useAppContext } from "../../libs/contextLib";
 import { getInventoryForCreator, getProfileForCreator, getStoreForCreator, getBalance } from "../../functions/UIStateFunctions.js";
-import { removeMainnetAddress, addMainnetAddress, resubmitAsset, setName, getLoadout, withdrawSILK, depositSILK } from "../../functions/AssetFunctions.js";
+import { removeMainnetAddress, addMainnetAddress, resubmitAsset, setName, getLoadout, withdrawSILK, depositSILK, resubmitSILK } from "../../functions/AssetFunctions.js";
 import {mainnetSignatureMessage, proofOfAddressMessage} from "../../constants/UnlockConstants.js";
 import {getAddressProofs, getAddressesFromProofs, formatError} from '../../functions/Functions.js';
 import {getBlockchain} from "../../webaverse/blockchain.js";
@@ -259,7 +259,7 @@ const Account = ({ data }) => {
             </a>),
             (<a key="SILKResubmitButton" className="button" onClick={async () => {
               setLoading(true);
-              await resubmitAsset("FT", null, globalState, handleSuccess, handleError);
+              await resubmitSILK("FT", null, globalState, handleSuccess, handleError);
               handleSuccess();
             }}>
               Resubmit SILK transfer

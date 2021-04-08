@@ -799,8 +799,6 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
               destinationAddress,
             });
             
-            debugger;
-            
             const receipt = await contracts[sourceNetworkName].NFTProxy.methods.deposit(destinationAddress, tokenId.v).send({
               from: mainnetAddress,
             });

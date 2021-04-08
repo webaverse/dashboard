@@ -91,12 +91,16 @@ export const getSidechainActivity = async (page) => {
 }
 
 export const getStuckAsset = async (chainName, contractName, tokenId) => {
-  const {contracts} = await getBlockchain();
+  const {
+    contractsRaw,
+  } = await getBlockchain();
 
   // const contract = contracts[chainName];
-  const proxyContract = contracts[chainName][contractName + 'Proxy'];
+  const proxyContract = contractsRaw[chainName][contractName + 'Proxy'];
   // const otherContract = contracts[otherChainName];
   // const otherProxyContract = otherContract[contractName + 'Proxy'];
+
+  console.log('get stuck asset', chainName, contractName + 'Proxy', proxyContract);
 
   let [
     depositedEntries,
@@ -142,8 +146,11 @@ export const getStuckAsset = async (chainName, contractName, tokenId) => {
   } : null;
 }
 
-export const resubmitAsset = async (networkName, tokenName, destinationNetworkName, tokenId, address, handleSuccess, handleError) => {
-  const {web3, contracts} = await getBlockchain();
+export const resubmitAsset = async (networkName, tokenName, destinationNetworkName, tokenId, address, mnemonic, handleSuccess, handleError) => {
+  const {
+    web3,
+    contracts,
+  } = await getBlockchain();
   const stuckAsset = await getStuckAsset(networkName, tokenName, tokenId);
 
   const transactionHash = stuckAsset && stuckAsset.transactionHash;
@@ -155,11 +162,15 @@ export const resubmitAsset = async (networkName, tokenName, destinationNetworkNa
   try {
     console.log('resubmit asset 1', destinationNetworkName);
     
-    await ensureMetamaskChain(destinationNetworkName);
+    if (destinationNetworkName === 'mainnetsidechain') {
+      await runSidechainTransaction(mnemonic)(tokenName + 'Proxy', 'withdraw', address, tokenId, timestamp, r, s, v);
+    } else {
+      await ensureMetamaskChain(destinationNetworkName);
 
-    console.log('resubmit asset 2', destinationNetworkName, web3[destinationNetworkName].lol);
+      // console.log('resubmit asset 2', destinationNetworkName, web3[destinationNetworkName].lol);
 
-    await runChainTransaction(destinationNetworkName, tokenName + 'Proxy', address, 'withdraw', address, tokenId, timestamp, r, s, v);
+      await runChainTransaction(destinationNetworkName, tokenName + 'Proxy', address, 'withdraw', address, tokenId, timestamp, r, s, v);
+    }
   } catch (err) {
     console.log('failed', err);
     handleError(err.message);
@@ -628,7 +639,7 @@ export const withdrawLand = async (tokenId, mainnetAddress, address, state, hand
     v: signature.timestamp,
   };
 
-  const { r, s, v } = signature;
+  const {r, s, v} = signature;
 
   try {
     const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('LANDProxy', 'withdraw', address, tokenId.v, timestamp.v, r, s, v);
@@ -645,7 +656,7 @@ export const depositLand = async (tokenId, mainnetAddress, state, handleSuccess,
   const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(state.loginToken.mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
   const address = wallet.getAddressString();
 
-// Deposit to mainnet
+  // Deposit to mainnet
   const id = parseInt(tokenId, 10);
   if (!isNaN(id)) {
     const tokenId = {

@@ -9,6 +9,6 @@ export default function FourOhFour() {
       <div>
         <Image src="/404.png" width={121} height={459} />
       </div>
-    </> 
+    </>
   )
 }

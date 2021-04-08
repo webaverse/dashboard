@@ -42,22 +42,6 @@ const loadPromise = Promise.all([
   }
 });
 
-/* export const isTokenOnMain = async id => {
-  const {contracts, getNetworkName} = await getBlockchain();
-  const networkName = getNetworkName();
-
-  const res = await fetch(`https://${networkName}-tokens.webaverse.com/${id}`);
-  const token = await res.json();
-
-  const owner = token.owner.address;
-  const tokenOnMain = owner === contracts.front.NFTProxy._address || owner === ("0x0000000000000000000000000000000000000000") ? false : true;
-  return tokenOnMain;
-}; */
-
-/* const injectedWeb3 = (typeof window !== 'undefined' && window.ethereum) ?
-  new Web3(window.ethereum)
-:
-  new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/v3/${infuraKey}`)); */
 const web3 = {};
 const web3Raw = {};
 const _updateWeb3 = async () => {

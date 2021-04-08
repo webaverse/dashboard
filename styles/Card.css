@@ -13,7 +13,7 @@
     margin: 1em;
     color: black;
     transition: transform .1s ease-in-out,box-shadow .1s ease-in-out;
-    filter: drop-shadow(0px 0px 4px #000000);
+    /* filter: drop-shadow(0px 0px 4px #000000); */
     overflow: hidden;
 }
 .card:hover {
@@ -94,7 +94,7 @@
 
 .lowerCardInfo {
     background: transparent;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); */
 }
 
 .lowerCardInfoTop { 
@@ -599,7 +599,7 @@
 }
 .card.unique.glow,
 .card.unique:hover {
-   filter: drop-shadow(0px 0px 10px #FFC700);
+   /* filter: drop-shadow(0px 0px 10px #FFC700); */
 }
 
 
@@ -609,7 +609,7 @@
 }
 .card.mythic.glow,
 .card.mythic:hover {
-   filter: drop-shadow(0px 0px 10px #ef00ff);
+   /* filter: drop-shadow(0px 0px 10px #ef00ff); */
 }
 
 
@@ -619,7 +619,7 @@
 }
 .card.legendary.glow,
 .card.legendary:hover {
-   filter: drop-shadow(0px 0px 10px #AD00EA);
+   /* filter: drop-shadow(0px 0px 10px #AD00EA); */
 }
 
 
@@ -629,7 +629,7 @@
 }
 .card.epic.glow,
 .card.epic:hover {
-   filter: drop-shadow(0px 0px 10px #00B3DB);
+   /* filter: drop-shadow(0px 0px 10px #00B3DB); */
 }
 
 
@@ -639,7 +639,7 @@
 }
 .card.rare.glow,
 .card.rare:hover {
-   filter: drop-shadow(0px 0px 10px #00CE21);
+   /* filter: drop-shadow(0px 0px 10px #00CE21); */
 }
 
 
@@ -649,7 +649,7 @@
 }
 .card.uncommon.glow,
 .card.uncommon:hover {
-   filter: drop-shadow(0px 0px 10px #ff8400);
+   /* filter: drop-shadow(0px 0px 10px #ff8400); */
 }
 
 
@@ -659,7 +659,7 @@
 }
 .card.common.glow,
 .card.common:hover {
-   filter: drop-shadow(0px 0px 10px #DCDCDC);
+   /* filter: drop-shadow(0px 0px 10px #DCDCDC); */
 }
 
 

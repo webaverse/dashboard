@@ -743,12 +743,29 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
 
         const _deposit = async () => {
           if (sourceNetworkName === 'mainnetsidechain') {
+            console.log('deposit A 1', {
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              address,
+              sourceAddress,
+              destinationAddress,
+            });
             await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setApprovalForAll', contracts[sourceNetworkName].NFTProxy._address, true);
             
+            console.log('deposit A 2', {
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              address,
+              sourceAddress,
+              destinationAddress,
+            });
+            
+
             const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'deposit', destinationAddress, tokenId.v);
             
-            return receipt.transactionHash;
-          } else {
+            console.log('deposit A 3', {
               sourceNetworkName,
               destinationNetworkName,
               mainnetAddress,
@@ -756,14 +773,29 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
               destinationAddress,
             });
             
-            await contracts[sourceNetworkName].NFT.methods.setApprovalForAll(contracts[sourceNetworkName].NFTProxy._address, true).send({
-              from: mainnetAddress,
-            });;
-            
+            return receipt.transactionHash;
+          } else {
+            console.log('deposit B 1', {
               sourceNetworkName,
               destinationNetworkName,
               mainnetAddress,
               address,
+              sourceAddress,
+              destinationAddress,
+            });
+            
+            await ensureMetamaskChain(sourceNetworkName);
+            
+            await contracts[sourceNetworkName].NFT.methods.setApprovalForAll(contracts[sourceNetworkName].NFTProxy._address, true).send({
+              from: mainnetAddress,
+            });;
+            
+            console.log('deposit B 2', {
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              address,
+              sourceAddress,
               destinationAddress,
             });
             
@@ -773,10 +805,13 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
               from: mainnetAddress,
             });
             
+            console.log('deposit B 3', {
               sourceNetworkName,
               destinationNetworkName,
               mainnetAddress,
               address,
+              sourceAddress,
+              destinationAddress,
             });
             
             return receipt.transactionHash;
@@ -793,11 +828,47 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
 
         const _withdraw = async () => {
           if (destinationNetworkName === 'mainnetsidechain') {
+            console.log('withdraw A 1', {
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              address,
+              sourceAddress,
+              destinationAddress,
+            });
+            
             const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'withdraw', destinationAddress, tokenId.v, timestamp.v, r, s, v);
+            console.log('withdraw A 2', {
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              address,
+              sourceAddress,
+              destinationAddress,
+            });
             return receipt;
           } else {
+            console.log('withdraw B 1', {
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              address,
+              sourceAddress,
+              destinationAddress,
+            });
+
+            await ensureMetamaskChain(destinationNetworkName);
+            
             const receipt = await contracts[destinationNetworkName].NFTProxy.methods.withdraw(destinationAddress, tokenId.v, timestamp.v, r, s, v).send({
               from: destinationAddress,
+            });
+            console.log('withdraw B 2', {
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              address,
+              sourceAddress,
+              destinationAddress,
             });
             return receipt;
           }

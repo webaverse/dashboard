@@ -290,13 +290,18 @@ const LandCardDetails = ({
 
     const handleResubmit = async () => {
         await resubmitAsset(
-            "LAND",
+            currentLocationUnstuck,
+            'LAND',
+            'mainnetsidechain',
             id,
-            globalState,
+            globalState.address,
+            landMainnetAddress,
+            globalState.loginToken.mnemonic,
             handleSuccess,
             handleError
         );
     };
+    const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
 
     return (
         <>

@@ -8,7 +8,7 @@ import { discordOauthUrl } from '../webaverse/constants.js';
 import bip39 from '../libs/bip39.js';
 import Loader from "../components/Loader";
 
-export default () => {
+const Login = () => {
   const {globalState, setGlobalState} = useAppContext();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -110,6 +110,8 @@ export default () => {
         console.warn(err);
         setError(err);
       }
+    } else {
+      // router.push('/');
     }
     setLoading(false);
   }, []);
@@ -132,3 +134,4 @@ export default () => {
     </>
   )
 }
+export default Login;

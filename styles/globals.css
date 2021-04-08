@@ -17,8 +17,7 @@ body {
   position: relative;
   margin: 0;
   font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  color: #fff;
-  background-color: #181818;
+  background-color: #fff;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
   text-align: center;
@@ -33,7 +32,7 @@ body {
   height: 5px; 
 }
 a {
-  color: #fff;
+  color: #000;
   text-decoration: none;
 }
 .noselect {

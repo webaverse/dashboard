@@ -683,7 +683,7 @@ const CardDetails = ({
                         ) : null}    
                         {toggleResubmitOpen && (
                           <div className="accordionDropdown">
-                              <button
+                              {(currentLocation === 'mainnetsidechain-stuck') ? <button
                                 className="assetDetailsButton"
                                 onClick={async () => {
                                   const mainnetAddress = await loginWithMetaMask();
@@ -701,8 +701,8 @@ const CardDetails = ({
                                 }}
                               >
                                 Resubmit to mainchain
-                              </button>
-                              <button
+                              </button> : null}
+                              {(currentLocation === 'mainnetsidechain-stuck') ? <button
                                 className="assetDetailsButton"
                                 onClick={async () => {
                                   const mainnetAddress = await loginWithMetaMask();
@@ -720,8 +720,8 @@ const CardDetails = ({
                                 }}
                               >
                                 Resubmit to polygon
-                              </button>
-                              <button
+                              </button> : null}
+                              {(currentLocation !== 'mainnetsidechain-stuck') ? <button
                                 className="assetDetailsButton"
                                 onClick={async () => {
                                   const mainnetAddress = await loginWithMetaMask();
@@ -739,7 +739,7 @@ const CardDetails = ({
                                 }}
                               >
                                 Resubmit to sidechain
-                              </button>
+                              </button> : null}
                           </div>
                         )}
                       </div>

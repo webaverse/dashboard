@@ -60,3 +60,29 @@ export const localstorageHost = 'https://localstorage.webaverse.com';
 export const loginEndpoint = 'https://login.exokit.org';
 export const web3MainnetSidechainEndpoint = 'https://mainnetsidechain.exokit.org';
 export const web3TestnetSidechainEndpoint = 'https://testnetsidechain.exokit.org';
+export const Networks = {
+  mainnet: {
+    displayName: "Mainnet",
+    transferOptions: ["mainnetsidechain"],
+  },
+  mainnetsidechain: {
+    displayName: "Webaverse",
+    transferOptions: ["mainnet", "polygon"],
+  },
+  polygon: {
+    displayName: "Polygon",
+    transferOptions: ["mainnetsidechain"],
+  },
+  testnet: {
+    displayName: "Rinkeby Testnet",
+    transferOptions: ["testnetsidechain", "testnetpolygon"],
+  },
+  testnetsidechain: {
+    displayName: "Webaverse Testnet",
+    transferOptions: ["testnet"],
+  },
+  testnetpolygon: {
+    displayName: "Polygon Testnet",
+    transferOptions: ["testnetsidechain"],
+  },
+};

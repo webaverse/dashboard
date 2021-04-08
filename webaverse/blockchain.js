@@ -5,7 +5,7 @@ const hdkey = hdkeySpec.default;
 import ethereumJsTx from '../libs/ethereumjs-tx.js';
 import { makePromise } from './util.js';
 import { infuraKey, polygonVigilKey } from '../constants/ApiKeys.js';
-import { storageHost, web3MainnetSidechainEndpoint, web3TestnetSidechainEndpoint } from './constants.js';
+import { storageHost, web3MainnetSidechainEndpoint, web3TestnetSidechainEndpoint, Networks } from './constants.js';
 const { Transaction, Common } = ethereumJsTx;
 
 let addresses = null;
@@ -42,32 +42,6 @@ const loadPromise = Promise.all([
   }
 });
 
-export const Networks = {
-  mainnet: {
-    displayName: "Mainnet",
-    transferOptions: ["mainnetsidechain"],
-  },
-  mainnetsidechain: {
-    displayName: "Webaverse",
-    transferOptions: ["mainnet", "polygon"],
-  },
-  polygon: {
-    displayName: "Polygon",
-    transferOptions: ["mainnetsidechain"],
-  },
-  testnet: {
-    displayName: "Rinkeby Testnet",
-    transferOptions: ["testnetsidechain", "testnetpolygon"],
-  },
-  testnetsidechain: {
-    displayName: "Webaverse Testnet",
-    transferOptions: ["testnet"],
-  },
-  testnetpolygon: {
-    displayName: "Polygon Testnet",
-    transferOptions: ["testnetsidechain"],
-  },
-};
 /* export const isTokenOnMain = async id => {
   const {contracts, getNetworkName} = await getBlockchain();
   const networkName = getNetworkName();

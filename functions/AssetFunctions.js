@@ -793,6 +793,13 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
         const sourceAddress = sourceNetworkName === 'mainnetsidechain' ? address : mainnetAddress;
         const destinationAddress = destinationNetworkName === 'mainnetsidechain' ? address : mainnetAddress;
         
+        if (sourceNetworkName !== 'mainnetsidechain') {
+          await ensureMetamaskChain(sourceAddress);
+        }
+        if (destinationAddress !== 'mainnetsidechain') {
+          await ensureMetamaskChain(destinationNetworkName);
+        }
+
         const tokenId = {
           t: 'uint256',
           v: new web3['mainnetsidechain'].utils.BN(id),
@@ -818,7 +825,6 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
               sourceAddress,
               destinationAddress,
             });
-            
 
             const receipt = await runSidechainTransaction(state.loginToken.mnemonic)('NFTProxy', 'deposit', destinationAddress, tokenId.v);
             
@@ -911,8 +917,6 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
               sourceAddress,
               destinationAddress,
             });
-
-            await ensureMetamaskChain(destinationNetworkName);
             
             const receipt = await contracts[destinationNetworkName].NFTProxy.methods.withdraw(destinationAddress, tokenId.v, timestamp.v, r, s, v).send({
               from: destinationAddress,

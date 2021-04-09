@@ -301,6 +301,7 @@ const LandCardDetails = ({
             handleError
         );
     };
+    const currentLocation = 'mainnetsidechain';
     const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
 
     return (

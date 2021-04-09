@@ -11,7 +11,7 @@ const Land = ({ data }) => {
   const { id } = router.query
   const { globalState, setGlobalState } = useAppContext();
   const [land, setLand] = useState(data);
-  const [loading, setLoading] = useState(data);
+  const [loading, setLoading] = useState(false);
 
   /* useEffect(() => {
     getData();

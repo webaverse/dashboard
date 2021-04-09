@@ -59,12 +59,12 @@ const LandCardDetails = ({
     const [otherNetworkName, setOtherNetworkName] = useState(null);
     const [stuck, setStuck] = useState(false);
 
-    useEffect(() => {
+    /* useEffect(() => {
         if (globalState.loginToken) {
             getData();
             getOtherData();
         }
-    }, [globalState]);
+    }, [globalState]); */
 
     const getOtherData = () => {
         (async () => {

@@ -13,6 +13,7 @@ import '../styles/globals.css';
 import '../styles/Navbar.css';
 import '../styles/Footer.css';
 import '../styles/Card.css';
+import '../styles/CardSvg.css';
 import '../styles/CardDetails.css';
 import '../styles/CardGrid.css';
 import '../styles/LandCard.css';

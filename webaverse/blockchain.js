@@ -305,7 +305,7 @@ const blockchainChainIds = {
 };
 
 const ensureMetamaskChain = async networkName => {
-  console.log('ensure metamask chain', networkName, !!web3[networkName]);
+  // console.log('ensure metamask chain', networkName, !!web3[networkName]);
   if (!web3[networkName].injected) {
     const injectedWeb3 = (() => {
       for (const networkName in web3) {

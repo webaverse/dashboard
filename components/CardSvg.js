@@ -1,5 +1,8 @@
 import React from "react";
-import cardSvgUrl from '../cards.svg';
+// import cardSvgUrl from '../cards.svg';
+
+const cardWidth = 500;
+const cardHeight = cardWidth/2.5*3.5;
 
 const CardSvg = ({
     id,
@@ -71,7 +74,20 @@ const CardSvg = ({
     }
     
     if (cardSvgSource) {
-      return <div>lol</div>
+      // console.log('got card svg source', {cardSvgSource});
+      /* return (
+        <div ref={e => {
+          if (e) {
+            console.log('got e', e);
+            e.innerHTML = cardSvgSource;
+          }
+        }} />
+      ); */
+      return (
+        <svg width={cardWidth} height={cardHeight} dangerouslySetInnerHTML={{
+          __html: cardSvgSource,
+        }} />
+      );
     } else {
     return (
         <div
@@ -182,5 +198,4 @@ const CardSvg = ({
     );
     }
 };
-
 export default CardSvg;

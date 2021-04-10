@@ -10,23 +10,17 @@ import {getStuckAsset} from "../../functions/AssetFunctions.js";
 import {Networks} from "../../webaverse/blockchain.js";
 import {getAddressProofs, getAddressesFromProofs} from '../../functions/Functions.js';
 import {proofOfAddressMessage} from "../../constants/UnlockConstants.js";
-import cardSvgUrl from "../../cards.svg";
 
 const getData = async id => {
   if (id) {
     const [
       token,
-      // stuck,
       networkName,
     ] = await Promise.all([
       (async () => {
         const token = await getToken(id);
         return token;
       })(),
-      /* (async () => {
-        const stuck = await getStuckAsset('NFT', id);
-        return stuck;
-      })(), */
       (async () => {
         const {contracts, getNetworkName} = await getBlockchain();
         const networkName = await getNetworkName();
@@ -35,7 +29,6 @@ const getData = async id => {
     ]);
     return {
       token,
-      // stuck,
       networkName,
     };
   } else {
@@ -43,8 +36,10 @@ const getData = async id => {
   }
 };
 
-const Asset = ({ data }) => {
+const Asset = ({data}) => {
   // console.log('got data', data);
+  
+  const {cardSvgSource} = data;
   
   const router = useRouter();
   const {id} = router.query;
@@ -158,6 +153,7 @@ const Asset = ({ data }) => {
                setLoading(false);
              }}
              addresses={addresses}
+             cardSvgSource={cardSvgSource}
            />
       :
         <Loader loading={true} />
@@ -175,6 +171,8 @@ export async function getServerSideProps(context) {
       return 'http://' + context.req.headers.host;
     }
   })();
+  const u = new URL('cards.svg', urlPrefix).href;
+  console.log('got u', u);
   
   const [
     o,
@@ -186,7 +184,7 @@ export async function getServerSideProps(context) {
       return o;
     })(),
     (async () => {
-      const res = await fetch(new URL(cardSvgUrl, urlPrefix).href);
+      const res = await fetch(u);
       const s = await res.text();
       return s;
     })(),

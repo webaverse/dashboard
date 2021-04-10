@@ -62,6 +62,7 @@ const CardDetails = ({
   getData,
   addresses,
   // setMainnetAddress,
+  cardSvgSource,
 }) => {
   /* if (typeof setMainnetAddress !== 'function') {
     throw new Error('no setMainnetAddress method');
@@ -501,6 +502,7 @@ const CardDetails = ({
                     cardSize={""}
                     glow={false}
                     imageView={imageView}
+                    cardSvgSource={cardSvgSource}
                   />
                 </div>
                 <div className="assetDetailsRightColumn">

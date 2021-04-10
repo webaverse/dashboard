@@ -5708,13 +5708,13 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 <g>
 	<g>
 		<g>
-			<linearGradient id="SVGID_185_" gradientUnits="userSpaceOnUse" x1="-44.8346" y1="666.8347" x2="566.8347" y2="55.1654">
+			<linearGradient id="SVGID_185_" gradientUnits="userSpaceOnUse" x1="-44.5846" y1="667.0847" x2="566.5847" y2="55.9154">
 				<stop  offset="0" style="stop-color:#FFFFFF"/>
 				<stop  offset="0.5704" style="stop-color:#48BDD7"/>
 				<stop  offset="0.8492" style="stop-color:#FFFFFF"/>
 				<stop  offset="1" style="stop-color:#388C98"/>
 			</linearGradient>
-			<path class="st216" d="M11.67,1C8.55,1,6,3.55,6,6.67v708.66c0,3.12,2.55,5.67,5.67,5.67h498.66c3.12,0,5.67-2.55,5.67-5.67V6.67
+			<path class="st216" d="M11.67,2C8.55,2,6,4.55,6,7.67v707.66c0,3.12,2.55,5.67,5.67,5.67h498.66c3.12,0,5.67-2.55,5.67-5.67V7.67
 				c0-3.12-2.55-5.67-5.67-5.67H11.67z M496.38,386.33c0,3.12-2.55,5.67-5.67,5.67H32.27c-3.12,0-5.67-2.55-5.67-5.67V66.27
 				c0-3.12,2.55-5.67,5.67-5.67h178.21c3.12,0,7.55-1.72,9.86-3.82l14.65-13.38c2.3-2.1,6.74-3.82,9.86-3.82h245.88
 				c3.12,0,5.67,2.55,5.67,5.67V386.33z"/>
@@ -5722,21 +5722,21 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 	</g>
 </g>
 <g id="title">
-	<linearGradient id="title-bar_1_" gradientUnits="userSpaceOnUse" x1="28.0231" y1="55.7196" x2="140.5105" y2="55.7196">
+	<linearGradient id="title-bar_1_" gradientUnits="userSpaceOnUse" x1="27.0935" y1="56.5662" x2="139.5809" y2="56.5662">
 		<stop  offset="2.344227e-07" style="stop-color:#1D1D1B"/>
 		<stop  offset="0.4482" style="stop-color:#48BDD7"/>
 		<stop  offset="1" style="stop-color:#FFFFFF"/>
 	</linearGradient>
-	<rect id="title-bar" x="28.02" y="53.01" class="st217" width="112.49" height="5.41"/>
-	<rect x="28.02" y="38.66" class="st40" width="217.52" height="46.83"/>
-	<text id="title-subtext" transform="matrix(1 0 0 1 28.0225 47.8915)" class="st218 st219 st220">VRMの形式</text>
-	<rect x="27.02" y="11.14" class="st40" width="217.52" height="46.83"/>
-	<text id="title-text" transform="matrix(1 0 0 1 27.0225 33.704)" class="st218 st221 st222">The Oasis</text>
+	<rect id="title-bar" x="27.09" y="55.13" class="st217" width="112.49" height="2.87"/>
+	<rect x="27.09" y="42.78" class="st40" width="217.52" height="17.34"/>
+	<text id="title-subtext" transform="matrix(1 0 0 1 27.0928 52.011)" class="st218 st219 st220">VRMの形式</text>
+	<rect x="26.09" y="15.26" class="st40" width="217.52" height="46.83"/>
+	<text id="title-text" transform="matrix(1 0 0 1 26.0928 37.8235)" class="st218 st221 st222">The Oasis</text>
 </g>
 <g>
-	<path d="M505.37,12c0.9,0,1.63,0.73,1.63,1.63v698.73c0,0.9-0.73,1.63-1.63,1.63H15.63c-0.9,0-1.63-0.73-1.63-1.63V13.63
-		c0-0.9,0.73-1.63,1.63-1.63H505.37 M505.37-2H15.63C7-2,0,5,0,13.63v698.73C0,721,7,728,15.63,728h489.73
-		c8.63,0,15.63-7,15.63-15.63V13.63C521,5,514-2,505.37-2L505.37-2z"/>
+	<path d="M505.37,14c0.9,0,1.63,0.73,1.63,1.63v696.73c0,0.9-0.73,1.63-1.63,1.63H15.63c-0.9,0-1.63-0.73-1.63-1.63V15.63
+		c0-0.9,0.73-1.63,1.63-1.63H505.37 M505.37,0H15.63C7,0,0,7,0,15.63v696.73C0,721,7,728,15.63,728h489.73
+		c8.63,0,15.63-7,15.63-15.63V15.63C521,7,514,0,505.37,0L505.37,0z"/>
 </g>
 <rect x="90.92" y="405" class="st40" width="227.08" height="17.71"/>
 <text id="illustrator-text" transform="matrix(1 0 0 1 90.9173 414.9598)" class="st412 st220"> Anonymous @ S1.D56</text>

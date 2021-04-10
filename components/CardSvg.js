@@ -84,7 +84,7 @@ const CardSvg = ({
         }} />
       ); */
       return (
-        <svg width={cardWidth} height={cardHeight} dangerouslySetInnerHTML={{
+        <svg className='card-svg' width={cardWidth} height={cardHeight} dangerouslySetInnerHTML={{
           __html: cardSvgSource,
         }} />
       );

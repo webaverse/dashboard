@@ -3,6 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import { useToasts } from "react-toast-notifications";
 import Link from "next/link";
 import AssetCard from "./Card";
+import AssetCardSvg from "./CardSvg";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import {Networks} from "../webaverse/constants.js";
 import { FileDrop } from 'react-file-drop';
@@ -451,7 +452,32 @@ const CardDetails = ({
             ) : (
               <div className="assetDetailsContent">
                 <div className="assetDetailsLeftColumn">
-                  <AssetCard
+                {/* <AssetCard
+                    id={id}
+                    key={id}
+                    assetName={name}
+                    ext={ext}
+                    animation_url={animation_url}
+                    description={description}
+                    buyPrice={buyPrice}
+                    image={image}
+                    hash={hash}
+                    numberInEdition={numberInEdition}
+                    totalSupply={totalSupply}
+                    balance={balance}
+                    totalInEdition={totalInEdition}
+                    assetType={assetType}
+                    ownerAvatarPreview={ownerAvatarPreview}
+                    ownerUsername={ownerUsername}
+                    ownerAddress={ownerAddress}
+                    minterAvatarPreview={minterAvatarPreview}
+                    minterUsername={minterUsername}
+                    minterAddress={minterAddress}
+                    cardSize={""}
+                    glow={false}
+                    imageView={imageView}
+                  /> */}
+                  <AssetCardSvg
                     id={id}
                     key={id}
                     assetName={name}

@@ -10,6 +10,7 @@ import {getStuckAsset} from "../../functions/AssetFunctions.js";
 import {Networks} from "../../webaverse/blockchain.js";
 import {getAddressProofs, getAddressesFromProofs} from '../../functions/Functions.js';
 import {proofOfAddressMessage} from "../../constants/UnlockConstants.js";
+import cardSvgUrl from "../../cards.svg";
 
 const getData = async id => {
   if (id) {
@@ -167,18 +168,38 @@ const Asset = ({ data }) => {
 export default Asset;
 
 export async function getServerSideProps(context) {
-  const id = /^[0-9]+$/.test(context.params.id) ? parseInt(context.params.id, 10) : NaN;
-  const o = await getData(id);
+  const urlPrefix = (() => {
+    if (typeof window !== 'undefined') {
+      return window.location.protocol + '//' + window.location.host;
+    } else {
+      return 'http://' + context.req.headers.host;
+    }
+  })();
+  
+  const [
+    o,
+    cardSvgSource,
+  ] = await Promise.all([
+    (async () => {
+      const id = /^[0-9]+$/.test(context.params.id) ? parseInt(context.params.id, 10) : NaN;
+      const o = await getData(id);
+      return o;
+    })(),
+    (async () => {
+      const res = await fetch(new URL(cardSvgUrl, urlPrefix).href);
+      const s = await res.text();
+      return s;
+    })(),
+  ]);
   const token = o?.token;
-  // const stuck = o?.stuck;
   const networkName = o?.networkName;
 
   return {
     props: {
       data: {
         token,
-        // stuck,
         networkName,
+        cardSvgSource,
       },
     },
   };

@@ -70,7 +70,8 @@ a {
   position: relative;
   display: flex;
   padding: 0 8%;
-  padding-left: 15%;
+  padding-left: calc(8% + 100px);
+  padding-top: 80px;
 }
 .container .wrap {
   
@@ -159,3 +160,60 @@ a {
   background-color: #333;
   width: 5px;
 }
+
+.mainRow {
+  display: flex;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  /* background-color: #f4f4f4; */
+  border: 2px solid #eee;
+  border-radius: 10px;
+  padding: 30px;
+}
+.mainRow .bar {
+  position: absolute;
+  margin-left: -30px;
+  width: 200px;
+  height: 5px;
+  background-color: #EEE;
+}
+
+.mainRow .notch {
+  display: flex;
+  position: absolute;
+  width: 100px;
+  margin-top: 100px;
+  left: calc(8% + 5px);
+}
+.mainRow .notch .text {
+  position: relative;
+  margin-top: -10px;
+  margin-left: 20px;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-family: 'FuturaStd-Heavy';
+  color: #999;
+}
+.mainRow .notch .nub {
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  margin-left: calc(-19px / 2 - 5px / 2);
+  background-color: #29b6f6;
+  border: 3px solid #FFF;
+  border-radius: 100px;
+}
+.mainRow .notch .underline {
+  position: absolute;
+  width: calc(100px - 9px - 2px);
+  height: 2px;
+  top: 9px;
+  left: 9px;
+  background-color: #EEE;
+}
+
+/* <div className="notch">
+  <div className="nub"></div>
+  <div className="bar"></div>
+</div> */

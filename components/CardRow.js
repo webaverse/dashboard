@@ -6,6 +6,11 @@ import AssetCardSvg from "./CardSvg";
 const CardRow = ({ data, cardSize, cardSvgSource }) => {
     return (
         <div className="mainRow">
+            <div className="notch">
+              <div className="nub"></div>
+              <div className="text">Avatars</div>
+              <div className="underline"></div>
+            </div>
             {data &&
                 data.map((asset) => {
                     if (asset.totalSupply === 0) {

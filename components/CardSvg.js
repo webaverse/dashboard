@@ -86,6 +86,7 @@ const CardSvg = ({
         }} />
       ); */
       let el = null;
+      let imageEl = null;
       return (
         <svg
           className='card-svg'
@@ -99,6 +100,9 @@ const CardSvg = ({
           }}
           ref={newEl => {
             el = newEl;
+            if (el) {
+              imageEl = el.querySelector('#image');
+            }
           }}
           onMouseMove={e => {
             if (el) {

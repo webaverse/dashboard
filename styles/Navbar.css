@@ -135,16 +135,16 @@
 }
 .rightMenuContainer .navbarTopLevelMenuOption .navbarSubMenuContainer {
   position: fixed;
-  background: #181818;
+  /* background: #181818; */
   left: 0;
   top: 63px;
   display: none;
   transition: all .3s ease;
   padding-top: 25px;
-  border-top: 1px solid #c4005d;
+  /* border-top: 1px solid #c4005d;*/
   padding: 0 8%;
-  box-shadow: 0px 0px 5px #312936;
-  box-sizing: border-box;
+  /*box-shadow: 0px 0px 5px #312936;*/
+  /*box-sizing: border-box;*/
   margin: 0 8%;
   width: 84%;
   padding-top: 25px;

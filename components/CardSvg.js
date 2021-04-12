@@ -23,6 +23,7 @@ const CardSvg = ({
     cardSvgSource,
 }) => {
     const [perspective, setPerspective] = useState([false, false]);
+    const [z, setZ] = useState(0);
   
     let video = false;
     if (["webm", "mp4"].indexOf(ext) >= 0) {
@@ -92,13 +93,19 @@ const CardSvg = ({
           <div className='card-glossy' />
           <div className='card-wrap'
             style={{
-              transform: `rotateY(${perspective[0] * 180 * 0.1}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
+              transform: `rotateY(${perspective[0] * 180 * 0.1}deg) rotateX(${perspective[1] * 180 * 0.1}deg) translateZ(${-z * 50}px)`,
             }}
             ref={newEl => {
               el = newEl;
               if (el) {
                 imageEl = el.querySelector('#image');
               }
+            }}
+            onMouseDown={e => {
+              setZ(1);
+            }}
+            onMouseUp={e => {
+              setZ(0);
             }}
             onMouseMove={e => {
               if (el) {
@@ -112,6 +119,7 @@ const CardSvg = ({
             }}
             onMouseOut={e => {
               setPerspective([0, 0]);
+              setZ(0);
             }}
           >
             <svg

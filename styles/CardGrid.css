@@ -29,6 +29,11 @@
 .mainRow::-webkit-scrollbar-corner { background-color: #181818;}
 .mainRow::-webkit-resizer { background-color: #c4005d;} */
 
+.mainRow {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .small {
 
 }

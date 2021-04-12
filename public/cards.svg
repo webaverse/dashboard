@@ -7446,7 +7446,7 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 </linearGradient>
 <path class="st138" d="M411.85,491.11c-0.14,1.22-2.77,1.92-5.86,1.55s-5.49-1.65-5.34-2.88c0.14-1.22,2.77-1.92,5.86-1.55
 	S411.99,489.89,411.85,491.11z"/>
-<g>
+<g id="Background">
 	<g>
 		<g>
 			<linearGradient id="SVGID_125_" gradientUnits="userSpaceOnUse" x1="-44.5846" y1="667.0847" x2="566.5847" y2="55.9154">

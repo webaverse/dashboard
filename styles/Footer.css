@@ -67,10 +67,12 @@
 .footer .copyright {
   color: #676370;
 }
-.footer .socialLinks .socialIcon {
+.footer .socialLinks a .socialIcon {
   display: inline-block;
   width: 14px;
   height: 14px;
   filter: invert(40%) sepia(26%) saturate(172%) hue-rotate(217deg) brightness(91%) contrast(89%);
-  padding-left: 12px;
+}
+.footer .socialLinks a + a {
+  margin-left: 12px;
 }

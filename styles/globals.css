@@ -168,6 +168,15 @@ a {
   width: 2px;
 }
 
+.street-filters {
+  position: absolute;
+  top: 0;
+  right: 8%;
+  width: 300px;
+  height: 120px;
+  border: 2px solid #e0e0e0;
+}
+
 .mainRow {
   display: flex;
   margin-bottom: 20px;
@@ -188,7 +197,7 @@ a {
   display: flex;
   position: absolute;
   width: 100px;
-  margin-top: -30px;
+  margin-top: -37px;
   left: calc(-100px + 2px);
 }
 .mainRow .notch .text {
@@ -212,7 +221,7 @@ a {
 }
 .mainRow .notch .underline {
   position: absolute;
-  width: 800px;
+  width: calc(100vw - 16vw - 21px);
   height: 2px;
   top: 5px;
   left: 5px;

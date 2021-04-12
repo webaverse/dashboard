@@ -69,6 +69,9 @@ const PagesRoot = ({data}) => {
                   </div> */}
                   <div className="bar" />
                 </div>
+                <div className="street-filters">
+                  
+                </div>
                 {loading ? (
                     <Loader loading={loading} />
                 ) : (

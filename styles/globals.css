@@ -72,6 +72,9 @@ a {
   padding: 0 8%;
   padding-left: calc(8% + 100px);
   padding-top: 80px;
+  padding-bottom: 74px;
+  min-height: calc(100vh - 76px);
+  margin-bottom: -74px;
 }
 .container .wrap {
   
@@ -149,6 +152,10 @@ a {
   background-color: #9ccc65;
   border-color: rgba(255, 255, 255, 0.1);
   color: #FFF;
+}
+.streetchain .mint-button img {
+  width: 13px;
+  height: 13px;
 }
 .streetchain .mint-button:hover img {
   filter: invert(100%);

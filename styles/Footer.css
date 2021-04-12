@@ -37,8 +37,7 @@
   flex-flow: column nowrap;
   justify-content: space-between;
   align-items: center;
-  height: 1.5rem;
-  margin: 25px auto;
+  height: 74px;
   color: #676370;
   font-size: 14px;
 }

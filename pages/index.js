@@ -62,11 +62,11 @@ const PagesRoot = ({data}) => {
             <div className="container">
                 <div className="streetchain">
                   <div className="mint-button">
-                    <img src="/icons/stone-crafting.svg" />
+                    <img src="/icons/plus.svg" />
                   </div>
-                  <div className="header">
+                  {/* <div className="header">
                      Streetchain
-                  </div>
+                  </div> */}
                   <div className="bar" />
                 </div>
                 {loading ? (

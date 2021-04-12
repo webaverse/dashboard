@@ -59,23 +59,26 @@ const PagesRoot = ({data}) => {
                 callToAction="Play"
                 ctaUrl="https://app.webaverse.com"
             /> */}
-            <div className="streetchain">
-              <div className="bar" />
-            </div>
             <div className="container">
+                <div className="streetchain">
+                  <div className="header">
+                     Streetchain
+                  </div>
+                  <div className="bar" />
+                </div>
                 {loading ? (
                     <Loader loading={loading} />
                 ) : (
-                    <Fragment>
-                        <CardRowHeader name="Avatars" />
+                    <div className="wrap">
+                        {/* <CardRowHeader name="Avatars" /> */}
                         <CardRow data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
 
-                        <CardRowHeader name="Digital Art" />
+                        {/* <CardRowHeader name="Digital Art" /> */}
                         <CardRow data={art} cardSize="small" cardSvgSource={data.cardSvgSource} />
 
-                        <CardRowHeader name="3D Models" />
+                        {/* <CardRowHeader name="3D Models" /> */}
                         <CardRow data={models} cardSize="small" cardSvgSource={data.cardSvgSource} />
-                    </Fragment>
+                    </div>
                 )}
             </div>
         </Fragment>

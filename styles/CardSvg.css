@@ -36,7 +36,9 @@
 }
 
 .card-svg {
-  width: 300px;
+  --size: 300px;
+  width: var(--size);
+  height: calc(var(--size) * 3.5 / 2.5);
   margin: 10px;
   --rarity-handmade-light: #f1f1f1;
   --rarity-handmade-light-rgb: 241,241,241;

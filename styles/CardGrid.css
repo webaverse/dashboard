@@ -2,9 +2,9 @@
   width: 100%;
   flex-wrap: wrap;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
 }
-.mainRow {
+/* .mainRow {
   width: 100%;
   flex-wrap: wrap;
   display: flex;
@@ -27,7 +27,7 @@
 .mainRow::-webkit-scrollbar-track-piece { background-color: #000; border-radius: 5px;}
 .mainRow::-webkit-scrollbar-thumb {  background-color: lightgray; border-radius: 5px;}
 .mainRow::-webkit-scrollbar-corner { background-color: #181818;}
-.mainRow::-webkit-resizer { background-color: #c4005d;}
+.mainRow::-webkit-resizer { background-color: #c4005d;} */
 
 .small {
 

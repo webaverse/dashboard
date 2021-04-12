@@ -158,7 +158,7 @@ a {
   top: 10px;
   bottom: 0;
   background-color: #333;
-  width: 5px;
+  width: 2px;
 }
 
 .mainRow {
@@ -166,9 +166,8 @@ a {
   margin-bottom: 20px;
   flex-wrap: wrap;
   /* background-color: #f4f4f4; */
-  border: 2px solid #eee;
-  border-radius: 10px;
   padding: 30px;
+  padding-top: 50px;
 }
 .mainRow .bar {
   position: absolute;
@@ -182,35 +181,35 @@ a {
   display: flex;
   position: absolute;
   width: 100px;
-  margin-top: 100px;
-  left: calc(8% + 5px);
+  margin-top: -20px;
+  left: calc(8% + 2px);
 }
 .mainRow .notch .text {
   position: relative;
-  margin-top: -10px;
+  margin-top: -15px;
   margin-left: 20px;
   font-size: 13px;
   text-transform: uppercase;
-  font-size: 13px;
   font-family: 'FuturaStd-Heavy';
-  color: #999;
+  letter-spacing: 2px;
+  color: #AAA;
 }
 .mainRow .notch .nub {
   position: absolute;
-  width: 19px;
-  height: 19px;
-  margin-left: calc(-19px / 2 - 5px / 2);
+  width: 13px;
+  height: 13px;
+  margin-left: calc(-13px / 2 - 2px / 2);
   background-color: #29b6f6;
   border: 3px solid #FFF;
   border-radius: 100px;
 }
 .mainRow .notch .underline {
   position: absolute;
-  width: calc(100px - 9px - 2px);
+  width: 800px;
   height: 2px;
-  top: 9px;
-  left: 9px;
-  background-color: #EEE;
+  top: 5px;
+  left: 5px;
+  background-color: #e0e0e0;
 }
 
 /* <div className="notch">

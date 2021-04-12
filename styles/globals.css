@@ -166,8 +166,10 @@ a {
   margin-bottom: 20px;
   flex-wrap: wrap;
   /* background-color: #f4f4f4; */
-  padding: 30px;
-  padding-top: 50px;
+  padding-top: 70px;
+  perspective-origin: 50% 50%;
+  perspective: 1200px;
+  transform: translate3D(0, 0, 0);
 }
 .mainRow .bar {
   position: absolute;
@@ -181,8 +183,8 @@ a {
   display: flex;
   position: absolute;
   width: 100px;
-  margin-top: -20px;
-  left: calc(8% + 2px);
+  margin-top: -30px;
+  left: calc(-100px + 2px);
 }
 .mainRow .notch .text {
   position: relative;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 // import cardSvgUrl from '../cards.svg';
 
 const cardWidth = 500;
@@ -22,6 +22,8 @@ const CardSvg = ({
     imageView,
     cardSvgSource,
 }) => {
+    const [perspective, setPerspective] = useState([false, false]);
+  
     let video = false;
     if (["webm", "mp4"].indexOf(ext) >= 0) {
         image = animation_url;
@@ -83,10 +85,35 @@ const CardSvg = ({
           }
         }} />
       ); */
+      let el = null;
       return (
-        <svg className='card-svg' width={cardWidth} height={cardHeight} dangerouslySetInnerHTML={{
-          __html: cardSvgSource,
-        }} />
+        <svg
+          className='card-svg'
+          width={cardWidth}
+          height={cardHeight}
+          dangerouslySetInnerHTML={{
+            __html: cardSvgSource,
+          }}
+          style={{
+            transform: `rotateY(${perspective[0] * 180 * 0.1}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
+          }}
+          ref={newEl => {
+            el = newEl;
+          }}
+          onMouseMove={e => {
+            if (el) {
+              // console.log('got mouse over', e);
+              const {clientX, clientY} = e;
+              const boundingBox = el.getBoundingClientRect();
+              const fx = (clientX - boundingBox.x) / boundingBox.width - 0.5;
+              const fy = 1.0 - ((clientY - boundingBox.y) / boundingBox.height) - 0.5;
+              setPerspective([fx, fy]);
+            }
+          }}
+          onMouseOut={e => {
+            setPerspective([0, 0]);
+          }}
+        />
       );
     } else {
     return (

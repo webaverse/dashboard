@@ -42,8 +42,25 @@
 }
 .card-wrap {
   position: relative;
+  margin: 15px;
 }
-.card-wrap:not(:hover) {
+.card-outer .back {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform-style: preserve-3d;
+  background-image: url('/cardback.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  content: '';
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+.card-wrap.transitioning .card-svg,
+.card-wrap.transitioning .back {
   transition: transform 0.3s ease-out;
 }
 .card-glossy {
@@ -70,7 +87,8 @@
   --size: 300px;
   width: var(--size);
   height: calc(var(--size) * 3.5 / 2.5);
-  margin: 15px;
+  backface-visibility: hidden;
+  transform: translate3D(0, 0, 0);
   --rarity-handmade-light: #f1f1f1;
   --rarity-handmade-light-rgb: 241,241,241;
   --rarity-handmade-dark: #bbbbbb;

@@ -24,6 +24,8 @@ const CardSvg = ({
 }) => {
     const [perspective, setPerspective] = useState([false, false]);
     const [z, setZ] = useState(0);
+    const [flip, setFlip] = useState(false);
+    const [transitioning, setTransitioning] = useState(false);
   
     let video = false;
     if (["webm", "mp4"].indexOf(ext) >= 0) {
@@ -88,48 +90,75 @@ const CardSvg = ({
       ); */
       let el = null;
       let imageEl = null;
+      
+      const _handleMouseMove = e => {
+        if (el && !transitioning) {
+          const {clientX, clientY} = e;
+          const boundingBox = el.getBoundingClientRect();
+          const fx = (clientX - boundingBox.x) / boundingBox.width - 0.5;
+          const fy = 1.0 - ((clientY - boundingBox.y) / boundingBox.height) - 0.5;
+          setPerspective([fx, fy]);
+        }
+      };
+      const _handleMouseOut = e => {
+        setPerspective([0, 0]);
+        setZ(0);
+      };
+      
       return (
         <div className='card-outer'>
-          <div className='card-glossy' />
-          <div className='card-wrap'
-            style={{
-              transform: `rotateY(${perspective[0] * 180 * 0.1}deg) rotateX(${perspective[1] * 180 * 0.1}deg) translateZ(${-z * 50}px)`,
-            }}
-            ref={newEl => {
-              el = newEl;
-              if (el) {
-                imageEl = el.querySelector('#image');
-              }
-            }}
-            onMouseDown={e => {
-              setZ(1);
-            }}
-            onMouseUp={e => {
-              setZ(0);
-            }}
-            onMouseMove={e => {
-              if (el) {
-                // console.log('got mouse over', e);
-                const {clientX, clientY} = e;
-                const boundingBox = el.getBoundingClientRect();
-                const fx = (clientX - boundingBox.x) / boundingBox.width - 0.5;
-                const fy = 1.0 - ((clientY - boundingBox.y) / boundingBox.height) - 0.5;
-                setPerspective([fx, fy]);
-              }
-            }}
-            onMouseOut={e => {
-              setPerspective([0, 0]);
-              setZ(0);
-            }}
+          <div
+            className='card-outer-flip'
           >
-            <svg
-              className='card-svg'
-              width={cardWidth}
-              height={cardHeight}
-              dangerouslySetInnerHTML={{
-                __html: cardSvgSource,
+            <div className='card-glossy' />
+            <div
+              className={`card-wrap ${transitioning ? 'transitioning' : ''}`}
+              ref={newEl => {
+                el = newEl;
+                if (el) {
+                  imageEl = el.querySelector('#image');
+                }
               }}
-            />
+              onMouseDown={e => {
+                setZ(1);
+              }}
+              onMouseUp={e => {
+                setZ(0);
+              }}
+              onClick={e => {
+                if (cardSize === 'large') {
+                  setFlip(!flip);
+                  setTransitioning(true);
+                }
+              }}
+              onMouseMove={_handleMouseMove}
+              onMouseOut={_handleMouseOut}
+            >
+              <svg
+                className={`card-svg ${transitioning ? 'transitioning' : ''}`}
+                width={cardWidth}
+                height={cardHeight}
+                dangerouslySetInnerHTML={{
+                  __html: cardSvgSource,
+                }}
+                ref={el => {
+                  if (el) {
+                    el.addEventListener('transitionstart', e => {
+                      setTransitioning(true);
+                    });
+                    el.addEventListener('transitionend', e => {
+                      setTransitioning(false);
+                    });
+                  }
+                }}
+                style={{
+                  transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.1}deg) translateZ(${-z * 50}px)`,
+                }}
+              />
+              <div className={`back ${transitioning ? 'transitioning' : ''}`} style={{
+                transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? 0 : 180)}deg) rotateX(${perspective[1] * 180 * 0.1}deg) translateZ(${-z * 50}px)`,
+              }} />
+            </div>
           </div>
         </div>
       );

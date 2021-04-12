@@ -61,7 +61,9 @@ const PagesRoot = ({data}) => {
             /> */}
             <div className="container">
                 <div className="streetchain">
-                  <div className="mint-button">
+                  <div className="mint-button" onClick={e => {
+                  }}>
+                    <div className="notch" />
                     <img src="/icons/plus.svg" />
                   </div>
                   {/* <div className="header">

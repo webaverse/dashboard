@@ -5,7 +5,7 @@ import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import Loader from "../components/Loader";
-const PagesRoot = () => {
+const PagesRoot = ({data}) => {
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
     const [models, setModels] = useState(null);
@@ -52,26 +52,29 @@ const PagesRoot = () => {
                 <meta name="theme-color" content="#c4005d" />
                 <meta name="twitter:card" content="summary_large_image" />
             </Head>
-            <Hero
+            {/* <Hero
                 heroBg="/hero.gif"
                 title="Webaverse"
                 subtitle="The virtual world built with NFTs"
                 callToAction="Play"
                 ctaUrl="https://app.webaverse.com"
-            />
+            /> */}
+            <div className="streetchain">
+              <div className="bar" />
+            </div>
             <div className="container">
                 {loading ? (
                     <Loader loading={loading} />
                 ) : (
                     <Fragment>
                         <CardRowHeader name="Avatars" />
-                        <CardRow data={avatars} cardSize="small" />
+                        <CardRow data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
 
                         <CardRowHeader name="Digital Art" />
-                        <CardRow data={art} cardSize="small" />
+                        <CardRow data={art} cardSize="small" cardSvgSource={data.cardSvgSource} />
 
                         <CardRowHeader name="3D Models" />
-                        <CardRow data={models} cardSize="small" />
+                        <CardRow data={models} cardSize="small" cardSvgSource={data.cardSvgSource} />
                     </Fragment>
                 )}
             </div>
@@ -79,3 +82,43 @@ const PagesRoot = () => {
     );
 };
 export default PagesRoot;
+
+export async function getServerSideProps(context) {
+  const urlPrefix = (() => {
+    if (typeof window !== 'undefined') {
+      return window.location.protocol + '//' + window.location.host;
+    } else {
+      return 'http://' + context.req.headers.host;
+    }
+  })();
+  const u = new URL('cards.svg', urlPrefix).href;
+  // console.log('got u', u);
+  
+  const [
+    // o,
+    cardSvgSource,
+  ] = await Promise.all([
+    /* (async () => {
+      const id = /^[0-9]+$/.test(context.params.id) ? parseInt(context.params.id, 10) : NaN;
+      const o = await getData(id);
+      return o;
+    })(), */
+    (async () => {
+      const res = await fetch(u);
+      const s = await res.text();
+      return s;
+    })(),
+  ]);
+  // const token = o?.token;
+  // const networkName = o?.networkName;
+
+  return {
+    props: {
+      data: {
+        // token,
+        // networkName,
+        cardSvgSource,
+      },
+    },
+  };
+}

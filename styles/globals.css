@@ -167,9 +167,7 @@ a {
   flex-wrap: wrap;
   /* background-color: #f4f4f4; */
   padding-top: 70px;
-  perspective-origin: 50% 50%;
   perspective: 1200px;
-  transform: translate3D(0, 0, 0);
 }
 .mainRow .bar {
   position: absolute;

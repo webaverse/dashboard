@@ -35,6 +35,37 @@
   src: url('/fonts/FuturaLT-Book.ttf');
 }
 
+.card-outer {
+  position: relative;
+  perspective-origin: 50% 50%;
+  perspective: 1000px;
+}
+.card-wrap {
+  position: relative;
+}
+.card-wrap:not(:hover) {
+  transition: transform 0.3s ease-out;
+}
+.card-glossy {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.5) 70%,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(255, 255, 255, 0) 90%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
 .card-svg {
   --size: 300px;
   width: var(--size);
@@ -110,7 +141,4 @@
   --rarity-exotic-light-rgb: 35,238,196;
   --rarity-exotic-dark: #567cc9;
   --rarity-exotic-dark-rgb: 86,124,201;
-}
-.card-svg:not(:hover) {
-  transition: transform 0.3s ease-out;
 }

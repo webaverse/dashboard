@@ -88,36 +88,42 @@ const CardSvg = ({
       let el = null;
       let imageEl = null;
       return (
-        <svg
-          className='card-svg'
-          width={cardWidth}
-          height={cardHeight}
-          dangerouslySetInnerHTML={{
-            __html: cardSvgSource,
-          }}
-          style={{
-            transform: `rotateY(${perspective[0] * 180 * 0.1}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
-          }}
-          ref={newEl => {
-            el = newEl;
-            if (el) {
-              imageEl = el.querySelector('#image');
-            }
-          }}
-          onMouseMove={e => {
-            if (el) {
-              // console.log('got mouse over', e);
-              const {clientX, clientY} = e;
-              const boundingBox = el.getBoundingClientRect();
-              const fx = (clientX - boundingBox.x) / boundingBox.width - 0.5;
-              const fy = 1.0 - ((clientY - boundingBox.y) / boundingBox.height) - 0.5;
-              setPerspective([fx, fy]);
-            }
-          }}
-          onMouseOut={e => {
-            setPerspective([0, 0]);
-          }}
-        />
+        <div className='card-outer'>
+          <div className='card-wrap'
+            style={{
+              transform: `rotateY(${perspective[0] * 180 * 0.1}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
+            }}
+            ref={newEl => {
+              el = newEl;
+              if (el) {
+                imageEl = el.querySelector('#image');
+              }
+            }}
+            onMouseMove={e => {
+              if (el) {
+                // console.log('got mouse over', e);
+                const {clientX, clientY} = e;
+                const boundingBox = el.getBoundingClientRect();
+                const fx = (clientX - boundingBox.x) / boundingBox.width - 0.5;
+                const fy = 1.0 - ((clientY - boundingBox.y) / boundingBox.height) - 0.5;
+                setPerspective([fx, fy]);
+              }
+            }}
+            onMouseOut={e => {
+              setPerspective([0, 0]);
+            }}
+          >
+            <div className='card-glossy' />
+            <svg
+              className='card-svg'
+              width={cardWidth}
+              height={cardHeight}
+              dangerouslySetInnerHTML={{
+                __html: cardSvgSource,
+              }}
+            />
+          </div>
+        </div>
       );
     } else {
     return (

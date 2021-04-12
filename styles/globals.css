@@ -176,6 +176,22 @@ a {
   width: 2px;
 }
 
+.mint-menu-wrap {
+  position: fixed;
+  width: 100%;
+  height: 2px;
+  background-color: #e0e0e0;
+  border: 0 solid #e0e0e0;
+  top: 90px;
+  left: calc(8% + 20px);
+}
+
+.mint-menu-wrap.open {
+  height: 200px;
+  background-color: transparent;
+  border-width: 2px;
+}
+
 .street-filters {
   position: absolute;
   top: 0;

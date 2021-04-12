@@ -10,6 +10,7 @@ const PagesRoot = ({data}) => {
     const [art, setArt] = useState(null);
     const [models, setModels] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [mintMenuOpen, setMintMenuOpen] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -62,6 +63,7 @@ const PagesRoot = ({data}) => {
             <div className="container">
                 <div className="streetchain">
                   <div className="mint-button" onClick={e => {
+                    setMintMenuOpen(!mintMenuOpen);
                   }}>
                     <div className="notch" />
                     <img src="/icons/plus.svg" />
@@ -70,6 +72,10 @@ const PagesRoot = ({data}) => {
                      Streetchain
                   </div> */}
                   <div className="bar" />
+                </div>
+                <div className={`mint-menu-wrap ${mintMenuOpen ? 'open' : ''}`}>
+                  <div className="mint-menu">
+                  </div>
                 </div>
                 <div className="street-filters">
                   

@@ -61,6 +61,9 @@ const PagesRoot = ({data}) => {
             /> */}
             <div className="container">
                 <div className="streetchain">
+                  <div className="mint-button">
+                    <img src="/icons/stone-crafting.svg" />
+                  </div>
                   <div className="header">
                      Streetchain
                   </div>

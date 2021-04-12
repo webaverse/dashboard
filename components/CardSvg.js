@@ -89,6 +89,7 @@ const CardSvg = ({
       let imageEl = null;
       return (
         <div className='card-outer'>
+          <div className='card-glossy' />
           <div className='card-wrap'
             style={{
               transform: `rotateY(${perspective[0] * 180 * 0.1}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
@@ -113,7 +114,6 @@ const CardSvg = ({
               setPerspective([0, 0]);
             }}
           >
-            <div className='card-glossy' />
             <svg
               className='card-svg'
               width={cardWidth}

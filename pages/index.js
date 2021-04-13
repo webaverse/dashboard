@@ -61,7 +61,7 @@ const PagesRoot = ({data}) => {
 
     setSelectedTab = (setSelectedTab => newTab => {
       setSelectedTab(newTab);
-      setSelectedPage(selectedPage + 1);
+      setSelectedPage(1);
       // console.log('new page', selectedPage + 1);
     })(setSelectedTab);
 
@@ -177,13 +177,14 @@ const PagesRoot = ({data}) => {
           })
           .then(data => {
             data = data.data;
-            console.log("got data", data);
             // setProgress('finished');
             // setHash(data.hash);
             // setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
             // router.push('/preview/' + data.hash + "." + fileName + "." + extName);
             
-            setSelectedPage(selectedPage + 1);
+            setSelectedPage(3);
+            
+            console.log('got data', data, 3);
           })
           .catch(error => {
             console.error(error)
@@ -359,6 +360,31 @@ const PagesRoot = ({data}) => {
                             </div>
                             <div className="description">
                               Uploading NFT...
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="wrap">
+                        <div className="subwraps">
+                          <div className="subwrap">
+                            <div className="label">
+                              <nav
+                                className="back-button"
+                                onClick={e => {
+                                  setSelectedPage(selectedPage - 2);
+                                }}
+                              >
+                                <img
+                                  src="/chevron-left.svg"
+                                  onDragStart={e => {
+                                    e.preventDefault();
+                                  }}
+                                />
+                              </nav>
+                              <div className="text">Change file</div>
+                            </div>
+                            <div className="description">
+                              Upload complete, here is the preview:
                             </div>
                           </div>
                         </div>

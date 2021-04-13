@@ -100,7 +100,12 @@ const PagesRoot = ({data}) => {
                   <div className="contents">
                     <div className="wrap">
                       <div className="tabs">
-                        <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Image</div>
+                        <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>
+                          <span>Image</span>
+                          <div className="dropdown">
+                            <img src="/chevron-down.svg" />
+                          </div>
+                        </div>
                         <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>Video</div>
                         <div className={`tab ${selectedTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedTab(2)}>Avatar</div>
                         <div className={`tab ${selectedTab === 3 ? 'selected' : ''}`} onClick={e => setSelectedTab(3)}>Item</div>

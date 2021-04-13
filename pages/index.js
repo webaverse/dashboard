@@ -7,8 +7,9 @@ import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import Loader from "../components/Loader";
 import {FileDrop} from "react-file-drop";
-import { makeWbn, makeBin, makePhysicsBake } from "../webaverse/build";
-import { blobToFile, getExt } from "../webaverse/util";
+import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
+import {blobToFile, getExt} from "../webaverse/util";
+import {storageHost} from "../webaverse/constants";
 
 class Dropper extends Component {
   constructor(props) {
@@ -101,8 +102,7 @@ const PagesRoot = ({data}) => {
     };
 
     const handleFilesMagically = async files => {
-      debugger;
-      setLoading(true);
+      // setLoading(true);
       if (files.length > 1) {
         const filesArray = Array.from(files)
         const wbn = await makeWbn(filesArray);
@@ -111,31 +111,31 @@ const PagesRoot = ({data}) => {
         if (getExt(files[0].name) === "glb") {
           const wbn = await makePhysicsBake(files);
           handleFileUpload(wbn);
-        } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) {
+        } else /* if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) */ {
           handleFileUpload(files[0]);
-        } else {
+        /* } else {
           alert("Use one of the support file formats: png, glb, vrm");
-          setLoading(false);
+          setLoading(false); */
         }
       } else {
-        alert("No files uploaded!");
-        setLoading(false);
+        console.warn("No files uploaded!");
+        // setLoading(false);
       }
     };
     const handleFileUpload = file => {
       if (file) {
-        let reader = new FileReader();
-        reader.onloadend = () => {
+        // let reader = new FileReader();
+        // reader.onloadend = () => {
           const extName = getExt(file.name);
           const fileName = extName ? file.name.slice(0, -(extName.length + 1)) : file.name;
-          setExtName(extName);
-          setName(fileName);
+          // setExtName(extName);
+          // setName(fileName);
 
-          const documentStyles = document.documentElement.style;
+          // const documentStyles = document.documentElement.style;
           let progress = 0;
 
-          setLoading('true');
-          setProgress('in-progress');
+          // setLoading('true');
+          // setProgress('in-progress');
 
           axios({
             method: 'post',
@@ -143,9 +143,9 @@ const PagesRoot = ({data}) => {
             data: file,
             onUploadProgress(progressEvent) {
               progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-              setPercentage(progress);
+              // setPercentage(progress);
               console.log("progress", progress);
-              documentStyles.setProperty('--progress', `${progress}%`);
+              // documentStyles.setProperty('--progress', `${progress}%`);
 
               if (progress > 0 && progress < 10) {
                 setLoadingMessage("Blurring Reality Lines");
@@ -175,8 +175,8 @@ const PagesRoot = ({data}) => {
           .then(data => {
             data = data.data;
             console.log("got data", data);
-            setProgress('finished');
-            setHash(data.hash);
+            // setProgress('finished');
+            // setHash(data.hash);
             setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
             router.push('/preview/' + data.hash + "." + fileName + "." + extName);
           })
@@ -184,23 +184,23 @@ const PagesRoot = ({data}) => {
             console.error(error)
           });
 
-  /*
-          fetch(storageHost, {
-            method: 'POST',
-            body: file
-          })
-          .then(response => response.json())
-          .then(data => {
-            setHash(data.hash);
-            setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
-            router.push('/preview/' + data.hash + "." + fileName + "." + extName);
-          })
-          .catch(error => {
-            console.error(error)
-          })
-  */
-        }
-        reader.readAsDataURL(file);
+          /*
+            fetch(storageHost, {
+              method: 'POST',
+              body: file
+            })
+            .then(response => response.json())
+            .then(data => {
+              setHash(data.hash);
+              setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
+              router.push('/preview/' + data.hash + "." + fileName + "." + extName);
+            })
+            .catch(error => {
+              console.error(error)
+            })
+          */
+        /* }
+        reader.readAsDataURL(file); */
       }
       else console.warn("Didnt upload file");
     };

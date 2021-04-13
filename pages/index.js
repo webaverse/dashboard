@@ -169,7 +169,10 @@ const PagesRoot = ({data}) => {
                             </div>
                           </div>
                           <div className="subwrap">
-                            <div>Upload file to mint:</div>
+                            <div className="upload-section">
+                              <div className="text">Upload file to mint:</div>
+                              <img src="/upload.svg" />
+                            </div>
                           </div>
                         </div>
                       </div>

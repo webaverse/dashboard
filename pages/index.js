@@ -54,16 +54,17 @@ const PagesRoot = ({data}) => {
     const [models, setModels] = useState(null);
     const [loading, setLoading] = useState(true);
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
-    let [selectedTab, setSelectedTab] = useState('');
+    const [selectedTab, setSelectedTab] = useState('');
     const [selectedPage, setSelectedPage] = useState(0);
     const [selectedOption, setSelectedOption] = useState(0);
     const [loadingMessge, setLoadingMessage] = useState('');
+    const [previewId, setPreviewId] = useState('');
 
-    setSelectedTab = (setSelectedTab => newTab => {
+    const _setSelectedTab = newTab => {
       setSelectedTab(newTab);
       setSelectedPage(1);
       // console.log('new page', selectedPage + 1);
-    })(setSelectedTab);
+    };
 
     useEffect(() => {
         (async () => {
@@ -101,8 +102,12 @@ const PagesRoot = ({data}) => {
       scene: `Scene NFT lets you create digital scenes on the blockchain. They can be visited in the virtual world.`,
       vehicle: `Vehicle NFT lets you create virtual vehicles on the blockchain. They can be ridden in the virtual world.`,
     };
-
-    const handleFilesMagically = async files => {
+    const _reset = () => {
+      setSelectedPage(0);
+      setSelectedTab('');
+      setLoadingMessage('');
+    };
+    const handleFilesMagically = async (files = []) => {
       // setLoading(true);
       if (files.length > 1) {
         const filesArray = Array.from(files)
@@ -181,10 +186,11 @@ const PagesRoot = ({data}) => {
             // setHash(data.hash);
             // setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
             // router.push('/preview/' + data.hash + "." + fileName + "." + extName);
-            
+
+            console.log('got data', data, `${storageHost}/${data.hash}/nft.${extName}`);
+
+            setPreviewId(`${storageHost}/${data.hash}/nft.${extName}`);
             setSelectedPage(3);
-            
-            console.log('got data', data, 3);
           })
           .catch(error => {
             console.error(error)
@@ -261,7 +267,11 @@ const PagesRoot = ({data}) => {
                   <div className="bar" />
                 </div>
                 <div className="mint-button" onClick={e => {
-                  setMintMenuOpen(!mintMenuOpen);
+                  const newMintMenuOpen = !mintMenuOpen;
+                  setMintMenuOpen(newMintMenuOpen);
+                  if (!newMintMenuOpen) {
+                    _reset();
+                  }
                 }}>
                   <img src="/icons/plus.svg" />
                 </div>
@@ -279,17 +289,17 @@ const PagesRoot = ({data}) => {
                       <div className="wrap">
                         <div className="label">Choose type of NFT to mint:</div>
                         <div className="subtabs">
-                          <div className={`tab ${selectedTab === 'image' ? 'selected' : ''}`} onClick={e => setSelectedTab('image')}>Image <img src="/image.svg" /></div>
-                          <div className={`tab ${selectedTab === 'video' ? 'selected' : ''}`} onClick={e => setSelectedTab('video')}>Video <img src="/video.svg" /></div>
-                          <div className={`tab ${selectedTab === 'audio' ? 'selected' : ''}`} onClick={e => setSelectedTab('audio')}>Audio <img src="/audio.svg" /></div>
+                          <div className={`tab ${selectedTab === 'image' ? 'selected' : ''}`} onClick={e => _setSelectedTab('image')}>Image <img src="/image.svg" /></div>
+                          <div className={`tab ${selectedTab === 'video' ? 'selected' : ''}`} onClick={e => _setSelectedTab('video')}>Video <img src="/video.svg" /></div>
+                          <div className={`tab ${selectedTab === 'audio' ? 'selected' : ''}`} onClick={e => _setSelectedTab('audio')}>Audio <img src="/audio.svg" /></div>
                         </div>
                         <div className="subtabs">
-                          <div className={`tab ${selectedTab === 'avatar' ? 'selected' : ''}`} onClick={e => setSelectedTab('avatar')}>Avatar <img src="/avatar.svg" /> </div>
-                          <div className={`tab ${selectedTab === 'item' ? 'selected' : ''}`} onClick={e => setSelectedTab('item')}>Item <img src="/sword.svg" /></div>
-                          <div className={`tab ${selectedTab === 'wearable' ? 'selected' : ''}`} onClick={e => setSelectedTab('wearable')}>Wearable <img src="/chain-mail.svg" /></div>
-                          <div className={`tab ${selectedTab === 'pet' ? 'selected' : ''}`} onClick={e => setSelectedTab('pet')}>Pet <img src="/rabbit.svg" /></div>
-                          <div className={`tab ${selectedTab === 'scene' ? 'selected' : ''}`} onClick={e => setSelectedTab('scene')}>Scene <img src="/road.svg" /></div>
-                          <div className={`tab ${selectedTab === 'vehicle' ? 'selected' : ''}`} onClick={e => setSelectedTab('vehicle')}>Vehicle <img src="/scooter.svg" /></div>
+                          <div className={`tab ${selectedTab === 'avatar' ? 'selected' : ''}`} onClick={e => _setSelectedTab('avatar')}>Avatar <img src="/avatar.svg" /> </div>
+                          <div className={`tab ${selectedTab === 'item' ? 'selected' : ''}`} onClick={e => _setSelectedTab('item')}>Item <img src="/sword.svg" /></div>
+                          <div className={`tab ${selectedTab === 'wearable' ? 'selected' : ''}`} onClick={e => _setSelectedTab('wearable')}>Wearable <img src="/chain-mail.svg" /></div>
+                          <div className={`tab ${selectedTab === 'pet' ? 'selected' : ''}`} onClick={e => _setSelectedTab('pet')}>Pet <img src="/rabbit.svg" /></div>
+                          <div className={`tab ${selectedTab === 'scene' ? 'selected' : ''}`} onClick={e => _setSelectedTab('scene')}>Scene <img src="/road.svg" /></div>
+                          <div className={`tab ${selectedTab === 'vehicle' ? 'selected' : ''}`} onClick={e => _setSelectedTab('vehicle')}>Vehicle <img src="/scooter.svg" /></div>
                         </div>
                         <div className="text"></div>
                       </div>
@@ -381,10 +391,13 @@ const PagesRoot = ({data}) => {
                                   }}
                                 />
                               </nav>
-                              <div className="text">Change file</div>
+                              <div className="text">Preview NFT</div>
                             </div>
                             <div className="description">
                               Upload complete, here is the preview:
+                              {previewId ? <div className="IFrameContainer">
+                                <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + previewId} />
+                              </div> : null}
                             </div>
                           </div>
                         </div>

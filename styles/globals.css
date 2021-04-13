@@ -332,7 +332,6 @@ a {
 .slider .contents .upload-section {
   display: flex;
   width: 300px;
-  margin: 10px 0;
   padding: 20px;
   flex-direction: column;
   justify-content: center;

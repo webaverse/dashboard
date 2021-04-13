@@ -125,6 +125,8 @@ const PagesRoot = ({data}) => {
     };
     const handleFileUpload = file => {
       if (file) {
+        setSelectedPage(selectedPage + 1);
+        
         // let reader = new FileReader();
         // reader.onloadend = () => {
           const extName = getExt(file.name);
@@ -178,8 +180,10 @@ const PagesRoot = ({data}) => {
             console.log("got data", data);
             // setProgress('finished');
             // setHash(data.hash);
-            setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
-            router.push('/preview/' + data.hash + "." + fileName + "." + extName);
+            // setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
+            // router.push('/preview/' + data.hash + "." + fileName + "." + extName);
+            
+            setSelectedPage(selectedPage + 1);
           })
           .catch(error => {
             console.error(error)
@@ -334,22 +338,47 @@ const PagesRoot = ({data}) => {
                           </div>
                         </div>
                       </div>
+                      <div className="wrap">
+                        <div className="subwraps">
+                          <div className="subwrap">
+                            <div className="label">
+                              <nav
+                                className="back-button"
+                                onClick={e => {
+                                  setSelectedPage(selectedPage - 1);
+                                }}
+                              >
+                                <img
+                                  src="/chevron-left.svg"
+                                  onDragStart={e => {
+                                    e.preventDefault();
+                                  }}
+                                />
+                              </nav>
+                              <div className="text">Cancel</div>
+                            </div>
+                            <div className="description">
+                              Uploading NFT...
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 {loading ? (
-                    <Loader loading={loading} />
+                  <Loader loading={loading} />
                 ) : (
-                    <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
-                        {/* <CardRowHeader name="Avatars" /> */}
-                        <CardRow data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                  <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
+                    {/* <CardRowHeader name="Avatars" /> */}
+                    <CardRow data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
 
-                        {/* <CardRowHeader name="Digital Art" /> */}
-                        <CardRow data={art} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                    {/* <CardRowHeader name="Digital Art" /> */}
+                    <CardRow data={art} cardSize="small" cardSvgSource={data.cardSvgSource} />
 
-                        {/* <CardRowHeader name="3D Models" /> */}
-                        <CardRow data={models} cardSize="small" cardSvgSource={data.cardSvgSource} />
-                    </div>
+                    {/* <CardRowHeader name="3D Models" /> */}
+                    <CardRow data={models} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                  </div>
                 )}
             </div>
         </Fragment>

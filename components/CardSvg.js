@@ -144,6 +144,8 @@ const CardSvg = ({
                   }}
                   ref={el => {
                     if (el) {
+                      const titleTextEl = el.querySelector('#title-text');
+                      titleTextEl.innerHTML = assetName;
                       for (let i = 0; i < types.length; i++) {
                         const type = types[i];
                         const typeEl = el.querySelector('#type-' + type);

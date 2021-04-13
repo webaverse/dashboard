@@ -72,7 +72,7 @@ const PagesRoot = ({data}) => {
                 <div className="blocker" />
                 <div className="mint-menu-bar" />
                 <div className="slider">
-                  <div className="left-notch"></div>
+                  <div className="left-bar" />
                   <div className="contents" />
                 </div>
                 <div className="street-filters">

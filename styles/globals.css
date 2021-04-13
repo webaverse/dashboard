@@ -116,7 +116,7 @@ a {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 8%;
+  left: 8vw;
 }
 .streetchain .header {
   display: flex;
@@ -204,12 +204,21 @@ a {
   position: fixed;
   width: calc(100vw - 16vw);
   top: 90px;
-  left: calc(8vw + 1px);
+  left: calc(8vw);
 }
 .slider {
   display: flex;
+  left: calc(8vw + 2px);
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
   z-index: 1;
+}
+.slider .left-bar {
+  position: absolute;
+  height: 100%;
+  width: 12px;
+  margin-left: -12px;
+  background-color: #333;
+  border-left: 10px solid #FFF;
 }
 .slider .notch {
   position: absolute;

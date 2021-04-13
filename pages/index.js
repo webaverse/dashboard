@@ -62,10 +62,10 @@ const PagesRoot = ({data}) => {
             /> */}
             <div className="container">
                 <div className="streetchain">
+                  <div className="notch" />
                   <div className="mint-button" onClick={e => {
                     setMintMenuOpen(!mintMenuOpen);
                   }}>
-                    <div className="notch" />
                     <img src="/icons/plus.svg" />
                   </div>
                   {/* <div className="header">

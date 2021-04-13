@@ -148,13 +148,14 @@ a {
   cursor: pointer;
   user-select: none;
 }
-.streetchain .mint-button .notch {
-  position: absolute;
+.streetchain > .notch {
+  position: fixed;
   background-color: #FFF;
-  width: 10px;
-  height: 20px;
+  width: calc(100vw - 8vw);
+  height: 26px;
   margin-left: -5px;
-  margin-top: -60px;
+  margin-top: -8px;
+  z-index: 1;
 }
 .streetchain .mint-button:hover {
   background-color: #9ccc65;

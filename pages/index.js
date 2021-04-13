@@ -50,6 +50,12 @@ const PagesRoot = ({data}) => {
       image: `Image NFT lets you store visual art on the blockchain. They are represented as planes in the virtual world.`,
       video: `Video NFT lets you store video clips on the blockchain. They are represented as screens in the virtual world.`,
       audio: `Audio NFT lets you store audio compositions on the blockchain. They are represented as audio nodes in the virtual world.`,
+      avatar: `Avatar NFT lets you create VRM avatars on the blockchain. They can be worn in the virtual world.`,
+      item: `Item NFT lets you create virtual objects on the blockchain. They can be pulled out of your inventory in the virtual world.`,
+      wearable: `Wearable NFT lets you create digital fashion on the blockchain. They can be worn by your avatar in the virtual world.`,
+      pet: `Pet NFT lets you create virtual pets on the blockchain. They can be interacted with in the virtual world.`,
+      scene: `Scene NFT lets you create digital scenes on the blockchain. They can be visited in the virtual world.`,
+      vehicle: `Vehicle NFT lets you create virtual vehicles on the blockchain. They can be ridden in the virtual world.`,
     };
 
     return (
@@ -129,7 +135,7 @@ const PagesRoot = ({data}) => {
                           <div className={`tab ${selectedTab === 'item' ? 'selected' : ''}`} onClick={e => setSelectedTab('item')}>Item <img src="/sword.svg" /></div>
                           <div className={`tab ${selectedTab === 'wearable' ? 'selected' : ''}`} onClick={e => setSelectedTab('wearable')}>Wearable <img src="/chain-mail.svg" /></div>
                           <div className={`tab ${selectedTab === 'pet' ? 'selected' : ''}`} onClick={e => setSelectedTab('pet')}>Pet <img src="/rabbit.svg" /></div>
-                          <div className={`tab ${selectedTab === 'mount' ? 'selected' : ''}`} onClick={e => setSelectedTab('mount')}>Mount <img src="/sofa.svg" /></div>
+                          <div className={`tab ${selectedTab === 'scene' ? 'selected' : ''}`} onClick={e => setSelectedTab('scene')}>Scene <img src="/road.svg" /></div>
                           <div className={`tab ${selectedTab === 'vehicle' ? 'selected' : ''}`} onClick={e => setSelectedTab('vehicle')}>Vehicle <img src="/scooter.svg" /></div>
                         </div>
                         <div className="text"></div>

@@ -12,6 +12,7 @@ const PagesRoot = ({data}) => {
     const [loading, setLoading] = useState(true);
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
     const [selectedTab, setSelectedTab] = useState(0);
+    const [selectedSubTab, setSelectedSubTab] = useState(0);
     const [selectedOption, setSelectedOption] = useState(0);
 
     useEffect(() => {
@@ -102,12 +103,19 @@ const PagesRoot = ({data}) => {
                       <div className="label">NFT Category</div>
                       <div className="tabs">
                         <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Art</div>
-                        <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>Video</div>
-                        <div className={`tab ${selectedTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedTab(2)}>Avatar</div>
-                        <div className={`tab ${selectedTab === 3 ? 'selected' : ''}`} onClick={e => setSelectedTab(3)}>Item</div>
-                        <div className={`tab ${selectedTab === 4 ? 'selected' : ''}`} onClick={e => setSelectedTab(4)}>Wearable</div>
-                        <div className={`tab ${selectedTab === 5 ? 'selected' : ''}`} onClick={e => setSelectedTab(5)}>Pet</div>
-                        <div className={`tab ${selectedTab === 6 ? 'selected' : ''}`} onClick={e => setSelectedTab(6)}>Mount</div>
+                        <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>3D Model</div>
+                      </div>
+                      <div className="subtabs">
+                        <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Image <img src="/image.svg" /></div>
+                        <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>Video <img src="/video.svg" /></div>
+                        <div className={`tab ${selectedTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedTab(2)}>Audio <img src="/audio.svg" /></div>
+                      </div>
+                      <div className="subtabs">
+                        <div className={`tab ${selectedSubTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(2)}>Avatar</div>
+                        <div className={`tab ${selectedSubTab === 3 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(3)}>Item</div>
+                        <div className={`tab ${selectedSubTab === 4 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(4)}>Wearable</div>
+                        <div className={`tab ${selectedSubTab === 5 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(5)}>Pet</div>
+                        <div className={`tab ${selectedSubTab === 6 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(6)}>Mount</div>
                       </div>
                       <div className="text"></div>
                     </div>

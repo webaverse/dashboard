@@ -174,8 +174,9 @@ const CardSvg = ({
                       }
                       {
                         const stopEls = el.querySelectorAll('#Background linearGradient > stop');
-                        const c = `stop-color:${spec.art.color}`;
-                        stopEls[1].style.cssText = c;
+                        // const c = `stop-color:${spec.art.colors[0]}`;
+                        stopEls[1].style.cssText = `stop-color:${spec.art.colors[0]}`;
+                        stopEls[3].style.cssText = `stop-color:${spec.art.colors[1]}`;
                         
                         const g = el.querySelector('#Background linearGradient');
                         g.id = 'background-' + id;

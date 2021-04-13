@@ -37,28 +37,19 @@ function makeRandom(rng, n) {
   }
   return raw;
 }
-const makeColors = rng => {
-  const colors = colorScheme
-    .from_hue(rng() * 360)
-    .scheme('triade')
-    .variation('default')
-    .colors()
-    .map(c => '#' + c);
-  return [
-    colors[0],
-    colors[4],
-    colors[8],
-  ];
-};
+const makeColors = rng => colorScheme
+  .from_hue(rng() * 360)
+  .scheme('triade')
+  .variation('default')
+  .colors()
+  .map(c => '#' + c);
 function procgen(seed = '', count = 1) {
   const result = Array(count);
   const rng = alea(seed);
   for (let i = 0; i < count; i++) {
-    const [color, color2, color3] = makeColors(rng);
+    const colors = makeColors(rng);
     const art = {
-      color,
-      color2,
-      color3,
+      colors,
       details: makeRandom(rng, 32),
     };
     const stats = {

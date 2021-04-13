@@ -228,6 +228,11 @@ a {
   border-right: 10x solid #e0e0e0;
   border-bottom: 10x solid transparent;
 }
+.slider .contents,
+.slider .contents .wrap-slider
+{
+  overflow-x: hidden;
+}
 .slider .contents {
   display: flex;
   height: var(--mint-menu-size);
@@ -236,10 +241,14 @@ a {
   border-left-width: 0;
   border-bottom: 2px solid #e0e0e0;
   flex: 1;
-  /* align-items: center; */
   flex-direction: column;
 }
+.slider .contents .wrap-slider {
+  display: flex;
+  width: 500vw;
+}
 .slider .contents .wrap {
+  width: calc(100vw - 16vw);
   height: 100%;
   padding: 20px 40px;
   background-color: #eee;

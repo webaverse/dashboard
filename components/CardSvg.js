@@ -78,15 +78,6 @@ const CardSvg = ({
     }
     
     if (cardSvgSource) {
-      // console.log('got card svg source', {cardSvgSource});
-      /* return (
-        <div ref={e => {
-          if (e) {
-            console.log('got e', e);
-            e.innerHTML = cardSvgSource;
-          }
-        }} />
-      ); */
       let el = null;
       let imageEl = null;
       

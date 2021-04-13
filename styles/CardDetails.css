@@ -55,7 +55,6 @@
     outline: inherit;
     font-size: .8em;
     font-weight: 400;
-    color: white;
     padding: 0.5em;
     text-align: left;
     padding-left: .75em;
@@ -182,7 +181,6 @@
 }
 
 .accordionTitleValue {
-    color: white;
     text-transform: uppercase;
     font-size: 1em;
     font-weight: 400;

@@ -7,6 +7,9 @@ import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import Loader from "../components/Loader";
 import {FileDrop} from "react-file-drop";
+import { makeWbn, makeBin, makePhysicsBake } from "../webaverse/build";
+import { blobToFile, getExt } from "../webaverse/util";
+
 const PagesRoot = ({data}) => {
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
@@ -61,6 +64,7 @@ const PagesRoot = ({data}) => {
     };
 
     const handleFilesMagically = async files => {
+      debugger;
       setLoading(true);
       if (files.length > 1) {
         const filesArray = Array.from(files)
@@ -275,26 +279,24 @@ const PagesRoot = ({data}) => {
                             </div>
                           </div>
                           <div className="subwrap">
-                            <div className="upload-section file-drop-container">
-                              <Head>
-                                <script type="text/javascript" src="/geometry.js"></script>
-                              </Head>
-                            
-                              <div className="text">Drop a file here to mint</div>
-                              <img src="/upload.svg" />
+                            <FileDrop
+                              onDrop={(files, e) => {
+                                handleFilesMagically(files);
+                                e.preventDefault();
+                              }}
+                            >
+                              <label className="upload-section file-drop-container" htmlFor="input-file">
+                                <Head>
+                                  <script type="text/javascript" src="/geometry.js"></script>
+                                </Head>
                               
-                              <FileDrop
-                                onDrop={(files, e) => {
-                                  handleFilesMagically(files);
-                                  e.preventDefault();
-                                }}
-                              >
+                                <div className="text">Drop a file here to mint</div>
+                                <img src="/upload.svg" />
                                 
-                                <label htmlFor="input-file" className="button">Choose File</label>
                                 <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
-                              </FileDrop>
-                              
-                            </div>
+                                
+                              </label>
+                            </FileDrop>
                           </div>
                         </div>
                       </div>

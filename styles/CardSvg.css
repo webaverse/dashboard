@@ -59,6 +59,8 @@
   backface-visibility: hidden;
   pointer-events: none;
 }
+.card-wrap:not(:hover) .card-svg,
+.card-wrap:not(:hover) .card-outer .back,
 .card-wrap.transitioning .card-svg,
 .card-wrap.transitioning .back {
   transition: transform 0.3s ease-out;

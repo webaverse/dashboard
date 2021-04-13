@@ -275,25 +275,24 @@ const PagesRoot = ({data}) => {
                             </div>
                           </div>
                           <div className="subwrap">
-                            <div className="upload-section">
-                              <div className="text">Upload file to mint:</div>
+                            <div className="upload-section file-drop-container">
+                              <Head>
+                                <script type="text/javascript" src="/geometry.js"></script>
+                              </Head>
+                            
+                              <div className="text">Drop a file here to mint</div>
                               <img src="/upload.svg" />
                               
-                              <div key="file-drop-container" className="file-drop-container">
-                                <Head>
-                                  <script type="text/javascript" src="/geometry.js"></script>
-                                </Head>
-                                <FileDrop
-                                  onDrop={(files, e) => {
-                                    handleFilesMagically(files);
-                                    e.preventDefault();
-                                  }}
-                                >
-                                  Drop files here to mint
-                                  <label htmlFor="input-file" className="button">Or Upload</label>
-                                  <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
-                                </FileDrop>
-                              </div>
+                              <FileDrop
+                                onDrop={(files, e) => {
+                                  handleFilesMagically(files);
+                                  e.preventDefault();
+                                }}
+                              >
+                                
+                                <label htmlFor="input-file" className="button">Choose File</label>
+                                <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
+                              </FileDrop>
                               
                             </div>
                           </div>

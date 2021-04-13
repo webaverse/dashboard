@@ -342,12 +342,12 @@ a {
   flex: 1;
 }
 .slider .contents .upload-section .text {
-  margin-bottom: 5px;
   font-family: 'GillSans';
 }
 .slider .contents .upload-section img {
   width: 100px;
   height: 100px;
+  margin: 5px 0;
 }
 .slider .contents .wrap .subwraps {
   display: flex;

@@ -12,12 +12,13 @@ const PagesRoot = ({data}) => {
     const [loading, setLoading] = useState(true);
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
     let [selectedTab, setSelectedTab] = useState('');
-    const [selectedPage, setSelectedPage] = useState('');
+    const [selectedPage, setSelectedPage] = useState(0);
     const [selectedOption, setSelectedOption] = useState(0);
 
     setSelectedTab = (setSelectedTab => newTab => {
       setSelectedTab(newTab);
       setSelectedPage(selectedPage + 1);
+      // console.log('new page', selectedPage + 1);
     })(setSelectedTab);
 
     useEffect(() => {
@@ -104,7 +105,12 @@ const PagesRoot = ({data}) => {
                 <div className="slider">
                   <div className="left-bar" />
                   <div className="contents">
-                    <div className="wrap-slider">
+                    <div
+                      className="wrap-slider"
+                      style={{
+                        transform: `translateX(calc(-1 * (100vw - 16vw) * ${selectedPage}))`,
+                      }}
+                    >
                       <div className="wrap">
                         <div className="label">Choose type of NFT to mint:</div>
                         {/* <div className="tabs">
@@ -127,7 +133,22 @@ const PagesRoot = ({data}) => {
                         <div className="text"></div>
                       </div>
                       <div className="wrap">
-                        <div className="label">Upload file to mint:</div>
+                        <div className="label">
+                          <nav
+                            className="back-button"
+                            onClick={e => {
+                              setSelectedPage(selectedPage - 1);
+                            }}
+                          >
+                            <img
+                              src="/chevron-left.svg"
+                              onDragStart={e => {
+                                e.preventDefault();
+                              }}
+                            />
+                          </nav>
+                          <div>Upload file to mint:</div>
+                        </div>
                       </div>
                     </div>
                   </div>

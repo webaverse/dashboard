@@ -1,10 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Head from "next/head";
-import { getTokens } from "../functions/UIStateFunctions.js";
+import axios from 'axios';
+import {getTokens} from "../functions/UIStateFunctions.js";
 import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import Loader from "../components/Loader";
+import {FileDrop} from "react-file-drop";
 const PagesRoot = ({data}) => {
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
@@ -56,6 +58,110 @@ const PagesRoot = ({data}) => {
       pet: `Pet NFT lets you create virtual pets on the blockchain. They can be interacted with in the virtual world.`,
       scene: `Scene NFT lets you create digital scenes on the blockchain. They can be visited in the virtual world.`,
       vehicle: `Vehicle NFT lets you create virtual vehicles on the blockchain. They can be ridden in the virtual world.`,
+    };
+
+    const handleFilesMagically = async files => {
+      setLoading(true);
+      if (files.length > 1) {
+        const filesArray = Array.from(files)
+        const wbn = await makeWbn(filesArray);
+        handleFileUpload(wbn);
+      } else if (files.length === 1) {
+        if (getExt(files[0].name) === "glb") {
+          const wbn = await makePhysicsBake(files);
+          handleFileUpload(wbn);
+        } else if (['glb', 'png', 'vrm'].indexOf(getExt(files[0].name)) >= 0) {
+          handleFileUpload(files[0]);
+        } else {
+          alert("Use one of the support file formats: png, glb, vrm");
+          setLoading(false);
+        }
+      } else {
+        alert("No files uploaded!");
+        setLoading(false);
+      }
+    };
+    const handleFileUpload = file => {
+      if (file) {
+        let reader = new FileReader();
+        reader.onloadend = () => {
+          const extName = getExt(file.name);
+          const fileName = extName ? file.name.slice(0, -(extName.length + 1)) : file.name;
+          setExtName(extName);
+          setName(fileName);
+
+          const documentStyles = document.documentElement.style;
+          let progress = 0;
+
+          setLoading('true');
+          setProgress('in-progress');
+
+          axios({
+            method: 'post',
+            url: storageHost,
+            data: file,
+            onUploadProgress(progressEvent) {
+              progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+              setPercentage(progress);
+              console.log("progress", progress);
+              documentStyles.setProperty('--progress', `${progress}%`);
+
+              if (progress > 0 && progress < 10) {
+                setLoadingMessage("Blurring Reality Lines");
+              } else if (progress > 10 && progress < 20) {
+                setLoadingMessage("Preparing Captive Simulators");
+              } else if (progress > 20 && progress < 30) {
+                setLoadingMessage("Destabilizing Orbital Payloads");
+              } else if (progress > 30 && progress < 40) {
+                setLoadingMessage("Reticulating 3-Dimensional Splines");
+              } else if (progress > 40 && progress < 50) {
+                setLoadingMessage("Inserting Chaos Generator");
+              } else if (progress > 50 && progress < 60) {
+                setLoadingMessage("Initializing Secret Societies");
+              } else if (progress > 60 && progress < 70) {
+                setLoadingMessage("Recycling Hex Decimals");
+              } else if (progress > 70 && progress < 80) {
+                setLoadingMessage("Locating Misplaced Calculations");
+              } else if (progress > 80 && progress < 90) {
+                setLoadingMessage("Simulating Program Execution");
+              } else if (progress > 90) {
+                setLoadingMessage("Composing Melodic Euphony");
+              } else {
+                setLoadingMessage("Composing Melodic Euphony");
+              }
+            }
+          })
+          .then(data => {
+            data = data.data;
+            console.log("got data", data);
+            setProgress('finished');
+            setHash(data.hash);
+            setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
+            router.push('/preview/' + data.hash + "." + fileName + "." + extName);
+          })
+          .catch(error => {
+            console.error(error)
+          });
+
+  /*
+          fetch(storageHost, {
+            method: 'POST',
+            body: file
+          })
+          .then(response => response.json())
+          .then(data => {
+            setHash(data.hash);
+            setIpfsUrl("https://ipfs.exokit.org/" + data.hash + "/" + fileName + "." + extName);
+            router.push('/preview/' + data.hash + "." + fileName + "." + extName);
+          })
+          .catch(error => {
+            console.error(error)
+          })
+  */
+        }
+        reader.readAsDataURL(file);
+      }
+      else console.warn("Didnt upload file");
     };
 
     return (
@@ -172,6 +278,23 @@ const PagesRoot = ({data}) => {
                             <div className="upload-section">
                               <div className="text">Upload file to mint:</div>
                               <img src="/upload.svg" />
+                              
+                              <div key="file-drop-container" className="file-drop-container">
+                                <Head>
+                                  <script type="text/javascript" src="/geometry.js"></script>
+                                </Head>
+                                <FileDrop
+                                  onDrop={(files, e) => {
+                                    handleFilesMagically(files);
+                                    e.preventDefault();
+                                  }}
+                                >
+                                  Drop files here to mint
+                                  <label htmlFor="input-file" className="button">Or Upload</label>
+                                  <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
+                                </FileDrop>
+                              </div>
+                              
                             </div>
                           </div>
                         </div>

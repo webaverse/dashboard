@@ -147,6 +147,14 @@ const PagesRoot = ({data}) => {
                               </nav>
                               <div className="text">{selectedTab}</div>
                             </div>
+                            <div className="description">
+                              <div className="text">
+                                Image NFT lets you store visual art on the blockchain. They are represented as planes in the virtual world.
+                              </div>
+                              <div className="card-hype">
+                                
+                              </div>
+                            </div>
                           </div>
                           <div className="subwrap">
                             <div>Upload file to mint:</div>

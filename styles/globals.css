@@ -311,6 +311,22 @@ a {
 .slider .contents .tabs .tab + .tab {
   margin-left: 3px;
 }
+.slider .contents .description {
+  display: flex;
+}
+.slider .contents .description .text {
+  max-width: 250px;
+  padding-right: 10px;
+  text-align: left;
+  font-family: 'GillSans';
+  font-size: 16px;
+}
+.slider .contents .description .card-hype {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  background-color: #FFF;
+}
 .slider .contents .wrap .subwraps {
   display: flex;
 }

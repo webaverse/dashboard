@@ -189,11 +189,9 @@ a {
 {
   height: 0;
 }
-
 .mint-menu {
   border: 0 solid #e0e0e0;
   border-top-width: 2px;
-  border-bottom-width: 2px;
 }
 
 .mint-menu .notch {
@@ -203,8 +201,10 @@ a {
 }
 .mint-menu .contents {
   height: 200px;
+  margin-top: -2px;
   background-color: transparent;
   border-left-width: 0;
+  border-bottom: 2px solid #e0e0e0;
 }
 .mint-placeholder {
   width: 200px;

@@ -192,7 +192,7 @@ a {
 .mint-menu-wrap:not(.open) .mint-menu .contents,
 .mint-placeholder:not(.open)
 {
-  height: 0;
+  transform: translateY(-200px);
 }
 .mint-menu-wrap.open .mint-menu .contents
 {
@@ -210,7 +210,6 @@ a {
 }
 .mint-menu .contents {
   height: 200px;
-  margin-top: -2px;
   background-color: #FFF;
   border-left-width: 0;
   border-bottom: 2px solid #e0e0e0;

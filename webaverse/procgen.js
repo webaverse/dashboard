@@ -1,6 +1,26 @@
 import alea from './alea.js';
 import colorScheme from './color-scheme.js';
 
+const types = [
+  'fire',
+  'grass',
+  'water',
+  'electric',
+  'fighting',
+  'psychic',
+  'colorless',
+  'dark',
+  'metal',
+  'fairy',
+  'bug',
+  'rock',
+  'flying',
+  'ground',
+  'ice',
+  'poison',
+  'ghost',
+  'dragon',
+];
 const rarities = [
   'common',
   'uncommon',
@@ -42,6 +62,7 @@ function procgen(seed = '', count = 1) {
       details: makeRandom(rng, 32),
     };
     const stats = {
+      type: types[Math.floor(rng() * types.length)],
       rarity: (() => {
         const f = rng();
         let totalFactor = 0;
@@ -74,3 +95,7 @@ function procgen(seed = '', count = 1) {
   return result;
 }
 export default procgen;
+export {
+  types,
+  rarities,
+};

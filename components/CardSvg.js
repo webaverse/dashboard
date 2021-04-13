@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import procgen from '../webaverse/procgen.js';
+import procgen, {types} from '../webaverse/procgen.js';
 
 const cardWidth = 500;
 const cardHeight = cardWidth/2.5*3.5;
@@ -103,6 +103,8 @@ const CardSvg = ({
         setPerspective([0, 0]);
       };
       
+      const spec = procgen(id + '')[0];
+      
       return (
         <div className='card-outer'>
           <div
@@ -148,6 +150,15 @@ const CardSvg = ({
                   height={cardHeight}
                   dangerouslySetInnerHTML={{
                     __html: cardSvgSource,
+                  }}
+                  ref={el => {
+                    if (el) {
+                      for (let i = 0; i < types.length; i++) {
+                        const type = types[i];
+                        const typeEl = el.querySelector('#type-' + type);
+                        typeEl.style.display = type === spec.stats.type ? 'block' : 'none';
+                      }
+                    }
                   }}
                 />
               </div>

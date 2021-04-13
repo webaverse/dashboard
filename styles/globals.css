@@ -77,7 +77,10 @@ a {
   margin-bottom: -74px;
 }
 .container .wrap {
-  
+  transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
+}
+.container .wrap.open {
+  transform: translateY(200px);
 }
 .containerText {
   color: #676370;

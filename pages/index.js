@@ -85,7 +85,7 @@ const PagesRoot = ({data}) => {
                 {loading ? (
                     <Loader loading={loading} />
                 ) : (
-                    <div className="wrap">
+                    <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
                         {/* <CardRowHeader name="Avatars" /> */}
                         <CardRow data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
 

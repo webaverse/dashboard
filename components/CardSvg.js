@@ -153,7 +153,9 @@ const CardSvg = ({
               </div>
               <div className={`back ${transitioning ? 'transitioning' : ''}`} style={{
                 transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? 0 : 180)}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
-              }} />
+              }}>
+                <img src="/cardback.png" />
+              </div>
             </div>
           </div>
         </div>

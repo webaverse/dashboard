@@ -56,12 +56,12 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-image: url('/cardback.png');
-  background-position: center;
-  background-size: contain;
-  background-repeat: none;
   backface-visibility: hidden;
   pointer-events: none;
+}
+.card-outer .back img {
+  width: 100%;
+  height: 100%;
 }
 .card-wrap:not(:hover) .card-svg,
 .card-wrap:not(:hover) .card-outer .back,

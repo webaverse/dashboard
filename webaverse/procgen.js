@@ -48,8 +48,14 @@ function procgen(seed = '', count = 1) {
   const rng = alea(seed);
   for (let i = 0; i < count; i++) {
     const colors = makeColors(rng);
+    const color = colors[0];
+    const color2 = colors[4];
+    const color3 = colors[8];
     const art = {
       colors,
+      color,
+      color2,
+      color3,
       details: makeRandom(rng, 32),
     };
     const stats = {

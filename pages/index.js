@@ -100,11 +100,11 @@ const PagesRoot = ({data}) => {
                   <div className="left-bar" />
                   <div className="contents">
                     <div className="wrap">
-                      <div className="label">NFT Category</div>
-                      <div className="tabs">
+                      <div className="label">Choose type of NFT to mint:</div>
+                      {/* <div className="tabs">
                         <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Art</div>
                         <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>3D Model</div>
-                      </div>
+                      </div> */}
                       <div className="subtabs">
                         <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Image <img src="/image.svg" /></div>
                         <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>Video <img src="/video.svg" /></div>

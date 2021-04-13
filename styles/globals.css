@@ -250,10 +250,11 @@ a {
 }
 .slider .contents .label {
   display: flex;
-  margin-bottom: 5px;
-  font-family: 'GillSans-CondensedBold';
-  text-transform: uppercase;
-  color: #999;
+  margin-bottom: 15px;
+  font-family: 'FuturaLT';
+  font-size: 20px;
+  color: #BBB;
+
 }
 .slider .contents .tabs {
   display: flex;

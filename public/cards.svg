@@ -6220,7 +6220,7 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 		H424.39L424.39,671.87z"/>
 </g>
 <rect x="333.37" y="665.42" class="st141" width="153.8" height="47.16"/>
-<g>
+<g id="attack">
 	<linearGradient id="SVGID_128_" gradientUnits="userSpaceOnUse" x1="94.5" y1="647.8793" x2="94.5" y2="607.6724">
 		<stop  offset="0" style="stop-color:#000000"/>
 		<stop  offset="0.8323" style="stop-color:#FFFFFF;stop-opacity:0.55"/>
@@ -6284,7 +6284,7 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 			c-1.47-5.5-6.46-10.31-15.43-13.2C20692.5-24421.24,20687.17-24422.06,20681.37-24422.09L20681.37-24422.09z"/>
 	</g>
 </g>
-<g>
+<g id="defense">
 	<linearGradient id="SVGID_129_" gradientUnits="userSpaceOnUse" x1="233.0127" y1="647.6832" x2="233.0127" y2="607.4763">
 		<stop  offset="0" style="stop-color:#000000"/>
 		<stop  offset="0.8323" style="stop-color:#FFFFFF;stop-opacity:0.55"/>
@@ -6302,7 +6302,7 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 	<circle id="circle45692_1_" class="st540" cx="184.22" cy="624.95" r="7.88"/>
 	<text transform="matrix(1 0 0 1 271.7999 630.5303)" class="st537 st534">23</text>
 </g>
-<g>
+<g id="speed">
 	<linearGradient id="SVGID_130_" gradientUnits="userSpaceOnUse" x1="94.3291" y1="675.6958" x2="94.3291" y2="635.4889">
 		<stop  offset="0" style="stop-color:#000000"/>
 		<stop  offset="0.8323" style="stop-color:#FFFFFF;stop-opacity:0.55"/>
@@ -6320,7 +6320,7 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 	<circle id="circle45692_2_" class="st543" cx="45.53" cy="652.96" r="7.88"/>
 	<text transform="matrix(1 0 0 1 130.1163 656.543)" class="st537 st534">23</text>
 </g>
-<g>
+<g id="luck">
 	<linearGradient id="SVGID_131_" gradientUnits="userSpaceOnUse" x1="233.3165" y1="675.4933" x2="233.3165" y2="635.2864">
 		<stop  offset="0" style="stop-color:#000000"/>
 		<stop  offset="0.8323" style="stop-color:#FFFFFF;stop-opacity:0.55"/>

@@ -23,7 +23,6 @@ const CardSvg = ({
     cardSvgSource,
 }) => {
     const [perspective, setPerspective] = useState([false, false]);
-    const [z, setZ] = useState(0);
     const [flip, setFlip] = useState(false);
     const [transitioning, setTransitioning] = useState(false);
   
@@ -102,7 +101,6 @@ const CardSvg = ({
       };
       const _handleMouseOut = e => {
         setPerspective([0, 0]);
-        setZ(0);
       };
       
       return (
@@ -118,12 +116,6 @@ const CardSvg = ({
                 if (el) {
                   imageEl = el.querySelector('#image');
                 }
-              }}
-              onMouseDown={e => {
-                setZ(1);
-              }}
-              onMouseUp={e => {
-                setZ(0);
               }}
               onClick={e => {
                 if (cardSize === 'large') {
@@ -153,12 +145,12 @@ const CardSvg = ({
                     }
                   }}
                   style={{
-                    transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.1}deg) translateZ(${-z * 50}px)`,
+                    transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
                   }}
                 />
               </div>
               <div className={`back ${transitioning ? 'transitioning' : ''}`} style={{
-                transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? 0 : 180)}deg) rotateX(${perspective[1] * 180 * 0.1}deg) translateZ(${-z * 50}px)`,
+                transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? 0 : 180)}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
               }} />
             </div>
           </div>

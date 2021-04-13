@@ -85,15 +85,14 @@
   pointer-events: none;
   z-index: 1;
 }
-.card-svg {
-  transform: translate3D(0, 0, 0);
+/* .card-svg {
   backface-visibility: hidden;
-}
+} */
 .card-svg-inner {
   --size: 300px;
   width: var(--size);
   height: calc(var(--size) * 3.5 / 2.5);
-  transform: translate3D(0, 0, 0);
+  /* backface-visibility: hidden; */
   --rarity-handmade-light: #f1f1f1;
   --rarity-handmade-light-rgb: 241,241,241;
   --rarity-handmade-dark: #bbbbbb;

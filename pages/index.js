@@ -62,17 +62,14 @@ const PagesRoot = ({data}) => {
             /> */}
             <div className="container">
                 <div className="streetchain">
-                  <div className="notch" />
-                  <div className="mint-button" onClick={e => {
-                    setMintMenuOpen(!mintMenuOpen);
-                  }}>
-                    <img src="/icons/plus.svg" />
-                  </div>
-                  {/* <div className="header">
-                     Streetchain
-                  </div> */}
                   <div className="bar" />
                 </div>
+                <div className="mint-button" onClick={e => {
+                  setMintMenuOpen(!mintMenuOpen);
+                }}>
+                  <img src="/icons/plus.svg" />
+                </div>
+                <div className="blocker" />
                 <div className={`mint-menu-wrap ${mintMenuOpen ? 'open' : ''}`}>
                   <div className="mint-menu">
                     <div className="slider">

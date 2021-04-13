@@ -166,7 +166,7 @@ const CardSvg = ({
                       });
                       {
                         const imageEl = el.querySelector('#Image image');
-                        console.log('got image el', imageEl);
+                        // console.log('got image el', imageEl);
                         imageEl.setAttribute('xlink:href', image);
                       }
                       {

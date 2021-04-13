@@ -149,6 +149,17 @@ const CardSvg = ({
                         const typeEl = el.querySelector('#type-' + type);
                         typeEl.style.display = type === spec.stats.type ? 'block' : 'none';
                       }
+                      [
+                        'attack',
+                        'defense',
+                        'speed',
+                        'luck',
+                      ].forEach(statName => {
+                        const statEl = el.querySelector('#' + statName);
+                        const texts = statEl.querySelectorAll('text');
+                        const textEl = texts[texts.length - 1];
+                        textEl.innerHTML = spec.stats[statName] + '';
+                      });
                     }
                   }}
                 />

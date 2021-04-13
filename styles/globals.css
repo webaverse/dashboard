@@ -320,11 +320,21 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 .slider .contents .subtabs .tab img {
   width: 50px;
   height: 50px;
   margin-top: 5px;
+  transition: transform 0.3s ease-out;
+}
+.slider .contents .subtabs .tab:hover,
+.slider .contents .subtabs .tab.selected
+{
+  background-color: #29b6f6;
+}
+.slider .contents .subtabs .tab:hover img {
+  transform: translateY(-10px);
 }
 
 .street-filters {

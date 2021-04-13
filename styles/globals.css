@@ -336,6 +336,12 @@ a {
 .slider .contents .subtabs .tab:hover img {
   transform: translateY(-10px);
 }
+.slider .contents .subtabs .tab.selected {
+  color: #FFF;
+}
+.slider .contents .subtabs .tab.selected img {
+  filter: invert(100%);
+}
 
 .street-filters {
   display: flex;

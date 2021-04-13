@@ -190,41 +190,41 @@ a {
   z-index: 1;
 }
 
-.mint-menu-wrap:not(.open) .mint-menu .slider,
+.mint-menu-wrap:not(.open) .slider,
 .mint-placeholder:not(.open)
 {
   transform: translateY(-200px);
 }
-.mint-menu-wrap.open .mint-menu .contents
+.mint-menu-wrap.open .slider .contents
 {
   margin-top: 0;
 }
-.mint-menu {
+.mint-menu-bar {
   border: 0 solid #e0e0e0;
   border-top-width: 2px;
 }
-.mint-menu .slider {
+.slider {
   display: flex;
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
-.mint-menu .notch {
+.slider .notch {
   position: absolute;
   border-right: 10x solid #e0e0e0;
   border-bottom: 10x solid transparent;
 }
-.mint-menu .contents {
+.slider .contents {
   height: 200px;
   background-color: #FFF;
   border-left-width: 0;
   border-bottom: 2px solid #e0e0e0;
   flex: 1;
 }
-.mint-menu .left-notch {
+.slider .left-notch {
   position: relative;
   border-right: 200px solid #e0e0e0;
   border-bottom: 200px solid transparent;
 }
-.mint-menu .left-notch::before {
+.slider .left-notch::before {
   position: absolute;
   margin-left: 2px;
   border-right: 198px solid #FFF;

@@ -71,11 +71,10 @@ const PagesRoot = ({data}) => {
                 </div>
                 <div className="blocker" />
                 <div className={`mint-menu-wrap ${mintMenuOpen ? 'open' : ''}`}>
-                  <div className="mint-menu">
-                    <div className="slider">
-                      <div className="left-notch"></div>
-                      <div className="contents" />
-                    </div>
+                  <div className="mint-menu-bar" />
+                  <div className="slider">
+                    <div className="left-notch"></div>
+                    <div className="contents" />
                   </div>
                 </div>
                 <div className="street-filters">

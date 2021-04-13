@@ -111,11 +111,12 @@ const PagesRoot = ({data}) => {
                         <div className={`tab ${selectedTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedTab(2)}>Audio <img src="/audio.svg" /></div>
                       </div>
                       <div className="subtabs">
-                        <div className={`tab ${selectedSubTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(2)}>Avatar</div>
-                        <div className={`tab ${selectedSubTab === 3 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(3)}>Item</div>
-                        <div className={`tab ${selectedSubTab === 4 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(4)}>Wearable</div>
-                        <div className={`tab ${selectedSubTab === 5 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(5)}>Pet</div>
-                        <div className={`tab ${selectedSubTab === 6 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(6)}>Mount</div>
+                        <div className={`tab ${selectedSubTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(2)}>Avatar <img src="/avatar.svg" /> </div>
+                        <div className={`tab ${selectedSubTab === 3 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(3)}>Item <img src="/sword.svg" /></div>
+                        <div className={`tab ${selectedSubTab === 4 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(4)}>Wearable <img src="/chain-mail.svg" /></div>
+                        <div className={`tab ${selectedSubTab === 5 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(5)}>Pet <img src="/rabbit.svg" /></div>
+                        <div className={`tab ${selectedSubTab === 6 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(6)}>Mount <img src="/sofa.svg" /></div>
+                        <div className={`tab ${selectedSubTab === 7 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(7)}>Vehicle <img src="/scooter.svg" /></div>
                       </div>
                       <div className="text"></div>
                     </div>

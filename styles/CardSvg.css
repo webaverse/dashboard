@@ -44,18 +44,22 @@
   position: relative;
   margin: 15px;
 }
+.card-svg,
+.card-outer .back
+{
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
 .card-outer .back {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  transform-style: preserve-3d;
   background-image: url('/cardback.png');
   background-position: center;
   background-size: contain;
-  background-repeat: no-repeat;
-  content: '';
+  background-repeat: none;
   backface-visibility: hidden;
   pointer-events: none;
 }

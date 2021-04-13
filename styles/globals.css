@@ -146,10 +146,10 @@ a {
   justify-content: center;
   align-items: center;
   border-radius: 100px;
-  z-index: 2;
   font-size: 20px;
   color: #333;
   cursor: pointer;
+  z-index: 3;
   user-select: none;
 }
 .mint-button:hover {
@@ -171,7 +171,7 @@ a {
   background-color: #FFF;
   width: calc(100vw - 8vw);
   height: 26px;
-  z-index: 1;
+  z-index: 2;
 }
 .streetchain .bar {
   position: absolute;
@@ -181,31 +181,35 @@ a {
   width: 2px;
 }
 
-.mint-menu-wrap {
-  position: fixed;
-  width: 100%;
-  height: 2px;
-  top: 90px;
-  left: calc(8% + 20px);
-  z-index: 1;
-}
-
-.mint-menu-wrap:not(.open) .slider,
+.container:not(.open) .slider,
 .mint-placeholder:not(.open)
 {
   transform: translateY(-200px);
 }
-.mint-menu-wrap.open .slider .contents
+.container.open .slider .contents
 {
   margin-top: 0;
 }
 .mint-menu-bar {
+  width: calc(100vw - 16vw);
+  height: 2px;
   border: 0 solid #e0e0e0;
   border-top-width: 2px;
+  z-index: 2;
+}
+.mint-menu,
+.mint-menu-bar,
+.slider
+{
+  position: fixed;
+  width: 100%;
+  top: 90px;
+  left: calc(8% + 20px);
 }
 .slider {
   display: flex;
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
+  z-index: 1;
 }
 .slider .notch {
   position: absolute;

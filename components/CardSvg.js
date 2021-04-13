@@ -134,27 +134,29 @@ const CardSvg = ({
               onMouseMove={_handleMouseMove}
               onMouseOut={_handleMouseOut}
             >
-              <svg
-                className={`card-svg ${transitioning ? 'transitioning' : ''}`}
-                width={cardWidth}
-                height={cardHeight}
-                dangerouslySetInnerHTML={{
-                  __html: cardSvgSource,
-                }}
-                ref={el => {
-                  if (el) {
-                    el.addEventListener('transitionstart', e => {
-                      setTransitioning(true);
-                    });
-                    el.addEventListener('transitionend', e => {
-                      setTransitioning(false);
-                    });
-                  }
-                }}
-                style={{
-                  transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.1}deg) translateZ(${-z * 50}px)`,
-                }}
-              />
+              <div className={`card-svg ${transitioning ? 'transitioning' : ''}`}>
+                <svg
+                  className={`card-svg-inner ${transitioning ? 'transitioning' : ''}`}
+                  width={cardWidth}
+                  height={cardHeight}
+                  dangerouslySetInnerHTML={{
+                    __html: cardSvgSource,
+                  }}
+                  ref={el => {
+                    if (el) {
+                      el.addEventListener('transitionstart', e => {
+                        setTransitioning(true);
+                      });
+                      el.addEventListener('transitionend', e => {
+                        setTransitioning(false);
+                      });
+                    }
+                  }}
+                  style={{
+                    transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.1}deg) translateZ(${-z * 50}px)`,
+                  }}
+                />
+              </div>
               <div className={`back ${transitioning ? 'transitioning' : ''}`} style={{
                 transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? 0 : 180)}deg) rotateX(${perspective[1] * 180 * 0.1}deg) translateZ(${-z * 50}px)`,
               }} />

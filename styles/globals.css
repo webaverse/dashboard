@@ -145,8 +145,8 @@ a {
   z-index: 1;
   font-size: 20px;
   color: #333;
-  /* transition: all 0.3s cubic-bezier(0, 1, 0, 1); */
   cursor: pointer;
+  user-select: none;
 }
 .streetchain .mint-button .notch {
   position: absolute;
@@ -181,13 +181,18 @@ a {
   width: 100%;
   height: 2px;
   top: 90px;
-  left: calc(8% + 20px);
+  left: calc(8% + 22px);
+  z-index: 1;
 }
 
 .mint-menu-wrap:not(.open) .mint-menu .contents,
 .mint-placeholder:not(.open)
 {
   height: 0;
+}
+.mint-menu-wrap.open .mint-menu .contents
+{
+  margin-top: 0;
 }
 .mint-menu {
   border: 0 solid #e0e0e0;
@@ -202,19 +207,14 @@ a {
 .mint-menu .contents {
   height: 200px;
   margin-top: -2px;
-  background-color: transparent;
+  background-color: #FFF;
   border-left-width: 0;
   border-bottom: 2px solid #e0e0e0;
-}
-.mint-placeholder {
-  width: 200px;
-  height: 200px;
-  transition: transform 0.3s ease-out;
 }
 .mint-menu .notch,
 .mint-menu .contents,
 .mint-placeholder {
-  transition: height 0.3s ease-out, transform 0.3s ease-out;
+  transition: height 0.3s cubic-bezier(0, 1, 0, 1);
 }
 .street-filters {
   position: absolute;

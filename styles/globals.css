@@ -235,8 +235,14 @@ a {
   border-left-width: 0;
   border-bottom: 2px solid #e0e0e0;
   flex: 1;
-  align-items: center;
+  /* align-items: center; */
   flex-direction: column;
+}
+.slider .contents .wrap {
+  height: 100%;
+  padding: 20px 40px;
+  background-color: #eee;
+  border-radius: 10px;
 }
 .slider .contents .tabs {
   display: flex;
@@ -246,7 +252,7 @@ a {
 }
 .slider .contents .tabs .tab {
   /* border: 2px solid #333; */
-  background-color: #EEE;
+  background-color: #e0e0e0;
   color: #999;
   padding: 7px 15px;
   font-family: 'FuturaLT';

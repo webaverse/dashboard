@@ -32,11 +32,11 @@ class Dropper extends Component {
     }
   }
   dragOverHandler(e) {
-    console.log('drag over');
+    // console.log('drag over');
     e.preventDefault();
   }
   dropHandler(e) {
-    console.log('drop');
+    // console.log('drop');
     e.preventDefault();
     const {files} = e;
     this.onDrop(files);
@@ -57,6 +57,7 @@ const PagesRoot = ({data}) => {
     let [selectedTab, setSelectedTab] = useState('');
     const [selectedPage, setSelectedPage] = useState(0);
     const [selectedOption, setSelectedOption] = useState(0);
+    const [loadingMessge, setLoadingMessage] = useState('');
 
     setSelectedTab = (setSelectedTab => newTab => {
       setSelectedTab(newTab);
@@ -324,7 +325,7 @@ const PagesRoot = ({data}) => {
                                 <script type="text/javascript" src="/geometry.js"></script>
                               </Head>
                             
-                              <div className="text">Drop a file here to mint</div>
+                              <div className="text">Drop a file here to mint<br/>Click to choose file</div>
                               <img src="/upload.svg" />
                               
                               <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />

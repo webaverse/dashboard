@@ -62,7 +62,11 @@ const PagesRoot = ({data}) => {
                 ctaUrl="https://app.webaverse.com"
             /> */}
             <div className="street-filters">
-                  
+              <label className="row">
+                <img src="/search.svg" />
+                <input type="text" />
+              </label>
+              <div className="row"></div>
             </div>
             <div className={`container ${mintMenuOpen ? 'open' : ''}`}>
                 <div className="streetchain">

@@ -250,9 +250,10 @@ a {
 }
 .slider .contents .wrap {
   display: flex;
-  width: calc(100vw - 16vw);
+  width: calc(100vw - 16vw - 20px);
   height: 100%;
-  padding: 20px 40px;
+  padding: 20px 30px;
+  margin-right: 20px;
   background-color: #eee;
   border-radius: 10px;
   flex-direction: column;
@@ -267,6 +268,7 @@ a {
 }
 .slider .contents .label .back-button {
   display: flex;
+  margin-left: -10px;
   cursor: pointer;
 }
 .slider .contents .label .back-button img {

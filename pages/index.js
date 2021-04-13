@@ -100,10 +100,13 @@ const PagesRoot = ({data}) => {
                   <div className="contents">
                     <div className="wrap">
                       <div className="tabs">
-                        <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Item</div>
-                        <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>Avatar</div>
-                        <div className={`tab ${selectedTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedTab(2)}>Wearable</div>
-                        <div className={`tab ${selectedTab === 3 ? 'selected' : ''}`} onClick={e => setSelectedTab(3)}>Mount</div>
+                        <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Image</div>
+                        <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>Video</div>
+                        <div className={`tab ${selectedTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedTab(2)}>Avatar</div>
+                        <div className={`tab ${selectedTab === 3 ? 'selected' : ''}`} onClick={e => setSelectedTab(3)}>Item</div>
+                        <div className={`tab ${selectedTab === 4 ? 'selected' : ''}`} onClick={e => setSelectedTab(4)}>Wearable</div>
+                        <div className={`tab ${selectedTab === 5 ? 'selected' : ''}`} onClick={e => setSelectedTab(5)}>Pet</div>
+                        <div className={`tab ${selectedTab === 6 ? 'selected' : ''}`} onClick={e => setSelectedTab(6)}>Mount</div>
                       </div>
                       <div className="text"></div>
                     </div>

@@ -61,12 +61,12 @@ const PagesRoot = ({data}) => {
                 callToAction="Play"
                 ctaUrl="https://app.webaverse.com"
             /> */}
+            <div className="street-filters">
+                  
+            </div>
             <div className={`container ${mintMenuOpen ? 'open' : ''}`}>
                 <div className="streetchain">
                   <div className="bar" />
-                </div>
-                <div className="street-filters">
-                  
                 </div>
                 <div className="mint-button" onClick={e => {
                   setMintMenuOpen(!mintMenuOpen);

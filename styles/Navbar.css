@@ -1,17 +1,17 @@
 .navbar {
-  margin-bottom: 0;
-  border-bottom: none;
   position: fixed;
   top: 0;
   height: 64px;
   width: 100%;
+  margin-bottom: 0;
+  border-bottom: none;
   box-sizing: content-box;
-  z-index: 20;
   background-color: #FFF;
   border-color: transparent;
   transition: background-color .5s ease,border-color .5s ease;
   padding: 0 8%;
-  box-sizing: border-box
+  box-sizing: border-box;
+  z-index: 2;
 }
 .navbar .navbarContainer {
   position: relative;

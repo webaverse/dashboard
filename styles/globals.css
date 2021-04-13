@@ -274,12 +274,14 @@ a {
   margin-left: 3px;
 }
 .street-filters {
-  /* top: 64px; */
+  top: 0;
   left: auto;
   right: calc(8vw + 220px);
   width: 300px;
-  height: 40px;
+  height: 92px;
   border: 2px solid #e0e0e0;
+  border-top: 0;
+  border-bottom: 0;
   z-index: 3;
 }
 

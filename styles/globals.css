@@ -244,11 +244,18 @@ a {
   background-color: #eee;
   border-radius: 10px;
 }
-.slider .contents .tabs {
-  display: flex;
-}
 .slider .contents .text {
   flex: 1;
+}
+.slider .contents .label {
+  display: flex;
+  margin-bottom: 5px;
+  font-family: 'GillSans-CondensedBold';
+  text-transform: uppercase;
+  color: #999;
+}
+.slider .contents .tabs {
+  display: flex;
 }
 .slider .contents .tabs .tab {
   display: flex;

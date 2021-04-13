@@ -99,13 +99,9 @@ const PagesRoot = ({data}) => {
                   <div className="left-bar" />
                   <div className="contents">
                     <div className="wrap">
+                      <div className="label">NFT Category</div>
                       <div className="tabs">
-                        <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>
-                          <span>Image</span>
-                          <div className="dropdown">
-                            <img src="/chevron-down.svg" />
-                          </div>
-                        </div>
+                        <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Art</div>
                         <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>Video</div>
                         <div className={`tab ${selectedTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedTab(2)}>Avatar</div>
                         <div className={`tab ${selectedTab === 3 ? 'selected' : ''}`} onClick={e => setSelectedTab(3)}>Item</div>

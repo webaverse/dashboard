@@ -199,7 +199,8 @@ a {
 }
 .mint-menu,
 .mint-menu-bar,
-.slider
+.slider,
+.street-filters
 {
   position: fixed;
   width: calc(100vw - 16vw);
@@ -209,6 +210,7 @@ a {
 .slider {
   display: flex;
   left: calc(8vw + 2px);
+  margin-top: 2px;
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
   z-index: 1;
 }
@@ -226,19 +228,59 @@ a {
   border-bottom: 10x solid transparent;
 }
 .slider .contents {
+  display: flex;
   height: 200px;
+  padding: 10px;
   background-color: #FFF;
   border-left-width: 0;
   border-bottom: 2px solid #e0e0e0;
   flex: 1;
+  align-items: center;
+  flex-direction: column;
+}
+.slider .contents .tabs {
+  display: flex;
+}
+.slider .contents .text {
+  flex: 1;
+}
+.slider .contents .tabs .tab {
+  /* border: 2px solid #333; */
+  background-color: #EEE;
+  color: #999;
+  padding: 7px 15px;
+  font-family: 'FuturaLT';
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+.slider .contents .tabs .tab:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.slider .contents .tabs .tab:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.slider .contents .tabs .tab:hover,
+.slider .contents .tabs .tab.selected
+{
+  background-color: #CCC;
+  color: #333;
+}
+.slider .contents .tabs .tab + .tab {
+  margin-left: 3px;
 }
 .street-filters {
-  position: absolute;
-  top: 0;
-  right: 8%;
+  /* top: 64px; */
+  left: auto;
+  right: calc(8vw + 220px);
   width: 300px;
-  height: 50px;
+  height: 40px;
   border: 2px solid #e0e0e0;
+  z-index: 3;
 }
 
 .mainRow {

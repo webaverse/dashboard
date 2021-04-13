@@ -11,6 +11,7 @@ const PagesRoot = ({data}) => {
     const [models, setModels] = useState(null);
     const [loading, setLoading] = useState(true);
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
+    const [selectedTab, setSelectedTab] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -64,6 +65,9 @@ const PagesRoot = ({data}) => {
                 <div className="streetchain">
                   <div className="bar" />
                 </div>
+                <div className="street-filters">
+                  
+                </div>
                 <div className="mint-button" onClick={e => {
                   setMintMenuOpen(!mintMenuOpen);
                 }}>
@@ -73,10 +77,15 @@ const PagesRoot = ({data}) => {
                 <div className="mint-menu-bar" />
                 <div className="slider">
                   <div className="left-bar" />
-                  <div className="contents" />
-                </div>
-                <div className="street-filters">
-                  
+                  <div className="contents">
+                    <div className="tabs">
+                      <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Item</div>
+                      <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>Avatar</div>
+                      <div className={`tab ${selectedTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedTab(2)}>Wearable</div>
+                      <div className={`tab ${selectedTab === 3 ? 'selected' : ''}`} onClick={e => setSelectedTab(3)}>Mount</div>
+                    </div>
+                    <div className="text"></div>
+                  </div>
                 </div>
                 {loading ? (
                     <Loader loading={loading} />

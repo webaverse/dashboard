@@ -12,6 +12,7 @@ const PagesRoot = ({data}) => {
     const [loading, setLoading] = useState(true);
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
     const [selectedTab, setSelectedTab] = useState(0);
+    const [selectedOption, setSelectedOption] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -63,10 +64,25 @@ const PagesRoot = ({data}) => {
             /> */}
             <div className="street-filters">
               <label className="row">
-                <img src="/search.svg" />
+                <img className="search-image" src="/search.svg" />
                 <input type="text" />
               </label>
-              <div className="row"></div>
+              <div className="row">
+                <div className="filter-options">
+                  <div className={`option ${selectedOption === 0 ? 'selected' : ''}`}>
+                    <img className="option-image" onClick={e => setSelectedOption(0)} src="/image.svg" />
+                  </div>
+                  <div className={`option ${selectedOption === 1 ? 'selected' : ''}`} onClick={e => setSelectedOption(1)}>
+                    <img className="option-image" src="/image.svg" />
+                  </div>
+                  <div className={`option ${selectedOption === 2 ? 'selected' : ''}`} onClick={e => setSelectedOption(2)}>
+                    <img className="option-image" src="/image.svg" />
+                  </div>
+                  <div className={`option ${selectedOption === 3 ? 'selected' : ''}`} onClick={e => setSelectedOption(3)}>
+                    <img className="option-image" src="/image.svg" />
+                  </div>
+                </div>
+              </div>
             </div>
             <div className={`container ${mintMenuOpen ? 'open' : ''}`}>
                 <div className="streetchain">

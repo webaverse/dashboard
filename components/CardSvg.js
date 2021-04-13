@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-// import cardSvgUrl from '../cards.svg';
+import procgen from '../webaverse/procgen.js';
 
 const cardWidth = 500;
 const cardHeight = cardWidth/2.5*3.5;

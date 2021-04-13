@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Component, Fragment, useState, useEffect } from "react";
 import Head from "next/head";
 import axios from 'axios';
 import {getTokens} from "../functions/UIStateFunctions.js";
@@ -9,6 +9,43 @@ import Loader from "../components/Loader";
 import {FileDrop} from "react-file-drop";
 import { makeWbn, makeBin, makePhysicsBake } from "../webaverse/build";
 import { blobToFile, getExt } from "../webaverse/util";
+
+class Dropper extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.dragOverHandler = this.dragOverHandler.bind(this);
+    this.dropHandler = this.dropHandler.bind(this);
+    this.onDrop = props.onDrop;
+  }
+  componentDidMount() {
+    if (window !== 'undefined') {
+      window.document.addEventListener('dragover', this.dragOverHandler);
+      window.document.addEventListener('drop', this.dropHandler);
+    }
+  }
+  componentWillUnmount() {
+    if (window !== 'undefined') {
+      window.document.removeEventListener('dragover', this.dragOverHandler);
+      window.document.removeEventListener('drop', this.dropHandler);
+    }
+  }
+  dragOverHandler(e) {
+    console.log('drag over');
+    e.preventDefault();
+  }
+  dropHandler(e) {
+    console.log('drop');
+    e.preventDefault();
+    const {files} = e;
+    this.onDrop(files);
+  }
+  render() {
+    return (
+      <div />
+    );
+  }
+}
 
 const PagesRoot = ({data}) => {
     const [avatars, setAvatars] = useState(null);
@@ -279,24 +316,20 @@ const PagesRoot = ({data}) => {
                             </div>
                           </div>
                           <div className="subwrap">
-                            <FileDrop
-                              onDrop={(files, e) => {
-                                handleFilesMagically(files);
-                                e.preventDefault();
-                              }}
-                            >
-                              <label className="upload-section file-drop-container" htmlFor="input-file">
-                                <Head>
-                                  <script type="text/javascript" src="/geometry.js"></script>
-                                </Head>
+                            <Dropper
+                              onDrop={handleFilesMagically}
+                            />
+                            <label className="upload-section file-drop-container" htmlFor="input-file">
+                              <Head>
+                                <script type="text/javascript" src="/geometry.js"></script>
+                              </Head>
+                            
+                              <div className="text">Drop a file here to mint</div>
+                              <img src="/upload.svg" />
                               
-                                <div className="text">Drop a file here to mint</div>
-                                <img src="/upload.svg" />
-                                
-                                <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
-                                
-                              </label>
-                            </FileDrop>
+                              <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
+                              
+                            </label>
                           </div>
                         </div>
                       </div>

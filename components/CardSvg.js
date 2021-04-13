@@ -166,8 +166,11 @@ const CardSvg = ({
                       });
                       {
                         const imageEl = el.querySelector('#Image image');
-                        // console.log('got image el', imageEl);
                         imageEl.setAttribute('xlink:href', image);
+                      }
+                      {
+                        const avatarImageEl = el.querySelector('#avatar-image image');
+                        avatarImageEl.setAttribute('xlink:href', minterAvatarPreview);
                       }
                       {
                         const stopEls = el.querySelectorAll('#Background linearGradient > stop');

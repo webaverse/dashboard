@@ -257,9 +257,6 @@ a {
   border-radius: 10px;
   flex-direction: column;
 }
-/* .slider .contents .text {
-  flex: 1;
-} */
 .slider .contents .label {
   display: flex;
   margin-bottom: 15px;
@@ -314,7 +311,15 @@ a {
 .slider .contents .tabs .tab + .tab {
   margin-left: 3px;
 }
-.slider .contents .tabs .tab .dropdown {
+.slider .contents .wrap .subwraps {
+  display: flex;
+}
+.slider .contents .wrap .subwraps .subwrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+/* .slider .contents .tabs .tab .dropdown {
   display: flex;
   margin-left: 7px;
   margin-right: -7px;
@@ -325,7 +330,7 @@ a {
   width: 13px;
   height: 13px;
   opacity: 0.3;
-}
+} */
 
 .slider .contents .subtabs {
   display: flex;

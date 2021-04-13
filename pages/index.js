@@ -129,22 +129,24 @@ const PagesRoot = ({data}) => {
                         <div className="text"></div>
                       </div>
                       <div className="wrap">
-                        <div className="subwrap">
-                          <div className="label">
-                            <nav
-                              className="back-button"
-                              onClick={e => {
-                                setSelectedPage(selectedPage - 1);
-                              }}
-                            >
-                              <img
-                                src="/chevron-left.svg"
-                                onDragStart={e => {
-                                  e.preventDefault();
+                        <div className="subwraps">
+                          <div className="subwrap">
+                            <div className="label">
+                              <nav
+                                className="back-button"
+                                onClick={e => {
+                                  setSelectedPage(selectedPage - 1);
                                 }}
-                              />
-                            </nav>
-                            <div className="text">{selectedTab}</div>
+                              >
+                                <img
+                                  src="/chevron-left.svg"
+                                  onDragStart={e => {
+                                    e.preventDefault();
+                                  }}
+                                />
+                              </nav>
+                              <div className="text">{selectedTab}</div>
+                            </div>
                           </div>
                           <div className="subwrap">
                             <div>Upload file to mint:</div>

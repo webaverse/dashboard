@@ -11,9 +11,14 @@ const PagesRoot = ({data}) => {
     const [models, setModels] = useState(null);
     const [loading, setLoading] = useState(true);
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
-    const [selectedTab, setSelectedTab] = useState(0);
-    const [selectedSubTab, setSelectedSubTab] = useState(0);
+    let [selectedTab, setSelectedTab] = useState('');
+    const [selectedPage, setSelectedPage] = useState('');
     const [selectedOption, setSelectedOption] = useState(0);
+
+    setSelectedTab = (setSelectedTab => newTab => {
+      setSelectedTab(newTab);
+      setSelectedPage(selectedPage + 1);
+    })(setSelectedTab);
 
     useEffect(() => {
         (async () => {
@@ -107,17 +112,17 @@ const PagesRoot = ({data}) => {
                           <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>3D Model</div>
                         </div> */}
                         <div className="subtabs">
-                          <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Image <img src="/image.svg" /></div>
-                          <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>Video <img src="/video.svg" /></div>
-                          <div className={`tab ${selectedTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedTab(2)}>Audio <img src="/audio.svg" /></div>
+                          <div className={`tab ${selectedTab === 'image' ? 'selected' : ''}`} onClick={e => setSelectedTab('image')}>Image <img src="/image.svg" /></div>
+                          <div className={`tab ${selectedTab === 'video' ? 'selected' : ''}`} onClick={e => setSelectedTab('video')}>Video <img src="/video.svg" /></div>
+                          <div className={`tab ${selectedTab === 'audio' ? 'selected' : ''}`} onClick={e => setSelectedTab('audio')}>Audio <img src="/audio.svg" /></div>
                         </div>
                         <div className="subtabs">
-                          <div className={`tab ${selectedSubTab === 2 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(2)}>Avatar <img src="/avatar.svg" /> </div>
-                          <div className={`tab ${selectedSubTab === 3 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(3)}>Item <img src="/sword.svg" /></div>
-                          <div className={`tab ${selectedSubTab === 4 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(4)}>Wearable <img src="/chain-mail.svg" /></div>
-                          <div className={`tab ${selectedSubTab === 5 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(5)}>Pet <img src="/rabbit.svg" /></div>
-                          <div className={`tab ${selectedSubTab === 6 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(6)}>Mount <img src="/sofa.svg" /></div>
-                          <div className={`tab ${selectedSubTab === 7 ? 'selected' : ''}`} onClick={e => setSelectedSubTab(7)}>Vehicle <img src="/scooter.svg" /></div>
+                          <div className={`tab ${selectedTab === 'avatar' ? 'selected' : ''}`} onClick={e => setSelectedTab('avatar')}>Avatar <img src="/avatar.svg" /> </div>
+                          <div className={`tab ${selectedTab === 'item' ? 'selected' : ''}`} onClick={e => setSelectedTab('item')}>Item <img src="/sword.svg" /></div>
+                          <div className={`tab ${selectedTab === 'wearable' ? 'selected' : ''}`} onClick={e => setSelectedTab(4)}>Wearable <img src="/chain-mail.svg" /></div>
+                          <div className={`tab ${selectedTab === 'pet' ? 'selected' : ''}`} onClick={e => setSelectedTab('pet')}>Pet <img src="/rabbit.svg" /></div>
+                          <div className={`tab ${selectedTab === 'mount' ? 'selected' : ''}`} onClick={e => setSelectedTab('mount')}>Mount <img src="/sofa.svg" /></div>
+                          <div className={`tab ${selectedTab === 'vehicle' ? 'selected' : ''}`} onClick={e => setSelectedTab('vehicle')}>Vehicle <img src="/scooter.svg" /></div>
                         </div>
                         <div className="text"></div>
                       </div>

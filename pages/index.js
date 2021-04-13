@@ -113,10 +113,6 @@ const PagesRoot = ({data}) => {
                     >
                       <div className="wrap">
                         <div className="label">Choose type of NFT to mint:</div>
-                        {/* <div className="tabs">
-                          <div className={`tab ${selectedTab === 0 ? 'selected' : ''}`} onClick={e => setSelectedTab(0)}>Art</div>
-                          <div className={`tab ${selectedTab === 1 ? 'selected' : ''}`} onClick={e => setSelectedTab(1)}>3D Model</div>
-                        </div> */}
                         <div className="subtabs">
                           <div className={`tab ${selectedTab === 'image' ? 'selected' : ''}`} onClick={e => setSelectedTab('image')}>Image <img src="/image.svg" /></div>
                           <div className={`tab ${selectedTab === 'video' ? 'selected' : ''}`} onClick={e => setSelectedTab('video')}>Video <img src="/video.svg" /></div>
@@ -125,7 +121,7 @@ const PagesRoot = ({data}) => {
                         <div className="subtabs">
                           <div className={`tab ${selectedTab === 'avatar' ? 'selected' : ''}`} onClick={e => setSelectedTab('avatar')}>Avatar <img src="/avatar.svg" /> </div>
                           <div className={`tab ${selectedTab === 'item' ? 'selected' : ''}`} onClick={e => setSelectedTab('item')}>Item <img src="/sword.svg" /></div>
-                          <div className={`tab ${selectedTab === 'wearable' ? 'selected' : ''}`} onClick={e => setSelectedTab(4)}>Wearable <img src="/chain-mail.svg" /></div>
+                          <div className={`tab ${selectedTab === 'wearable' ? 'selected' : ''}`} onClick={e => setSelectedTab('wearable')}>Wearable <img src="/chain-mail.svg" /></div>
                           <div className={`tab ${selectedTab === 'pet' ? 'selected' : ''}`} onClick={e => setSelectedTab('pet')}>Pet <img src="/rabbit.svg" /></div>
                           <div className={`tab ${selectedTab === 'mount' ? 'selected' : ''}`} onClick={e => setSelectedTab('mount')}>Mount <img src="/sofa.svg" /></div>
                           <div className={`tab ${selectedTab === 'vehicle' ? 'selected' : ''}`} onClick={e => setSelectedTab('vehicle')}>Vehicle <img src="/scooter.svg" /></div>
@@ -133,21 +129,26 @@ const PagesRoot = ({data}) => {
                         <div className="text"></div>
                       </div>
                       <div className="wrap">
-                        <div className="label">
-                          <nav
-                            className="back-button"
-                            onClick={e => {
-                              setSelectedPage(selectedPage - 1);
-                            }}
-                          >
-                            <img
-                              src="/chevron-left.svg"
-                              onDragStart={e => {
-                                e.preventDefault();
+                        <div className="subwrap">
+                          <div className="label">
+                            <nav
+                              className="back-button"
+                              onClick={e => {
+                                setSelectedPage(selectedPage - 1);
                               }}
-                            />
-                          </nav>
-                          <div>Upload file to mint:</div>
+                            >
+                              <img
+                                src="/chevron-left.svg"
+                                onDragStart={e => {
+                                  e.preventDefault();
+                                }}
+                              />
+                            </nav>
+                            <div className="text">{selectedTab}</div>
+                          </div>
+                          <div className="subwrap">
+                            <div>Upload file to mint:</div>
+                          </div>
                         </div>
                       </div>
                     </div>

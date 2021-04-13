@@ -249,28 +249,35 @@ a {
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
 .slider .contents .wrap {
+  display: flex;
   width: calc(100vw - 16vw);
   height: 100%;
   padding: 20px 40px;
   background-color: #eee;
   border-radius: 10px;
+  flex-direction: column;
 }
-.slider .contents .text {
+/* .slider .contents .text {
   flex: 1;
-}
+} */
 .slider .contents .label {
   display: flex;
   margin-bottom: 15px;
   font-family: 'FuturaLT';
   font-size: 20px;
   color: #BBB;
+  align-items: center;
 }
 .slider .contents .label .back-button {
   display: flex;
+  cursor: pointer;
 }
 .slider .contents .label .back-button img {
-  width: 20px;
   height: 20px;
+  padding: 0 7px;
+}
+.slider .contents .label .text {
+  text-transform: capitalize;
 }
 .slider .contents .tabs {
   display: flex;

@@ -331,7 +331,7 @@ a {
 }
 .slider .contents .upload-section {
   display: flex;
-  width: 600px;
+  width: 300px;
   margin: 10px 0;
   padding: 20px;
   flex-direction: column;
@@ -339,6 +339,7 @@ a {
   align-items: center;
   border-radius: 10px;
   background-color: #e0e0e0;
+  flex: 1;
 }
 .slider .contents .upload-section .text {
   margin-bottom: 5px;

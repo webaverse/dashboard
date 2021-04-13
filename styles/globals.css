@@ -180,18 +180,42 @@ a {
   position: fixed;
   width: 100%;
   height: 2px;
-  background-color: #e0e0e0;
-  border: 0 solid #e0e0e0;
   top: 90px;
   left: calc(8% + 20px);
 }
 
-.mint-menu-wrap.open {
-  height: 200px;
-  background-color: transparent;
-  border-width: 2px;
+.mint-menu-wrap:not(.open) .mint-menu .contents,
+.mint-placeholder:not(.open)
+{
+  height: 0;
 }
 
+.mint-menu {
+  border: 0 solid #e0e0e0;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+}
+
+.mint-menu .notch {
+  position: absolute;
+  border-right: 10x solid #e0e0e0;
+  border-bottom: 10x solid transparent;
+}
+.mint-menu .contents {
+  height: 200px;
+  background-color: transparent;
+  border-left-width: 0;
+}
+.mint-placeholder {
+  width: 200px;
+  height: 200px;
+  transition: transform 0.3s ease-out;
+}
+.mint-menu .notch,
+.mint-menu .contents,
+.mint-placeholder {
+  transition: height 0.3s ease-out, transform 0.3s ease-out;
+}
 .street-filters {
   position: absolute;
   top: 0;

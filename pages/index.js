@@ -75,6 +75,8 @@ const PagesRoot = ({data}) => {
                 </div>
                 <div className={`mint-menu-wrap ${mintMenuOpen ? 'open' : ''}`}>
                   <div className="mint-menu">
+                    <div className="left-notch"></div>
+                    <div className="contents"></div>
                   </div>
                 </div>
                 <div className="street-filters">
@@ -84,6 +86,8 @@ const PagesRoot = ({data}) => {
                     <Loader loading={loading} />
                 ) : (
                     <div className="wrap">
+                        <div className={`mint-placeholder ${mintMenuOpen ? 'open' : ''}`} />
+
                         {/* <CardRowHeader name="Avatars" /> */}
                         <CardRow data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
 

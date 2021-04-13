@@ -164,6 +164,17 @@ const CardSvg = ({
                         const textEl = texts[texts.length - 1];
                         textEl.innerHTML = spec.stats[statName] + '';
                       });
+                      // console.log('query', el, el.querySelectorAll('#Background'), el.querySelectorAll('#Background linearGradient'), el.querySelectorAll('#Background linearGradient > stop'));
+                      
+                      const stopEls = el.querySelectorAll('#Background linearGradient > stop');
+                      const c = `stop-color:${spec.art.color}`;
+                      stopEls[1].style.cssText = c;
+                      
+                      const g = el.querySelector('#Background linearGradient');
+                      g.id = 'background-' + id;
+                      const p = g.nextElementSibling;
+                      p.style = `fill:url(#${g.id});`;
+                      // console.log('get color', spec.art.color, g, stopEls[1].style.cssText);
                     }
                   }}
                 />

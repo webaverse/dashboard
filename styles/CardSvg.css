@@ -89,9 +89,9 @@
   pointer-events: none;
   z-index: 1;
 }
-/* .card-svg {
-  backface-visibility: hidden;
-} */
+.card-svg {
+  user-select: none;
+}
 .card-svg-inner {
   --size: 300px;
   width: var(--size);

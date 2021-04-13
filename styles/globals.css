@@ -202,9 +202,9 @@ a {
 .slider
 {
   position: fixed;
-  width: 100%;
+  width: calc(100vw - 16vw);
   top: 90px;
-  left: calc(8% + 20px);
+  left: calc(8vw + 1px);
 }
 .slider {
   display: flex;
@@ -222,18 +222,6 @@ a {
   border-left-width: 0;
   border-bottom: 2px solid #e0e0e0;
   flex: 1;
-}
-.slider .left-notch {
-  position: relative;
-  border-right: 200px solid #e0e0e0;
-  border-bottom: 200px solid transparent;
-}
-.slider .left-notch::before {
-  position: absolute;
-  margin-left: 2px;
-  border-right: 198px solid #FFF;
-  border-bottom: 198px solid transparent;
-  content: '';
 }
 .street-filters {
   position: absolute;

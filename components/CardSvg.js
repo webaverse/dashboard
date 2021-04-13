@@ -160,6 +160,14 @@ const CardSvg = ({
                         const textEl = texts[texts.length - 1];
                         textEl.innerHTML = spec.stats[statName] + '';
                       });
+                      [
+                        'hp',
+                        'mp',
+                      ].forEach(statBarName => {
+                        const statBarEl = el.querySelector('#' + statBarName + '-bar_1_');
+                        const statBarValueEl = el.querySelector('#' + statBarName + '-bar-value');
+                        console.log('got stat bar el', statBarEl, statBarValueEl);
+                      });
                     }
                   }}
                 />

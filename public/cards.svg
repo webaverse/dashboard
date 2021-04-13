@@ -6139,8 +6139,8 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 <text id="illustrator-text" transform="matrix(1 0 0 1 90.9173 414.9598)" class="st335 st144"> Anonymous @ S1.D56</text>
 <rect x="66.92" y="686.53" class="st141" width="51.08" height="16.47"/>
 <text id="edition-text" transform="matrix(1 0 0 1 66.9173 696.4949)" class="st335 st144">1/254</text>
-<path class="st336" d="M483.68,582.27H37.32c-6.53,0-11.82-5.29-11.82-11.82v-118.4c0-6.53,5.29-11.82,11.82-11.82h446.36
-	c6.53,0,11.82,5.29,11.82,11.82v118.4C495.5,576.98,490.21,582.27,483.68,582.27z"/>
+<path class="st336" d="M483.68,584H36.82C30.29,584,25,578.71,25,572.18V452.05c0-6.53,5.29-11.82,11.82-11.82h446.86
+	c6.53,0,11.82,5.29,11.82,11.82v120.13C495.5,578.71,490.21,584,483.68,584z"/>
 <rect x="344.44" y="649.32" class="st141" width="123.08" height="21.18"/>
 <rect x="49" y="459.5" class="st141" width="218" height="25.5"/>
 <text id="description-header-text" transform="matrix(1 0 0 1 49 475.8916)" class="st337 st338">Come on and slam</text>

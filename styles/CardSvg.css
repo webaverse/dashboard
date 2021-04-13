@@ -59,9 +59,9 @@
   backface-visibility: hidden;
   pointer-events: none;
 }
-.card-wrap:not(:hover) .card-svg-inner,
+.card-wrap:not(:hover) .card-svg,
 .card-wrap:not(:hover) .card-outer .back,
-.card-wrap.transitioning .card-svg-inner,
+.card-wrap.transitioning .card-svg,
 .card-wrap.transitioning .back {
   transition: transform 0.3s ease-out;
 }
@@ -85,11 +85,14 @@
   pointer-events: none;
   z-index: 1;
 }
+.card-svg {
+  transform: translate3D(0, 0, 0);
+  backface-visibility: hidden;
+}
 .card-svg-inner {
   --size: 300px;
   width: var(--size);
   height: calc(var(--size) * 3.5 / 2.5);
-  backface-visibility: hidden;
   transform: translate3D(0, 0, 0);
   --rarity-handmade-light: #f1f1f1;
   --rarity-handmade-light-rgb: 241,241,241;

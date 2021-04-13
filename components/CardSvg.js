@@ -126,26 +126,28 @@ const CardSvg = ({
               onMouseMove={_handleMouseMove}
               onMouseOut={_handleMouseOut}
             >
-              <div className={`card-svg ${transitioning ? 'transitioning' : ''}`}>
+              <div
+                className={`card-svg ${transitioning ? 'transitioning' : ''}`}
+                ref={el => {
+                  if (el) {
+                    el.addEventListener('transitionstart', e => {
+                      setTransitioning(true);
+                    });
+                    el.addEventListener('transitionend', e => {
+                      setTransitioning(false);
+                    });
+                  }
+                }}
+                style={{
+                  transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
+                }}
+              >
                 <svg
-                  className={`card-svg-inner ${transitioning ? 'transitioning' : ''}`}
+                  className="card-svg-inner"
                   width={cardWidth}
                   height={cardHeight}
                   dangerouslySetInnerHTML={{
                     __html: cardSvgSource,
-                  }}
-                  ref={el => {
-                    if (el) {
-                      el.addEventListener('transitionstart', e => {
-                        setTransitioning(true);
-                      });
-                      el.addEventListener('transitionend', e => {
-                        setTransitioning(false);
-                      });
-                    }
-                  }}
-                  style={{
-                    transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
                   }}
                 />
               </div>

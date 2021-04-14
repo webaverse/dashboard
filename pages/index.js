@@ -54,6 +54,7 @@ const PagesRoot = ({data}) => {
     const [models, setModels] = useState(null);
     const [loading, setLoading] = useState(true);
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
+    // const [mintMenuLarge, setMintMenuLarge] = useState(false);
     const [selectedTab, setSelectedTab] = useState('');
     const [selectedPage, setSelectedPage] = useState(0);
     const [selectedOption, setSelectedOption] = useState(0);
@@ -90,6 +91,7 @@ const PagesRoot = ({data}) => {
             setLoading(false);
         })();
     }, []);
+    const mintMenuLarge = selectedPage === 3;
     
     const nftTypeDescriptions = {
       image: `Image NFT lets you store visual art on the blockchain. They are represented as planes in the virtual world.`,
@@ -262,7 +264,7 @@ const PagesRoot = ({data}) => {
                 </div>
               </div>
             </div>
-            <div className={`container ${mintMenuOpen ? 'open' : ''}`}>
+            <div className={`container ${mintMenuOpen ? 'open' : ''} ${mintMenuLarge ? 'large' : ''}`}>
                 <div className="streetchain">
                   <div className="bar" />
                 </div>

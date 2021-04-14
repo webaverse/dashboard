@@ -187,6 +187,9 @@ a {
 {
   transform: translateY(calc(var(--mint-menu-size) * -1));
 }
+.container.large {
+  --mint-menu-size: 400px;
+}
 .container.open .slider .contents
 {
   margin-top: 0;
@@ -246,6 +249,7 @@ a {
 .slider .contents .wrap-slider {
   display: flex;
   width: 500vw;
+  height: 100%;
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
 .slider .contents .wrap {

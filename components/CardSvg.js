@@ -26,7 +26,7 @@ const CardSvg = ({
     const [flip, setFlip] = useState(false);
     const [transitioning, setTransitioning] = useState(false);
   
-    let video = false;
+    /* let video = false;
     if (["webm", "mp4"].indexOf(ext) >= 0) {
         image = animation_url;
         video = true;
@@ -75,7 +75,7 @@ const CardSvg = ({
         rarity = "uncommon";
     } else if (totalSupply > 50) {
         rarity = "common";
-    }
+    } */
     
     if (cardSvgSource) {
       let el = null;

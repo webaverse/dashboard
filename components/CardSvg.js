@@ -137,7 +137,12 @@ const CardSvg = ({
                   transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
                 }}
               >
-                <svg
+                <img
+                  src={`https://card-preview.exokit.org/${id}?w=${500}$ext=${'jpg'}`}
+                  className="card-svg-inner"
+                  onDragStart={_cancelDragStart}
+                />
+                {/* <svg
                   className="card-svg-inner"
                   width={cardWidth}
                   height={cardHeight}
@@ -187,7 +192,7 @@ const CardSvg = ({
                       }
                     }
                   }}
-                />
+                /> */}
               </div>
               <div className={`back ${transitioning ? 'transitioning' : ''}`} style={{
                 transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? 0 : 180)}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,

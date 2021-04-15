@@ -60,6 +60,8 @@ const PagesRoot = ({data}) => {
     const [selectedOption, setSelectedOption] = useState(0);
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
+    const [q, setQ] = useState('');
+    const [searchResults, setSearchResults] = useState(null);
 
     const _setSelectedTab = newTab => {
       setSelectedTab(newTab);
@@ -245,7 +247,24 @@ const PagesRoot = ({data}) => {
             <div className="street-filters">
               <label className="row">
                 <img className="search-image" src="/search.svg" />
-                <input type="text" />
+                <input
+                  type="text"
+                  value={q}
+                  onChange={e => {
+                    setQ(e.target.value);
+                  }}
+                  onKeyDown={async e => {
+                    if (e.which === 13) {
+                      if (q) {
+                        const res = await fetch(`https://tokens.webaverse.com/search?q=${q}`);
+                        const tokens = await res.json();
+                        setSearchResults(tokens);
+                      } else {
+                        setSearchResults(null);
+                      }
+                    }
+                  }}
+                />
               </label>
               <div className="row">
                 <div className="filter-options">
@@ -410,16 +429,23 @@ const PagesRoot = ({data}) => {
                 {loading ? (
                   <Loader loading={loading} />
                 ) : (
-                  <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
-                    {/* <CardRowHeader name="Avatars" /> */}
-                    <CardRow data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                  searchResults ? (
+                    <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
+                      {/* <CardRowHeader name="Avatars" /> */}
+                      <CardRow data={searchResults} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                    </div>
+                  ) : (
+                    <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
+                      {/* <CardRowHeader name="Avatars" /> */}
+                      <CardRow data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
 
-                    {/* <CardRowHeader name="Digital Art" /> */}
-                    <CardRow data={art} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                      {/* <CardRowHeader name="Digital Art" /> */}
+                      <CardRow data={art} cardSize="small" cardSvgSource={data.cardSvgSource} />
 
-                    {/* <CardRowHeader name="3D Models" /> */}
-                    <CardRow data={models} cardSize="small" cardSvgSource={data.cardSvgSource} />
-                  </div>
+                      {/* <CardRowHeader name="3D Models" /> */}
+                      <CardRow data={models} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                    </div>
+                  )
                 )}
             </div>
         </Fragment>

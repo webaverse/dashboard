@@ -94,7 +94,7 @@ a {
   margin-top: 2px;
 }
 .accountPicture {
-  border: 2px solid #312936 !important;
+  /* border: 2px solid #312936 !important; */
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;

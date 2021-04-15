@@ -79,7 +79,7 @@
   margin-top: 2px;
 }
 .accountPicture {
-  border: 2px solid #312936 !important;
+  /* border: 2px solid #312936 !important; */
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -126,14 +126,18 @@
 }
 .navbarSILKPlusContainer {
   margin-left: auto;
-  padding-right: 10px;
-  padding-left: 10px;
+  padding: 0 10px;
   height: 100%;
-  background: rgb(196 0 93 / .8);
+  background: #000;
+  /* background: rgb(196 0 93 / .8); */
   border-radius: 0px 8px 8px 0px;
+  cursor: pointer;
 }
 .navbarSILKPlusContainer:hover {
   background-color: #d4055a;
+}
+.navbarSILKPlusContainer a {
+  color: #FFF;
 }
 
 .rightMenuContainer {

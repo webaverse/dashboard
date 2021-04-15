@@ -93,7 +93,6 @@ const CardSvg = ({
       const _handleMouseOut = e => {
         setPerspective([0, 0]);
       };
-      
       const spec = procgen(id + '')[0];
       
       return (

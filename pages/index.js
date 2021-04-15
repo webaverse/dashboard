@@ -268,17 +268,17 @@ const PagesRoot = ({data}) => {
               </label>
               <div className="row">
                 <div className="filter-options">
-                  <div className={`option ${selectedOption === 0 ? 'selected' : ''}`}>
-                    <img className="option-image" onClick={e => setSelectedOption(0)} src="/image.svg" />
+                  <div className={`option ${selectedOption === 'image' ? 'selected' : ''}`}>
+                    <img className="option-image" onClick={e => setSelectedOption('image')} src="/image.svg" />
                   </div>
-                  <div className={`option ${selectedOption === 1 ? 'selected' : ''}`} onClick={e => setSelectedOption(1)}>
-                    <img className="option-image" src="/image.svg" />
+                  <div className={`option ${selectedOption === 'video' ? 'selected' : ''}`} onClick={e => setSelectedOption('video')}>
+                    <img className="option-image" src="/video.svg" />
                   </div>
-                  <div className={`option ${selectedOption === 2 ? 'selected' : ''}`} onClick={e => setSelectedOption(2)}>
-                    <img className="option-image" src="/image.svg" />
+                  <div className={`option ${selectedOption === 'audio' ? 'selected' : ''}`} onClick={e => setSelectedOption('audio')}>
+                    <img className="option-image" src="/audio.svg" />
                   </div>
-                  <div className={`option ${selectedOption === 3 ? 'selected' : ''}`} onClick={e => setSelectedOption(3)}>
-                    <img className="option-image" src="/image.svg" />
+                  <div className={`option ${selectedOption === 'avatar' ? 'selected' : ''}`} onClick={e => setSelectedOption('avatar')}>
+                    <img className="option-image" src="/avatar.svg" />
                   </div>
                 </div>
               </div>

@@ -190,7 +190,10 @@ const CardSvg = ({
               <div className={`back ${transitioning ? 'transitioning' : ''}`} style={{
                 transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? 0 : 180)}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
               }}>
-                <img src="/cardback.jpg" />
+                <img
+                  src="/cardback.jpg"
+                  onDragStart={_cancelDragStart}
+                />
               </div>
             </div>
           </div>

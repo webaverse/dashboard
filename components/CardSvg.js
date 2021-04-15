@@ -101,7 +101,7 @@ const CardSvg = ({
           <div
             className='card-outer-flip'
           >
-            <div className='card-glossy' />
+            {/* <div className='card-glossy' /> */}
             <div
               className={`card-wrap ${transitioning ? 'transitioning' : ''}`}
               ref={newEl => {

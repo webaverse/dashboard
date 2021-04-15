@@ -1,5 +1,6 @@
 import React, { Component, Fragment, useState, useEffect } from "react";
 import Head from "next/head";
+import {useRouter} from 'next/router';
 import axios from 'axios';
 import {getTokens} from "../functions/UIStateFunctions.js";
 import Hero from "../components/Hero";
@@ -8,7 +9,7 @@ import CardRowHeader from "../components/CardRowHeader";
 import Loader from "../components/Loader";
 import {FileDrop} from "react-file-drop";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
-import {blobToFile, getExt} from "../webaverse/util";
+import {blobToFile, getExt, parseQuery} from "../webaverse/util";
 import {storageHost} from "../webaverse/constants";
 
 class Dropper extends Component {
@@ -61,7 +62,32 @@ const PagesRoot = ({data}) => {
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
     const [q, setQ] = useState('');
+    const [lastQ, setLastQ] = useState('');
     const [searchResults, setSearchResults] = useState(null);
+    
+    const router = useRouter();
+    
+    // console.log('got initial data', {data, router});
+
+    const qs = parseQuery(router.asPath.match(/(\?.*)$/)?.[1] || '');
+    const {q: currentQ = ''} = qs;
+    if (currentQ !== lastQ) {
+      setLastQ(currentQ);
+
+      if (currentQ) {
+        setQ(currentQ);
+        (async () => {      
+          const res = await fetch(`https://tokens.webaverse.com/search?q=${currentQ}`);
+          const tokens = await res.json();
+          setSearchResults(tokens);
+        })().catch(err => {
+          console.warn(err);
+        });
+      } else {
+        setQ('');
+        setSearchResults(null);
+      }
+    }
 
     const _setSelectedTab = newTab => {
       setSelectedTab(newTab);
@@ -253,14 +279,12 @@ const PagesRoot = ({data}) => {
                   onChange={e => {
                     setQ(e.target.value);
                   }}
-                  onKeyDown={async e => {
+                  onKeyDown={e => {
                     if (e.which === 13) {
                       if (q) {
-                        const res = await fetch(`https://tokens.webaverse.com/search?q=${q}`);
-                        const tokens = await res.json();
-                        setSearchResults(tokens);
+                        router.push(`/?q=${q}`);
                       } else {
-                        setSearchResults(null);
+                        router.push('/');
                       }
                     }
                   }}

@@ -38,11 +38,11 @@ const Navbar = () => {
               <img className="logo" src="/webaverse.png" alt="Webaverse logo" />
             </Link>
           </div>
-          <div className="secondaryMenu">
+          {/* <div className="secondaryMenu">
             <Link href="/">
               Webaverse
             </Link>
-          </div>
+          </div> */}
 {/*
           <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
             <a className={`item`} href="https://app.webaverse.com">Play</a>

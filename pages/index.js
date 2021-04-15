@@ -456,18 +456,18 @@ const PagesRoot = ({data}) => {
                   searchResults ? (
                     <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
                       {/* <CardRowHeader name="Avatars" /> */}
-                      <CardRow data={searchResults} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                      <CardRow name="Results" data={searchResults} cardSize="small" cardSvgSource={data.cardSvgSource} />
                     </div>
                   ) : (
                     <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
                       {/* <CardRowHeader name="Avatars" /> */}
-                      <CardRow data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                      <CardRow name="Avatars" data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
 
                       {/* <CardRowHeader name="Digital Art" /> */}
-                      <CardRow data={art} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                      <CardRow name="Art" data={art} cardSize="small" cardSvgSource={data.cardSvgSource} />
 
                       {/* <CardRowHeader name="3D Models" /> */}
-                      <CardRow data={models} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                      <CardRow name="Models" data={models} cardSize="small" cardSvgSource={data.cardSvgSource} />
                     </div>
                   )
                 )}

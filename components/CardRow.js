@@ -3,12 +3,12 @@ import Link from "next/link";
 import AssetCard from "./Card";
 import AssetCardSvg from "./CardSvg";
 
-const CardRow = ({ data, cardSize, cardSvgSource }) => {
+const CardRow = ({ data, name, cardSize, cardSvgSource }) => {
     return (
         <div className="mainRow">
             <div className="notch">
               <div className="nub"></div>
-              <div className="text">Avatars</div>
+              <div className="text">{name}</div>
               <div className="underline"></div>
             </div>
             {data &&

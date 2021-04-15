@@ -39,6 +39,7 @@
   position: relative;
   perspective-origin: 50% 50%;
   perspective: 1000px;
+  user-select: none;
 }
 .card-wrap {
   position: relative;
@@ -88,9 +89,6 @@
   );
   pointer-events: none;
   z-index: 1;
-}
-.card-svg {
-  user-select: none;
 }
 .card-svg-inner {
   --size: 300px;

@@ -118,7 +118,7 @@ const Navbar = () => {
           </div>
           <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>
             <a className="navbarSILKSymbol">
-              山
+              <img src="silk.svg" />
             </a>
             <a className="navbarSILKAmount">
               {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}

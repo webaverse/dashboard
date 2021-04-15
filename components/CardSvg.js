@@ -94,6 +94,9 @@ const CardSvg = ({
         setPerspective([0, 0]);
       };
       const spec = procgen(id + '')[0];
+      const _cancelDragStart = e => {
+        e.preventDefault();
+      };
       
       return (
         <div className='card-outer'>

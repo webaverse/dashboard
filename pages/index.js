@@ -292,8 +292,8 @@ const PagesRoot = ({data}) => {
               </label>
               <div className="row">
                 <div className="filter-options">
-                  <div className={`option ${selectedOption === 'image' ? 'selected' : ''}`}>
-                    <img className="option-image" onClick={e => setSelectedOption('image')} src="/image.svg" />
+                  <div className={`option ${selectedOption === 'image' ? 'selected' : ''}`} onClick={e => setSelectedOption('image')}>
+                    <img className="option-image" src="/image.svg" />
                   </div>
                   <div className={`option ${selectedOption === 'video' ? 'selected' : ''}`} onClick={e => setSelectedOption('video')}>
                     <img className="option-image" src="/video.svg" />

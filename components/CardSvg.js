@@ -25,6 +25,7 @@ const CardSvg = ({
     const [perspective, setPerspective] = useState([false, false]);
     const [flip, setFlip] = useState(false);
     const [transitioning, setTransitioning] = useState(false);
+    const [boundingBox, setBoundingBox] = useState(null);
   
     /* let video = false;
     if (["webm", "mp4"].indexOf(ext) >= 0) {
@@ -83,17 +84,17 @@ const CardSvg = ({
       
       const _handleMouseMove = e => {
         if (el && !transitioning) {
-          const {clientX, clientY} = e;
-          const boundingBox = el.getBoundingClientRect();
-          const fx = (clientX - boundingBox.x) / boundingBox.width - 0.5;
-          const fy = 1.0 - ((clientY - boundingBox.y) / boundingBox.height) - 0.5;
+          const {pageX, pageY} = e;
+          // const boundingBox = el.getBoundingClientRect();
+          const fx = (pageX - boundingBox.x) / boundingBox.width - 0.5;
+          const fy = 1.0 - ((pageY - boundingBox.y) / boundingBox.height) - 0.5;
           setPerspective([fx, fy]);
         }
       };
       const _handleMouseOut = e => {
         setPerspective([0, 0]);
       };
-      const spec = procgen(id + '')[0];
+      // const spec = procgen(id + '')[0];
       const _cancelDragStart = e => {
         e.preventDefault();
       };
@@ -110,6 +111,15 @@ const CardSvg = ({
                 el = newEl;
                 if (el) {
                   imageEl = el.querySelector('#image');
+                  if (!boundingBox) {
+                    const {x, y, width, height} = el.getBoundingClientRect();
+                    setBoundingBox({
+                      x,
+                      y,
+                      width,
+                      height,
+                    });
+                  }
                 }
               }}
               onClick={e => {

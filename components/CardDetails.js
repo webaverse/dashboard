@@ -533,7 +533,7 @@ const CardDetails = ({
                   })()}
                 </div>
                 <div className="assetDetailsRightColumn">
-                  <div className={`detailsBlock detailsBlockSet noselect`}>
+                  <div className={`detailsBlock detailsBlockSet`}>
                     <div className="assetDetailsOwnedBy">
                       <img
                         className="creatorIcon"
@@ -545,6 +545,10 @@ const CardDetails = ({
                           <a className="name">{`@${ownerUsername}`}</a>
                         </Link>
                       </div>
+                    </div>
+                    <div className="assetDetailsLeft">
+                      <div className="name">{name}</div>
+                      <div className="description">{description}</div>
                     </div>
                     <div className="Accordion">
                       <div
@@ -560,14 +564,14 @@ const CardDetails = ({
                       </div>
                       {toggleViewOpen && (
                         <div className="accordionDropdown">
-                            {is3d && imageView != "3d" && (
+                            {/* is3d && imageView != "3d" && (
                               <button
                                 className="assetDetailsButton"
                                 onClick={() => setImageView("3d")}
                               >
                                 See in 3d
                               </button>
-                            )}
+                            ) */}
                             {is3d && imageView != "2d" && (
                               <button
                                 className="assetDetailsButton"
@@ -576,11 +580,11 @@ const CardDetails = ({
                                 See in 2d
                               </button>
                             )}
-                            <Link href={"/preview/" + id}>
+                            {/* <Link href={"/preview/" + id}>
                               <button className="assetDetailsButton">
                                 Try in Webaverse
                               </button>
-                            </Link>
+                            </Link> */}
                             {unlockableSpec ? (
                               <div className="assetDetailsButton">
                                 {unlockableSpec.ok

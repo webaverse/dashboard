@@ -19,11 +19,12 @@ const CardSvg = ({
     isPolygon,
     glow,
     imageView,
-    // cardSvgSource,
+    cardSvgSpec,
 }) => {
     const [perspective, setPerspective] = useState([false, false]);
     const [flip, setFlip] = useState(false);
     const [transitioning, setTransitioning] = useState(false);
+    const [cardSpecHighlight, setCardSpecHighlight] = useState(null);
   
     /* let video = false;
     if (["webm", "mp4"].indexOf(ext) >= 0) {
@@ -84,9 +85,42 @@ const CardSvg = ({
         if (el && !transitioning) {
           const {clientX, clientY} = e;
           const boundingBox = el.getBoundingClientRect();
-          const fx = (clientX - boundingBox.x) / boundingBox.width - 0.5;
-          const fy = 1.0 - ((clientY - boundingBox.y) / boundingBox.height) - 0.5;
+          const x = clientX - boundingBox.x;
+          const fx = x / boundingBox.width - 0.5;
+          const y = clientY - boundingBox.y;
+          const fy = 1.0 - (y / boundingBox.height) - 0.5;
           setPerspective([fx, fy]);
+          
+          // console.log('got spec', cardSvgSpec);
+          if (cardSvgSpec) {
+            let cardSpecHighlight = null;
+            for (const k in cardSvgSpec) {
+              if (k === 'svg') {
+                continue;
+              }
+              const o = cardSvgSpec[k];
+              const ax = x / boundingBox.width * cardSvgSpec.svg.width;
+              const ay = y / boundingBox.height * cardSvgSpec.svg.height;
+              /* console.log('check', {x, y, ax, ay, o, results: [ 
+                ax >= o.x,
+                ax < o.x + o.width,
+                ay >= o.y,
+                ay < o.y + o.height,
+              ], svg: cardSvgSpec.svg}); */
+              if (
+                ax >= o.x &&
+                ax < o.x + o.width &&
+                ay >= o.y &&
+                ay < o.y + o.height
+              ) {
+                // debugger;
+                cardSpecHighlight = k;
+                break;
+              }
+            }
+            // console.log('highlight', cardSpecHighlight);
+            setCardSpecHighlight(cardSpecHighlight);
+          }
         }
       };
       const _handleMouseOut = e => {
@@ -97,7 +131,9 @@ const CardSvg = ({
       };
       
       return (
-        <div className='card-outer'>
+        <div className='card-outer' style={{
+          backgroundColor: cardSpecHighlight ? '#F00' : null,
+        }}>
           <div
             className='card-outer-flip'
           >

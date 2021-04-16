@@ -549,6 +549,7 @@ const CardDetails = ({
                         cardSize: 'large',
                         glow: false,
                         imageView,
+                        cardSvgSpec,
                       };
                       switch (selectedView) {
                         case 'cards': {

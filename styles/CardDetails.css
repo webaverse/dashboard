@@ -179,7 +179,11 @@
     padding-left: 0.5em;
     padding-right: 1em;
     cursor: pointer;
-    padding-bottom: .5em;
+    /* padding-bottom: .5em; */
+    background-color: #e0e0e0;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 2px;
+    align-items: center;
 }
 
 .accordionTitleValue {
@@ -189,9 +193,8 @@
 }
 
 .accordionIcon {
-    width: 1em;
-    height: 1em;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.59 0L6 4.58L1.41 0L0 1.41L6 7.41L12 1.41L10.59 0Z' fill='white'/%3E%3C/svg%3E ");
+    width: 12px;
+    height: 12px;
     background-repeat: no-repeat;
     background-position: bottom;
     cursor: pointer;

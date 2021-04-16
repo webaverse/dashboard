@@ -527,11 +527,11 @@ const CardDetails = ({
                         onClick={() => setToggleViewOpen(!toggleViewOpen)}
                       >
                         <span className="accordionTitleValue">View</span>
-                        <span
-                          className={`accordionIcon ${
-                            toggleViewOpen ? "reverse" : ""
-                          }`}
-                        ></span>
+                        {toggleViewOpen ?
+                          <img src="/chevron-up.svg" className="accordionIcon" />
+                        :
+                          <img src="/chevron-down.svg" className="accordionIcon" />
+                        }
                       </div>
                       {toggleViewOpen && (
                         <div className="accordionDropdown">
@@ -586,11 +586,11 @@ const CardDetails = ({
                           onClick={() => setToggleAddOpen(!toggleAddOpen)}
                         >
                           <span className="accordionTitleValue">Add</span>
-                          <span
-                            className={`accordionIcon ${
-                              toggleAddOpen ? "reverse" : ""
-                            }`}
-                          ></span>
+                          {toggleAddOpen ?
+                            <img src="/chevron-up.svg" className="accordionIcon" />
+                          :
+                            <img src="/chevron-down.svg" className="accordionIcon" />
+                          }
                         </div>
                         {toggleAddOpen && (
                           <div className="accordionDropdown">
@@ -629,11 +629,11 @@ const CardDetails = ({
                           onClick={() => setToggleEditOpen(!toggleEditOpen)}
                         >
                           <span className="accordionTitleValue">Edit</span>
-                          <span
-                            className={`accordionIcon ${
-                              toggleEditOpen ? "reverse" : ""
-                            }`}
-                          ></span>
+                          {toggleEditOpen ?
+                            <img src="/chevron-up.svg" className="accordionIcon" />
+                          :
+                            <img src="/chevron-down.svg" className="accordionIcon" />
+                          }
                         </div>
                         {toggleEditOpen && (
                           <div className="accordionDropdown">
@@ -674,11 +674,11 @@ const CardDetails = ({
                           }
                         >
                           <span className="accordionTitleValue">Trade</span>
-                          <span
-                            className={`accordionIcon ${
-                              toggleTradeOpen ? "reverse" : ""
-                            }`}
-                          ></span>
+                          {toggleTradeOpen ?
+                            <img src="/chevron-up.svg" className="accordionIcon" />
+                          :
+                            <img src="/chevron-down.svg" className="accordionIcon" />
+                          }
                         </div>
                         {toggleTradeOpen && (
                           <div className="accordionDropdown">

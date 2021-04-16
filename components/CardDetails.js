@@ -9,8 +9,8 @@ import AssetCard3D from "./Card3D";
 import AssetCardLive from "./CardLive";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import {Networks} from "../webaverse/constants.js";
-import { FileDrop } from 'react-file-drop';
-import { makeWbn, makePhysicsBake } from "../webaverse/build";
+// import { FileDrop } from 'react-file-drop';
+// import { makeWbn, makePhysicsBake } from "../webaverse/build";
 import {
   resubmitAsset,
   addNftCollaborator,

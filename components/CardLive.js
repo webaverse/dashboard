@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 // import procgen, {types} from '../webaverse/procgen.js';
 
-const Card2D = ({
+const Card3D = ({
     id,
     assetName,
     description,
@@ -23,7 +23,6 @@ const Card2D = ({
     const [flip, setFlip] = useState(false);
     const [transitioning, setTransitioning] = useState(false);
     const [boundingBox, setBoundingBox] = useState(null);
-    const [dimensions, setDimensions] = useState(null);
   
     /* let video = false;
     if (["webm", "mp4"].indexOf(ext) >= 0) {
@@ -78,31 +77,8 @@ const Card2D = ({
     
     const cardSvgSource = 'HACK'; // XXX
     if (cardSvgSource) {
-      const _cancelDragStart = e => {
-        e.preventDefault();
-      };
-      
       return (
-        <img
-          src={image}
-          className="content-preview-2d"
-          onDragStart={_cancelDragStart}
-          onDoubleClick={e => {
-            e.target.requestFullscreen();
-          }}
-          ref={el => {
-            if (el) {
-              const {width, height} = el;
-              if (!dimensions || dimensions[0] !== width || dimensions[1] !== height) {
-                setDimensions([width, height]);
-              }
-            }
-          }}
-          style={dimensions ? {
-            maxWidth: dimensions[0],
-            maxHeight: dimensions[1],
-          } : null}
-        />
+        <iframe className="content-preview-live" src={"https://app.webaverse.com/?t=" + id} />
       );
     } else {
       return (
@@ -214,4 +190,4 @@ const Card2D = ({
     );
     }
 };
-export default Card2D;
+export default Card3D;

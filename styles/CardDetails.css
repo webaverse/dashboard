@@ -31,9 +31,20 @@
     margin-top: 15px;
 }
 
-/* .content-preview {
+.content-preview-2d,
+.content-preview-3d,
+.content-preview-live {
+  width: 100vw;
+  height: 80vh;
+  object-fit: contain;
+}
+.content-preview-2d {
   
-} */
+}
+.content-preview-3d,
+.content-preview-live {
+  border: 0;
+}
 
 .detailsBlock {
     width: 100%;

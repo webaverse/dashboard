@@ -78,9 +78,7 @@ const Card3D = ({
     const cardSvgSource = 'HACK'; // XXX
     if (cardSvgSource) {
       return (
-        <div className="IFrameContainer">
-          <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + id} />
-        </div>
+        <iframe className="content-preview-3d" src={"https://app.webaverse.com/?t=" + id} />
       );
     } else {
       return (

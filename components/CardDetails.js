@@ -6,6 +6,7 @@ import AssetCard from "./Card";
 import AssetCardSvg from "./CardSvg";
 import AssetCard2D from "./Card2D";
 import AssetCard3D from "./Card3D";
+import AssetCardLive from "./CardLive";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import {Networks} from "../webaverse/constants.js";
 import { FileDrop } from 'react-file-drop';
@@ -524,7 +525,9 @@ const CardDetails = ({
                         );
                       }
                       case 'live': {
-                        return null;
+                        return (
+                          <AssetCardLive {...props} />
+                        );
                       }
                     }
                   })()}

@@ -33,6 +33,7 @@ Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 const App = ({ Component, pageProps }) => {
+  const [selectedView, setSelectedView] = useState('cards');
 
   return (
     <AppWrapper>
@@ -40,9 +41,15 @@ const App = ({ Component, pageProps }) => {
         <Head>
           <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
-        <Navbar />
+        <Navbar
+          selectedView={selectedView}
+          setSelectedView={setSelectedView}
+        />
         <div className="appContainer">
-          <Component {...pageProps} />
+          <Component
+            selectedView={selectedView}
+            {...pageProps}
+          />
         </div>
         <Footer />
       </ToastProvider>

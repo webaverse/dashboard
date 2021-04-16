@@ -44,12 +44,18 @@ const _computeSvgSpec = s => {
 
   const match = svgEl.getAttribute('viewBox').match(/^([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)$/);
 
+  const width = parseInt(match[3], 10) - parseInt(match[1], 10);
+  const height = parseInt(match[4], 10) - parseInt(match[2], 10);
+  
+  svgEl.style.width = `${width}px`;
+  svgEl.style.height = `${height}px`;
+
   const result = {};
   result['svg'] = {
     x: 0,
     y: 0,
-    width: parseInt(match[3], 10) - parseInt(match[1], 10),
-    height: parseInt(match[4], 10) - parseInt(match[2], 10),
+    width,
+    height,
   };
   result['hp'] = svgEl.querySelector('#hp').getBoundingClientRect();
   result['mp'] = svgEl.querySelector('#mp').getBoundingClientRect();

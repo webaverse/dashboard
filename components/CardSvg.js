@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-// import procgen, {types} from '../webaverse/procgen.js';
 
 const cardWidth = 500;
 const cardHeight = cardWidth/2.5*3.5;
@@ -95,7 +94,6 @@ const CardSvg = ({
       const _handleMouseOut = e => {
         setPerspective([0, 0]);
       };
-      // const spec = procgen(id + '')[0];
       const _cancelDragStart = e => {
         e.preventDefault();
       };

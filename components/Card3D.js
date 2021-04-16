@@ -76,7 +76,14 @@ const Card3D = ({
     } */
 
     return (
-      <iframe className="content-preview-3d" src={"https://app.webaverse.com/?t=" + id} />
+      <iframe
+        className="content-preview-3d"
+        src={"https://app.webaverse.com/?t=" + id}
+        onWheel={e => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      />
     );
 };
 export default Card3D;

@@ -36,6 +36,7 @@ import wbn from '../webaverse/wbn.js';
 // import {blobToFile, getExt} from "../webaverse/util";
 import FileBrowser from './FileBrowser';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
+import procgen, {types} from '../webaverse/procgen.js';
 
 const CardDetails = ({
   id,
@@ -435,6 +436,9 @@ const CardDetails = ({
   const isStuck = /stuck/.test(currentLocation);
   const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
 
+  const spec = procgen(id + '')[0];
+  // console.log('got spec', spec);
+
   return (
     <Fragment>
       {tryOn ? (
@@ -451,13 +455,17 @@ const CardDetails = ({
         </Fragment>
       ) : (
         <Fragment>
-          
             {loading ? (
               <Loader loading={loading} />
             ) : (
               <Fragment>
-                <div className="assetDetailsLeftColumn">
-                {/* <AssetCard
+                <div
+                  className="assetDetailsLeftColumn"
+                  /* style={{
+                    backgroundImage: `linear-gradient(0deg, ${spec.art.color}60 0%, ${spec.art.color}00 100%)`,
+                  }} */
+                >
+                  {/* <AssetCard
                     id={id}
                     key={id}
                     assetName={name}

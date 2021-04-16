@@ -39,7 +39,7 @@
 .content-preview-live {
   width: 100vw;
   height: 80vh;
-  margin: 30px;
+  margin: 50px;
   background-color: #FFF;
   object-fit: contain;
 }
@@ -49,6 +49,7 @@
 .content-preview-3d,
 .content-preview-live {
   border: 0;
+  /* box-shadow: 0 5px #CCCCCC80; */
 }
 
 .detailsBlock {

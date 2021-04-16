@@ -39,7 +39,7 @@ const getData = async id => {
 const Asset = ({data}) => {
   // console.log('got data', data);
   
-  const {cardSvgSource} = data;
+  // const {cardSvgSource} = data;
   
   const router = useRouter();
   const {id} = router.query;
@@ -153,7 +153,6 @@ const Asset = ({data}) => {
                setLoading(false);
              }}
              addresses={addresses}
-             cardSvgSource={cardSvgSource}
            />
       :
         <Loader loading={true} />
@@ -176,18 +175,18 @@ export async function getServerSideProps(context) {
   
   const [
     o,
-    cardSvgSource,
+    // cardSvgSource,
   ] = await Promise.all([
     (async () => {
       const id = /^[0-9]+$/.test(context.params.id) ? parseInt(context.params.id, 10) : NaN;
       const o = await getData(id);
       return o;
     })(),
-    (async () => {
+    /* (async () => {
       const res = await fetch(u);
       const s = await res.text();
       return s;
-    })(),
+    })(), */
   ]);
   const token = o?.token;
   const networkName = o?.networkName;
@@ -197,7 +196,7 @@ export async function getServerSideProps(context) {
       data: {
         token,
         networkName,
-        cardSvgSource,
+        // cardSvgSource,
       },
     },
   };

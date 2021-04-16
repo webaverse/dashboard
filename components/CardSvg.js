@@ -20,7 +20,7 @@ const CardSvg = ({
     isPolygon,
     glow,
     imageView,
-    cardSvgSource,
+    // cardSvgSource,
 }) => {
     const [perspective, setPerspective] = useState([false, false]);
     const [flip, setFlip] = useState(false);
@@ -78,6 +78,7 @@ const CardSvg = ({
         rarity = "common";
     } */
     
+    const cardSvgSource = 'HACK'; // XXX
     if (cardSvgSource) {
       let el = null;
       let imageEl = null;

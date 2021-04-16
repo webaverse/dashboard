@@ -8,6 +8,7 @@ import { useAppContext } from "../libs/contextLib";
 const Navbar = () => {
   const { globalState, setGlobalState } = useAppContext();
   const [dropdown, setDropdown] = useState(false);
+  const [selectedView, setSelectedView] = useState('cards');
   
   const router = useRouter();
 
@@ -71,16 +72,24 @@ const Navbar = () => {
               <Link href="https://docs.webaverse.com/"><a className={`item ${router.asPath === '/docs' ? 'selected' : ''}`}>Docs</a></Link>
             </div>
             <div className="navbarSwitch">
-              <div className="option selected">
+              <div className={`option ${selectedView === 'cards' ? 'selected' : ''}`} onClick={e => {
+                setSelectedView('cards');
+              }}>
                 Cards
               </div>
-              <div className="option">
+              <div className={`option ${selectedView === '2d' ? 'selected' : ''}`} onClick={e => {
+                setSelectedView('2d');
+              }}>
                 2D
               </div>
-              <div className="option">
+              <div className={`option ${selectedView === '3d' ? 'selected' : ''}`} onClick={e => {
+                setSelectedView('3d');
+              }}>
                 3D
               </div>
-              <div className="option">
+              <div className={`option ${selectedView === 'live' ? 'selected' : ''}`} onClick={e => {
+                setSelectedView('live');
+              }}>
                 Live
               </div>
             </div>

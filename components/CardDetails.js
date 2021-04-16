@@ -466,6 +466,17 @@ const CardDetails = ({
                     backgroundImage: `linear-gradient(0deg, ${spec.art.color}60 0%, ${spec.art.color}00 100%)`,
                   }} */
                 >
+                  <div className="card-buttons">
+                    <div className="card-button">
+                      <img src="/heart_empty.svg" />
+                    </div>
+                    <div className="card-button">
+                      <img src="/help.svg" />
+                    </div>
+                    <div className="card-button">
+                      <img src="/maximize.svg" />
+                    </div>
+                  </div>
                   {/* <AssetCard
                     id={id}
                     key={id}

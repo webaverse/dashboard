@@ -451,7 +451,7 @@ const CardDetails = ({
         </Fragment>
       ) : (
         <Fragment>
-          <div className="assetDetails">
+          
             {loading ? (
               <Loader loading={loading} />
             ) : (
@@ -867,7 +867,6 @@ const CardDetails = ({
                 </div>
               </Fragment>
             )}
-          </div>
         </Fragment>
       )}
       {fileBrowserOpen ? <FileBrowser

@@ -90,9 +90,9 @@ const Card2D = ({
         }}
         ref={el => {
           if (el) {
-            const {width, height} = el;
-            if (!dimensions || dimensions[0] !== width || dimensions[1] !== height) {
-              setDimensions([width, height]);
+            const {naturalWidth, naturalHeight} = el;
+            if (!dimensions || dimensions[0] !== naturalWidth || dimensions[1] !== naturalHeight) {
+              setDimensions([naturalWidth, naturalHeight]);
             }
           }
         }}

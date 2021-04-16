@@ -1,8 +1,5 @@
 import React, {useState} from "react";
-import procgen, {types} from '../webaverse/procgen.js';
-
-const cardWidth = 500;
-const cardHeight = cardWidth/2.5*3.5;
+// import procgen, {types} from '../webaverse/procgen.js';
 
 const Card2D = ({
     id,

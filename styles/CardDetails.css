@@ -327,18 +327,25 @@
   padding: 10px 20px;
   flex-direction: column;
 }
-.assetDetailsLeft .name {
+.assetDetailsLeft .name,
+.assetDetailsLeft .description,
+.assetDetailsLeft .ipfs
+{
   display: flex;
+  justify-content: flex-start;
+}
+.assetDetailsLeft .name {
   font-family: 'FuturaStd-Heavy';
   font-size: 30px;
   line-height: 50px;
   letter-spacing: 1px;
-  justify-content: flex-start;
 }
 .assetDetailsLeft .description {
-  display: flex;
   font-family: 'GillSans';
-  justify-content: flex-start;
+}
+.assetDetailsLeft .ipfs {
+  margin: 10px 0;
+  font-family: 'FuturaStd-Heavy';
 }
 
 @media (max-width: 749px) {

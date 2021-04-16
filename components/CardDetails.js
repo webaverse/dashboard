@@ -11,6 +11,7 @@ import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../weba
 import {Networks} from "../webaverse/constants.js";
 // import { FileDrop } from 'react-file-drop';
 // import { makeWbn, makePhysicsBake } from "../webaverse/build";
+import {storageHost} from "../webaverse/constants";
 import {
   resubmitAsset,
   addNftCollaborator,
@@ -557,6 +558,7 @@ const CardDetails = ({
                     <div className="assetDetailsLeft">
                       <div className="name">{name}</div>
                       <div className="description">{description}</div>
+                      <a className="ipfs" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}>IPFS</a>
                     </div>
                     <div className="Accordion">
                       <div

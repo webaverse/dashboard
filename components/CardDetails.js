@@ -533,21 +533,19 @@ const CardDetails = ({
                   })()}
                 </div>
                 <div className="assetDetailsRightColumn">
-                  <div className="assetDetailsOwnedBy">
-                    <span className={`creatorIcon creatorIcon tooltip`}>
+                  <div className={`detailsBlock detailsBlockSet noselect`}>
+                    <div className="assetDetailsOwnedBy">
                       <img
+                        className="creatorIcon"
                         src={ownerAvatarPreview.replace(/\.[^.]*$/, ".png")}
                       />
-                      <span className={`creatorName creatorName tooltiptext`}>
-                        {ownerUsername}
-                      </span>
-                    </span>{" "}
-                    Owned by{" "}
-                    <Link href={`/accounts/` + ownerAddress}>
-                      {ownerUsername}
-                    </Link>
-                  </div>
-                  <div className={`detailsBlock detailsBlockSet noselect`}>
+                      <div className="creatorDetails">
+                        <div className="label">Owner</div>
+                        <Link href={`/accounts/` + ownerAddress}>
+                          {ownerUsername}
+                        </Link>
+                      </div>
+                    </div>
                     <div className="Accordion">
                       <div
                         className="accordionTitle"

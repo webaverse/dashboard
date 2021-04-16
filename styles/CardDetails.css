@@ -58,7 +58,6 @@
     flex-direction: column;
     align-items: flex-start;
     border-radius: 5px;
-    overflow: hidden;
 }
 
 .assetDetailsButton {
@@ -264,17 +263,40 @@
     filter: drop-shadow(2px 5px 4px black);
 }
 .assetDetailsOwnedBy {
+    position: absolute;
+    left: calc(100vw - 16vw - 150px);
+    margin-top: -60px;
     display: flex;
-    max-width: 100%;
     text-overflow: ellipsis;
-    padding-bottom: 10px;
     overflow: hidden;
     white-space: nowrap;
     justify-content: center;
     align-items: center;
+    z-index: 1;
 }
-.assetDetailsOwnedBy img {
+.assetDetailsOwnedBy .creatorIcon {
+  width: 80px;
+  height: 80px;
   margin-right: 5px;
+  background-color: #FFF;
+  border: 2px solid #FFF;
+  border-radius: 100px;
+}
+.assetDetailsOwnedBy .creatorDetails {
+  display: flex;
+  min-width: 100px;
+  margin-left: -10px;
+  padding: 0 10px;
+  background-color: #FFF;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: 'FuturaStd-Heavy';
+  z-index: -1;
+}
+.assetDetailsOwnedBy .creatorDetails .label {
+  text-transform: uppercase;
+  color: #999;
+  font-size: 13px;
 }
 .assetDetailsDeployedContent {
     padding-bottom: 5px;

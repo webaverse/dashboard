@@ -42,7 +42,6 @@
 }
 .navbar .navbarContainer .navbarMenu .rightMenuContainer {
   display: flex;
-  margin-left: auto;
   margin-right: auto;
 }
 .navbar .item {
@@ -189,6 +188,15 @@
   height: 100%;
   cursor: pointer;
   transition: all .3s ease;
+}
+
+.navbar-buttons {
+  display: flex;
+}
+.navbar-buttons .navbar-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media screen and (min-width: 1203px) {

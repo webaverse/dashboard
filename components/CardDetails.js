@@ -435,15 +435,15 @@ const CardDetails = ({
   const _openFileBrowser = () => {
     setFileBrowserOpen(true);
   };
-  const isStuck = /stuck/.test(currentLocation);
-  const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
-
-  const spec = procgen(id + '')[0];
-  // console.log('got spec', spec);
-
   const _handleLike = () => {
     setLiked(!liked);
   };
+  
+  const isStuck = /stuck/.test(currentLocation);
+  const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
+  const spec = procgen(id + '')[0];
+  // console.log('got spec', spec);
+  let cardSceneWrapEl = null;
 
   return (
     <Fragment>
@@ -470,6 +470,9 @@ const CardDetails = ({
                   /* style={{
                     backgroundImage: `linear-gradient(0deg, ${spec.art.color}60 0%, ${spec.art.color}00 100%)`,
                   }} */
+                  ref={el => {
+                    cardSceneWrapEl = el;
+                  }}
                 >
                   <div className="card-buttons">
                     <div className={`card-button ${liked ? 'selected' : ''}`} onClick={e => {
@@ -481,7 +484,11 @@ const CardDetails = ({
                     <div className="card-button">
                       <img src="/help.svg" />
                     </div>
-                    <div className="card-button">
+                    <div className="card-button" onClick={e => {
+                      if (cardSceneWrapEl) {
+                        cardSceneWrapEl.requestFullscreen();
+                      }
+                    }}>
                       <img src="/maximize.svg" />
                     </div>
                   </div>

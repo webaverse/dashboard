@@ -209,7 +209,7 @@ const CardSvg = ({
                 transform: `rotateY(${perspective[0] * 180 * 0.1 + (flip ? 0 : 180)}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
               }}>
                 <img
-                  src="/cardback.jpg"
+                  src="/cardback.png"
                   onDragStart={_cancelDragStart}
                 />
               </div>

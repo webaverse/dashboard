@@ -284,9 +284,10 @@
 }
 .assetDetailsOwnedBy .creatorDetails {
   display: flex;
-  min-width: 100px;
-  margin-left: -10px;
-  padding: 0 10px;
+  min-width: 150px;
+  margin-left: -20px;
+  padding: 10px;
+  padding-left: 25px;
   background-color: #FFF;
   flex-direction: column;
   align-items: flex-start;
@@ -295,8 +296,16 @@
 }
 .assetDetailsOwnedBy .creatorDetails .label {
   text-transform: uppercase;
-  color: #999;
-  font-size: 13px;
+  color: #AAA;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 1px;
+}
+.assetDetailsOwnedBy .creatorDetails .name {
+  font-size: 18px;
+}
+.assetDetailsOwnedBy .creatorDetails .name:hover {
+  color: #29b6f6;
 }
 .assetDetailsDeployedContent {
     padding-bottom: 5px;

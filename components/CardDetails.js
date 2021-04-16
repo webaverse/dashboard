@@ -542,7 +542,7 @@ const CardDetails = ({
                       <div className="creatorDetails">
                         <div className="label">Owner</div>
                         <Link href={`/accounts/` + ownerAddress}>
-                          {ownerUsername}
+                          <a className="name">{`@${ownerUsername}`}</a>
                         </Link>
                       </div>
                     </div>

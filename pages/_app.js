@@ -47,8 +47,8 @@ const App = ({ Component, pageProps }) => {
         />
         <div className="appContainer">
           <Component
-            selectedView={selectedView}
             {...pageProps}
+            selectedView={selectedView}
           />
         </div>
         <Footer />

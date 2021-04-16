@@ -61,6 +61,7 @@ const CardDetails = ({
   currentLocation,
   getData,
   addresses,
+  selectedView,
   // setMainnetAddress,
   // cardSvgSource,
 }) => {
@@ -478,31 +479,48 @@ const CardDetails = ({
                     glow={false}
                     imageView={imageView}
                   /> */}
-                  <AssetCardSvg
-                    id={id}
-                    key={id}
-                    assetName={name}
-                    ext={ext}
-                    animation_url={animation_url}
-                    description={description}
-                    buyPrice={buyPrice}
-                    image={image}
-                    hash={hash}
-                    numberInEdition={numberInEdition}
-                    totalSupply={totalSupply}
-                    balance={balance}
-                    totalInEdition={totalInEdition}
-                    assetType={assetType}
-                    ownerAvatarPreview={ownerAvatarPreview}
-                    ownerUsername={ownerUsername}
-                    ownerAddress={ownerAddress}
-                    minterAvatarPreview={minterAvatarPreview}
-                    minterUsername={minterUsername}
-                    minterAddress={minterAddress}
-                    cardSize="large"
-                    glow={false}
-                    imageView={imageView}
-                  />
+                  {(() => {
+                    switch (selectedView) {
+                      case 'cards': {
+                        return (
+                          <AssetCardSvg
+                            id={id}
+                            key={id}
+                            assetName={name}
+                            ext={ext}
+                            animation_url={animation_url}
+                            description={description}
+                            buyPrice={buyPrice}
+                            image={image}
+                            hash={hash}
+                            numberInEdition={numberInEdition}
+                            totalSupply={totalSupply}
+                            balance={balance}
+                            totalInEdition={totalInEdition}
+                            assetType={assetType}
+                            ownerAvatarPreview={ownerAvatarPreview}
+                            ownerUsername={ownerUsername}
+                            ownerAddress={ownerAddress}
+                            minterAvatarPreview={minterAvatarPreview}
+                            minterUsername={minterUsername}
+                            minterAddress={minterAddress}
+                            cardSize="large"
+                            glow={false}
+                            imageView={imageView}
+                          />
+                        );
+                      }
+                      case '2d': {
+                        return null;
+                      }
+                      case '3d': {
+                        return null;
+                      }
+                      case 'live': {
+                        return null;
+                      }
+                    }
+                  })()}
                 </div>
                 <div className="assetDetailsRightColumn">
                   <div className="assetDetailsOwnedBy">

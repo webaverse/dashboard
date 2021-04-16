@@ -36,9 +36,11 @@ const getData = async id => {
   }
 };
 
-const Asset = ({data}) => {
-  // console.log('got data', data);
-  
+const Asset = ({
+  data,
+  selectedView,
+}) => {
+  // console.log('got data', {selectedView});
   // const {cardSvgSource} = data;
   
   const router = useRouter();
@@ -88,14 +90,14 @@ const Asset = ({data}) => {
         <title>{token.name} | Webaverse</title>
         <meta name="description" content={token.description + " | Webaverse"} />
         <meta property="og:title" content={token.name + " | Webaverse"} />
-        <meta property={["webm","mp4"].indexOf(token.properties.ext) >=0 ? "og:video:url" : "og:image"} content={["gif","webm","mp4"].indexOf(token.properties.ext) >=0 ? token.animation_url : token.image} />
-        {["webm","mp4"].indexOf(token.properties.ext) >=0 ?
+        <meta property={["webm","mp4"].indexOf(token.properties.ext) >=0 ? "og:video:url" : "og:image"} content={["gif","webm","mp4"].indexOf(token.properties.ext) >= 0 ? token.animation_url : token.image} />
+        {["webm","mp4"].indexOf(token.properties.ext) >= 0 ?
           <meta property="og:type" content="video" />
         : null}
-        {["webm","mp4"].indexOf(token.properties.ext) >=0 ?
+        {["webm","mp4"].indexOf(token.properties.ext) >= 0 ?
           <meta property="og:video:width" content="994" />
         : null}
-        {["webm","mp4"].indexOf(token.properties.ext) >=0 ?
+        {["webm","mp4"].indexOf(token.properties.ext) >= 0 ?
           <meta property="og:video:height" content="720" />
         : null}
         {token.properties.ext === "mp4" ?
@@ -105,14 +107,14 @@ const Asset = ({data}) => {
           <meta property="og:video:type" content="video/webm" />
         : null}
         <meta name="theme-color" content="#c4005d" />
-        {["webm","mp4"].indexOf(token.properties.ext) >=0 ?
+        {["webm","mp4"].indexOf(token.properties.ext) >= 0 ?
           null
         :
           <meta name="twitter:card" content="summary_large_image" />
         }
         <script type="text/javascript" src="/geometry.js"></script>
       </Head>
-      { !loading ?
+      {!loading ?
           <CardDetails
              id={token.id}
              isMainnet={token.isMainnet}
@@ -153,6 +155,7 @@ const Asset = ({data}) => {
                setLoading(false);
              }}
              addresses={addresses}
+             selectedView={selectedView}
            />
       :
         <Loader loading={true} />

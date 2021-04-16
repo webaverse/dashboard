@@ -251,11 +251,17 @@
     filter: drop-shadow(2px 5px 4px black);
 }
 .assetDetailsOwnedBy {
+    display: flex;
     max-width: 100%;
     text-overflow: ellipsis;
     padding-bottom: 10px;
     overflow: hidden;
     white-space: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.assetDetailsOwnedBy img {
+  margin-right: 5px;
 }
 .assetDetailsDeployedContent {
     padding-bottom: 5px;

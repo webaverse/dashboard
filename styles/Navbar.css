@@ -47,16 +47,12 @@
 .navbar .item {
   /* text-shadow: 0 0 0.2em rgba(0,0,0,.5); */
   font-weight: 400;
-  color: #676370;
-  border-radius: 6px;
+  color: #333;
+  border-radius: 5px;
   text-transform: uppercase;
-  padding: 0;
   font-size: 13px;
   box-shadow: none;
   border: none;
-  margin: 0 .85714286em;
-  background: 0 0;
-  transition: color .3s ease;
   vertical-align: middle;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
@@ -64,8 +60,15 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  padding: 0 25px;
-  margin: auto 0;
+  padding: 10px 20px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navbar .item:hover {
+  color: #FFF;
+  background-color: #333;
 }
 .navbar .navbarMenu .secondaryMenu {
   margin: 0;
@@ -76,6 +79,7 @@
   width: 40px;
   height: 40px;
   margin-top: 2px;
+  margin-right: 10px;
 }
 .accountPicture {
   /* border: 2px solid #312936 !important; */
@@ -192,6 +196,7 @@
 
 .navbar-buttons {
   display: flex;
+  align-items: center;
 }
 .navbar-buttons .navbar-button {
   display: flex;

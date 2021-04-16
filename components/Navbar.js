@@ -32,7 +32,7 @@ const Navbar = () => {
     });
   };
 
-  console.log('got path', router.asPath);
+  // console.log('got path', router.asPath);
 
   return (
     <div className="navbar">

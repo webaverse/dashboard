@@ -467,105 +467,113 @@ const CardDetails = ({
               <Fragment>
                 <div
                   className="assetDetailsLeftColumn"
-                  /* style={{
-                    backgroundImage: `linear-gradient(0deg, ${spec.art.color}60 0%, ${spec.art.color}00 100%)`,
-                  }} */
                   ref={el => {
                     cardSceneWrapEl = el;
                   }}
                 >
-                  <div className="card-buttons">
-                    <div className={`card-button ${liked ? 'selected' : ''}`} onClick={e => {
-                      _handleLike();
-                    }}>
-                      <img className="only-selected" src="/heart_full.svg" />
-                      <img className="only-not-selected" src="/heart_empty.svg" />
+                  <div
+                    className="assetDetailsBackground"
+                    /* style={{
+                      backgroundImage: `linear-gradient(0deg, ${spec.art.color}60 0%, ${spec.art.color}00 100%)`,
+                    }} */
+                  >
+                    <div className="card-buttons">
+                      <div className={`card-button ${liked ? 'selected' : ''}`} onClick={e => {
+                        _handleLike();
+                      }}>
+                        <img className="only-selected" src="/heart_full.svg" />
+                        <img className="only-not-selected" src="/heart_empty.svg" />
+                      </div>
+                      <div className="card-button">
+                        <img src="/help.svg" />
+                      </div>
+                      <div className="card-button" onClick={e => {
+                        if (!document.fullscreenElement) {
+                          if (cardSceneWrapEl) {
+                            cardSceneWrapEl.requestFullscreen();
+                          }
+                        } else {
+                          document.exitFullscreen();
+                        }
+                      }}>
+                        <img src="/maximize.svg" />
+                      </div>
                     </div>
-                    <div className="card-button">
-                      <img src="/help.svg" />
-                    </div>
-                    <div className="card-button" onClick={e => {
-                      if (cardSceneWrapEl) {
-                        cardSceneWrapEl.requestFullscreen();
+                    {/* <AssetCard
+                      id={id}
+                      key={id}
+                      assetName={name}
+                      ext={ext}
+                      animation_url={animation_url}
+                      description={description}
+                      buyPrice={buyPrice}
+                      image={image}
+                      hash={hash}
+                      numberInEdition={numberInEdition}
+                      totalSupply={totalSupply}
+                      balance={balance}
+                      totalInEdition={totalInEdition}
+                      assetType={assetType}
+                      ownerAvatarPreview={ownerAvatarPreview}
+                      ownerUsername={ownerUsername}
+                      ownerAddress={ownerAddress}
+                      minterAvatarPreview={minterAvatarPreview}
+                      minterUsername={minterUsername}
+                      minterAddress={minterAddress}
+                      cardSize={""}
+                      glow={false}
+                      imageView={imageView}
+                    /> */}
+                    {(() => {
+                      const props = {
+                        id,
+                        key: id,
+                        assetName: name,
+                        ext,
+                        animation_url,
+                        description,
+                        buyPrice,
+                        image,
+                        hash,
+                        numberInEdition,
+                        totalSupply,
+                        balance,
+                        totalInEdition,
+                        assetType,
+                        ownerAvatarPreview,
+                        ownerUsername,
+                        ownerAddress,
+                        minterAvatarPreview,
+                        minterUsername,
+                        minterAddress,
+                        cardSize: 'large',
+                        glow: false,
+                        imageView,
+                      };
+                      switch (selectedView) {
+                        case 'cards': {
+                          return (
+                            <AssetCardSvg {...props} />
+                          );
+                        }
+                        case '2d': {
+                          return (
+                            <AssetCard2D {...props} />
+                          );
+                        }
+                        case '3d': {
+                          return (
+                            <AssetCard3D {...props} />
+                          );
+                        }
+                        case 'live': {
+                          return (
+                            <AssetCardLive {...props} />
+                          );
+                        }
                       }
-                    }}>
-                      <img src="/maximize.svg" />
-                    </div>
+                    })()}
                   </div>
-                  {/* <AssetCard
-                    id={id}
-                    key={id}
-                    assetName={name}
-                    ext={ext}
-                    animation_url={animation_url}
-                    description={description}
-                    buyPrice={buyPrice}
-                    image={image}
-                    hash={hash}
-                    numberInEdition={numberInEdition}
-                    totalSupply={totalSupply}
-                    balance={balance}
-                    totalInEdition={totalInEdition}
-                    assetType={assetType}
-                    ownerAvatarPreview={ownerAvatarPreview}
-                    ownerUsername={ownerUsername}
-                    ownerAddress={ownerAddress}
-                    minterAvatarPreview={minterAvatarPreview}
-                    minterUsername={minterUsername}
-                    minterAddress={minterAddress}
-                    cardSize={""}
-                    glow={false}
-                    imageView={imageView}
-                  /> */}
-                  {(() => {
-                    const props = {
-                      id,
-                      key: id,
-                      assetName: name,
-                      ext,
-                      animation_url,
-                      description,
-                      buyPrice,
-                      image,
-                      hash,
-                      numberInEdition,
-                      totalSupply,
-                      balance,
-                      totalInEdition,
-                      assetType,
-                      ownerAvatarPreview,
-                      ownerUsername,
-                      ownerAddress,
-                      minterAvatarPreview,
-                      minterUsername,
-                      minterAddress,
-                      cardSize: 'large',
-                      glow: false,
-                      imageView,
-                    };
-                    switch (selectedView) {
-                      case 'cards': {
-                        return (
-                          <AssetCardSvg {...props} />
-                        );
-                      }
-                      case '2d': {
-                        return (
-                          <AssetCard2D {...props} />
-                        );
-                      }
-                      case '3d': {
-                        return (
-                          <AssetCard3D {...props} />
-                        );
-                      }
-                      case 'live': {
-                        return (
-                          <AssetCardLive {...props} />
-                        );
-                      }
-                    }
-                  })()}
                 </div>
                 <div className="assetDetailsRightColumn">
                   <div className={`detailsBlock detailsBlockSet`}>

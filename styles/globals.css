@@ -86,6 +86,10 @@ a {
 .containerText {
   color: #676370;
 }
+.streetchain, .mint-button, .blocker, .mint-menu-bar, .slider {
+  margin-left: 19px;
+}
+
 .logo,
 .accountPicture {
   cursor: pointer;
@@ -513,7 +517,7 @@ a {
   position: absolute;
   width: 100px;
   margin-top: -37px;
-  left: calc(-100px + 2px);
+  left: calc(-100px + 2px + 21px);
 }
 .mainRow .notch .text {
   position: relative;

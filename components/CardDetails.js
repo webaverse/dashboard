@@ -90,6 +90,7 @@ const CardDetails = ({
   const [tryOn, setTryOn] = useState(false);
   const [unlockableSpec, setUnlockableSpec] = useState(null);
   const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   let userOwnsThisAsset, userCreatedThisAsset;
   const allAddresses = (globalState.address ? [globalState.address] : []).concat(addresses);
@@ -440,6 +441,10 @@ const CardDetails = ({
   const spec = procgen(id + '')[0];
   // console.log('got spec', spec);
 
+  const _handleLike = () => {
+    setLiked(!liked);
+  };
+
   return (
     <Fragment>
       {tryOn ? (
@@ -467,8 +472,11 @@ const CardDetails = ({
                   }} */
                 >
                   <div className="card-buttons">
-                    <div className="card-button">
-                      <img src="/heart_empty.svg" />
+                    <div className={`card-button ${liked ? 'selected' : ''}`} onClick={e => {
+                      _handleLike();
+                    }}>
+                      <img className="only-selected" src="/heart_full.svg" />
+                      <img className="only-not-selected" src="/heart_empty.svg" />
                     </div>
                     <div className="card-button">
                       <img src="/help.svg" />

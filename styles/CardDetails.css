@@ -46,7 +46,7 @@
   display: flex;
   width: 36px;
   height: 36px;
-  padding: 10px;
+  padding: 6px;
   background-color: #e0e0e0;
   border-radius: 100px;
   cursor: pointer;
@@ -62,6 +62,11 @@
 }
 .assetDetailsLeftColumn .card-buttons .card-button img {
   
+}
+.assetDetailsLeftColumn .card-buttons .card-button.selected .only-not-selected,
+.assetDetailsLeftColumn .card-buttons .card-button:not(.selected) .only-selected
+{
+  display: none;
 }
 
 .content-preview-2d,

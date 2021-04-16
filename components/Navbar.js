@@ -3,12 +3,14 @@ import Link from 'next/link'
 import {useRouter} from 'next/router';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { useAppContext } from "../libs/contextLib";
+import {useAppContext} from "../libs/contextLib";
 
-const Navbar = () => {
+const Navbar = ({
+  selectedView,
+  setSelectedView,
+}) => {
   const { globalState, setGlobalState } = useAppContext();
   const [dropdown, setDropdown] = useState(false);
-  const [selectedView, setSelectedView] = useState('cards');
   
   const router = useRouter();
 

@@ -105,6 +105,9 @@ const Card2D = ({
           src={image}
           className="content-preview"
           onDragStart={_cancelDragStart}
+          onDoubleClick={e => {
+            e.target.requestFullscreen();
+          }}
         />
       );
     } else {

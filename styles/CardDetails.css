@@ -40,6 +40,7 @@
   position: absolute;
   top: 0;
   right: 8vw;
+  user-select: none;
 }
 .assetDetailsLeftColumn .card-buttons .card-button {
   display: flex;

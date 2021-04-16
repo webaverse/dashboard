@@ -106,6 +106,7 @@
   border: 2px solid #333;
   border-radius: 100px;
   align-items: center;
+  user-select: none;
 }
 .navbarSwitch .option {
   padding: 2px 10px;

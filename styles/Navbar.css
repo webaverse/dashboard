@@ -99,6 +99,29 @@
 .navbarIcon {
   display: none;
 }
+.navbarSwitch {
+  display: flex;
+  margin: auto 0;
+  padding: 2px;
+  border: 2px solid #333;
+  border-radius: 100px;
+  align-items: center;
+}
+.navbarSwitch .option {
+  padding: 2px 10px;
+  border-radius: 100px;
+  font-size: 15px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.navbarSwitch .option + .option {
+  /* margin-left: 10px; */
+}
+.navbarSwitch .option:hover,
+.navbarSwitch .option.selected {
+  background-color: #333;
+  color: #FFF;
+}
 .navbarSILKContainer {
   display: flex;
   width: 150px;

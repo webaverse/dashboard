@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link'
+import {useRouter} from 'next/router';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useAppContext } from "../libs/contextLib";
@@ -7,6 +8,8 @@ import { useAppContext } from "../libs/contextLib";
 const Navbar = () => {
   const { globalState, setGlobalState } = useAppContext();
   const [dropdown, setDropdown] = useState(false);
+  
+  const router = useRouter();
 
   const _switchToSideChain = async e => {
     e.preventDefault();
@@ -28,6 +31,8 @@ const Navbar = () => {
         }],
     });
   };
+
+  console.log('got path', router.asPath);
 
   return (
     <div className="navbar">
@@ -59,11 +64,11 @@ const Navbar = () => {
 */}
           <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
             <div className="navbar-buttons">
-              <Link className="navbar-button" href="https://app.webaverse.com/"><a className={`item`}>Play</a></Link>
-              <Link className="navbar-button" href="/items"><a className={`item`}>Cards</a></Link>
-              <Link className="navbar-button" href="/accounts"><a className={`item`}>Accounts</a></Link>
-              <Link className="navbar-button" href="/map"><a className={`item`}>Map</a></Link>
-              <Link className="navbar-button" href="https://docs.webaverse.com/"><a className={`item`}>Docs</a></Link>
+              <Link href="https://app.webaverse.com/"><a className={`item ${router.asPath === '/play' ? 'selected' : ''}`}>Play</a></Link>
+              <Link href="/"><a className={`item ${router.asPath === '/' ? 'selected' : ''}`}>Cards</a></Link>
+              <Link href="/accounts"><a className={`item ${router.asPath === '/accounts' ? 'selected' : ''}`}>Accounts</a></Link>
+              <Link href="/map"><a className={`item ${router.asPath === '/map' ? 'selected' : ''}`}>Map</a></Link>
+              <Link href="https://docs.webaverse.com/"><a className={`item ${router.asPath === '/docs' ? 'selected' : ''}`}>Docs</a></Link>
             </div>
           </div>
           <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>

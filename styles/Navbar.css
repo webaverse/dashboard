@@ -66,7 +66,8 @@
   justify-content: center;
   align-items: center;
 }
-.navbar .item:hover {
+.navbar .item:hover,
+.navbar .item.selected {
   color: #FFF;
   background-color: #333;
 }

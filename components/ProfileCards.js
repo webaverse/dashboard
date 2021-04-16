@@ -4,6 +4,7 @@ import Link from "next/link";
 const ProfileCards = ({profiles}) => {
   return profiles.map((item, i) => {
     let url, name;
+    // console.log('check item', item);
     const image = item.image || item.avatarPreview.replace(/\.[^.]*$/, ".png");
 
     const homeSpaceImage = item.homeSpacePreview || "./defaulthomespace.svg";

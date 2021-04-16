@@ -4,6 +4,7 @@ import { useToasts } from "react-toast-notifications";
 import Link from "next/link";
 import AssetCard from "./Card";
 import AssetCardSvg from "./CardSvg";
+import AssetCard2D from "./Card2D";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import {Networks} from "../webaverse/constants.js";
 import { FileDrop } from 'react-file-drop';
@@ -480,38 +481,41 @@ const CardDetails = ({
                     imageView={imageView}
                   /> */}
                   {(() => {
+                    const props = {
+                      id,
+                      key: id,
+                      assetName: name,
+                      ext,
+                      animation_url,
+                      description,
+                      buyPrice,
+                      image,
+                      hash,
+                      numberInEdition,
+                      totalSupply,
+                      balance,
+                      totalInEdition,
+                      assetType,
+                      ownerAvatarPreview,
+                      ownerUsername,
+                      ownerAddress,
+                      minterAvatarPreview,
+                      minterUsername,
+                      minterAddress,
+                      cardSize: 'large',
+                      glow: false,
+                      imageView,
+                    };
                     switch (selectedView) {
                       case 'cards': {
                         return (
-                          <AssetCardSvg
-                            id={id}
-                            key={id}
-                            assetName={name}
-                            ext={ext}
-                            animation_url={animation_url}
-                            description={description}
-                            buyPrice={buyPrice}
-                            image={image}
-                            hash={hash}
-                            numberInEdition={numberInEdition}
-                            totalSupply={totalSupply}
-                            balance={balance}
-                            totalInEdition={totalInEdition}
-                            assetType={assetType}
-                            ownerAvatarPreview={ownerAvatarPreview}
-                            ownerUsername={ownerUsername}
-                            ownerAddress={ownerAddress}
-                            minterAvatarPreview={minterAvatarPreview}
-                            minterUsername={minterUsername}
-                            minterAddress={minterAddress}
-                            cardSize="large"
-                            glow={false}
-                            imageView={imageView}
-                          />
+                          <AssetCardSvg {...props} />
                         );
                       }
                       case '2d': {
-                        return null;
+                        return (
+                          <AssetCard2D {...props} />
+                        );
                       }
                       case '3d': {
                         return null;

@@ -68,7 +68,7 @@ const CardDetails = ({
   addresses,
   selectedView,
   // setMainnetAddress,
-  // cardSvgSource,
+  cardSvgSpec,
 }) => {
   /* if (typeof setMainnetAddress !== 'function') {
     throw new Error('no setMainnetAddress method');

@@ -37,6 +37,11 @@ a {
   color: #000;
   text-decoration: none;
 }
+.absolute-top-left {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */

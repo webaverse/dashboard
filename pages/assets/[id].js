@@ -35,6 +35,22 @@ const getData = async id => {
     return null;
   }
 };
+const _computeSvgSpec = s => {
+  const div = document.createElement('div');
+  div.className = 'absolute-top-left';
+  div.innerHTML = s;
+  const svgEl = div.querySelector('svg');
+  document.body.appendChild(div);
+
+  const result = {};
+  result['hp'] = svgEl.querySelector('#hp').getBoundingClientRect();
+  result['mp'] = svgEl.querySelector('#mp').getBoundingClientRect();
+  console.log('got elements', svgEl, result);
+  
+  document.body.removeChild(div);
+  
+  return result;
+};
 
 const Asset = ({
   data,
@@ -52,6 +68,7 @@ const Asset = ({
   // const [tokenOnChains, setTokenOnChains] = useState({});
   const [loading, setLoading] = useState(false);
   const [addresses, setAddresses] = useState([]);
+  const [cardSvgSpec, setCardSvgSpec] = useState(null);
   
   useEffect(async () => {
     if (globalState.address) {
@@ -66,6 +83,14 @@ const Asset = ({
       setAddresses(addresses);
     }
   }, [globalState]);
+  useEffect(async () => {
+    if (!cardSvgSpec) {
+      const res = await fetch("/cards.svg");
+      const s = await res.text();
+      const spec = _computeSvgSpec(s);
+      setCardSvgSpec(spec);
+    }
+  }, [cardSvgSpec]);
   /* useEffect(async () => {
     const {contracts} = await getBlockchain();
     
@@ -156,6 +181,7 @@ const Asset = ({
              }}
              addresses={addresses}
              selectedView={selectedView}
+             cardSvgSpec={cardSvgSpec}
            />
       :
         <Loader loading={true} />

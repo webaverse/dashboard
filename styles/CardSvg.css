@@ -34,6 +34,14 @@
   font-family: 'FuturaLT-Book';
   src: url('/fonts/FuturaLT-Book.ttf');
 }
+@font-face {
+  font-family: 'GeosansLight';
+  src: url('/fonts/GeosansLight.ttf');
+}
+@font-face {
+  font-family: 'GeosansLight-Oblique';
+  src: url('/fonts/GeosansLight-Oblique.ttf');
+}
 
 .card-outer {
   position: relative;

@@ -11,20 +11,12 @@
 }
 
 .assetDetails {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
     position: relative;
-    flex-wrap: wrap;
-    flex: 1 1;
-}
-
-.cardItem {
-
-}
-
-.assetDetailsContent {
-  display: flex;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
 }
 
 .assetDetailsLeftColumn {

@@ -108,7 +108,7 @@ const Card2D = ({
         />
       );
     } else {
-    return (
+      return (
         <div
             className={`card cardItem ${
                 glow ? "glow" : ""

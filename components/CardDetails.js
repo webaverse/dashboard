@@ -453,7 +453,7 @@ const CardDetails = ({
             {loading ? (
               <Loader loading={loading} />
             ) : (
-              <div className="assetDetailsContent">
+              <Fragment>
                 <div className="assetDetailsLeftColumn">
                 {/* <AssetCard
                     id={id}
@@ -859,7 +859,7 @@ const CardDetails = ({
                     </div>
                   )}
                 </div>
-              </div>
+              </Fragment>
             )}
           </div>
         </Fragment>

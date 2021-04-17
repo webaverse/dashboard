@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import AssetCard from "./Card";
+// import AssetCard from "./Card";
 import AssetCardSvg from "./CardSvg";
-import {getData} from "./Asset";
+import Asset, {getData} from "./Asset";
 
-const CardRow = ({ data, name, cardSize, /* cardSvgSource, */ tilt }) => {
+const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt }) => {
     const router = useRouter();
     
     const [lastPath, setLastPath] = useState('');
@@ -32,6 +32,8 @@ const CardRow = ({ data, name, cardSize, /* cardSvgSource, */ tilt }) => {
       }
     }
 
+    // <div>Have token: {JSON.stringify(token)}</div>
+
     return (
         <div className="mainRow">
             <div className="notch">
@@ -40,7 +42,12 @@ const CardRow = ({ data, name, cardSize, /* cardSvgSource, */ tilt }) => {
               <div className="underline"></div>
             </div>
             {token ?
-              <div>Have token: {JSON.stringify(token)}</div>
+              <div className="asset-overlay">
+                <Asset
+                  data={token}
+                  selectedView={selectedView}
+                />
+              </div>
             : null}
             {data &&
                 data.map((asset) => {

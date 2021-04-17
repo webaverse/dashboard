@@ -49,7 +49,7 @@ class Dropper extends Component {
   }
 }
 
-const PagesRoot = ({data}) => {
+const PagesRoot = ({data, selectedView}) => {
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
     const [models, setModels] = useState(null);
@@ -456,18 +456,18 @@ const PagesRoot = ({data}) => {
                   searchResults ? (
                     <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
                       {/* <CardRowHeader name="Avatars" /> */}
-                      <CardRow name="Results" data={searchResults} cardSize="small" />
+                      <CardRow name="Results" data={searchResults} selectedView={selectedView} cardSize="small" />
                     </div>
                   ) : (
                     <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
                       {/* <CardRowHeader name="Avatars" /> */}
-                      <CardRow name="Avatars" data={avatars} cardSize="small" />
+                      <CardRow name="Avatars" data={avatars} selectedView={selectedView} cardSize="small" />
 
                       {/* <CardRowHeader name="Digital Art" /> */}
-                      <CardRow name="Art" data={art} cardSize="small" />
+                      <CardRow name="Art" data={art} selectedView={selectedView} cardSize="small" />
 
                       {/* <CardRowHeader name="3D Models" /> */}
-                      <CardRow name="Models" data={models} cardSize="small" />
+                      <CardRow name="Models" data={models} selectedView={selectedView} cardSize="small" />
                     </div>
                   )
                 )}

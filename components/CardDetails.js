@@ -40,7 +40,6 @@ import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import procgen, {types} from '../webaverse/procgen.js';
 
 const CardDetails = ({
-  className,
   id,
   name,
   description,
@@ -453,7 +452,7 @@ const CardDetails = ({
             ) : (
               <Fragment>
                 <div
-                  className={`assetDetailsLeftColumn ${className}`}
+                  className="assetDetailsLeftColumn"
                   ref={el => {
                     cardSceneWrapEl = el;
                   }}

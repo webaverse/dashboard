@@ -5,7 +5,6 @@ import Asset, {getServerSideProps} from "../../components/Asset.js";
 const AssetPage = ({
   data,
   selectedView,
-  className,
 }) => {
   // console.log('got data', {selectedView});
   // const {cardSvgSource} = data;
@@ -56,7 +55,6 @@ const AssetPage = ({
       <Asset
         data={data}
         selectedView={selectedView}
-        className={className}
       />
     </Fragment>
   );

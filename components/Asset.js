@@ -128,7 +128,6 @@ const _computeSvgSpec = async s => {
 const Asset = ({
   data,
   selectedView,
-  className,
 }) => {
   // console.log('got data', {selectedView});
   // const {cardSvgSource} = data;
@@ -187,7 +186,6 @@ const Asset = ({
     <Fragment>
       {!loading ?
           <CardDetails
-             className={className}
              id={token.id}
              isMainnet={token.isMainnet}
              isPolygon={token.isPolygon}

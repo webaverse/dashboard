@@ -114,8 +114,21 @@ const CardSvg = ({
                 ay >= o.y &&
                 ay < o.y + o.height
               ) {
-                // debugger;
-                cardSpecHighlight = k;
+                cardSpecHighlight = {
+                  key: k,
+                  boundingBox: o,
+                  style: {
+                    position: 'absolute',
+                    left: `${o.x / cardSvgSpec.svg.width * boundingBox.width}px`,
+                    top: `${o.y / cardSvgSpec.svg.height * boundingBox.height}px`,
+                    width: `${o.width / cardSvgSpec.svg.width * boundingBox.width}px`,
+                    height: `${o.height / cardSvgSpec.svg.height * boundingBox.height}px`,
+                    zIndex: 100,
+                    backgroundColor: '#F00',
+                    cursor: 'pointer',
+                  },
+                };
+                // console.log('got highlight', cardSpecHighlight);
                 break;
               }
             }
@@ -132,9 +145,7 @@ const CardSvg = ({
       };
       
       return (
-        <div className='card-outer' style={{
-          backgroundColor: cardSpecHighlight ? '#F00' : null,
-        }}>
+        <div className='card-outer'>
           <div
             className='card-outer-flip'
           >
@@ -153,6 +164,13 @@ const CardSvg = ({
                 el = newEl;
               }}
             >
+              {cardSpecHighlight ?
+                <div
+                  style={cardSpecHighlight.style}
+                />
+              :
+                null
+              }
               <div
                 className={`card-svg ${transitioning ? 'transitioning' : ''}`}
                 ref={el => {

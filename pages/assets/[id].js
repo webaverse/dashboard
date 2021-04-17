@@ -57,13 +57,30 @@ const _computeSvgSpec = s => {
     width,
     height,
   };
-  result['hp'] = svgEl.querySelector('#hp').getBoundingClientRect();
-  result['mp'] = svgEl.querySelector('#mp').getBoundingClientRect();
-  result['attack'] = svgEl.querySelector('#attack').getBoundingClientRect();
-  result['speed'] = svgEl.querySelector('#speed').getBoundingClientRect();
-  result['defense'] = svgEl.querySelector('#defense').getBoundingClientRect();
-  result['luck'] = svgEl.querySelector('#luck').getBoundingClientRect();
-  console.log('got elements', svgEl, result);
+  [
+    'title-text',
+    'avatar-image',
+    'details',
+    'type-fire',
+    'unlockable-button',
+    'hp',
+    'mp',
+    'attack',
+    'speed',
+    'defense',
+    'luck',
+    'edition-text',
+    'filetype-text',
+    'filename-text',
+    'filesize-text',
+    'hash-text',
+    'stamp',
+    'filetype-description-text',
+  ].forEach(k => {
+    // console.log('getting', k);
+    result[k] = svgEl.querySelector('#' + k).getBoundingClientRect();
+    // console.log('got', k, result[k], svgEl.querySelector('#stamp'));
+  });
   
   /* if (result['svg'].width === 0) {
     debugger;

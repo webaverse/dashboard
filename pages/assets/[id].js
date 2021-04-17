@@ -59,7 +59,10 @@ const _computeSvgSpec = s => {
   };
   [
     'title-text',
+    'Image',
+    'Image-background',
     'avatar-image',
+    'illustrator-text',
     'details',
     'type-fire',
     'unlockable-button',

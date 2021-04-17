@@ -59,7 +59,6 @@ const _computeSvgSpec = s => {
   };
   [
     'title-text',
-    'Image-background',
     'avatar-image',
     'illustrator-text',
     'details',
@@ -78,6 +77,7 @@ const _computeSvgSpec = s => {
     'hash-text',
     'stamp',
     'filetype-description-text',
+    'Image-background',
   ].forEach(k => {
     // console.log('getting', k);
     result[k] = svgEl.querySelector('#' + k).getBoundingClientRect();

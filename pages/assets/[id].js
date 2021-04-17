@@ -120,7 +120,7 @@ const _computeSvgSpec = async s => {
   
   // debugger;
   
-  // document.body.removeChild(div);
+  document.body.removeChild(div);
   
   return result;
 };

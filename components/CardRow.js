@@ -1,14 +1,37 @@
-import React from "react";
+import React, {useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import AssetCard from "./Card";
 import AssetCardSvg from "./CardSvg";
+import {getData} from "./Asset";
 
 const CardRow = ({ data, name, cardSize, /* cardSvgSource, */ tilt }) => {
     const router = useRouter();
     
+    const [lastPath, setLastPath] = useState('');
+    const [token, setToken] = useState(null);
+    
     // console.log('got new props', router.asPath, data, name, cardSize);
     
+    if (router.asPath !== lastPath) {
+      setLastPath(router.asPath);
+      
+      const match = router.asPath.match(/^\/assets\/([0-9]+)$/);
+      // console.log('got match', router.asPath, match);
+      if (match) {
+        const tokenId = parseInt(match[1], 10);
+        (async () => {
+          const token = await getData(tokenId);
+          // console.log('got token', {token, tokenId});
+          setToken(token);
+        })().catch(err => {
+          console.warn(err);
+        });
+      } else {
+        setToken(null);
+      }
+    }
+
     return (
         <div className="mainRow">
             <div className="notch">
@@ -16,6 +39,9 @@ const CardRow = ({ data, name, cardSize, /* cardSvgSource, */ tilt }) => {
               <div className="text">{name}</div>
               <div className="underline"></div>
             </div>
+            {token ?
+              <div>Have token: {JSON.stringify(token)}</div>
+            : null}
             {data &&
                 data.map((asset) => {
                     if (asset.totalSupply === 0) {

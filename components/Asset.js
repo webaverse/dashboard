@@ -11,7 +11,7 @@ import {Networks} from "../webaverse/blockchain.js";
 import {getAddressProofs, getAddressesFromProofs} from '../functions/Functions.js';
 import {proofOfAddressMessage} from "../constants/UnlockConstants.js";
 
-const getData = async id => {
+export async function getData(id) {
   if (id) {
     const [
       token,

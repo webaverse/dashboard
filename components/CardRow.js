@@ -1,9 +1,14 @@
 import React from "react";
 import Link from "next/link";
+import {useRouter} from "next/router";
 import AssetCard from "./Card";
 import AssetCardSvg from "./CardSvg";
 
 const CardRow = ({ data, name, cardSize, /* cardSvgSource, */ tilt }) => {
+    const router = useRouter();
+    
+    // console.log('got new props', router.asPath, data, name, cardSize);
+    
     return (
         <div className="mainRow">
             <div className="notch">
@@ -17,7 +22,13 @@ const CardRow = ({ data, name, cardSize, /* cardSvgSource, */ tilt }) => {
                         return;
                     }
                     return (
-                        <Link href={"/assets/" + asset.id} key={asset.id}>
+                        <div
+                          onClick={e => {
+                            const u = "/assets/" + asset.id;
+                            router.push('/', u);
+                          }}
+                          key={asset.id}
+                        >
                             <a>
                                   {/* <AssetCard
                                     key={asset.id}
@@ -79,7 +90,7 @@ const CardRow = ({ data, name, cardSize, /* cardSvgSource, */ tilt }) => {
                                     tilt={true}
                                 />
                             </a>
-                        </Link>
+                        </div>
                     );
                 })}
         </div>

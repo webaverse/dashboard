@@ -6129,7 +6129,7 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 	<rect x="28.09" y="43.78" class="st142" width="217.52" height="17.34"/>
 	<text id="title-subtext" transform="matrix(1 0 0 1 28.0928 53.011)" class="st143 st144">VRMの形式</text>
 	<rect x="27.09" y="16.26" class="st142" width="217.52" height="46.83"/>
-	<text id="title-text" transform="matrix(1 0 0 1 27.0928 38.8235)" class="st145 st146">The Oasis</text>
+	<text id="title-text" transform="matrix(1 0 0 1 81.7471 38.8235)" class="st145 st146">The Oasis</text>
 </g>
 <g>
 	<path d="M504.37,14c0.9,0,1.63,0.73,1.63,1.63v696.73c0,0.9-0.73,1.63-1.63,1.63H15.63c-0.9,0-1.63-0.73-1.63-1.63V15.63
@@ -6140,8 +6140,8 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 <text id="illustrator-text" transform="matrix(1 0 0 1 90.9173 414.9598)" class="st335 st144"> Anonymous @ S1.D56</text>
 <rect x="66.92" y="686.53" class="st142" width="51.08" height="16.47"/>
 <text id="edition-text" transform="matrix(1 0 0 1 66.9173 696.4949)" class="st335 st144">1/254</text>
-<path class="st336" d="M483.68,582.27H37.32c-6.53,0-11.82-5.29-11.82-11.82v-118.4c0-6.53,5.29-11.82,11.82-11.82h446.36
-	c6.53,0,11.82,5.29,11.82,11.82v118.4C495.5,576.98,490.21,582.27,483.68,582.27z"/>
+<path id="details" class="st336" d="M483.68,582.27H37.32c-6.53,0-11.82-5.29-11.82-11.82v-118.4c0-6.53,5.29-11.82,11.82-11.82
+	h446.36c6.53,0,11.82,5.29,11.82,11.82v118.4C495.5,576.98,490.21,582.27,483.68,582.27z"/>
 <rect x="344.44" y="649.32" class="st142" width="123.08" height="21.18"/>
 <rect x="49" y="459.5" class="st142" width="218" height="25.5"/>
 <text id="description-header-text" transform="matrix(1 0 0 1 49 475.8916)" class="st337 st338">Come on and slam</text>
@@ -6168,7 +6168,7 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 			C64.12,626.88,64.16,626.9,64.2,626.92"/>
 	</g>
 </g>
-<rect x="102" y="715.68" class="st142" width="391.43" height="35.54"/>
+<rect x="102" y="715.68" class="st142" width="391.43" height="17.32"/>
 <text id="hash-text" transform="matrix(1 0 0 1 102 723.9336)" class="st525 st526 st527">bafybeigwz32wzciryzgb6txloy4tawzesallx7owgmshjkuw3sqpql6tme</text>
 <g id="type-marker" class="st528">
 	<linearGradient id="SVGID_127_" gradientUnits="userSpaceOnUse" x1="412.8037" y1="635.5" x2="494.8037" y2="635.5">
@@ -6442,9 +6442,9 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 	<text transform="matrix(1 0 0 1 197.3384 605.8538)" class="st145 st144">MP</text>
 	<text transform="matrix(0.9609 0 0 1 264.5275 605.6028)" class="st537 st534">23</text>
 </g>
-<g id="avatar-image">
+<g id="avatar-image-wrap">
 	
-		<image style="overflow:visible;" width="512" height="512" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAgAElEQVR4Xuy9WawlSXoe9kfm2e6+
+		<image style="overflow:visible;" width="512" height="512" id="avatar-image" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAgAElEQVR4Xuy9WawlSXoe9kfm2e6+
 VN1ae6leh8OhKA5H5HA4M6xq0kNyLMibYBh6MGzBFgw+CIZhE4YgCFMFG5ZhCzIhGQYNCRJgAzZs
 wJABQeCDHrobhEBIQ0NPhkFqyCG7u/a6+9nPyQzj+5fMyLx5llvdXV1VnQFU3XvPySUyIjL+7fu/
 31Hd6hH4ko5A4/b/fou6Q0rHw1sYApcS//SebmZD4vU3hwOIqNHEEUTJlChNiJKEaDKRf14P9im5
@@ -10705,7 +10705,7 @@ aTOSiWHPjxpC1ntszfM8+KD2k10NnSnb447w2MP/F4Dv12cNTHj8AAAAAElFTkSuQmCC" transform=
 <text id="filesize-text" transform="matrix(1.0036 0 0 1 321 636.0996)" class="st699 st144">70 Kb</text>
 <rect x="320.98" y="648" class="st142" width="161.03" height="32"/>
 <text id="filetype-description-text" transform="matrix(1.0036 0 0 1 320.9842 655.8475)"><tspan x="0" y="0" class="st700 st144">This card entitles the bearer to wear </tspan><tspan x="0" y="11.93" class="st700 st144">this avatar in the virtual world.</tspan></text>
-<g>
+<g id="stamp">
 	<rect x="457" y="668" class="st701" width="35" height="35"/>
 	
 		<image style="overflow:visible;" width="271" height="275" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgECTwJPAAD/7AARRHVja3kAAQAEAAAAHgAA/+4AIUFkb2JlAGTAAAAAAQMA
@@ -10819,7 +10819,7 @@ mRfHmRfHmR6seZfE9WPMvierHmXxMVOPMi+PMi+PMhVxj9SPVjzL4iU43vxIvjzL4n//2Q==" transf
 </g>
 <rect x="467" y="705" class="st142" width="15" height="8"/>
 <text transform="matrix(1 0 0 1 471.3911 706.5996)"><tspan x="0" y="0" class="st702 st703">Official</tspan><tspan x="-1.84" y="2.4" class="st702 st703">Webaverse</tspan><tspan x="-3.4" y="4.8" class="st704 st703">Seal of Quallity</tspan></text>
-<g transform="translate(20,20)" class="st44">
+<g id="qr-code" transform="translate(20,20)" class="st44">
 	<g transform="translate(80,0) scale(0.1,0.1)">
 		<g transform="">
 			<rect x="3698.95" y="6536.08" width="9.87" height="9.87"/>

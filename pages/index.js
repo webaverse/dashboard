@@ -331,7 +331,7 @@ const PagesRoot = ({data, selectedView}) => {
                 </div>
               </div>
             </div>
-            <div className={`container ${mintMenuOpen ? 'open' : ''} ${mintMenuLarge ? 'large' : ''}`}>
+            <div className={`container ${mintMenuOpen ? 'open' : ''} ${mintMenuLarge ? 'large' : ''} ${token ? 'background' : ''}`}>
                 <div className="streetchain">
                   <div className="bar" />
                 </div>
@@ -474,19 +474,6 @@ const PagesRoot = ({data, selectedView}) => {
                     </div>
                   </div>
                 </div>
-                {token ?
-                  <div className="asset-overlay">
-                    <div className="asset-overlay-background" onClick={e => {
-                      router.push('/', '/');
-                    }} />
-                    <div className="asset-overlay-foreground">
-                      <Asset
-                        data={token}
-                        selectedView={selectedView}
-                      />
-                    </div>
-                  </div>
-                : null}
                 {loading ? (
                   <Loader loading={loading} />
                 ) : (
@@ -509,6 +496,19 @@ const PagesRoot = ({data, selectedView}) => {
                   )
                 )}
             </div>
+            {token ?
+              <div className="asset-overlay">
+                <div className="asset-overlay-background" onClick={e => {
+                  router.push('/', '/');
+                }} />
+                <div className="asset-overlay-foreground">
+                  <Asset
+                    data={token}
+                    selectedView={selectedView}
+                  />
+                </div>
+              </div>
+            : null}
         </Fragment>
     );
 };

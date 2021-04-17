@@ -82,6 +82,10 @@ a {
   margin-bottom: -74px;
   --mint-menu-size: 300px;
 }
+.container.background {
+  filter: brightness(50%);
+  overflow: hidden;
+}
 .container .wrap {
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
@@ -112,11 +116,11 @@ a {
   /* box-shadow: 0px 0px 5px #c4005d; */
 }
 .appContainer {
-  flex: 1 1;
+  /* flex: 1 1;
   flex-direction: column;
   padding-top: 93px;
   display: flex;
-  padding-top: 72px;
+  padding-top: 72px; */
 }
 .hidden {
   display: none;

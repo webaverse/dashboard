@@ -845,7 +845,7 @@
 	<clipPath id="SVGID_2_">
 		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
 	</clipPath>
-	<rect x="4" y="30" class="st0" width="508" height="431"/>
+	<rect id="Image-background" x="4" y="30" class="st0" width="508" height="431"/>
 	<g style="clip-path:url(#SVGID_2_);">
 		
 			<image style="overflow:visible;" width="2594" height="2725" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEBfwF/AAD/7AARRHVja3kAAQAEAAAAHgAA/+4AIUFkb2JlAGTAAAAAAQMA

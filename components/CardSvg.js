@@ -125,7 +125,7 @@ const CardSvg = ({
                     width: `${o.width / cardSvgSpec.svg.width * boundingBox.width}px`,
                     height: `${o.height / cardSvgSpec.svg.height * boundingBox.height}px`,
                     zIndex: 100,
-                    backgroundColor: '#F00',
+                    // backgroundColor: '#F00',
                     cursor: 'pointer',
                   },
                 };

@@ -59,6 +59,10 @@ const _computeSvgSpec = s => {
   };
   result['hp'] = svgEl.querySelector('#hp').getBoundingClientRect();
   result['mp'] = svgEl.querySelector('#mp').getBoundingClientRect();
+  result['attack'] = svgEl.querySelector('#attack').getBoundingClientRect();
+  result['speed'] = svgEl.querySelector('#speed').getBoundingClientRect();
+  result['defense'] = svgEl.querySelector('#defense').getBoundingClientRect();
+  result['luck'] = svgEl.querySelector('#luck').getBoundingClientRect();
   console.log('got elements', svgEl, result);
   
   /* if (result['svg'].width === 0) {

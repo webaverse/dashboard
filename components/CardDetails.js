@@ -87,7 +87,7 @@ const CardDetails = ({
 
   const [loading, setLoading] = useState(false);
   const [imageView, setImageView] = useState('2d');
-  const [tryOn, setTryOn] = useState(false);
+  // const [tryOn, setTryOn] = useState(false);
   const [unlockableSpec, setUnlockableSpec] = useState(null);
   const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -447,20 +447,6 @@ const CardDetails = ({
 
   return (
     <Fragment>
-      {tryOn ? (
-        <Fragment>
-          <a className="button" onClick={() => setTryOn(false)}>
-            Go back
-          </a>
-          <div className="IFrameContainer">
-            <iframe
-              className="IFrame"
-              src={"https://app.webaverse.com/?t=" + id}
-            />
-          </div>
-        </Fragment>
-      ) : (
-        <Fragment>
             {loading ? (
               <Loader loading={loading} />
             ) : (
@@ -949,8 +935,6 @@ const CardDetails = ({
                 </div>
               </Fragment>
             )}
-        </Fragment>
-      )}
       {fileBrowserOpen ? <FileBrowser
         id={id}
         name={name}

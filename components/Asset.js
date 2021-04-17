@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useRouter } from 'next/router';
-import Head from 'next/head';
+// import Head from 'next/head';
 import CardDetails from "../components/CardDetails";
 import Loader from "../components/Loader";
 import {getToken, getProfileForCreator} from "../functions/UIStateFunctions";
@@ -185,34 +185,6 @@ const Asset = ({
 
   return token ? (
     <Fragment>
-      <Head>
-        <title>{token.name} | Webaverse</title>
-        <meta name="description" content={token.description + " | Webaverse"} />
-        <meta property="og:title" content={token.name + " | Webaverse"} />
-        <meta property={["webm","mp4"].indexOf(token.properties.ext) >=0 ? "og:video:url" : "og:image"} content={["gif","webm","mp4"].indexOf(token.properties.ext) >= 0 ? token.animation_url : token.image} />
-        {["webm","mp4"].indexOf(token.properties.ext) >= 0 ?
-          <meta property="og:type" content="video" />
-        : null}
-        {["webm","mp4"].indexOf(token.properties.ext) >= 0 ?
-          <meta property="og:video:width" content="994" />
-        : null}
-        {["webm","mp4"].indexOf(token.properties.ext) >= 0 ?
-          <meta property="og:video:height" content="720" />
-        : null}
-        {token.properties.ext === "mp4" ?
-          <meta property="og:video:type" content="webm/mp4" />
-        : null}
-        {token.properties.ext === "webm" ?
-          <meta property="og:video:type" content="video/webm" />
-        : null}
-        <meta name="theme-color" content="#c4005d" />
-        {["webm","mp4"].indexOf(token.properties.ext) >= 0 ?
-          null
-        :
-          <meta name="twitter:card" content="summary_large_image" />
-        }
-        <script type="text/javascript" src="/geometry.js"></script>
-      </Head>
       {!loading ?
           <CardDetails
              className={className}

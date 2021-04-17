@@ -418,9 +418,10 @@
   display: flex;
 }
 .edition-number {
+  margin-bottom: 20px;
   font-family: 'FuturaStd-Heavy';
-  font-size: 26px;
-  line-height: 2;
+  font-size: 36px;
+  line-height: 1.6;
 }
 .file-type {
 }
@@ -449,9 +450,10 @@
 }
 .details {
   display: flex;
-  flex-direction: column;
   margin: 0;
+  margin-bottom: 50px;
   padding: 0;
+  flex-direction: column;
 }
 .details .detail {
   display: flex;
@@ -460,7 +462,15 @@
 }
 .details .detail .label {
   margin-right: auto;
-  font-family: 'MS-Gothic';
+  /* font-family: 'MS-Gothic'; */
+
+  display: flex;
+  font-family: 'FuturaStd-Heavy';
+  text-transform: uppercase;
+  color: #AAA;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 1px;
 }
 .details .detail .value {
   font-family: 'GillSans-CondensedBold';

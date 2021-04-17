@@ -594,7 +594,25 @@ const CardDetails = ({
                     <div className="assetDetailsLeft">
                       <div className="name">{name}</div>
                       <div className="description">{description}</div>
-                      <a className="ipfs" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}>IPFS</a>
+                    </div>
+                    <div className="stats">
+                      <div className="stat edition-number">1</div>
+                      <div className="stat file-type">{ext}</div>
+                      <div className="stat file-size">{`305kb`}</div>
+                      <div className="stat resolution">{`500px x 700px`}</div>
+                      <div className="stat collaborators">
+                        <div className="collaborator">
+                        </div>
+                        <div className="collaborator">
+                        </div>
+                      </div>
+                      <div className="stat unlockable">
+                        Does not contain
+                      </div>
+                    </div>
+                    <div className="provenance">
+                      <a className="provenance-label">Provenance</a>
+                      <a className="provenance-node ipfs" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}>IPFS</a>
                     </div>
                     <div className="Accordion">
                       <div

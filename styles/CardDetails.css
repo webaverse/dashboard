@@ -394,6 +394,54 @@
   font-family: 'FuturaStd-Heavy';
 }
 
+.stats,
+.provenance {
+  padding: 0 20px;
+}
+.stats {
+  display: flex;
+  margin: 50px 0;
+  flex-direction: column;
+  /* align-items: flex-start; */
+}
+.stats .stat {
+  display: flex;
+}
+.edition-number {
+  font-family: 'FuturaStd-Heavy';
+  font-size: 26px;
+  line-height: 2;
+}
+.file-type {
+  font-family: 'MS-Gothic';
+}
+.file-size {
+  font-family: 'MS-Gothic';
+}
+.resolution {
+  font-family: 'MS-Gothic';
+}
+.collaborators {
+}
+.unlockable {
+  
+}
+.provenance {
+  display: flex;
+  flex-direction: column;
+}
+.provenance .provenance-label {
+  font-family: 'FuturaStd-Heavy';
+  text-transform: uppercase;
+  color: #AAA;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 1px;
+}
+.provenance .provenance-node {
+  display: flex;
+}
+
 @media (max-width: 749px) {
 
     .assetDetailsRightColumn {

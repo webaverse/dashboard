@@ -311,7 +311,7 @@
 }
 .assetDetailsOwnedBy {
     position: absolute;
-    left: calc(100vw - 16vw - 150px);
+    right: 8vw;
     margin-top: -60px;
     display: flex;
     text-overflow: ellipsis;
@@ -331,7 +331,7 @@
 }
 .assetDetailsOwnedBy .creatorDetails {
   display: flex;
-  min-width: 150px;
+  min-width: 200px;
   margin-left: -26px;
   padding: 10px;
   padding-left: 30px;
@@ -366,7 +366,7 @@
 .assetDetailsLeft {
   position: absolute;
   display: flex;
-  min-width: 250px;
+  min-width: 300px;
   margin-top: -60px;
   background-color: #FFF;
   border-radius: 10px;

@@ -11,7 +11,7 @@
   transition: background-color .5s ease,border-color .5s ease;
   padding: 0 8%;
   box-sizing: border-box;
-  z-index: 2;
+  z-index: 4;
 }
 .navbar .navbarContainer {
   position: relative;

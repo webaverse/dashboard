@@ -35,7 +35,33 @@ const getData = async id => {
     return null;
   }
 };
-const _computeSvgSpec = s => {
+/* const _waitForAllCardFonts = () => Promise.all([
+  'FuturaLT',
+  'MS-Gothic',
+  'FuturaStd-BoldOblique',
+  'GillSans',
+  'GillSans-CondensedBold',
+  'FuturaStd-Heavy',
+  'FuturaLT-CondensedLight',
+  'SanvitoPro-LtCapt',
+  'FuturaLT-Book',
+].map(fontFamily => {
+  if (typeof document !== 'undefined') {
+    return document.fonts.load(`16px "${fontFamily}"`);
+  } else {
+    return null;
+  }
+})).then(() => {});
+_waitForAllCardFonts().catch(err => {
+  console.warn(err);
+}); */
+const _computeSvgSpec = async s => {
+  /* await _waitForAllCardFonts();
+  
+  await new Promise((accept, reject) => {
+    setTimeout(accept, 3 * 1000);
+  }); */
+  
   const div = document.createElement('div');
   div.className = 'absolute-top-left';
   div.innerHTML = s;
@@ -44,8 +70,10 @@ const _computeSvgSpec = s => {
 
   const match = svgEl.getAttribute('viewBox').match(/^([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)$/);
 
-  const width = parseInt(match[3], 10) - parseInt(match[1], 10);
-  const height = parseInt(match[4], 10) - parseInt(match[2], 10);
+  // const width = parseInt(match[3], 10) - parseInt(match[1], 10);
+  // const height = parseInt(match[4], 10) - parseInt(match[2], 10);
+  const width = 500;
+  const height = 700;
   
   svgEl.style.width = `${width}px`;
   svgEl.style.height = `${height}px`;
@@ -128,7 +156,7 @@ const Asset = ({
     if (!cardSvgSpec) {
       const res = await fetch("/cards.svg");
       const s = await res.text();
-      const spec = _computeSvgSpec(s);
+      const spec = await _computeSvgSpec(s);
       setCardSvgSpec(spec);
     }
   }, [cardSvgSpec]);

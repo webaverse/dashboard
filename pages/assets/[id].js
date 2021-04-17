@@ -52,10 +52,12 @@ const AssetPage = ({
         }
         <script type="text/javascript" src="/geometry.js"></script>
       </Head>
-      <Asset
-        data={data}
-        selectedView={selectedView}
-      />
+      <div className="asset-page">
+        <Asset
+          data={data}
+          selectedView={selectedView}
+        />
+      </div>
     </Fragment>
   );
 }

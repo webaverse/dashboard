@@ -99,8 +99,7 @@
 }
 
 .detailsBlock {
-    width: 100vw;
-    padding: 0 8vw;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

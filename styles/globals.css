@@ -576,12 +576,20 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.asset-overlay-background {
   background-color: #00000080;
 }
 .asset-overlay-foreground {
-  width: calc(100vw - 20vw);
-  height: calc(100vh - 20vh);
+  position: fixed;
+  top: 100px;
+  bottom: 0;
+  left: 8vw;
+  right: 8vw;
+  display: flex;
+  flex-direction: column;
   background-color: #FFF;
+}
+
+.asset-page .assetDetailsRightColumn {
+  width: calc(100vw - 16vw);
+  margin: 0 auto;
 }

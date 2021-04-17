@@ -442,6 +442,9 @@
   align-items: center;
   /* font-family: 'GillSans-CondensedBold'; */
 }
+.provenance .provenance-node:hover {
+  text-decoration: underline;
+}
 .provenance .provenance-node img {
   width: 30px;
   height: 30px;

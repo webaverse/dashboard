@@ -20,6 +20,7 @@ const CardSvg = ({
     glow,
     imageView,
     cardSvgSpec,
+    tilt,
 }) => {
     const [perspective, setPerspective] = useState([false, false]);
     const [flip, setFlip] = useState(false);
@@ -89,7 +90,7 @@ const CardSvg = ({
           const fx = x / boundingBox.width - 0.5;
           const y = clientY - boundingBox.y;
           const fy = 1.0 - (y / boundingBox.height) - 0.5;
-          setPerspective([fx, fy]);
+          tilt && setPerspective([fx, fy]);
           
           // console.log('got spec', cardSvgSpec);
           if (cardSvgSpec) {

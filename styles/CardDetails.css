@@ -430,7 +430,8 @@
   display: flex;
   flex-direction: column;
 }
-.provenance .provenance-label {
+.provenance .label {
+  display: flex;
   font-family: 'FuturaStd-Heavy';
   text-transform: uppercase;
   color: #AAA;
@@ -440,6 +441,14 @@
 }
 .provenance .provenance-node {
   display: flex;
+  padding: 10px;
+  align-items: center;
+  /* font-family: 'GillSans-CondensedBold'; */
+}
+.provenance .provenance-node img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
 }
 
 @media (max-width: 749px) {

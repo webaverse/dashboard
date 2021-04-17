@@ -76,7 +76,7 @@ const CardRow = ({ data, name, cardSize, /* cardSvgSource, */ tilt }) => {
                                     minterAddress={asset.minter.address}
                                     cardSize={cardSize}
                                     networkType="sidechain"
-                                    tilt={false}
+                                    tilt={true}
                                 />
                             </a>
                         </Link>

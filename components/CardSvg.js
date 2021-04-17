@@ -114,6 +114,7 @@ const CardSvg = ({
                 ay >= o.y &&
                 ay < o.y + o.height
               ) {
+                // console.log('got bounding box', boundingBox);
                 cardSpecHighlight = {
                   key: k,
                   boundingBox: o,

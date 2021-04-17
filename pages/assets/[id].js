@@ -70,10 +70,12 @@ const _computeSvgSpec = async s => {
 
   const match = svgEl.getAttribute('viewBox').match(/^([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)$/);
 
-  // const width = parseInt(match[3], 10) - parseInt(match[1], 10);
-  // const height = parseInt(match[4], 10) - parseInt(match[2], 10);
-  const width = 500;
-  const height = 700;
+  const width = parseInt(match[3], 10) - parseInt(match[1], 10);
+  const height = parseInt(match[4], 10) - parseInt(match[2], 10);
+  // const width = 500;
+  // const height = 700;
+  
+  // console.log('width / height', width, height);
   
   svgEl.style.width = `${width}px`;
   svgEl.style.height = `${height}px`;
@@ -116,7 +118,9 @@ const _computeSvgSpec = async s => {
     debugger;
   } */
   
-  document.body.removeChild(div);
+  // debugger;
+  
+  // document.body.removeChild(div);
   
   return result;
 };

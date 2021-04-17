@@ -83,7 +83,6 @@ a {
   --mint-menu-size: 300px;
 }
 .container.background {
-  filter: brightness(50%);
   overflow: hidden;
 }
 .container .wrap {
@@ -447,7 +446,7 @@ a {
   border-top: 0;
   border-bottom: 0;
   flex-direction: column;
-  z-index: 3;
+  z-index: 5;
 }
 .street-filters .row {
   display: flex;

@@ -456,18 +456,18 @@ const PagesRoot = ({data}) => {
                   searchResults ? (
                     <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
                       {/* <CardRowHeader name="Avatars" /> */}
-                      <CardRow name="Results" data={searchResults} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                      <CardRow name="Results" data={searchResults} cardSize="small" />
                     </div>
                   ) : (
                     <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
                       {/* <CardRowHeader name="Avatars" /> */}
-                      <CardRow name="Avatars" data={avatars} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                      <CardRow name="Avatars" data={avatars} cardSize="small" />
 
                       {/* <CardRowHeader name="Digital Art" /> */}
-                      <CardRow name="Art" data={art} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                      <CardRow name="Art" data={art} cardSize="small" />
 
                       {/* <CardRowHeader name="3D Models" /> */}
-                      <CardRow name="Models" data={models} cardSize="small" cardSvgSource={data.cardSvgSource} />
+                      <CardRow name="Models" data={models} cardSize="small" />
                     </div>
                   )
                 )}
@@ -477,7 +477,7 @@ const PagesRoot = ({data}) => {
 };
 export default PagesRoot;
 
-export async function getServerSideProps(context) {
+/* export async function getServerSideProps(context) {
   const urlPrefix = (() => {
     if (typeof window !== 'undefined') {
       return window.location.protocol + '//' + window.location.host;
@@ -492,11 +492,6 @@ export async function getServerSideProps(context) {
     // o,
     cardSvgSource,
   ] = await Promise.all([
-    /* (async () => {
-      const id = /^[0-9]+$/.test(context.params.id) ? parseInt(context.params.id, 10) : NaN;
-      const o = await getData(id);
-      return o;
-    })(), */
     (async () => {
       const res = await fetch(u);
       const s = await res.text();
@@ -515,4 +510,4 @@ export async function getServerSideProps(context) {
       },
     },
   };
-}
+} */

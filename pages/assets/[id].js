@@ -200,6 +200,7 @@ const Asset = ({
              addresses={addresses}
              selectedView={selectedView}
              cardSvgSpec={cardSvgSpec}
+             tilt={true}
            />
       :
         <Loader loading={true} />

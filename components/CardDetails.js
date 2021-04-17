@@ -550,6 +550,7 @@ const CardDetails = ({
                         glow: false,
                         imageView,
                         cardSvgSpec,
+                        tilt: false,
                       };
                       switch (selectedView) {
                         case 'cards': {

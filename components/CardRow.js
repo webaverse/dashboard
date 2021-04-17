@@ -3,7 +3,7 @@ import Link from "next/link";
 import AssetCard from "./Card";
 import AssetCardSvg from "./CardSvg";
 
-const CardRow = ({ data, name, cardSize, cardSvgSource }) => {
+const CardRow = ({ data, name, cardSize, /* cardSvgSource, */ tilt }) => {
     return (
         <div className="mainRow">
             <div className="notch">
@@ -76,7 +76,7 @@ const CardRow = ({ data, name, cardSize, cardSvgSource }) => {
                                     minterAddress={asset.minter.address}
                                     cardSize={cardSize}
                                     networkType="sidechain"
-                                    cardSvgSource={cardSvgSource}
+                                    tilt={false}
                                 />
                             </a>
                         </Link>

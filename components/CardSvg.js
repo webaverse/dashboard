@@ -93,8 +93,8 @@ const CardSvg = ({
           tilt && setPerspective([fx, fy]);
           
           // console.log('got spec', cardSvgSpec);
-          if (cardSvgSpec) {
-            let cardSpecHighlight = null;
+          let cardSpecHighlight = null;
+          if (cardSvgSpec && !flip) {
             for (const k in cardSvgSpec) {
               if (k === 'svg') {
                 continue;
@@ -155,8 +155,12 @@ const CardSvg = ({
               className={`card-wrap ${transitioning ? 'transitioning' : ''}`}
               onClick={e => {
                 if (cardSize === 'large') {
-                  setFlip(!flip);
+                  const newFlip = !flip;
+                  setFlip(newFlip);
                   setTransitioning(true);
+                  if (newFlip) {
+                    setCardSpecHighlight(null);
+                  }
                 }
               }}
               onMouseMove={_handleMouseMove}

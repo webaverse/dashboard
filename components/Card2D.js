@@ -75,7 +75,12 @@ const Card2D = ({
     } else if (totalSupply > 50) {
         rarity = "common";
     } */
-
+    const _loadDimensions = el => {
+      const {naturalWidth, naturalHeight} = el;
+      if (!dimensions || dimensions[0] !== naturalWidth || dimensions[1] !== naturalHeight) {
+        setDimensions([naturalWidth, naturalHeight]);
+      }
+    };
     const _cancelDragStart = e => {
       e.preventDefault();
     };
@@ -88,12 +93,19 @@ const Card2D = ({
         onDoubleClick={e => {
           e.target.requestFullscreen();
         }}
-        ref={el => {
+        ref={async el => {
           if (el) {
-            const {naturalWidth, naturalHeight} = el;
-            if (!dimensions || dimensions[0] !== naturalWidth || dimensions[1] !== naturalHeight) {
-              setDimensions([naturalWidth, naturalHeight]);
+            if (!el.complete) {
+              await new Promise((accept, reject) => {
+                el.addEventListener('load', e => {
+                  accept();
+                });
+                el.addEventListener('error', err => {
+                  reject(err);
+                });
+              });
             }
+            _loadDimensions(el);
           }
         }}
         style={dimensions ? {

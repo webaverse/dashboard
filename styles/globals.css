@@ -507,7 +507,6 @@ a {
   flex-wrap: wrap;
   /* background-color: #f4f4f4; */
   padding-top: 70px;
-  perspective: 1200px;
 }
 .mainRow .bar {
   position: absolute;
@@ -522,7 +521,7 @@ a {
   position: absolute;
   width: 100px;
   margin-top: -37px;
-  left: calc(-100px + 2px + 21px);
+  left: calc(8vw + 21px);
 }
 .mainRow .notch .text {
   position: relative;
@@ -556,3 +555,33 @@ a {
   <div className="nub"></div>
   <div className="bar"></div>
 </div> */
+
+.asset-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+.asset-overlay-background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.asset-overlay-background {
+  background-color: #00000080;
+}
+.asset-overlay-foreground {
+  width: calc(100vw - 20vw);
+  height: calc(100vh - 20vh);
+  background-color: #FFF;
+}

@@ -43,10 +43,15 @@ const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt
             </div>
             {token ?
               <div className="asset-overlay">
-                <Asset
-                  data={token}
-                  selectedView={selectedView}
-                />
+                <div className="asset-overlay-background" onClick={e => {
+                  router.push('/', '/');
+                }} />
+                <div className="asset-overlay-foreground">
+                  <Asset
+                    data={token}
+                    selectedView={selectedView}
+                  />
+                </div>
               </div>
             : null}
             {data &&

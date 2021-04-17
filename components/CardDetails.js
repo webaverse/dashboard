@@ -599,17 +599,29 @@ const CardDetails = ({
                       <div className="stat-label">Edition</div>
                       <div className="stat edition-number">1</div>
                       <div className="stat-label">Content details</div>
-                      <div className="stat file-type">{ext}</div>
-                      <div className="stat file-size">{`305kb`}</div>
-                      <div className="stat resolution">{`500px x 700px`}</div>
+                      <ul className="stat details">
+                        <div className="detail file-type">
+                          <div className="label">Type</div>
+                          <div className="value">{ext}</div>
+                        </div>
+                        <div className="detail file-size">
+                          <div className="label">Size</div>
+                          <div className="value">{`305kb`}</div>
+                        </div>
+                        <div className="detail resolution">
+                          <div className="label">Resolution</div>
+                          <div className="value">{`500px x 700px`}</div>
+                        </div>
+                        <div className="detail unlockable">
+                          <div className="label">Unlockable</div>
+                          <div className="value">{`No`}</div>
+                        </div>
+                      </ul>
                       <div className="stat collaborators">
                         <div className="collaborator">
                         </div>
                         <div className="collaborator">
                         </div>
-                      </div>
-                      <div className="stat unlockable">
-                        Does not contain
                       </div>
                     </div>
                     <div className="provenance">

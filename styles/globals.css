@@ -594,8 +594,10 @@ a {
   overflow: hidden;
 }
 
+.asset-page {
+  padding-top: 70px;
+}
 .asset-page .assetDetailsRightColumn {
   width: calc(100vw - 16vw);
   margin: 0 auto;
-  padding-top: 70px;
 }

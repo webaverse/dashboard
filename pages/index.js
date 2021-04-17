@@ -50,6 +50,55 @@ class Dropper extends Component {
   }
 }
 
+const StreetFilters = ({
+  q,
+  setQ,
+  selectedOption,
+  setSelectedOption,
+}) => {
+  const router = useRouter();
+  
+  return (
+    <div className="street-filters">
+      <label className="row">
+        <img className="search-image" src="/search.svg" />
+        <input
+          type="text"
+          value={q}
+          onChange={e => {
+            setQ(e.target.value);
+          }}
+          onKeyDown={e => {
+            if (e.which === 13) {
+              if (q) {
+                router.push(`/?q=${q}`);
+              } else {
+                router.push('/');
+              }
+            }
+          }}
+        />
+      </label>
+      <div className="row">
+        <div className="filter-options">
+          <div className={`option ${selectedOption === 'image' ? 'selected' : ''}`} onClick={e => setSelectedOption('image')}>
+            <img className="option-image" src="/image.svg" />
+          </div>
+          <div className={`option ${selectedOption === 'video' ? 'selected' : ''}`} onClick={e => setSelectedOption('video')}>
+            <img className="option-image" src="/video.svg" />
+          </div>
+          <div className={`option ${selectedOption === 'audio' ? 'selected' : ''}`} onClick={e => setSelectedOption('audio')}>
+            <img className="option-image" src="/audio.svg" />
+          </div>
+          <div className={`option ${selectedOption === 'avatar' ? 'selected' : ''}`} onClick={e => setSelectedOption('avatar')}>
+            <img className="option-image" src="/avatar.svg" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const PagesRoot = ({data, selectedView}) => {
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
@@ -294,43 +343,12 @@ const PagesRoot = ({data, selectedView}) => {
                 callToAction="Play"
                 ctaUrl="https://app.webaverse.com"
             /> */}
-            <div className="street-filters">
-              <label className="row">
-                <img className="search-image" src="/search.svg" />
-                <input
-                  type="text"
-                  value={q}
-                  onChange={e => {
-                    setQ(e.target.value);
-                  }}
-                  onKeyDown={e => {
-                    if (e.which === 13) {
-                      if (q) {
-                        router.push(`/?q=${q}`);
-                      } else {
-                        router.push('/');
-                      }
-                    }
-                  }}
-                />
-              </label>
-              <div className="row">
-                <div className="filter-options">
-                  <div className={`option ${selectedOption === 'image' ? 'selected' : ''}`} onClick={e => setSelectedOption('image')}>
-                    <img className="option-image" src="/image.svg" />
-                  </div>
-                  <div className={`option ${selectedOption === 'video' ? 'selected' : ''}`} onClick={e => setSelectedOption('video')}>
-                    <img className="option-image" src="/video.svg" />
-                  </div>
-                  <div className={`option ${selectedOption === 'audio' ? 'selected' : ''}`} onClick={e => setSelectedOption('audio')}>
-                    <img className="option-image" src="/audio.svg" />
-                  </div>
-                  <div className={`option ${selectedOption === 'avatar' ? 'selected' : ''}`} onClick={e => setSelectedOption('avatar')}>
-                    <img className="option-image" src="/avatar.svg" />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <StreetFilters
+              q={q}
+              setQ={setQ}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+            />
             <div className={`container ${mintMenuOpen ? 'open' : ''} ${mintMenuLarge ? 'large' : ''} ${token ? 'background' : ''}`}>
                 <div className="streetchain">
                   <div className="bar" />

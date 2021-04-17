@@ -596,7 +596,9 @@ const CardDetails = ({
                       <div className="description">{description}</div>
                     </div>
                     <div className="stats">
+                      <div className="stat-label">Edition</div>
                       <div className="stat edition-number">1</div>
+                      <div className="stat-label">Content details</div>
                       <div className="stat file-type">{ext}</div>
                       <div className="stat file-size">{`305kb`}</div>
                       <div className="stat resolution">{`500px x 700px`}</div>
@@ -611,7 +613,7 @@ const CardDetails = ({
                       </div>
                     </div>
                     <div className="provenance">
-                      <a className="label">Provenance</a>
+                      <div className="stat-label">Provenance</div>
                       <a className="provenance-node ipfs" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/storage.svg" />IPFS</a>
                       <a className="provenance-node sidechain" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/sidechain.svg" />Sidechain TX</a>
                       <a className="provenance-node etherscan" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/ethereum.svg" />Etherscan TX</a>

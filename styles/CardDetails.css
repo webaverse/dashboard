@@ -398,6 +398,15 @@
 .provenance {
   padding: 0 20px;
 }
+.stat-label {
+  display: flex;
+  font-family: 'FuturaStd-Heavy';
+  text-transform: uppercase;
+  color: #AAA;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 1px;
+}
 .stats {
   display: flex;
   margin: 50px 0;
@@ -429,15 +438,6 @@
 .provenance {
   display: flex;
   flex-direction: column;
-}
-.provenance .label {
-  display: flex;
-  font-family: 'FuturaStd-Heavy';
-  text-transform: uppercase;
-  color: #AAA;
-  font-size: 10px;
-  line-height: 16px;
-  letter-spacing: 1px;
 }
 .provenance .provenance-node {
   display: flex;

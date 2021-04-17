@@ -6,6 +6,7 @@ import {getTokens} from "../functions/UIStateFunctions.js";
 import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
+import Asset, {getData} from "../components/Asset";
 import Loader from "../components/Loader";
 import {FileDrop} from "react-file-drop";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
@@ -64,6 +65,8 @@ const PagesRoot = ({data, selectedView}) => {
     const [q, setQ] = useState('');
     const [lastQ, setLastQ] = useState('');
     const [searchResults, setSearchResults] = useState(null);
+    const [lastPath, setLastPath] = useState('');
+    const [token, setToken] = useState(null);
     
     const router = useRouter();
     
@@ -86,6 +89,24 @@ const PagesRoot = ({data, selectedView}) => {
       } else {
         setQ('');
         setSearchResults(null);
+      }
+    }
+    if (router.asPath !== lastPath) {
+      setLastPath(router.asPath);
+      
+      const match = router.asPath.match(/^\/assets\/([0-9]+)$/);
+      // console.log('got match', router.asPath, match);
+      if (match) {
+        const tokenId = parseInt(match[1], 10);
+        (async () => {
+          const token = await getData(tokenId);
+          // console.log('got token', {token, tokenId});
+          setToken(token);
+        })().catch(err => {
+          console.warn(err);
+        });
+      } else {
+        setToken(null);
       }
     }
 
@@ -245,6 +266,9 @@ const PagesRoot = ({data, selectedView}) => {
         reader.readAsDataURL(file); */
       }
       else console.warn("Didnt upload file");
+    };
+    const _handleTokenClick = tokenId => e => {
+      router.push('/', '/assets/' + tokenId);
     };
 
     return (
@@ -450,6 +474,19 @@ const PagesRoot = ({data, selectedView}) => {
                     </div>
                   </div>
                 </div>
+                {token ?
+                  <div className="asset-overlay">
+                    <div className="asset-overlay-background" onClick={e => {
+                      router.push('/', '/');
+                    }} />
+                    <div className="asset-overlay-foreground">
+                      <Asset
+                        data={token}
+                        selectedView={selectedView}
+                      />
+                    </div>
+                  </div>
+                : null}
                 {loading ? (
                   <Loader loading={loading} />
                 ) : (
@@ -461,13 +498,13 @@ const PagesRoot = ({data, selectedView}) => {
                   ) : (
                     <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
                       {/* <CardRowHeader name="Avatars" /> */}
-                      <CardRow name="Avatars" data={avatars} selectedView={selectedView} cardSize="small" />
+                      <CardRow name="Avatars" data={avatars} selectedView={selectedView} cardSize="small" onTokenClick={_handleTokenClick} />
 
                       {/* <CardRowHeader name="Digital Art" /> */}
-                      <CardRow name="Art" data={art} selectedView={selectedView} cardSize="small" />
+                      <CardRow name="Art" data={art} selectedView={selectedView} cardSize="small" onTokenClick={_handleTokenClick} />
 
                       {/* <CardRowHeader name="3D Models" /> */}
-                      <CardRow name="Models" data={models} selectedView={selectedView} cardSize="small" />
+                      <CardRow name="Models" data={models} selectedView={selectedView} cardSize="small" onTokenClick={_handleTokenClick} />
                     </div>
                   )
                 )}

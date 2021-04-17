@@ -5,33 +5,7 @@ import {useRouter} from "next/router";
 import AssetCardSvg from "./CardSvg";
 import Asset, {getData} from "./Asset";
 
-const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt }) => {
-    const router = useRouter();
-    
-    const [lastPath, setLastPath] = useState('');
-    const [token, setToken] = useState(null);
-    
-    // console.log('got new props', router.asPath, data, name, cardSize);
-    
-    if (router.asPath !== lastPath) {
-      setLastPath(router.asPath);
-      
-      const match = router.asPath.match(/^\/assets\/([0-9]+)$/);
-      // console.log('got match', router.asPath, match);
-      if (match) {
-        const tokenId = parseInt(match[1], 10);
-        (async () => {
-          const token = await getData(tokenId);
-          // console.log('got token', {token, tokenId});
-          setToken(token);
-        })().catch(err => {
-          console.warn(err);
-        });
-      } else {
-        setToken(null);
-      }
-    }
-
+const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt, onTokenClick }) => {
     // <div>Have token: {JSON.stringify(token)}</div>
 
     return (
@@ -41,32 +15,13 @@ const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt
               <div className="text">{name}</div>
               <div className="underline"></div>
             </div>
-            {token ?
-              <div className="asset-overlay">
-                <div className="asset-overlay-background" onClick={e => {
-                  router.push('/', '/');
-                }} />
-                <div className="asset-overlay-foreground">
-                  <Asset
-                    data={token}
-                    selectedView={selectedView}
-                  />
-                </div>
-              </div>
-            : null}
             {data &&
                 data.map((asset) => {
                     if (asset.totalSupply === 0) {
                         return;
                     }
                     return (
-                        <div
-                          onClick={e => {
-                            const u = "/assets/" + asset.id;
-                            router.push('/', u);
-                          }}
-                          key={asset.id}
-                        >
+                        <div key={asset.id}>
                             <a>
                                   {/* <AssetCard
                                     key={asset.id}
@@ -126,6 +81,9 @@ const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt
                                     cardSize={cardSize}
                                     networkType="sidechain"
                                     tilt={true}
+                                    onClick={e => {
+                                      onTokenClick && onTokenClick(asset.id)(e);
+                                    }}
                                 />
                             </a>
                         </div>

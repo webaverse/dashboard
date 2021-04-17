@@ -21,6 +21,7 @@ const CardSvg = ({
     imageView,
     cardSvgSpec,
     tilt,
+    onClick,
 }) => {
     const [perspective, setPerspective] = useState([false, false]);
     const [flip, setFlip] = useState(false);
@@ -162,6 +163,7 @@ const CardSvg = ({
                     setCardSpecHighlight(null);
                   }
                 }
+                onClick && onClick(e);
               }}
               onMouseMove={_handleMouseMove}
               onMouseOut={_handleMouseOut}

@@ -74,11 +74,11 @@ a {
 .container {
   position: relative;
   display: flex;
+  min-height: 100vh;
   padding: 0 8%;
   padding-left: calc(8% + 70px);
   padding-top: 130px;
   padding-bottom: 74px;
-  min-height: calc(100vh - 76px);
   margin-bottom: -74px;
   --mint-menu-size: 300px;
 }

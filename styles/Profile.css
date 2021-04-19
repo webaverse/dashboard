@@ -70,7 +70,7 @@
   margin: 0 auto;
 }
 .content .contentText {
-  filter: drop-shadow(0px 0px 5px black);
+  /* filter: drop-shadow(0px 0px 5px black); */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -92,7 +92,7 @@
   background-size: 100% 33.33%;
   top: 5px;
   right: 0;
-  filter: drop-shadow(0px 0px 5px black);
+  /* filter: drop-shadow(0px 0px 5px black); */
 }
 .popoutMenu {
   z-index: 1;
@@ -104,7 +104,7 @@
   top: 35px;
   right: 15px;
   color: black;
-  filter: drop-shadow(0px 0px 5px black);
+  /* filter: drop-shadow(0px 0px 5px black); */
   padding: 5px;
 }
 .popoutMenu .popoutMenuOptions {
@@ -116,26 +116,23 @@
 
 
 .profileHeaderContainer {
-  height: 300px;
 }
 .profileHeaderBackground {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 100%;
-  -webkit-filter: blur(1px);
-  filter: blur(2px);
+  /* -webkit-filter: blur(1px);
+  filter: blur(2px); */
   opacity: .25;
   z-index: -9999;
 }
 .profileHeader {
   display: flex;
   flex-wrap: wrap;
-  width: auto;
-  height: 100%
 }
 .itemImage {
-  filter: drop-shadow(0px 0px 5px black);
+  /* filter: drop-shadow(0px 0px 5px black); */
   height: 250px;
   width: 250px;
   border-radius: 10px;
@@ -145,11 +142,11 @@
 }
 .profileHeader .profileLoadoutPicture {
   width: 1.76em;
-  background: white;
+  background: #FFF;
   border: black;
   height: 1.76em;
   margin: 5px;
-  filter: drop-shadow(0px 0px 5px black);
+  /* filter: drop-shadow(0px 0px 5px black); */
 }
 .profileHeader .profilePicture {
   -moz-border-radius: 0px;
@@ -157,10 +154,13 @@
   border-radius: 20% 20% 0px 0px;
   width: 17em;
   height: 17em;
-  filter: drop-shadow(0px 0px 3px black);
+  /* filter: drop-shadow(0px 0px 3px black); */
   position: absolute;
   border: none;
   padding-bottom: 1px;
+}
+.profileHeader .profileVideo {
+  /* position: absolute; */
 }
 .profileHeader .profileName {
   flex: 1 1 auto;
@@ -195,7 +195,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-  text-shadow: 2px 2px 2px black;
+  /* text-shadow: 2px 2px 2px black; */
   font-weight: 400;
 }
 .profileHeader .profileText.mainName {

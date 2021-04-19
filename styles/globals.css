@@ -86,6 +86,7 @@ a {
   overflow: hidden;
 }
 .container .wrap {
+  transform: translateY(0);
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
 .container .wrap.open {
@@ -457,7 +458,7 @@ a {
   position: absolute;
   width: 100px;
   margin-top: -37px;
-  left: calc(8vw + 21px);
+  left: -48px;
 }
 .mainRow .notch .text {
   position: relative;

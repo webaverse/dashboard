@@ -115,6 +115,15 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                     )
                   : null}
                 </div>
+                            onDragStart={e => {
+                              e.preventDefault();
+                            }}
+                          />
+                        </div>
+                      );
+                    })
+                  }
+                </div>
               </div>
               <div className="card-buttons like">
                 <div className={`card-button ${liked ? 'selected' : ''}`} onClick={handleLike}>

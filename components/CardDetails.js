@@ -45,13 +45,19 @@ const CardActions = ({
   setImageView,
   toggleAddOpen,
   userOwnsThisAsset,
+  toggleEditOpen,
+  setToggleEditOpen,
   toggleResubmitOpen,
+  setToggleResubmitOpen,
   toggleTransferOpen,
+  setToggleTransferOpen,
   is3d,
   unlockableSpec,
   imageView,
   handleUnlock,
   openFileBrowser,
+  currentLocation,
+  isStuck,
 }) => {
   return (
     <Fragment>
@@ -884,57 +890,68 @@ const CardDetails = ({
                   </div>
                 </div>
                 <div className="assetDetailsRightColumn">
-                  <div className={`detailsBlock detailsBlockSet`}>
-                    <div className="assetDetailsOwnedBy">
-                      <img
-                        className="creatorIcon"
-                        src={ownerAvatarPreview.replace(/\.[^.]*$/, ".png")}
-                      />
-                      <div className="creatorDetails">
-                        <div className="label">Owner</div>
-                        <Link href={`/accounts/` + ownerAddress}>
-                          <a className="name">{`@${ownerUsername}`}</a>
-                        </Link>
+                  <div className="detailsBlock">
+                    <div className="detailsSection left">
+                      <div className="assetDetailsOwnedBy">
+                        <img
+                          className="creatorIcon"
+                          src={ownerAvatarPreview.replace(/\.[^.]*$/, ".png")}
+                        />
+                        <div className="creatorDetails">
+                          <div className="label">Owner</div>
+                          <Link href={`/accounts/` + ownerAddress}>
+                            <a className="name">{`@${ownerUsername}`}</a>
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="assetDetailsLeft">
+                        <div className="name">{name}</div>
+                          {/* <div className="description">{description}</div> */}
+                      </div>
+                      <div className="stats">
+                        <div className="stat-label">Edition</div>
+                        <div className="stat edition-number">1</div>
+                        {/* <div className="stat-label">Content details</div> */}
+                        <ul className="stat details">
+                          <div className="detail file-type">
+                            <div className="label">Type</div>
+                            <div className="value">{ext}</div>
+                          </div>
+                          <div className="detail file-size">
+                            <div className="label">Size</div>
+                            <div className="value">{`305kb`}</div>
+                          </div>
+                          <div className="detail resolution">
+                            <div className="label">Resolution</div>
+                            <div className="value">{`500px x 700px`}</div>
+                          </div>
+                          <div className="detail unlockable">
+                            <div className="label">Unlockable</div>
+                            <div className="value">{`No`}</div>
+                          </div>
+                        </ul>
+                        <div className="stat collaborators">
+                          <div className="collaborator">
+                          </div>
+                          <div className="collaborator">
+                          </div>
+                        </div>
+                      </div>
+                      <div className="provenance">
+                        <div className="stat-label">Provenance</div>
+                        <a className="provenance-node ipfs" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/storage.svg" />IPFS</a>
+                        <a className="provenance-node sidechain" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/sidechain.svg" />Sidechain TX</a>
+                        <a className="provenance-node etherscan" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/ethereum.svg" />Etherscan TX</a>
                       </div>
                     </div>
-                    <div className="assetDetailsLeft">
-                      <div className="name">{name}</div>
+                    <div className="detailsSection middle">
                       <div className="description">{description}</div>
                     </div>
-                    <div className="stats">
-                      <div className="stat-label">Edition</div>
-                      <div className="stat edition-number">1</div>
-                      {/* <div className="stat-label">Content details</div> */}
-                      <ul className="stat details">
-                        <div className="detail file-type">
-                          <div className="label">Type</div>
-                          <div className="value">{ext}</div>
-                        </div>
-                        <div className="detail file-size">
-                          <div className="label">Size</div>
-                          <div className="value">{`305kb`}</div>
-                        </div>
-                        <div className="detail resolution">
-                          <div className="label">Resolution</div>
-                          <div className="value">{`500px x 700px`}</div>
-                        </div>
-                        <div className="detail unlockable">
-                          <div className="label">Unlockable</div>
-                          <div className="value">{`No`}</div>
-                        </div>
+                    <div className="detailsSection right">
+                      <ul className="owners">
+                        <li className="owner"></li>
+                        <li className="owner"></li>
                       </ul>
-                      <div className="stat collaborators">
-                        <div className="collaborator">
-                        </div>
-                        <div className="collaborator">
-                        </div>
-                      </div>
-                    </div>
-                    <div className="provenance">
-                      <div className="stat-label">Provenance</div>
-                      <a className="provenance-node ipfs" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/storage.svg" />IPFS</a>
-                      <a className="provenance-node sidechain" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/sidechain.svg" />Sidechain TX</a>
-                      <a className="provenance-node etherscan" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/ethereum.svg" />Etherscan TX</a>
                     </div>
                   </div>
                   <CardActions
@@ -943,13 +960,19 @@ const CardDetails = ({
                     setImageView={setImageView}
                     toggleAddOpen={toggleAddOpen}
                     userOwnsThisAsset={userOwnsThisAsset}
+                    toggleEditOpen={toggleEditOpen}
+                    setToggleEditOpen={setToggleEditOpen}
                     toggleResubmitOpen={toggleResubmitOpen}
+                    setToggleResubmitOpen={setToggleResubmitOpen}
                     toggleTransferOpen={toggleTransferOpen}
+                    setToggleTransferOpen={setToggleTransferOpen}
                     is3d={is3d}
                     unlockableSpec={unlockableSpec}
                     imageView={imageView}
                     handleUnlock={handleUnlock}
                     openFileBrowser={openFileBrowser}
+                    currentLocation={currentLocation}
+                    isStuck={isStuck}
                   />
                   {(
                     globalState.address &&
@@ -957,7 +980,7 @@ const CardDetails = ({
                     storeId &&
                     buyPrice
                   ) && (
-                    <div className="detailsBlock detailsBlockSet">
+                    <div className="detailsBlock">
                       <button
                         className="assetDetailsButton"
                         onClick={handleBuyAsset}

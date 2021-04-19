@@ -101,9 +101,27 @@
 .detailsBlock {
     width: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    border-radius: 5px;
+}
+.detailsSection {
+  display: flex;
+  flex-direction: column;
+}
+.detailsSection.middle {
+  flex: 1;
+}
+.detailsSection.left {
+}
+.detailsSection.right {
+  width: 310px;
+}
+
+.detailsSection .description {
+  display: flex;
+  min-height: 600px;
+  margin-top: 30px;
+  padding: 30px 50px;
+  font-size: 20px;
+  justify-content: flex-start;
 }
 
 .assetDetailsButton {
@@ -409,7 +427,7 @@
 .stats {
   display: flex;
   min-width: 300px;
-  margin-top: 50px;
+  margin-top: 30px;
   flex-direction: column;
   /* align-items: flex-start; */
 }

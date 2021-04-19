@@ -199,9 +199,10 @@
   }
 }
 .profileHeader .profileWrap {
-  width: 300px;
+  min-width: 320px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 .profileHeader .profileText {
   display: flex;
@@ -221,13 +222,21 @@
   font-size: 3em;
   margin: unset;
 }
+.profileHeader .profileText.label {
+  font-family: 'FuturaStd-Heavy';
+  font-size: 13px;
+  color: #AAA;
+  text-transform: uppercase;
+}
 .profileHeader .profileText.address {
   margin-bottom: 5px;
   padding: 5px 10px;
   background-color: #e0e0e0;
-  background-image: linear-gradient(to bottom, #948E99, #2E1437);
   border-radius: 100px;
-  /* font-family: monospace; */
-  font-size: .65em;
+  font-family: monospace;
+  font-size: 13px;
+}
+.profileHeader .profileText.address.main {
+  background-image: linear-gradient(to bottom, #948E99, #2E1437);
   color: #FFF;
 }

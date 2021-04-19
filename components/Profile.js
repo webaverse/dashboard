@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 // import { Col } from "react-grid-system";
 import { useAppContext } from "../libs/contextLib";
 import {proofOfAddressMessage} from "../constants/UnlockConstants";
@@ -9,6 +9,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
         return null;
     }
 
+    // const {addresses, setAddresses} = useState(null);
     const {globalState, setGlobalState} = useAppContext();
 
     const logout = () => {
@@ -21,6 +22,15 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     };
     const handleError = (err) => console.log("error");
 
+    /* useEffect(async () => {
+      if (!addresses) {
+        const {web3} = await getBlockchain();
+        // setWeb3(o.web3);const addressProofs = getAddressProofs(profile);
+        const newAddresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
+        setAddresses(newAddresses);
+      }
+    }, [addresses]); */
+
     return (
         <div className="profileContainer">
             <div className="profileHeader">
@@ -29,10 +39,11 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                       <h1 className="profileText mainName">
                           {profile.name ? profile.name : "Anonymous"}
                       </h1>
-                      <p className="profileText address">{profile.address} (sidechain)</p>
+                      <div className="profileText label">Addresses</div>
+                      <p className="profileText address main">{profile.address}</p>
                       {addresses.map(address => {
                         return (
-                          <p className="profileText address" key={address}>{address} (mainnet)</p>
+                          <p className="profileText address" key={address}>{address}</p>
                         );
                       })}
                       {profile.mainnetAddress ? (

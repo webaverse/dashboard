@@ -222,7 +222,12 @@
   margin: unset;
 }
 .profileHeader .profileText.address {
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  background-color: #e0e0e0;
+  background-image: linear-gradient(to bottom, #948E99, #2E1437);
+  border-radius: 100px;
   /* font-family: monospace; */
   font-size: .65em;
-  margin: 0;
+  color: #FFF;
 }

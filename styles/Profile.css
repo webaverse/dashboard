@@ -30,13 +30,11 @@
     flex-wrap: wrap;
 }
 .profileNavLink {
-    -webkit-text-decoration: none;
     text-decoration: none;
-    color: #C4C4C4;
     font-size: 2em;
     padding: 1em;
     padding-bottom: 0;
-    opacity: 40%;
+    cursor: pointer;
 }
 .profileNavLink.active {
     -webkit-text-decoration: none;
@@ -44,7 +42,7 @@
     font-weight: bold;
     color: #c4005d;
     font-size: 2em;
-    opacity: 100%;
+    cursor: default;
 }
 .disable {
     pointer-events: none;

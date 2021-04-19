@@ -45,7 +45,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                       ) : null}
                       {balance && balance > 0 ? (
                         <p className="profileText">
-                          <img src="/curve.svg" />
+                          <img className="icon" src="/curve.svg" />
                           <div className="value">{balance || 0}</div>
                         </p>
                       ) : null}

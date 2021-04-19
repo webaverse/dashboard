@@ -73,7 +73,9 @@ class AssetOverlayBackground extends Component {
     const {router} = this.props;
     return (
       <div className="asset-overlay-background" onClick={e => {
-        router.push('/', '/');
+        router.push('/', '/', {
+          scroll: false,
+        });
       }} />
     );
   }

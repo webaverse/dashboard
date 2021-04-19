@@ -789,17 +789,17 @@ const CardDetails = ({
                       backgroundImage: `linear-gradient(0deg, ${spec.art.color}60 0%, ${spec.art.color}00 100%)`,
                     }} */
                   >
-                    <div className="card-buttons">
+                    <div className="card-buttons like">
                       <div className={`card-button ${liked ? 'selected' : ''}`} onClick={e => {
                         handleLike();
                       }}>
                         <img className="only-selected" src="/heart_full.svg" />
                         <img className="only-not-selected" src="/heart_empty.svg" />
                       </div>
-                      <div className="card-button">
+                      <div className="card-button help">
                         <img src="/help.svg" />
                       </div>
-                      <div className="card-button" onClick={e => {
+                      <div className="card-button fullscreen" onClick={e => {
                         if (!document.fullscreenElement) {
                           if (cardSceneWrapEl) {
                             cardSceneWrapEl.requestFullscreen();
@@ -810,6 +810,11 @@ const CardDetails = ({
                       }}>
                         <img src="/maximize.svg" />
                       </div>
+                      <Link href={`/assets/` + id}>
+                        <a className="card-button expand">
+                          <img src="/expand.svg" />
+                        </a>
+                      </Link>
                     </div>
                     {/* <AssetCard
                       id={id}

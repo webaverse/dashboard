@@ -541,3 +541,9 @@ a {
   width: calc(100vw - 16vw);
   margin: 0 auto;
 }
+.asset-page .card-buttons {
+  right: 8vw !important;
+}
+.asset-page .card-buttons .card-button.expand {
+  display: none;
+}

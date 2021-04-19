@@ -14,10 +14,6 @@
   margin-left: auto!important;
   margin-right: auto!important;
 }
-.footer {
-  display: block;
-  max-width: 100%!important;
-}
 @media (max-width: 1200px)
 .footer {
   margin-bottom: 12px;
@@ -34,8 +30,8 @@
   bottom: 0; 
   width: 100%;
   display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
+  flex-flow: column;
+  justify-content: center;
   align-items: center;
   height: 74px;
   color: #676370;

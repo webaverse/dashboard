@@ -14,7 +14,7 @@ import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
 import ProfileHeader from "../../components/Profile";
 
-const Account = ({ data }) => {  
+const Account = ({ data, selectedView }) => {  
   const {addToast} = useToasts();
   const router = useRouter()
   const {id} = router.query;
@@ -24,7 +24,7 @@ const Account = ({ data }) => {
   const [loadout, setLoadout] = useState(data.loadout);
   const [profile, setProfile] = useState(data.profile);
   const [store, setStore] = useState(data.store);
-  const [selectedView, setSelectedView] = useState("inventory");
+  const [selectedTab, setSelectedTab] = useState("inventory");
   const [loading, setLoading] = useState(false);
   const [stuck, setStuck] = useState(false);
   const [addresses, setAddresses] = useState([]);
@@ -76,14 +76,15 @@ const Account = ({ data }) => {
     })();
   }
 
-  const handleViewToggle = (view) => {
-    setSelectedView(view);
-  }
-
+  const _handleTokenClick = tokenId => e => {
+    router.push('/assets/' + tokenId);
+  };
+  const handleTabToggle = tab => {
+    setSelectedTab(tab);
+  };
   const logout = () => {
     setGlobalState({ ...globalState, logout: "true" });
-  }
-
+  };
   const handleSuccess = (msg, link) => {
     if (typeof msg === "object") {
       msg = JSON.stringify(msg);
@@ -94,16 +95,13 @@ const Account = ({ data }) => {
     if (window != "undefined") {
       getData();
     }
-  }
-
+  };
   const handleError = err => {
     console.warn(err);
     addToast(formatError(err), { appearance: 'error', autoDismiss: true, })
     console.log("error", err);
     setLoading(false);
-  }
-
-
+  };
   const handleAddMainnetAddress = async () => {
     addToast(mainnetSignatureMessage, { appearance: 'info', autoDismiss: true, });
     await addMainnetAddress(profile, globalState, handleSuccess, handleError);
@@ -123,7 +121,6 @@ const Account = ({ data }) => {
     alert("Please install MetaMask to use Webaverse!");
     return false;
   }
-
   const loginWithMetaMask = async (func) => {
     if (!ethEnabled()) {
       return;
@@ -145,8 +142,7 @@ const Account = ({ data }) => {
         handleError(err);
       }
     }
-  }
-
+  };
   const handleDeposit = async (e) => {
     if(e) {
       e.preventDefault();
@@ -167,9 +163,7 @@ const Account = ({ data }) => {
     } catch (err) {
       handleError(err.toString());
     }
-
-  }
-
+  };
   const handleWithdraw = async (e) => {
     if(e) {
       e.preventDefault();
@@ -190,8 +184,7 @@ const Account = ({ data }) => {
     } catch (err) {
       handleError(err.toString());
     }
-
-  }
+  };
   
   // console.log('got profile', profile);
 
@@ -220,32 +213,32 @@ const Account = ({ data }) => {
         (<div key="profileBodynav" className="profileBodyNav">
           <div className="profileBodyNavContainer">
             {store && store.length > 0 && (
-            <a className={`profileNavLink ${selectedView === "store" ? "active disable" : ""}`} onClick={() => {
-              handleViewToggle("store");
+            <a className={`profileNavLink ${selectedTab === "store" ? "active disable" : ""}`} onClick={() => {
+              handleTabToggle("store");
             }}>
               Store
             </a>)}
             {inventory && inventory.length > 0 && (
-            <a className={`profileNavLink ${selectedView === "inventory" ? "active disable" : ""}`} onClick={() => handleViewToggle("inventory")}>
+            <a className={`profileNavLink ${selectedTab === "inventory" ? "active disable" : ""}`} onClick={() => handleTabToggle("inventory")}>
               Inventory
             </a>)}
             {globalState && globalState.address === id.toLowerCase() && (
-            <a className={`profileNavLink ${selectedView === "settings" ? "active disable" : ""}`} onClick={() => handleViewToggle("settings")}>
+            <a className={`profileNavLink ${selectedTab === "settings" ? "active disable" : ""}`} onClick={() => handleTabToggle("settings")}>
               Settings
             </a>)}
           </div>
         </div>),
         (<div key="profileBodyAssets" className="profileBodyAssets">
           {[
-          selectedView === "store" && store && (
-            <CardGrid key="storeCards" data={store} globalState={globalState} cardSize="small" />
+          selectedTab === "store" && store && (
+            <CardGrid key="storeCards" data={store} globalState={globalState} selectedView={selectedView} cardSize="small"onTokenClick={_handleTokenClick} />
           ),
-          selectedView === "inventory" && inventory && (
-            <CardGrid key="inventoryCards" data={inventory} globalState={globalState} cardSize="small" />
+          selectedTab === "inventory" && inventory && (
+            <CardGrid key="inventoryCards" data={inventory} globalState={globalState} selectedView={selectedView}cardSize="small" onTokenClick={_handleTokenClick} />
           )
           ]}
         </div>),
-        selectedView === "settings" && globalState && globalState.address == id.toLowerCase() && (
+        selectedTab === "settings" && globalState && globalState.address == id.toLowerCase() && (
           <div key="settingsButtonsContainer" className="settingsButtonsContainer">
           {[
             addressProofs.length > 0 && (<a key="removeMainnetAddressButton" className="button" onClick={() => handleRemoveMainnetAddress()}>

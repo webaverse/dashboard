@@ -1,8 +1,6 @@
-.main {
-  width: 100%;
-  flex-wrap: wrap;
+.card-grid {
   display: flex;
-  /* justify-content: center; */
+  flex-wrap: wrap;
 }
 /* .mainRow {
   width: 100%;
@@ -27,7 +25,7 @@
 .mainRow::-webkit-scrollbar-track-piece { background-color: #000; border-radius: 5px;}
 .mainRow::-webkit-scrollbar-thumb {  background-color: lightgray; border-radius: 5px;}
 .mainRow::-webkit-scrollbar-corner { background-color: #181818;}
-.mainRow::-webkit-resizer { background-color: #c4005d;} */
+.mainRow::-webkit-resizer { background-color: #c4005d;}
 
 .small {
 
@@ -39,4 +37,4 @@
 }
 .large {
 
-}
+} */

@@ -50,26 +50,6 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                       ) : null}
                   </div>
               </div>
-              <div className="profileLoadout">
-                {loadout ?
-                  loadout.map((item, i) =>
-                    item && item[3] ? (
-                      <div
-                        key={i}
-                        className="profileLoadoutPicture"
-                        style={{
-                          display: "inline-block",
-                          backgroundImage: `url(${item[3]})`,
-                          backgroundSize: "cover",
-                          backgroundRepeat: "no-repeat",
-                          backgroundPosition:
-                              "center center",
-                        }}
-                      />
-                    ) : null
-                  )
-                : null}
-              </div>
               {/* <div
                 className="profilePicture"
                 style={{
@@ -99,6 +79,26 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                   autoPlay={true}
                   muted={true}
               />
+              <div className="profileLoadout">
+                {loadout ?
+                  loadout.map((item, i) =>
+                    item && item[3] ? (
+                      <div
+                        key={i}
+                        className="profileLoadoutPicture"
+                        style={{
+                          display: "inline-block",
+                          backgroundImage: `url(${item[3]})`,
+                          backgroundSize: "cover",
+                          backgroundRepeat: "no-repeat",
+                          backgroundPosition:
+                              "center center",
+                        }}
+                      />
+                    ) : null
+                  )
+                : null}
+              </div>
             </div>
         </div>
     );

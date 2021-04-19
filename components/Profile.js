@@ -80,36 +80,37 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                   backgroundPosition: "center center",
                 }}
               /> */}
-              <video
-                  className="profileVideo"
-                  src={ 
-                    `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm`
-                    /* profile.avatarPreview.replace(
-                      /\.[^.]*$/,
-                      ".webm"
-                    ) */
-                  }
-                  loop={true}
-                  autoPlay={true}
-                  muted={true}
-              />
-              <div className="profileLoadout">
-                <div className="profileLoadoutHeader">Loadout</div>
-                {loadout ?
-                  loadout.map((item, i) =>
-                    item && item[3] ? (
-                      <div className="profileLoadoutItem" key={i}>
-                        <img
-                          src={item[3]}
-                          className="profileLoadoutPicture"
-                          onDragStart={e => {
-                            e.preventDefault();
-                          }}
-                        />
-                      </div>
-                    ) : null
-                  )
-                : null}
+              <div className="profileAvatar">
+                <video
+                    className="profileVideo"
+                    src={ `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm`
+                      /* profile.avatarPreview.replace(
+                        /\.[^.]*$/,
+                        ".webm"
+                      ) */
+                    }
+                    loop={true}
+                    autoPlay={true}
+                    muted={true}
+                />
+                <div className="profileLoadout">
+                  <div className="profileLoadoutHeader">Loadout</div>
+                  {loadout ?
+                    loadout.map((item, i) =>
+                      item && item[3] ? (
+                        <div className="profileLoadoutItem" key={i}>
+                          <img
+                            src={item[3]}
+                            className="profileLoadoutPicture"
+                            onDragStart={e => {
+                              e.preventDefault();
+                            }}
+                          />
+                        </div>
+                      ) : null
+                    )
+                  : null}
+                </div>
               </div>
             </div>
         </div>

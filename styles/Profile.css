@@ -190,6 +190,12 @@
   height: 512px;
   mix-blend-mode: multiply;
 }
+.profileHeader .profileAvatar {
+  display: flex;
+  width: 60vw;
+  justify-content: center;
+  margin-right: auto;
+}
 .profileHeader .profileLeft {
   display: flex;
   /* align-items: center;

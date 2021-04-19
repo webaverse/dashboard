@@ -1,40 +1,5 @@
 .card-grid {
   display: flex;
+  padding-top: 20px;
   flex-wrap: wrap;
 }
-/* .mainRow {
-  width: 100%;
-  flex-wrap: wrap;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  overflow-x: scroll;
-}
-.mainRow {
-  scrollbar-face-color: #181818;
-  scrollbar-base-color: #181818;
-  scrollbar-3dlight-color: #181818;
-  scrollbar-highlight-color: #181818;
-  scrollbar-track-color: #000;
-  scrollbar-arrow-color: #000;
-  scrollbar-shadow-color: #181818;
-  scrollbar-dark-shadow-color: #181818;
-}
-.mainRow::-webkit-scrollbar { width: auto; height: 10px;}
-.mainRow::-webkit-scrollbar-track {  background-color: #181818;}
-.mainRow::-webkit-scrollbar-track-piece { background-color: #000; border-radius: 5px;}
-.mainRow::-webkit-scrollbar-thumb {  background-color: lightgray; border-radius: 5px;}
-.mainRow::-webkit-scrollbar-corner { background-color: #181818;}
-.mainRow::-webkit-resizer { background-color: #c4005d;}
-
-.small {
-
-}
-.medium {
-  flex-wrap: wrap;
-  width:100%;
-  display:flex;
-}
-.large {
-
-} */

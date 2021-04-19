@@ -36,7 +36,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     }, [addresses]); */
 
     return (
-        <div className="profile-page profileContainer">
+        <div className="profileContainer">
             <div className="profileHeader">
               <div className="profileLeft">
                   <div className="profileWrap">

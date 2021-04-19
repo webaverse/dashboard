@@ -257,3 +257,14 @@
 .profile-page .card-buttons {
   right: 8vw !important;
 }
+.profile-page .assetDetailsLeft {
+  min-width: 0;
+}
+.profile-page .assetDetailsLeft .name {
+  font-family: 'FuturaStd-Heavy';
+  line-height: 50px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #AAA;
+  font-size: 13px;
+}

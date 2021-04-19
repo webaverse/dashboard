@@ -201,7 +201,7 @@ const Account = ({ data, selectedView }) => {
     loading || !loadout || !store || !inventory || !balance || !profile ?
     <Loader loading={true} />
   :
-    <div>
+    <div className="profile-page">
         <ProfileHeader
           key="profileHeader"
           loadout={loadout}
@@ -209,7 +209,7 @@ const Account = ({ data, selectedView }) => {
           profile={profile}
           addresses={addresses}
         />
-        <div key="profileBodynav" className="profileBodyNav">
+        {/* <div key="profileBodynav" className="profileBodyNav">
           <div className="profileBodyNavContainer">
             {store && store.length > 0 && (
             <a className={`profileNavLink ${selectedTab === "store" ? "active disable" : ""}`} onClick={() => {
@@ -226,16 +226,17 @@ const Account = ({ data, selectedView }) => {
               Settings
             </a>)}
           </div>
-        </div>
+        </div> */}
         <div key="profileBodyAssets" className="profileBodyAssets">
-          {[
-            selectedTab === "store" && store && (
-              <CardGrid key="storeCards" data={store} globalState={globalState} selectedView={selectedView} cardSize="small"onTokenClick={_handleTokenClick} />
-            ),
-            selectedTab === "inventory" && inventory && (
-              <CardGrid key="inventoryCards" data={inventory} globalState={globalState} selectedView={selectedView}cardSize="small" onTokenClick={_handleTokenClick} />
-            )
-          ]}
+          <div className="assetDetailsLeft">
+            <div className="name">NFTs</div>
+          </div>
+          {selectedTab === "store" && store && (
+            <CardGrid key="storeCards" data={store} globalState={globalState} selectedView={selectedView} cardSize="small"onTokenClick={_handleTokenClick} />
+          )}
+          {selectedTab === "inventory" && inventory && (
+            <CardGrid key="inventoryCards" data={inventory} globalState={globalState} selectedView={selectedView}cardSize="small" onTokenClick={_handleTokenClick} />
+          )}
         </div>
         {(selectedTab === "settings" && globalState && globalState.address == id.toLowerCase()) ? (
           <div key="settingsButtonsContainer" className="settingsButtonsContainer">

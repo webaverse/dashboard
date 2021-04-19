@@ -452,7 +452,6 @@ a {
   height: 5px;
   background-color: #EEE;
 }
-
 .mainRow .notch {
   display: flex;
   position: absolute;
@@ -486,6 +485,9 @@ a {
   top: 5px;
   left: 5px;
   background-color: #e0e0e0;
+}
+.mainRow .card-outer {
+  cursor: pointer;
 }
 
 /* <div className="notch">

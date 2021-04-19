@@ -22,6 +22,9 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
         setGlobalState({ ...globalState, refresh: "true" });
     };
     const handleError = (err) => console.log("error");
+    const handleLike = e => {
+      setLiked(!liked);
+    };
 
     /* useEffect(async () => {
       if (!addresses) {
@@ -33,7 +36,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     }, [addresses]); */
 
     return (
-        <div className="profileContainer">
+        <div className="profile-page profileContainer">
             <div className="profileHeader">
               <div className="profileLeft">
                   <div className="profileWrap">
@@ -114,25 +117,15 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 </div>
               </div>
               <div className="card-buttons like">
-                <div className={`card-button ${liked ? 'selected' : ''}`} onClick={e => {
-                  handleLike();
-                }}>
+                <div className={`card-button ${liked ? 'selected' : ''}`} onClick={handleLike}>
                   <img className="only-selected" src="/heart_full.svg" />
                   <img className="only-not-selected" src="/heart_empty.svg" />
                 </div>
                 <div className="card-button help">
                   <img src="/help.svg" />
                 </div>
-                <div className="card-button fullscreen" onClick={e => {
-                  if (!document.fullscreenElement) {
-                    if (cardSceneWrapEl) {
-                      cardSceneWrapEl.requestFullscreen();
-                    }
-                  } else {
-                    document.exitFullscreen();
-                  }
-                }}>
-                  <img src="/maximize.svg" />
+                <div className="card-button actions">
+                  <img src="/dots.svg" />
                 </div>
               </div>
             </div>

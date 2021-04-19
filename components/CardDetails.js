@@ -762,7 +762,7 @@ const CardDetails = ({
   const openFileBrowser = () => {
     setFileBrowserOpen(true);
   };
-  const handleLike = () => {
+  const handleLike = e => {
     setLiked(!liked);
   };
   
@@ -791,9 +791,7 @@ const CardDetails = ({
                     }} */
                   >
                     <div className="card-buttons like">
-                      <div className={`card-button ${liked ? 'selected' : ''}`} onClick={e => {
-                        handleLike();
-                      }}>
+                      <div className={`card-button ${liked ? 'selected' : ''}`} onClick={handleLike}>
                         <img className="only-selected" src="/heart_full.svg" />
                         <img className="only-not-selected" src="/heart_empty.svg" />
                       </div>

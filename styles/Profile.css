@@ -249,3 +249,7 @@
   background-image: linear-gradient(to bottom, #948E99, #2E1437);
   color: #FFF;
 }
+
+.profile-page .card-buttons {
+  right: 8vw !important;
+}

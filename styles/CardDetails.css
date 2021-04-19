@@ -119,7 +119,6 @@
 .detailsSection .placeholder {
   display: flex;
   margin: 30px 50px;
-  margin-top: 50px;
   justify-content: flex-start;
 }
 .detailsSection .description {

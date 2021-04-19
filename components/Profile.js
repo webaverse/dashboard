@@ -80,6 +80,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                   muted={true}
               />
               <div className="profileLoadout">
+                <div className="profileLoadoutHeader">Loadout</div>
                 {loadout ?
                   loadout.map((item, i) =>
                     item && item[3] ? (
@@ -87,6 +88,9 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                         <img
                           src={item[3]}
                           className="profileLoadoutPicture"
+                          onDragStart={e => {
+                            e.preventDefault();
+                          }}
                         />
                       </div>
                     ) : null

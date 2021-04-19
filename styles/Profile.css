@@ -141,6 +141,16 @@
   display: flex;
   flex-direction: column;
 }
+.profileHeader .profileLoadout .profileLoadoutHeader {
+  margin-right: auto;
+  display: flex;
+  font-family: 'FuturaStd-Heavy';
+  text-transform: uppercase;
+  color: #AAA;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 1px;
+}
 .profileHeader .profileLoadoutItem {
   width: 50px;
   height: 50px;

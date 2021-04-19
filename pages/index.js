@@ -280,7 +280,9 @@ const PagesRoot = ({
       else console.warn("Didnt upload file");
     };
     const _handleTokenClick = tokenId => e => {
-      router.push('/', '/assets/' + tokenId);
+      router.push('/', '/assets/' + tokenId, {
+        scroll: false,
+      });
     };
 
     return (
@@ -319,7 +321,7 @@ const PagesRoot = ({
                 }}>
                   <img src="/icons/plus.svg" />
                 </div>
-                <div className="blocker" />
+                {/* <div className="blocker" /> */}
                 <div className="mint-menu-bar" />
                 <div className="slider">
                   <div className="left-bar" />

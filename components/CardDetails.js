@@ -39,6 +39,326 @@ import FileBrowser from './FileBrowser';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import procgen, {types} from '../webaverse/procgen.js';
 
+const CardActions = ({
+  toggleViewOpen,
+  setToggleViewOpen,
+  setImageView,
+  toggleAddOpen,
+  userOwnsThisAsset,
+  toggleResubmitOpen,
+  toggleTransferOpen,
+  is3d,
+  unlockableSpec,
+  imageView,
+  handleUnlock,
+  openFileBrowser,
+}) => {
+  return (
+    <Fragment>
+      <div className="Accordion">
+        <div
+          className="accordionTitle"
+          onClick={() => setToggleViewOpen(!toggleViewOpen)}
+        >
+          <span className="accordionTitleValue">View</span>
+          {toggleViewOpen ?
+            <img src="/chevron-up.svg" className="accordionIcon" />
+          :
+            <img src="/chevron-down.svg" className="accordionIcon" />
+          }
+        </div>
+        {toggleViewOpen && (
+          <div className="accordionDropdown">
+              {/* is3d && imageView != "3d" && (
+                <button
+                  className="assetDetailsButton"
+                  onClick={() => setImageView("3d")}
+                >
+                  See in 3d
+                </button>
+              ) */}
+              {is3d && imageView != "2d" && (
+                <button
+                  className="assetDetailsButton"
+                  onClick={() => setImageView("2d")}
+                >
+                  See in 2d
+                </button>
+              )}
+              {/* <Link href={"/preview/" + id}>
+                <button className="assetDetailsButton">
+                  Try in Webaverse
+                </button>
+              </Link> */}
+              {unlockableSpec ? (
+                <div className="assetDetailsButton">
+                  {unlockableSpec.ok
+                    ? (unlockableSpec.result || '[no unlockable]')
+                    : "Could not unlock :("}
+                </div>
+              ) : (
+                <button
+                  className="assetDetailsButton"
+                  onClick={handleUnlock}
+                >
+                  Unlock content
+                </button>
+              )}
+              <button
+                className="assetDetailsButton"
+                onClick={openFileBrowser}
+              >
+                File browser
+              </button>
+          </div>
+        )}
+      </div>
+      {(
+        <div className="Accordion">
+          <div
+            className="accordionTitle"
+            onClick={() => setToggleAddOpen(!toggleAddOpen)}
+          >
+            <span className="accordionTitleValue">Add</span>
+            {toggleAddOpen ?
+              <img src="/chevron-up.svg" className="accordionIcon" />
+            :
+              <img src="/chevron-down.svg" className="accordionIcon" />
+            }
+          </div>
+          {toggleAddOpen && (
+            <div className="accordionDropdown">
+                <button
+                  className="assetDetailsButton"
+                  onClick={handleSetAvatar}
+                >
+                  Set As Avatar
+                </button>
+                <button
+                  className="assetDetailsButton"
+                  onClick={handleSetHomespace}
+                >
+                  Set As Homespace
+                </button>
+                <button
+                  className="assetDetailsButton"
+                  onClick={addToLoadout}
+                >
+                  Add To Loadout
+                </button>
+                <button
+                  className="assetDetailsButton"
+                  onClick={clearLoadout}
+                >
+                  Clear From Loadout
+                </button>
+            </div>
+          )}
+        </div>
+      )}
+      {userOwnsThisAsset && (
+        <div className="Accordion">
+          <div
+            className="accordionTitle"
+            onClick={() => setToggleEditOpen(!toggleEditOpen)}
+          >
+            <span className="accordionTitleValue">Edit</span>
+            {toggleEditOpen ?
+              <img src="/chevron-up.svg" className="accordionIcon" />
+            :
+              <img src="/chevron-down.svg" className="accordionIcon" />
+            }
+          </div>
+          {toggleEditOpen && (
+            <div className="accordionDropdown">
+                <button
+                  className="assetDetailsButton"
+                  onClick={handleSetAssetName}
+                >
+                  Change Asset Name
+                </button>
+                <button
+                  className="assetDetailsButton"
+                  onClick={handleDeleteAsset}
+                >
+                  Burn This Item
+                </button>
+                <button
+                  className="assetDetailsButton"
+                  onClick={handleAddCollaborator}
+                >
+                  Add Collaborator
+                </button>
+                <button
+                  className="assetDetailsButton"
+                  onClick={handleRemoveCollaborator}
+                >
+                  Remove Collaborator
+                </button>
+            </div>
+          )}
+        </div>
+      )}
+      {(userOwnsThisAsset && currentLocation === 'sidechain') && (
+        <div className="Accordion">
+          <div
+            className="accordionTitle"
+            onClick={() =>
+              setToggleTradeOpen(!toggleTradeOpen)
+            }
+          >
+            <span className="accordionTitleValue">Trade</span>
+            {toggleTradeOpen ?
+              <img src="/chevron-up.svg" className="accordionIcon" />
+            :
+              <img src="/chevron-down.svg" className="accordionIcon" />
+            }
+          </div>
+          {toggleTradeOpen && (
+            <div className="accordionDropdown">
+              <button
+                className="assetDetailsButton"
+                onClick={handleSellAsset}
+              >
+                Sell item
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+      {(
+        <div className="Accordion">
+          {(userOwnsThisAsset && isStuck) ? (
+            <div
+              className="accordionTitle"
+              onClick={() =>
+                setToggleResubmitOpen(!toggleResubmitOpen)
+              }
+            >
+              <span className="accordionTitleValue">Resubmit</span>
+              <span
+                className={`accordionIcon ${
+                  toggleResubmitOpen ? "reverse" : ""
+                }`}
+              ></span>
+            </div>
+          ) : null}    
+          {toggleResubmitOpen && (
+            <div className="accordionDropdown">
+                {(currentLocation === 'mainnetsidechain-stuck') ? <button
+                  className="assetDetailsButton"
+                  onClick={async () => {
+                    const mainnetAddress = await loginWithMetaMask();
+                    await resubmitAsset(
+                      currentLocationUnstuck,
+                      'NFT',
+                      'mainnet',
+                      id,
+                      globalState.address,
+                      mainnetAddress,
+                      globalState.loginToken.mnemonic,
+                      handleSuccess,
+                      handleError
+                    )
+                  }}
+                >
+                  Resubmit to mainchain
+                </button> : null}
+                {(currentLocation === 'mainnetsidechain-stuck') ? <button
+                  className="assetDetailsButton"
+                  onClick={async () => {
+                    const mainnetAddress = await loginWithMetaMask();
+                    await resubmitAsset(
+                      currentLocationUnstuck,
+                      'NFT',
+                      'polygon',
+                      id,
+                      globalState.address,
+                      mainnetAddress,
+                      globalState.loginToken.mnemonic,
+                      handleSuccess,
+                      handleError
+                    )
+                  }}
+                >
+                  Resubmit to polygon
+                </button> : null}
+                {(currentLocation !== 'mainnetsidechain-stuck') ? <button
+                  className="assetDetailsButton"
+                  onClick={async () => {
+                    const mainnetAddress = await loginWithMetaMask();
+                    await resubmitAsset(
+                      currentLocationUnstuck,
+                      'NFT',
+                      'mainnetsidechain',
+                      id,
+                      globalState.address,
+                      mainnetAddress,
+                      globalState.loginToken.mnemonic,
+                      handleSuccess,
+                      handleError
+                    );
+                  }}
+                >
+                  Resubmit to sidechain
+                </button> : null}
+            </div>
+          )}
+        </div>
+      )}
+      {(
+        <div className="Accordion">
+          {(userOwnsThisAsset && !isStuck) ? (
+            <div
+              className="accordionTitle"
+              onClick={() =>
+                setToggleTransferOpen(!toggleTransferOpen)
+              }
+            >
+              <span className="accordionTitleValue">Transfer</span>
+              <span
+                className={`accordionIcon ${
+                  toggleTransferOpen ? "reverse" : ""
+                }`}
+              ></span>
+            </div>
+          ) : null}    
+          {toggleTransferOpen && (
+            <div className="accordionDropdown">
+                {(() => {
+                  const results = [];
+                  if (!/stuck/.test(currentLocation)) {
+                    // console.log('get network', Networks, currentLocation, Networks[currentLocation]);
+                    for (const transferOptionNetworkName of Networks[currentLocation].transferOptions) {
+                      results.push(
+                        <button
+                          className="assetDetailsButton"
+                          onClick={e => handleDeposit(currentLocation, transferOptionNetworkName)(e)}
+                          key={transferOptionNetworkName}
+                        >
+                          Transfer to {transferOptionNetworkName}
+                        </button>
+                      );
+                    }
+                    /*{tokenOnMain && (
+                      <button
+                        className="assetDetailsButton"
+                        onClick={handleWithdraw}
+                      >
+                        Transfer From {otherNetworkName}
+                      </button>
+                    )} */
+                  }
+                  return results;
+                })()}
+            </div>
+          )}
+        </div>
+      )}
+    </Fragment>
+  );
+};
+
 const CardDetails = ({
   id,
   name,
@@ -357,7 +677,7 @@ const CardDetails = ({
       handleError(new Error("No address given."));
     }
   };
-  const _unlock = async () => {
+  const handleUnlock = async () => {
     // const ethereumSpec = await window.ethereum.enable();
     // const [address] = ethereumSpec;
 
@@ -432,10 +752,10 @@ const CardDetails = ({
       </li>`).join('\n'); */
     // console.log('got results', results);
   };
-  const _openFileBrowser = () => {
+  const openFileBrowser = () => {
     setFileBrowserOpen(true);
   };
-  const _handleLike = () => {
+  const handleLike = () => {
     setLiked(!liked);
   };
   
@@ -465,7 +785,7 @@ const CardDetails = ({
                   >
                     <div className="card-buttons">
                       <div className={`card-button ${liked ? 'selected' : ''}`} onClick={e => {
-                        _handleLike();
+                        handleLike();
                       }}>
                         <img className="only-selected" src="/heart_full.svg" />
                         <img className="only-not-selected" src="/heart_empty.svg" />
@@ -616,307 +936,21 @@ const CardDetails = ({
                       <a className="provenance-node sidechain" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/sidechain.svg" />Sidechain TX</a>
                       <a className="provenance-node etherscan" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/ethereum.svg" />Etherscan TX</a>
                     </div>
-                    <div className="Accordion">
-                      <div
-                        className="accordionTitle"
-                        onClick={() => setToggleViewOpen(!toggleViewOpen)}
-                      >
-                        <span className="accordionTitleValue">View</span>
-                        {toggleViewOpen ?
-                          <img src="/chevron-up.svg" className="accordionIcon" />
-                        :
-                          <img src="/chevron-down.svg" className="accordionIcon" />
-                        }
-                      </div>
-                      {toggleViewOpen && (
-                        <div className="accordionDropdown">
-                            {/* is3d && imageView != "3d" && (
-                              <button
-                                className="assetDetailsButton"
-                                onClick={() => setImageView("3d")}
-                              >
-                                See in 3d
-                              </button>
-                            ) */}
-                            {is3d && imageView != "2d" && (
-                              <button
-                                className="assetDetailsButton"
-                                onClick={() => setImageView("2d")}
-                              >
-                                See in 2d
-                              </button>
-                            )}
-                            {/* <Link href={"/preview/" + id}>
-                              <button className="assetDetailsButton">
-                                Try in Webaverse
-                              </button>
-                            </Link> */}
-                            {unlockableSpec ? (
-                              <div className="assetDetailsButton">
-                                {unlockableSpec.ok
-                                  ? (unlockableSpec.result || '[no unlockable]')
-                                  : "Could not unlock :("}
-                              </div>
-                            ) : (
-                              <button
-                                className="assetDetailsButton"
-                                onClick={_unlock}
-                              >
-                                Unlock content
-                              </button>
-                            )}
-                            <button
-                              className="assetDetailsButton"
-                              onClick={_openFileBrowser}
-                            >
-                              File browser
-                            </button>
-                        </div>
-                      )}
-                    </div>
-                    {(
-                      <div className="Accordion">
-                        <div
-                          className="accordionTitle"
-                          onClick={() => setToggleAddOpen(!toggleAddOpen)}
-                        >
-                          <span className="accordionTitleValue">Add</span>
-                          {toggleAddOpen ?
-                            <img src="/chevron-up.svg" className="accordionIcon" />
-                          :
-                            <img src="/chevron-down.svg" className="accordionIcon" />
-                          }
-                        </div>
-                        {toggleAddOpen && (
-                          <div className="accordionDropdown">
-                              <button
-                                className="assetDetailsButton"
-                                onClick={handleSetAvatar}
-                              >
-                                Set As Avatar
-                              </button>
-                              <button
-                                className="assetDetailsButton"
-                                onClick={handleSetHomespace}
-                              >
-                                Set As Homespace
-                              </button>
-                              <button
-                                className="assetDetailsButton"
-                                onClick={addToLoadout}
-                              >
-                                Add To Loadout
-                              </button>
-                              <button
-                                className="assetDetailsButton"
-                                onClick={clearLoadout}
-                              >
-                                Clear From Loadout
-                              </button>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {userOwnsThisAsset && (
-                      <div className="Accordion">
-                        <div
-                          className="accordionTitle"
-                          onClick={() => setToggleEditOpen(!toggleEditOpen)}
-                        >
-                          <span className="accordionTitleValue">Edit</span>
-                          {toggleEditOpen ?
-                            <img src="/chevron-up.svg" className="accordionIcon" />
-                          :
-                            <img src="/chevron-down.svg" className="accordionIcon" />
-                          }
-                        </div>
-                        {toggleEditOpen && (
-                          <div className="accordionDropdown">
-                              <button
-                                className="assetDetailsButton"
-                                onClick={handleSetAssetName}
-                              >
-                                Change Asset Name
-                              </button>
-                              <button
-                                className="assetDetailsButton"
-                                onClick={handleDeleteAsset}
-                              >
-                                Burn This Item
-                              </button>
-                              <button
-                                className="assetDetailsButton"
-                                onClick={handleAddCollaborator}
-                              >
-                                Add Collaborator
-                              </button>
-                              <button
-                                className="assetDetailsButton"
-                                onClick={handleRemoveCollaborator}
-                              >
-                                Remove Collaborator
-                              </button>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {(userOwnsThisAsset && currentLocation === 'sidechain') && (
-                      <div className="Accordion">
-                        <div
-                          className="accordionTitle"
-                          onClick={() =>
-                            setToggleTradeOpen(!toggleTradeOpen)
-                          }
-                        >
-                          <span className="accordionTitleValue">Trade</span>
-                          {toggleTradeOpen ?
-                            <img src="/chevron-up.svg" className="accordionIcon" />
-                          :
-                            <img src="/chevron-down.svg" className="accordionIcon" />
-                          }
-                        </div>
-                        {toggleTradeOpen && (
-                          <div className="accordionDropdown">
-                            <button
-                              className="assetDetailsButton"
-                              onClick={handleSellAsset}
-                            >
-                              Sell item
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {(
-                      <div className="Accordion">
-                        {(userOwnsThisAsset && isStuck) ? (
-                          <div
-                            className="accordionTitle"
-                            onClick={() =>
-                              setToggleResubmitOpen(!toggleResubmitOpen)
-                            }
-                          >
-                            <span className="accordionTitleValue">Resubmit</span>
-                            <span
-                              className={`accordionIcon ${
-                                toggleResubmitOpen ? "reverse" : ""
-                              }`}
-                            ></span>
-                          </div>
-                        ) : null}    
-                        {toggleResubmitOpen && (
-                          <div className="accordionDropdown">
-                              {(currentLocation === 'mainnetsidechain-stuck') ? <button
-                                className="assetDetailsButton"
-                                onClick={async () => {
-                                  const mainnetAddress = await loginWithMetaMask();
-                                  await resubmitAsset(
-                                    currentLocationUnstuck,
-                                    'NFT',
-                                    'mainnet',
-                                    id,
-                                    globalState.address,
-                                    mainnetAddress,
-                                    globalState.loginToken.mnemonic,
-                                    handleSuccess,
-                                    handleError
-                                  )
-                                }}
-                              >
-                                Resubmit to mainchain
-                              </button> : null}
-                              {(currentLocation === 'mainnetsidechain-stuck') ? <button
-                                className="assetDetailsButton"
-                                onClick={async () => {
-                                  const mainnetAddress = await loginWithMetaMask();
-                                  await resubmitAsset(
-                                    currentLocationUnstuck,
-                                    'NFT',
-                                    'polygon',
-                                    id,
-                                    globalState.address,
-                                    mainnetAddress,
-                                    globalState.loginToken.mnemonic,
-                                    handleSuccess,
-                                    handleError
-                                  )
-                                }}
-                              >
-                                Resubmit to polygon
-                              </button> : null}
-                              {(currentLocation !== 'mainnetsidechain-stuck') ? <button
-                                className="assetDetailsButton"
-                                onClick={async () => {
-                                  const mainnetAddress = await loginWithMetaMask();
-                                  await resubmitAsset(
-                                    currentLocationUnstuck,
-                                    'NFT',
-                                    'mainnetsidechain',
-                                    id,
-                                    globalState.address,
-                                    mainnetAddress,
-                                    globalState.loginToken.mnemonic,
-                                    handleSuccess,
-                                    handleError
-                                  );
-                                }}
-                              >
-                                Resubmit to sidechain
-                              </button> : null}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {(
-                      <div className="Accordion">
-                        {(userOwnsThisAsset && !isStuck) ? (
-                          <div
-                            className="accordionTitle"
-                            onClick={() =>
-                              setToggleTransferOpen(!toggleTransferOpen)
-                            }
-                          >
-                            <span className="accordionTitleValue">Transfer</span>
-                            <span
-                              className={`accordionIcon ${
-                                toggleTransferOpen ? "reverse" : ""
-                              }`}
-                            ></span>
-                          </div>
-                        ) : null}    
-                        {toggleTransferOpen && (
-                          <div className="accordionDropdown">
-                              {(() => {
-                                const results = [];
-                                if (!/stuck/.test(currentLocation)) {
-                                  // console.log('get network', Networks, currentLocation, Networks[currentLocation]);
-                                  for (const transferOptionNetworkName of Networks[currentLocation].transferOptions) {
-                                    results.push(
-                                      <button
-                                        className="assetDetailsButton"
-                                        onClick={e => handleDeposit(currentLocation, transferOptionNetworkName)(e)}
-                                        key={transferOptionNetworkName}
-                                      >
-                                        Transfer to {transferOptionNetworkName}
-                                      </button>
-                                    );
-                                  }
-                                  /*{tokenOnMain && (
-                                    <button
-                                      className="assetDetailsButton"
-                                      onClick={handleWithdraw}
-                                    >
-                                      Transfer From {otherNetworkName}
-                                    </button>
-                                  )} */
-                                }
-                                return results;
-                              })()}
-                          </div>
-                        )}
-                      </div>
-                    )}
                   </div>
+                  <CardActions
+                    toggleViewOpen={toggleViewOpen}
+                    setToggleViewOpen={setToggleViewOpen}
+                    setImageView={setImageView}
+                    toggleAddOpen={toggleAddOpen}
+                    userOwnsThisAsset={userOwnsThisAsset}
+                    toggleResubmitOpen={toggleResubmitOpen}
+                    toggleTransferOpen={toggleTransferOpen}
+                    is3d={is3d}
+                    unlockableSpec={unlockableSpec}
+                    imageView={imageView}
+                    handleUnlock={handleUnlock}
+                    openFileBrowser={openFileBrowser}
+                  />
                   {(
                     globalState.address &&
                     !userOwnsThisAsset &&

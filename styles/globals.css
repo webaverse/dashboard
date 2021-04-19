@@ -566,9 +566,11 @@ a {
   border-radius: 100px;
   cursor: pointer;
 }
-.card-buttons .card-button:hover {
+.card-buttons .card-button:hover,
+.card-buttons .card-button.open {
   background-color: #333;
 }
+.card-buttons .card-button.open img,
 .card-buttons .card-button:hover img {
   filter: invert(100%);
 }

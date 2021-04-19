@@ -11,6 +11,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
 
     // const [addresses, setAddresses] = useState(null);
     const [liked, setLiked] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
     const {globalState, setGlobalState} = useAppContext();
 
     const logout = () => {
@@ -24,6 +25,9 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     const handleError = (err) => console.log("error");
     const handleLike = e => {
       setLiked(!liked);
+    };
+    const handleDropdownOpen = e => {
+      setDropdownOpen(!dropdownOpen);
     };
 
     /* useEffect(async () => {
@@ -156,43 +160,41 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 <div className="card-button help">
                   <img src="/help.svg" />
                 </div>
-                <div className="card-button options">
+                <div className={`card-button dropdown ${dropdownOpen ? 'open' : ''}`} onClick={handleDropdownOpen}>
                   <img src="/dots.svg" />
                 </div>
               </div>
-              <div className="actions">
-                {[
-                  addresses.length > 0 && (<a key="removeMainnetAddressButton" className="action" onClick={() => handleRemoveMainnetAddress()}>
-                    Remove mainnet address
-                  </a>),
-                  (<a key="connectMainnetAddressButton" className="action" onClick={() => handleAddMainnetAddress()}>
-                    Connect mainnet address
-                  </a>),
-                  (<a key="SILKToMainnetButton" className="action" onClick={() => handleDeposit()}>
-                    Transfer SILK to mainnet
-                  </a>),
-                  (<a key="SILKResubmitButton" className="action" onClick={async () => {
-                    setLoading(true);
-                    await resubmitSILK("FT", null, globalState, handleSuccess, handleError);
-                    handleSuccess();
-                  }}>
-                    Resubmit SILK transfer
-                  </a>),
-                  (<a key="SILKButton" className="action" onClick={() => handleWithdraw()}>
-                    Transfer SILK from mainnet
-                  </a>),
-                  (<a key="nameChangeButton" className="action" onClick={() => {
-                    const name = prompt("What is your name?", "Satoshi");
-                    setName(name, globalState, handleSuccess, handleError)
-                    setLoading(true);
-                  }}>
-                    Change Name
-                  </a>),
-                  (<a key="logoutButton" className="action" onClick={() => logout()}>
-                    Logout
-                  </a>)
-                ]}
-              </div>
+              {dropdownOpen ? <div className="actions">
+                {addresses.length > 0 ? <a key="removeMainnetAddressButton" className="action" onClick={() => handleRemoveMainnetAddress()}>
+                  Remove mainnet address
+                </a> : null}
+                <a key="connectMainnetAddressButton" className="action" onClick={() => handleAddMainnetAddress()}>
+                  Connect mainnet address
+                </a>
+                <a key="SILKToMainnetButton" className="action" onClick={() => handleDeposit()}>
+                  Transfer SILK to mainnet
+                </a>
+                <a key="SILKResubmitButton" className="action" onClick={async () => {
+                  setLoading(true);
+                  await resubmitSILK("FT", null, globalState, handleSuccess, handleError);
+                  handleSuccess();
+                }}>
+                  Resubmit SILK transfer
+                </a>
+                <a key="SILKButton" className="action" onClick={() => handleWithdraw()}>
+                  Transfer SILK from mainnet
+                </a>
+                <a key="nameChangeButton" className="action" onClick={() => {
+                  const name = prompt("What is your name?", "Satoshi");
+                  setName(name, globalState, handleSuccess, handleError)
+                  setLoading(true);
+                }}>
+                  Change Name
+                </a>
+                <a key="logoutButton" className="action" onClick={() => logout()}>
+                  Logout
+                </a>
+              </div> : null}
             </div>
         </div>
     );

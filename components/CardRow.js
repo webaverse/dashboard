@@ -3,7 +3,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 // import AssetCard from "./Card";
 import AssetCardSvg from "./CardSvg";
-import Asset, {getData} from "./Asset";
+import Asset from "./Asset";
 
 const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt, onTokenClick }) => {
     // <div>Have token: {JSON.stringify(token)}</div>

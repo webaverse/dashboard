@@ -6,7 +6,7 @@ import {getTokens} from "../functions/UIStateFunctions.js";
 import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
-import Asset, {getData} from "../components/Asset";
+import Asset from "../components/Asset";
 import Loader from "../components/Loader";
 import {FileDrop} from "react-file-drop";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
@@ -82,6 +82,8 @@ class AssetOverlayBackground extends Component {
 const PagesRoot = ({
   data,
   selectedView,
+  token,
+  setToken,
   searchResults,
   setSearchResults,
 }) => {
@@ -95,32 +97,8 @@ const PagesRoot = ({
     const [selectedPage, setSelectedPage] = useState(0);
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
-    const [lastPath, setLastPath] = useState('');
-    const [token, setToken] = useState(null);
     
     const router = useRouter();
-    
-    // console.log('got initial data', {data, router});
-
-    const qs = parseQuery(router.asPath.match(/(\?.*)$/)?.[1] || '');
-    if (router.asPath !== lastPath) {
-      setLastPath(router.asPath);
-      
-      const match = router.asPath.match(/^\/assets\/([0-9]+)$/);
-      // console.log('got match', router.asPath, match);
-      if (match) {
-        const tokenId = parseInt(match[1], 10);
-        (async () => {
-          const token = await getData(tokenId);
-          // console.log('got token', {token, tokenId});
-          setToken(token);
-        })().catch(err => {
-          console.warn(err);
-        });
-      } else {
-        setToken(null);
-      }
-    }
 
     const _setSelectedTab = newTab => {
       setSelectedTab(newTab);

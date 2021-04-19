@@ -9,6 +9,7 @@ import AssetCard3D from "./Card3D";
 import AssetCardLive from "./CardLive";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import {Networks} from "../webaverse/constants.js";
+import {getData} from "./Asset";
 // import { FileDrop } from 'react-file-drop';
 // import { makeWbn, makePhysicsBake } from "../webaverse/build";
 import {storageHost} from "../webaverse/constants";
@@ -390,7 +391,6 @@ const CardDetails = ({
   assetType,
   networkName,
   currentLocation,
-  getData,
   addresses,
   selectedView,
   // setMainnetAddress,

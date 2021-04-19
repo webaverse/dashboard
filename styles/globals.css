@@ -481,7 +481,7 @@ a {
 }
 .mainRow .notch .underline {
   position: absolute;
-  width: calc(100vw - 16vw - 21px);
+  width: calc(100vw - 16vw - 5px);
   height: 2px;
   top: 5px;
   left: 5px;

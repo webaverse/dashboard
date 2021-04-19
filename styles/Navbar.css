@@ -149,8 +149,8 @@
   height: 16px;
 }
 .navbarSILKAmount {
-  /* color: #676370; */
-  max-width: 100%;
+  /* color: #676370;
+  max-width: 100%; */
   text-overflow: ellipsis;
   overflow: hidden;
 }

@@ -63,7 +63,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                       {balance && balance > 0 ? (
                         <div className="silk">
                           <img className="icon" src="/curve.svg" />
-                          <div className="value">{balance || 0}</div>
+                          <div className="value">{balance ? Number(balance).toLocaleString() : '0'}</div>
                         </div>
                       ) : null}
                   </div>

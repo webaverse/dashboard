@@ -170,6 +170,9 @@ a {
   border-color: rgba(255, 255, 255, 0.1);
   color: #FFF;
 }
+.mint-button.below {
+  z-index: 3;
+}
 .mint-button img {
   width: 13px;
   height: 13px;
@@ -515,7 +518,7 @@ a {
 }
 .asset-overlay-foreground {
   position: absolute;
-  top: 100px;
+  top: 120px;
   left: 8vw;
   right: 8vw;
   display: flex;

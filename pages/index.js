@@ -281,7 +281,7 @@ const PagesRoot = ({
                 <div className="streetchain">
                   <div className="bar" />
                 </div>
-                <div className="mint-button" onClick={e => {
+                <div className={`mint-button ${token ? 'below' : ''}`} onClick={e => {
                   const newMintMenuOpen = !mintMenuOpen;
                   setMintMenuOpen(newMintMenuOpen);
                   if (!newMintMenuOpen) {

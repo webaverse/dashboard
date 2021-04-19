@@ -37,6 +37,7 @@ const hdkey = hdkeySpec.default;
 import wbn from '../webaverse/wbn.js';
 // import {blobToFile, getExt} from "../webaverse/util";
 import FileBrowser from './FileBrowser';
+import AssetCardSwitch from './CardSwitch';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import procgen, {types} from '../webaverse/procgen.js';
 
@@ -869,28 +870,9 @@ const CardDetails = ({
                         cardSvgSpec,
                         tilt: false,
                       };
-                      switch (selectedView) {
-                        case 'cards': {
-                          return (
-                            <AssetCardSvg {...props} />
-                          );
-                        }
-                        case '2d': {
-                          return (
-                            <AssetCard2D {...props} />
-                          );
-                        }
-                        case '3d': {
-                          return (
-                            <AssetCard3D {...props} />
-                          );
-                        }
-                        case 'live': {
-                          return (
-                            <AssetCardLive {...props} />
-                          );
-                        }
-                      }
+                      return (
+                        <AssetCardSwitch {...props} selectedView={selectedView} />
+                      );
                     })()}
                   </div>
                 </div>

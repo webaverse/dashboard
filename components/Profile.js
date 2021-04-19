@@ -83,18 +83,12 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 {loadout ?
                   loadout.map((item, i) =>
                     item && item[3] ? (
-                      <div
-                        key={i}
-                        className="profileLoadoutPicture"
-                        style={{
-                          display: "inline-block",
-                          backgroundImage: `url(${item[3]})`,
-                          backgroundSize: "cover",
-                          backgroundRepeat: "no-repeat",
-                          backgroundPosition:
-                              "center center",
-                        }}
-                      />
+                      <div className="profileLoadoutItem" key={i}>
+                        <img
+                          src={item[3]}
+                          className="profileLoadoutPicture"
+                        />
+                      </div>
                     ) : null
                   )
                 : null}

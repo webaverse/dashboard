@@ -9,7 +9,8 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
         return null;
     }
 
-    // const {addresses, setAddresses} = useState(null);
+    // const [addresses, setAddresses] = useState(null);
+    const [liked, setLiked] = useState(false);
     const {globalState, setGlobalState} = useAppContext();
 
     const logout = () => {
@@ -110,6 +111,28 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                       ) : null
                     )
                   : null}
+                </div>
+              </div>
+              <div className="card-buttons like">
+                <div className={`card-button ${liked ? 'selected' : ''}`} onClick={e => {
+                  handleLike();
+                }}>
+                  <img className="only-selected" src="/heart_full.svg" />
+                  <img className="only-not-selected" src="/heart_empty.svg" />
+                </div>
+                <div className="card-button help">
+                  <img src="/help.svg" />
+                </div>
+                <div className="card-button fullscreen" onClick={e => {
+                  if (!document.fullscreenElement) {
+                    if (cardSceneWrapEl) {
+                      cardSceneWrapEl.requestFullscreen();
+                    }
+                  } else {
+                    document.exitFullscreen();
+                  }
+                }}>
+                  <img src="/maximize.svg" />
                 </div>
               </div>
             </div>

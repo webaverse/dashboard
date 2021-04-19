@@ -114,10 +114,10 @@
   border-style: solid none;
 }
 
-
 .profileContainer {
+  position: relative;
+  margin-top: 100px;
   padding: 0 8vw;
-  padding-top: 100px;
   background-image: linear-gradient(0deg, rgb(230, 230, 230) 0%, rgba(230, 230, 230, 0) 100%)
 }
 /* .profileHeaderBackground {

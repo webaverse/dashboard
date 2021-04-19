@@ -115,18 +115,18 @@
 }
 
 
-.profileHeaderContainer {
+.profileContainer {
+  padding: 0 8vw;
+  padding-top: 100px;
 }
-.profileHeaderBackground {
+/* .profileHeaderBackground {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 100%;
-  /* -webkit-filter: blur(1px);
-  filter: blur(2px); */
   opacity: .25;
   z-index: -9999;
-}
+} */
 .profileHeader {
   display: flex;
   flex-wrap: wrap;
@@ -162,19 +162,13 @@
 .profileHeader .profileVideo {
   /* position: absolute; */
 }
-.profileHeader .profileName {
-  flex: 1 1 auto;
+.profileHeader .profileLeft {
   display: flex;
   /* align-items: center;
   justify-content: center; */
-  flex-wrap: wrap;
-  flex-direction: column;
-  margin-right: 50px;
-  margin: 20px 0px 20px 0px;
-  z-index: 1;
 }
 @media screen and (max-width: 600px) {
-  .profileHeader .profileName {
+  .profileHeader .profileLeft {
     padding-bottom: 175px;
     width: 100%;
   }

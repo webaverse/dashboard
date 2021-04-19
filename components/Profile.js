@@ -22,9 +22,9 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     const handleError = (err) => console.log("error");
 
     return (
-        <div className="profileHeaderContainer">
+        <div className="profileContainer">
             <div className="profileHeader">
-              <div className="profileName">
+              <div className="profileLeft">
                   <div className="profileWrap">
                       <h1 className="profileText mainName">
                           {profile.name ? profile.name : "Anonymous"}
@@ -51,25 +51,25 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                   </div>
               </div>
               <div className="profileLoadout">
-                {loadout
-                    ? loadout.map((item, i) =>
-                          item && item[3] ? (
-                              <div
-                                  key={i}
-                                  className="profileLoadoutPicture"
-                                  style={{
-                                      display: "inline-block",
-                                      backgroundImage: `url(${item[3]})`,
-                                      backgroundSize: "cover",
-                                      backgroundRepeat: "no-repeat",
-                                      backgroundPosition:
-                                          "center center",
-                                  }}
-                              />
-                          ) : null
-                      )
-                    : null}
-            </div>
+                {loadout ?
+                  loadout.map((item, i) =>
+                    item && item[3] ? (
+                      <div
+                        key={i}
+                        className="profileLoadoutPicture"
+                        style={{
+                          display: "inline-block",
+                          backgroundImage: `url(${item[3]})`,
+                          backgroundSize: "cover",
+                          backgroundRepeat: "no-repeat",
+                          backgroundPosition:
+                              "center center",
+                        }}
+                      />
+                    ) : null
+                  )
+                : null}
+              </div>
               {/* <div
                 className="profilePicture"
                 style={{

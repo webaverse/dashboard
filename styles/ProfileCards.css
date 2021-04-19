@@ -117,12 +117,3 @@
   height: 16em;
   /* filter: drop-shadow(0px 0px 5px black); */
 }
-.profileHeader .profileName {
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  flex-direction: column;
-  margin-right: 50px;
-}

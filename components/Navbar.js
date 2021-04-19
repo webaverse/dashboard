@@ -141,35 +141,39 @@ const Navbar = ({
           </div>
 */}
           <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
-            <div className="navbar-buttons">
-              <Link href="https://app.webaverse.com/"><a className={`item ${router.asPath === '/play' ? 'selected' : ''}`}>Play</a></Link>
-              <Link href="/"><a className={`item ${router.asPath === '/' ? 'selected' : ''}`}>Objects</a></Link>
-              <Link href="/accounts"><a className={`item ${router.asPath === '/accounts' ? 'selected' : ''}`}>Accounts</a></Link>
-              <Link href="/map"><a className={`item ${router.asPath === '/map' ? 'selected' : ''}`}>Map</a></Link>
-              <Link href="https://docs.webaverse.com/"><a className={`item ${router.asPath === '/docs' ? 'selected' : ''}`}>Docs</a></Link>
-            </div>
-            <div className="navbarSwitch">
-              <div className={`option ${selectedView === 'cards' ? 'selected' : ''}`} onClick={e => {
-                setSelectedView('cards');
-              }}>
-                Cards
+            <section className="navbarSection">
+              <div className="navbar-buttons">
+                <Link href="https://app.webaverse.com/"><a className={`item ${router.asPath === '/play' ? 'selected' : ''}`}>Play</a></Link>
+                <Link href="/"><a className={`item ${router.asPath === '/' ? 'selected' : ''}`}>Objects</a></Link>
+                <Link href="/accounts"><a className={`item ${router.asPath === '/accounts' ? 'selected' : ''}`}>Accounts</a></Link>
+                <Link href="/map"><a className={`item ${router.asPath === '/map' ? 'selected' : ''}`}>Map</a></Link>
+                <Link href="https://docs.webaverse.com/"><a className={`item ${router.asPath === '/docs' ? 'selected' : ''}`}>Docs</a></Link>
               </div>
-              <div className={`option ${selectedView === '2d' ? 'selected' : ''}`} onClick={e => {
-                setSelectedView('2d');
-              }}>
-                2D
+              <div className="navbarSwitchWrap">
+                <div className="navbarSwitch">
+                  <div className={`option ${selectedView === 'cards' ? 'selected' : ''}`} onClick={e => {
+                    setSelectedView('cards');
+                  }}>
+                    Cards
+                  </div>
+                  <div className={`option ${selectedView === '2d' ? 'selected' : ''}`} onClick={e => {
+                    setSelectedView('2d');
+                  }}>
+                    2D
+                  </div>
+                  <div className={`option ${selectedView === '3d' ? 'selected' : ''}`} onClick={e => {
+                    setSelectedView('3d');
+                  }}>
+                    3D
+                  </div>
+                  <div className={`option ${selectedView === 'live' ? 'selected' : ''}`} onClick={e => {
+                    setSelectedView('live');
+                  }}>
+                    Live
+                  </div>
+                </div>
               </div>
-              <div className={`option ${selectedView === '3d' ? 'selected' : ''}`} onClick={e => {
-                setSelectedView('3d');
-              }}>
-                3D
-              </div>
-              <div className={`option ${selectedView === 'live' ? 'selected' : ''}`} onClick={e => {
-                setSelectedView('live');
-              }}>
-                Live
-              </div>
-            </div>
+            </section>
             <StreetFilters
               q={q}
               setQ={setQ}

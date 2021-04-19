@@ -1,7 +1,7 @@
 .navbar {
   position: fixed;
   top: 0;
-  height: 64px;
+  height: 90px;
   width: 100%;
   margin-bottom: 0;
   border-bottom: none;
@@ -111,7 +111,7 @@
 .navbarSwitch .option {
   padding: 2px 10px;
   border-radius: 100px;
-  font-size: 15px;
+  font-size: 11px;
   text-transform: uppercase;
   cursor: pointer;
 }
@@ -225,6 +225,7 @@
 
 .navbar-buttons {
   display: flex;
+  padding: 10px 0;
   align-items: center;
 }
 .navbar-buttons .navbar-button {
@@ -386,4 +387,11 @@
 .filter-options .option:hover .option-image,
 .filter-options .option.selected .option-image {
   opacity: 1;
+}
+.navbarSection {
+  display: flex;
+  flex-direction: column;
+}
+.navbarSwitchWrap {
+  display: flex;
 }

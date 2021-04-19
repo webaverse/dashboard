@@ -196,9 +196,9 @@
 }
 .profileHeader .profileAvatar {
   display: flex;
-  width: 60vw;
+  margin-right: 100px;
+  flex: 1;
   justify-content: center;
-  margin-right: auto;
 }
 .profileHeader .profileLeft {
   display: flex;

@@ -32,16 +32,13 @@
 .profileNavLink {
     text-decoration: none;
     font-size: 2em;
+    color: #CCC;
     padding: 1em;
     padding-bottom: 0;
     cursor: pointer;
 }
 .profileNavLink.active {
-    -webkit-text-decoration: none;
-    text-decoration: none;
-    font-weight: bold;
-    color: #c4005d;
-    font-size: 2em;
+    color: #606;
     cursor: default;
 }
 .disable {

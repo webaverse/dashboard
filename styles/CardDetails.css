@@ -114,6 +114,15 @@
 .detailsSection.right {
   width: 310px;
 }
+.detailsSection .owners {  
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+}
+.detailsSection .owners .owner {
+  padding: 0;
+}
 
 .detailsSection .description,
 .detailsSection .placeholder {

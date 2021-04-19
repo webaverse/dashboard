@@ -486,9 +486,6 @@ a {
   left: 5px;
   background-color: #e0e0e0;
 }
-.mainRow .card-outer {
-  cursor: pointer;
-}
 
 /* <div className="notch">
   <div className="nub"></div>
@@ -528,6 +525,9 @@ a {
   background-color: #FFF;
   border-radius: 10px 10px 0 0;
   overflow: hidden;
+}
+.asset-overlay-foreground .card-outer {
+  cursor: auto;
 }
 .asset-overlay-foreground .asset-page,
 .asset-overlay-foreground .card-outer {

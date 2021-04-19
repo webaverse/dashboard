@@ -64,6 +64,9 @@
   transform-style: preserve-3d;
   backface-visibility: hidden;
 }
+.card-outer {
+  cursor: pointer;
+}
 .card-outer .back {
   position: absolute;
   top: 0;

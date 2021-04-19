@@ -50,6 +50,35 @@ class Dropper extends Component {
   }
 }
 
+class AssetOverlayBackground extends Component {
+  constructor(props) {
+    super(props);
+    this.keyDown = this.keyDown.bind(this);
+    this.onEscape = this.props.onEscape;
+  }
+  componentDidMount() {
+    window.addEventListener('keydown', this.keyDown);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.keyDown);
+  }
+  componentDidUpdate() {
+  }
+  keyDown(e) {
+    if (e.which === 27) {
+      this.onEscape && this.onEscape(e);
+    }
+  }
+  render() {
+    const {router} = this.props;
+    return (
+      <div className="asset-overlay-background" onClick={e => {
+        router.push('/', '/');
+      }} />
+    );
+  }
+}
+
 const PagesRoot = ({
   data,
   selectedView,
@@ -444,9 +473,12 @@ const PagesRoot = ({
             </div>
             {token ?
               <div className="asset-overlay">
-                <div className="asset-overlay-background" onClick={e => {
-                  router.push('/', '/');
-                }} />
+                <AssetOverlayBackground
+                  router={router}
+                  onEscape={e => {
+                    setToken(null);
+                  }}
+                />
                 <div className="asset-overlay-foreground">
                   <Asset
                     data={token}

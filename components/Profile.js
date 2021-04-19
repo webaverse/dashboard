@@ -1,5 +1,5 @@
 import React from "react";
-import { Col } from "react-grid-system";
+// import { Col } from "react-grid-system";
 import { useAppContext } from "../libs/contextLib";
 import {proofOfAddressMessage} from "../constants/UnlockConstants";
 import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
@@ -22,20 +22,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     const handleError = (err) => console.log("error");
 
     return (
-        <Col sm={12} className="profileHeaderContainer">
-            <div
-                className="profileHeaderBackground"
-                style={{
-                    backgroundImage: `url(${
-                        profile.homeSpacePreview
-                            ? profile.homeSpacePreview
-                            : "../defaulthomespace.svg"
-                    })`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center center",
-                }}
-            />
+        <div className="profileHeaderContainer">
             <div className="profileHeader">
                 <div className="profileName">
                     <div className="profileWrap">
@@ -64,7 +51,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                     </div>
                 </div>
                 <div className="profilePictureContainer">
-                    <div
+                  {/* <div
                         className="profilePicture"
                         style={{
                             backgroundImage: `url("${
@@ -79,6 +66,19 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                             backgroundRepeat: "no-repeat",
                             backgroundPosition: "center center",
                         }}
+                    /> */}
+                    <video
+                        className="profileVideo"
+                        src={ 
+                          `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm`
+                          /* profile.avatarPreview.replace(
+                            /\.[^.]*$/,
+                            ".webm"
+                          ) */
+                        }
+                        loop={true}
+                        autoPlay={true}
+                        muted={true}
                     />
                     <div className="profileLoadout">
                         {loadout
@@ -102,7 +102,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                     </div>
                 </div>
             </div>
-        </Col>
+        </div>
     );
 };
 

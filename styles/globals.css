@@ -76,7 +76,7 @@ a {
   display: flex;
   padding: 0 8%;
   padding-left: calc(8% + 100px);
-  padding-top: 80px;
+  padding-top: 130px;
   padding-bottom: 74px;
   min-height: calc(100vh - 76px);
   margin-bottom: -74px;
@@ -162,7 +162,7 @@ a {
   font-size: 20px;
   color: #333;
   cursor: pointer;
-  z-index: 3;
+  z-index: 4;
   user-select: none;
 }
 .mint-button:hover {
@@ -180,10 +180,10 @@ a {
 .blocker {
   position: fixed;
   left: calc(8vw - 2px);
-  top: 64px;
+  top: 92px;
   background-color: #FFF;
   width: calc(100vw - 8vw);
-  height: 26px;
+  height: 8px;
   z-index: 2;
 }
 .streetchain .bar {
@@ -221,7 +221,7 @@ a {
   position: fixed;
   width: calc(100vw - 16vw);
   top: 90px;
-  left: calc(8vw);
+  left: 8vw;
 }
 .slider {
   display: flex;

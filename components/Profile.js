@@ -24,83 +24,81 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     return (
         <div className="profileHeaderContainer">
             <div className="profileHeader">
-                <div className="profileName">
-                    <div className="profileWrap">
-                        <h1 className="profileText mainName">
-                            {profile.name ? profile.name : "Anonymous"}
-                        </h1>
-                        <p className="profileText address">{profile.address} (sidechain)</p>
-                        {addresses.map(address => {
-                          return (
-                            <p className="profileText address" key={address}>{address} (mainnet)</p>
-                          );
-                        })}
-                        {profile.mainnetAddress ? (
-                            <p className="profileText address">
-                                Mainnet:{" "}
-                                {profile.mainnetAddress
-                                    ? profile.mainnetAddress
-                                    : ""}
-                            </p>
-                        ) : null}
-                        {balance && balance > 0 ? (
-                            <p className="profileText">
-                                SILK Balance: {balance ? balance : "0"}
-                            </p>
-                        ) : null}
-                    </div>
-                </div>
-                <div className="profilePictureContainer">
-                  {/* <div
-                        className="profilePicture"
-                        style={{
-                            backgroundImage: `url("${
-                                profile.avatarPreview
-                                    ? profile.avatarPreview.replace(
-                                          /\.[^.]*$/,
-                                          ".png"
-                                      )
-                                    : "/preview.png"
-                            }")`,
-                            backgroundSize: "contain",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center center",
-                        }}
-                    /> */}
-                    <video
-                        className="profileVideo"
-                        src={ 
-                          `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm`
-                          /* profile.avatarPreview.replace(
-                            /\.[^.]*$/,
-                            ".webm"
-                          ) */
-                        }
-                        loop={true}
-                        autoPlay={true}
-                        muted={true}
-                    />
-                    <div className="profileLoadout">
-                        {loadout
-                            ? loadout.map((item, i) =>
-                                  item && item[3] ? (
-                                      <div
-                                          key={i}
-                                          className="profileLoadoutPicture"
-                                          style={{
-                                              display: "inline-block",
-                                              backgroundImage: `url(${item[3]})`,
-                                              backgroundSize: "cover",
-                                              backgroundRepeat: "no-repeat",
-                                              backgroundPosition:
-                                                  "center center",
-                                          }}
-                                      />
-                                  ) : null
-                              )
-                            : null}
-                    </div>
-                </div>
+              <div className="profileName">
+                  <div className="profileWrap">
+                      <h1 className="profileText mainName">
+                          {profile.name ? profile.name : "Anonymous"}
+                      </h1>
+                      <p className="profileText address">{profile.address} (sidechain)</p>
+                      {addresses.map(address => {
+                        return (
+                          <p className="profileText address" key={address}>{address} (mainnet)</p>
+                        );
+                      })}
+                      {profile.mainnetAddress ? (
+                          <p className="profileText address">
+                              Mainnet:{" "}
+                              {profile.mainnetAddress
+                                  ? profile.mainnetAddress
+                                  : ""}
+                          </p>
+                      ) : null}
+                      {balance && balance > 0 ? (
+                          <p className="profileText">
+                              SILK Balance: {balance ? balance : "0"}
+                          </p>
+                      ) : null}
+                  </div>
+              </div>
+              <div className="profileLoadout">
+                {loadout
+                    ? loadout.map((item, i) =>
+                          item && item[3] ? (
+                              <div
+                                  key={i}
+                                  className="profileLoadoutPicture"
+                                  style={{
+                                      display: "inline-block",
+                                      backgroundImage: `url(${item[3]})`,
+                                      backgroundSize: "cover",
+                                      backgroundRepeat: "no-repeat",
+                                      backgroundPosition:
+                                          "center center",
+                                  }}
+                              />
+                          ) : null
+                      )
+                    : null}
+            </div>
+              {/* <div
+                className="profilePicture"
+                style={{
+                  backgroundImage: `url("${
+                    profile.avatarPreview
+                      ? profile.avatarPreview.replace(
+                          /\.[^.]*$/,
+                          ".png"
+                        )
+                      : "/preview.png"
+                  }")`,
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center center",
+                }}
+              /> */}
+              <video
+                  className="profileVideo"
+                  src={ 
+                    `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm`
+                    /* profile.avatarPreview.replace(
+                      /\.[^.]*$/,
+                      ".webm"
+                    ) */
+                  }
+                  loop={true}
+                  autoPlay={true}
+                  muted={true}
+              />
             </div>
         </div>
     );

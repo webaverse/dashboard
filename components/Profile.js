@@ -44,9 +44,10 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                           </p>
                       ) : null}
                       {balance && balance > 0 ? (
-                          <p className="profileText">
-                              SILK Balance: {balance ? balance : "0"}
-                          </p>
+                        <p className="profileText">
+                          <img src="/curve.svg" />
+                          <div className="value">{balance || 0}</div>
+                        </p>
                       ) : null}
                   </div>
               </div>

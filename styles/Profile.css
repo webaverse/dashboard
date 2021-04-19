@@ -142,7 +142,6 @@
   flex-direction: column;
 }
 .profileHeader .profileLoadout .profileLoadoutHeader {
-  margin-right: auto;
   display: flex;
   font-family: 'FuturaStd-Heavy';
   text-transform: uppercase;
@@ -156,7 +155,7 @@
   height: 50px;
   padding: 2px;
   border: 2px solid #999;
-  margin: 5px;
+  margin: 5px 0;
 }
 .profileHeader .profileLoadoutItem .profileLoadoutPicture {
   width: 100%;

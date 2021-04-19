@@ -893,10 +893,14 @@ const CardDetails = ({
                   <div className="detailsBlock">
                     <div className="detailsSection left">
                       <div className="assetDetailsOwnedBy">
-                        <img
-                          className="creatorIcon"
-                          src={ownerAvatarPreview.replace(/\.[^.]*$/, ".png")}
-                        />
+                        <Link href={`/accounts/` + ownerAddress}>
+                          <a>
+                            <img
+                              className="creatorIcon"
+                              src={ownerAvatarPreview.replace(/\.[^.]*$/, ".png")}
+                            />
+                          </a>
+                        </Link>
                         <div className="creatorDetails">
                           <div className="label">Owner</div>
                           <Link href={`/accounts/` + ownerAddress}>

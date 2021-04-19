@@ -140,7 +140,9 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                         </div>
                       ) : null
                     )
-                  : null}
+                  :
+                    <div className="profileLoadoutItem light" />
+                  }
                 </div>
               </div>
               <div className="card-buttons like">

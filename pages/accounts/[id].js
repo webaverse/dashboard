@@ -238,41 +238,6 @@ const Account = ({ data, selectedView }) => {
             <CardGrid key="inventoryCards" data={inventory} globalState={globalState} selectedView={selectedView}cardSize="small" onTokenClick={_handleTokenClick} />
           )}
         </div>
-        {(selectedTab === "settings" && globalState && globalState.address == id.toLowerCase()) ? (
-          <div key="settingsButtonsContainer" className="settingsButtonsContainer">
-          {[
-            addressProofs.length > 0 && (<a key="removeMainnetAddressButton" className="button" onClick={() => handleRemoveMainnetAddress()}>
-              Remove mainnet address
-            </a>),
-            (<a key="connectMainnetAddressButton" className="button" onClick={() => handleAddMainnetAddress()}>
-              Connect mainnet address
-            </a>),
-            (<a key="SILKToMainnetButton" className="button" onClick={() => handleDeposit()}>
-              Transfer SILK to mainnet
-            </a>),
-            (<a key="SILKResubmitButton" className="button" onClick={async () => {
-              setLoading(true);
-              await resubmitSILK("FT", null, globalState, handleSuccess, handleError);
-              handleSuccess();
-            }}>
-              Resubmit SILK transfer
-            </a>),
-            (<a key="SILKButton" className="button" onClick={() => handleWithdraw()}>
-              Transfer SILK from mainnet
-            </a>),
-            (<a key="nameChangeButton" className="button" onClick={() => {
-              const name = prompt("What is your name?", "Satoshi");
-              setName(name, globalState, handleSuccess, handleError)
-              setLoading(true);
-            }}>
-              Change Name
-            </a>),
-            (<a key="logoutButton" className="button" onClick={() => logout()}>
-              Logout
-            </a>)
-          ]}
-          </div>
-        ) : null}
     </div>
   }</>)
 };

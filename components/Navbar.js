@@ -4,15 +4,90 @@ import {useRouter} from 'next/router';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {useAppContext} from "../libs/contextLib";
+import {parseQuery} from "../webaverse/util";
+
+const StreetFilters = ({
+  q,
+  setQ,
+  selectedOption,
+  setSelectedOption,
+}) => {
+  const router = useRouter();
+  
+  return (
+    <div className="street-filters">
+      <label className="row">
+        <img className="search-image" src="/search.svg" />
+        <input
+          type="text"
+          value={q}
+          onChange={e => {
+            setQ(e.target.value);
+          }}
+          onKeyDown={e => {
+            if (e.which === 13) {
+              if (q) {
+                router.push(`/?q=${q}`);
+              } else {
+                router.push('/');
+              }
+            }
+          }}
+        />
+      </label>
+      <div className="row">
+        <div className="filter-options">
+          <div className={`option ${selectedOption === 'image' ? 'selected' : ''}`} onClick={e => setSelectedOption('image')}>
+            <img className="option-image" src="/image.svg" />
+          </div>
+          <div className={`option ${selectedOption === 'video' ? 'selected' : ''}`} onClick={e => setSelectedOption('video')}>
+            <img className="option-image" src="/video.svg" />
+          </div>
+          <div className={`option ${selectedOption === 'audio' ? 'selected' : ''}`} onClick={e => setSelectedOption('audio')}>
+            <img className="option-image" src="/audio.svg" />
+          </div>
+          <div className={`option ${selectedOption === 'avatar' ? 'selected' : ''}`} onClick={e => setSelectedOption('avatar')}>
+            <img className="option-image" src="/avatar.svg" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Navbar = ({
   selectedView,
   setSelectedView,
+  setSearchResults,
 }) => {
   const { globalState, setGlobalState } = useAppContext();
   const [dropdown, setDropdown] = useState(false);
+  const [q, setQ] = useState('');
+  const [lastQ, setLastQ] = useState('');
+  const [selectedOption, setSelectedOption] = useState(0);
   
   const router = useRouter();
+  
+  const qs = parseQuery(router.asPath.match(/(\?.*)$/)?.[1] || '');
+  const {q: currentQ = ''} = qs;
+  
+  if (currentQ !== lastQ) {
+    setLastQ(currentQ);
+
+    if (currentQ) {
+      setQ(currentQ);
+      (async () => {      
+        const res = await fetch(`https://tokens.webaverse.com/search?q=${currentQ}`);
+        const tokens = await res.json();
+        setSearchResults(tokens);
+      })().catch(err => {
+        console.warn(err);
+      });
+    } else {
+      setQ('');
+      setSearchResults(null);
+    }
+  }
 
   const _switchToSideChain = async e => {
     e.preventDefault();
@@ -95,6 +170,12 @@ const Navbar = ({
                 Live
               </div>
             </div>
+            <StreetFilters
+              q={q}
+              setQ={setQ}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+            />
           </div>
           <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>
             <a className="navbarSILKSymbol">

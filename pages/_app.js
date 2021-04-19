@@ -34,6 +34,7 @@ Router.events.on('routeChangeError', () => NProgress.done());
 
 const App = ({ Component, pageProps }) => {
   const [selectedView, setSelectedView] = useState('cards');
+  const [searchResults, setSearchResults] = useState(null);
 
   return (
     <AppWrapper>
@@ -44,11 +45,13 @@ const App = ({ Component, pageProps }) => {
         <Navbar
           selectedView={selectedView}
           setSelectedView={setSelectedView}
+          setSearchResults={setSearchResults}
         />
         <div className="appContainer">
           <Component
             {...pageProps}
             selectedView={selectedView}
+            searchResults={searchResults}
           />
         </div>
         <Footer />

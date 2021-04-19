@@ -50,56 +50,12 @@ class Dropper extends Component {
   }
 }
 
-const StreetFilters = ({
-  q,
-  setQ,
-  selectedOption,
-  setSelectedOption,
+const PagesRoot = ({
+  data,
+  selectedView,
+  searchResults,
+  setSearchResults,
 }) => {
-  const router = useRouter();
-  
-  return (
-    <div className="street-filters">
-      <label className="row">
-        <img className="search-image" src="/search.svg" />
-        <input
-          type="text"
-          value={q}
-          onChange={e => {
-            setQ(e.target.value);
-          }}
-          onKeyDown={e => {
-            if (e.which === 13) {
-              if (q) {
-                router.push(`/?q=${q}`);
-              } else {
-                router.push('/');
-              }
-            }
-          }}
-        />
-      </label>
-      <div className="row">
-        <div className="filter-options">
-          <div className={`option ${selectedOption === 'image' ? 'selected' : ''}`} onClick={e => setSelectedOption('image')}>
-            <img className="option-image" src="/image.svg" />
-          </div>
-          <div className={`option ${selectedOption === 'video' ? 'selected' : ''}`} onClick={e => setSelectedOption('video')}>
-            <img className="option-image" src="/video.svg" />
-          </div>
-          <div className={`option ${selectedOption === 'audio' ? 'selected' : ''}`} onClick={e => setSelectedOption('audio')}>
-            <img className="option-image" src="/audio.svg" />
-          </div>
-          <div className={`option ${selectedOption === 'avatar' ? 'selected' : ''}`} onClick={e => setSelectedOption('avatar')}>
-            <img className="option-image" src="/avatar.svg" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const PagesRoot = ({data, selectedView}) => {
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
     const [models, setModels] = useState(null);
@@ -108,12 +64,8 @@ const PagesRoot = ({data, selectedView}) => {
     // const [mintMenuLarge, setMintMenuLarge] = useState(false);
     const [selectedTab, setSelectedTab] = useState('');
     const [selectedPage, setSelectedPage] = useState(0);
-    const [selectedOption, setSelectedOption] = useState(0);
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
-    const [q, setQ] = useState('');
-    const [lastQ, setLastQ] = useState('');
-    const [searchResults, setSearchResults] = useState(null);
     const [lastPath, setLastPath] = useState('');
     const [token, setToken] = useState(null);
     
@@ -122,24 +74,6 @@ const PagesRoot = ({data, selectedView}) => {
     // console.log('got initial data', {data, router});
 
     const qs = parseQuery(router.asPath.match(/(\?.*)$/)?.[1] || '');
-    const {q: currentQ = ''} = qs;
-    if (currentQ !== lastQ) {
-      setLastQ(currentQ);
-
-      if (currentQ) {
-        setQ(currentQ);
-        (async () => {      
-          const res = await fetch(`https://tokens.webaverse.com/search?q=${currentQ}`);
-          const tokens = await res.json();
-          setSearchResults(tokens);
-        })().catch(err => {
-          console.warn(err);
-        });
-      } else {
-        setQ('');
-        setSearchResults(null);
-      }
-    }
     if (router.asPath !== lastPath) {
       setLastPath(router.asPath);
       
@@ -343,12 +277,6 @@ const PagesRoot = ({data, selectedView}) => {
                 callToAction="Play"
                 ctaUrl="https://app.webaverse.com"
             /> */}
-            <StreetFilters
-              q={q}
-              setQ={setQ}
-              selectedOption={selectedOption}
-              setSelectedOption={setSelectedOption}
-            />
             <div className={`container ${mintMenuOpen ? 'open' : ''} ${mintMenuLarge ? 'large' : ''} ${token ? 'background' : ''}`}>
                 <div className="streetchain">
                   <div className="bar" />

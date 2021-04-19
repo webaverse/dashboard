@@ -162,12 +162,15 @@
   width: 100%;
   height: 100%;
 }
-.profileHeader .profileText .icon {
+.profileHeader .silk {
+  display: flex;
+}
+.profileHeader .silk .icon {
   width: 16px;
   height: 16px;
   margin-right: 10px;
 }
-.profileHeader .profileText .value {
+.profileHeader .silk .value {
   font-family: 'MS-Gothic';
 }
 .profileHeader .profilePicture {

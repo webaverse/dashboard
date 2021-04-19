@@ -54,11 +54,13 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                                   : ""}
                           </p>
                       ) : null}
+                      <br />
+                      <div className="profileText label">SILK</div>
                       {balance && balance > 0 ? (
-                        <p className="profileText">
+                        <div className="silk">
                           <img className="icon" src="/curve.svg" />
                           <div className="value">{balance || 0}</div>
-                        </p>
+                        </div>
                       ) : null}
                   </div>
               </div>

@@ -146,11 +146,11 @@ const CardSvg = ({
         e.preventDefault();
       };
       
+      
+      
       return (
-        <div className='card-outer'>
-          <div
-            className='card-outer-flip'
-          >
+        <div className="card-outer">
+          <div className="card-outer-flip">
             {/* <div className='card-glossy' /> */}
             <div
               className={`card-wrap ${transitioning ? 'transitioning' : ''}`}
@@ -196,7 +196,7 @@ const CardSvg = ({
               >
                 <img
                   src={`https://card-preview.exokit.org/${id}?w=${500}$ext=${'jpg'}`}
-                  className="card-svg-inner"
+                  className={`card-svg-inner ${cardSize}`}
                   onDragStart={_cancelDragStart}
                 />
                 {/* <svg

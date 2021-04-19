@@ -49,6 +49,11 @@
   perspective: 1000px;
   user-select: none;
 }
+.card-svg-inner.small {
+  --size: 200px;
+  width: var(--size);
+  height: calc(var(--size) * 3.5 / 2.5);
+}
 .card-wrap {
   position: relative;
   margin: 15px;

@@ -75,7 +75,7 @@ a {
   position: relative;
   display: flex;
   padding: 0 8%;
-  padding-left: calc(8% + 100px);
+  padding-left: calc(8% + 70px);
   padding-top: 130px;
   padding-bottom: 74px;
   min-height: calc(100vh - 76px);

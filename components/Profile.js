@@ -98,6 +98,33 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                     muted={true}
                 />
                 <div className="profileLoadout">
+                  <div className="profileLoadoutHeader">Wear</div>
+                  {
+                    [
+                      ['/noun_glove_937033.svg', ''],
+                      ['/noun_glove_937033.svg', 'flip-horizontal'],
+                      ['/noun_Helmet_937034.svg', ''],
+                      ['/noun_body armor_937041.svg', ''],
+                      ['/noun_Boots_937032.svg', ''],
+                      ['/noun_Pet_1307711.svg', ''],
+                      ['/noun_Seat_2522171.svg', ''],
+                    ].map((spec, i) => {
+                      const [src, className] = spec;
+                      return (
+                        <div className={`profileLoadoutItem light ${className}`} key={i}>
+                          <img
+                            src={src}
+                            className="profileLoadoutPicture"
+                            onDragStart={e => {
+                              e.preventDefault();
+                            }}
+                          />
+                        </div>
+                      );
+                    })
+                  }
+                </div>
+                <div className="profileLoadout">
                   <div className="profileLoadoutHeader">Loadout</div>
                   {loadout ?
                     loadout.map((item, i) =>
@@ -114,33 +141,6 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                       ) : null
                     )
                   : null}
-                </div>
-                <div className="profileLoadout">
-                  <div className="profileLoadoutHeader">Equipment</div>
-                  {
-                    [
-                      ['/noun_glove_937033.svg', ''],
-                      ['/noun_glove_937033.svg', 'flip-horizontal'],
-                      ['/noun_Helmet_937034.svg', ''],
-                      ['/noun_body armor_937041.svg', ''],
-                      ['/noun_Boots_937032.svg', ''],
-                      ['/noun_Pet_1307711.svg', ''],
-                      ['/noun_Seat_2522171.svg', ''],
-                    ].map((spec, i) => {
-                      const [src, className] = spec;
-                      return (
-                        <div className={`profileLoadoutItem ${className}`} key={i}>
-                          <img
-                            src={src}
-                            className="profileLoadoutPicture"
-                            onDragStart={e => {
-                              e.preventDefault();
-                            }}
-                          />
-                        </div>
-                      );
-                    })
-                  }
                 </div>
               </div>
               <div className="card-buttons like">

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {Fragment, useState, useEffect} from "react";
 // import { Col } from "react-grid-system";
 import { useAppContext } from "../libs/contextLib";
 import {proofOfAddressMessage} from "../constants/UnlockConstants";
@@ -61,10 +61,13 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                       <br />
                       <div className="profileText label">SILK</div>
                       {balance && balance > 0 ? (
-                        <div className="silk">
-                          <img className="icon" src="/curve.svg" />
-                          <div className="value">{balance ? Number(balance).toLocaleString() : '0'}</div>
-                        </div>
+                        <Fragment>
+                          <div className="silk">
+                            <img className="icon" src="/curve.svg" />
+                            <div className="value">{balance ? Number(balance).toLocaleString() : '0'}</div>
+                          </div>
+                          <br />
+                        </Fragment>
                       ) : null}
                   </div>
               </div>

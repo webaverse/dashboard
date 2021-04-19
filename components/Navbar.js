@@ -143,10 +143,10 @@ const Navbar = ({
           <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
             <section className="navbarSection">
               <div className="navbar-buttons">
-                <Link href="https://app.webaverse.com/"><a className={`item ${router.asPath === '/play' ? 'selected' : ''}`}>Play</a></Link>
                 <Link href="/"><a className={`item ${router.asPath === '/' ? 'selected' : ''}`}>Objects</a></Link>
                 <Link href="/accounts"><a className={`item ${router.asPath === '/accounts' ? 'selected' : ''}`}>Accounts</a></Link>
                 <Link href="/map"><a className={`item ${router.asPath === '/map' ? 'selected' : ''}`}>Map</a></Link>
+                <Link href="https://app.webaverse.com/"><a className={`item ${router.asPath === '/play' ? 'selected' : ''}`}>Play</a></Link>
                 <Link href="https://docs.webaverse.com/"><a className={`item ${router.asPath === '/docs' ? 'selected' : ''}`}>Docs</a></Link>
               </div>
               <div className="navbarSwitchWrap">

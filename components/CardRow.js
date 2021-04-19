@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 // import AssetCard from "./Card";
-import AssetCardSvg from "./CardSvg";
+import AssetCardSwitch from "./CardSwitch";
 import Asset from "./Asset";
 
 const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt, onTokenClick }) => {
@@ -18,75 +18,59 @@ const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt
             {data &&
                 data.map((asset) => {
                     if (asset.totalSupply === 0) {
-                        return;
+                      return;
                     }
+                    const {
+                      id,
+                      isMainnet,
+                      isPolygon,
+                      name,
+                      description,
+                      image,
+                      properties: {
+                        hash,
+                        filename,
+                        ext,
+                      },
+                      external_url,
+                      totalSupply,
+                      balance,
+                      buyPrice,
+                      storeId,
+                      owner,
+                      minter,
+                    } = asset;
+                    const props = {
+                      key: id,
+                      id,
+                      isMainnet,
+                      isPolygon,
+                      assetName: name,
+                      description,
+                      image,
+                      hash,
+                      external_url,
+                      filename,
+                      ext,
+                      totalSupply,
+                      balance,
+                      buyPrice,
+                      storeId,
+                      ownerAvatarPreview: owner.avatarPreview,
+                      ownerUsername: owner.username,
+                      ownerAddress: owner.address,
+                      minterAvatarPreview: minter.avatarPreview,
+                      minterUsername: minter.username,
+                      minterAddress: minter.address,
+                      cardSize,
+                      networkType: 'sidechain',
+                      tilt: true,
+                      onClick: e => {
+                        onTokenClick && onTokenClick(asset.id)(e);
+                      },
+                    };
                     return (
-                        <div key={asset.id}>
-                            <a>
-                                  {/* <AssetCard
-                                    key={asset.id}
-                                    id={asset.id}
-                                    isMainnet={asset.isMainnet}
-                                    isPolygon={asset.isPolygon}
-                                    assetName={asset.name}
-                                    description={asset.description}
-                                    image={asset.image}
-                                    hash={asset.properties.hash}
-                                    external_url={asset.external_url}
-                                    filename={asset.properties.filename}
-                                    ext={asset.properties.ext}
-                                    totalSupply={asset.totalSupply}
-                                    balance={asset.balance}
-                                    buyPrice={asset.buyPrice}
-                                    storeId={asset.storeId}
-                                    ownerAvatarPreview={
-                                        asset.owner.avatarPreview
-                                    }
-                                    ownerUsername={asset.owner.username}
-                                    ownerAddress={asset.owner.address}
-                                    minterAvatarPreview={
-                                        asset.minter.avatarPreview
-                                    }
-                                    minterUsername={asset.minter.username}
-                                    minterAddress={asset.minter.address}
-                                    cardSize={cardSize}
-                                    networkType="sidechain"
-                                /> */}
-                                <AssetCardSvg
-                                    key={asset.id}
-                                    id={asset.id}
-                                    isMainnet={asset.isMainnet}
-                                    isPolygon={asset.isPolygon}
-                                    assetName={asset.name}
-                                    description={asset.description}
-                                    image={asset.image}
-                                    hash={asset.properties.hash}
-                                    external_url={asset.external_url}
-                                    filename={asset.properties.filename}
-                                    ext={asset.properties.ext}
-                                    totalSupply={asset.totalSupply}
-                                    balance={asset.balance}
-                                    buyPrice={asset.buyPrice}
-                                    storeId={asset.storeId}
-                                    ownerAvatarPreview={
-                                        asset.owner.avatarPreview
-                                    }
-                                    ownerUsername={asset.owner.username}
-                                    ownerAddress={asset.owner.address}
-                                    minterAvatarPreview={
-                                        asset.minter.avatarPreview
-                                    }
-                                    minterUsername={asset.minter.username}
-                                    minterAddress={asset.minter.address}
-                                    cardSize={cardSize}
-                                    networkType="sidechain"
-                                    tilt={true}
-                                    onClick={e => {
-                                      onTokenClick && onTokenClick(asset.id)(e);
-                                    }}
-                                />
-                            </a>
-                        </div>
+                      <AssetCardSwitch {...props} selectedView={selectedView} />
                     );
                 })}
         </div>

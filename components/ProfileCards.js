@@ -1,6 +1,14 @@
 import React from "react";
 import Link from "next/link";
 
+function Clip(props) {
+  return (
+    <video {...props} key={props.url}>
+      <source src={props.url} />
+    </video>
+  );
+}
+
 const ProfileCards = ({profiles}) => {
   return (
     <div className="accounts">
@@ -23,13 +31,18 @@ const ProfileCards = ({profiles}) => {
           <Link href={url} key={i}>
             <a className="account">
               {image ?
-                <video
+                <Clip
                   src={`https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm`
                   }
                   className="profileVideo"
                   autoPlay={true}
                   loop={true}
                   muted={true}
+                  ref={el => {
+                    if (el) {
+                      el.load();
+                    }
+                  }}
                 />
               :
                 <div

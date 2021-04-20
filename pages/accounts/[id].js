@@ -193,7 +193,8 @@ const Account = ({ data, selectedView }) => {
       <title>{profile.name} | Webaverse</title>
       <meta name="description" content={"Check out " + profile.name + "'s items on Webaverse."} />
       <meta property="og:title" content={profile.name + "'s account | Webaverse"} />
-      <meta property="og:image" content={profile.avatarPreview ? profile.avatarPreview.replace(/\.[^.]*$/, '.png') : "./preview.png"} />
+      {profile.avatarPreview ? <meta property="og:image" content={profile.avatarPreview.replace(/\.[^.]*$/, '.png')} /> : null}
+      {profile.avatarPreview ? <meta property="og:video" content={profile.avatarPreview.replace(/\.[^.]*$/, '.webm')} /> : null}
       <meta name="theme-color" content="#c4005d" />
       <meta name="twitter:card" content="summary_large_image" />
     </Head>

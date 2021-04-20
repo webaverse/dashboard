@@ -3,6 +3,7 @@ import React, {Fragment, useState, useEffect} from "react";
 import { useAppContext } from "../libs/contextLib";
 import {proofOfAddressMessage} from "../constants/UnlockConstants";
 import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
+import Clip from './Clip';
 
 const Profile = ({ loadout, balance, profile, addresses }) => {
     if (!profile) {
@@ -93,7 +94,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
               /> */}
               <div className="profileAvatar">
                 {profile.avatarPreview ?
-                  <video
+                  <Clip
                     className="profileVideo"
                     src={/* `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm` */
                       profile.avatarPreview.replace(

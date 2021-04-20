@@ -14,10 +14,33 @@ import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
 import ProfileHeader from "../../components/Profile";
 
+const getData = async id => {
+  const [
+    profile,
+    inventory,
+    store,
+    loadout,
+    balance,
+  ] = await Promise.all([
+    getProfileForCreator(id),
+    getInventoryForCreator(id),
+    getStoreForCreator(id),
+    getLoadout(id),
+    getBalance(id),
+  ]);
+  return {
+    // id,
+    profile,
+    inventory,
+    store,
+    loadout,
+    balance,
+  };
+};
+
 const Account = ({ data, selectedView }) => {  
   const {addToast} = useToasts();
   const router = useRouter()
-  const {id} = router.query;
   const {globalState, setGlobalState} = useAppContext();
   const [inventory, setInventory] = useState(data.inventory);
   const [balance, setBalance] = useState(data.balance);
@@ -29,12 +52,25 @@ const Account = ({ data, selectedView }) => {
   const [stuck, setStuck] = useState(false);
   const [addresses, setAddresses] = useState([]);
 
+  // console.log('render account', router.query.id);
+
   /* useEffect(() => {
     if (id && !profile || !balance || !inventory || !store || !loadout) {
       getData();
     }
   }, []); */
-  
+
+  const updateData = async () => {
+    const id = router.query.id;
+    const data = await getData(id);
+    setInventory(data.inventory);
+    setBalance(data.balance);
+    setLoadout(data.loadout);
+    setProfile(data.profile);
+    setStore(data.store);
+  };
+
+  useEffect(updateData, [router.query.id]);
   useEffect(async () => {
     const {
       web3,
@@ -49,7 +85,7 @@ const Account = ({ data, selectedView }) => {
   const addressProofs = getAddressProofs(profile);
   // console.log('render addresses', addresses);
 
-  const getData = () => {
+  /* const updateData = () => {
     (async () => {
       const profile = await getProfileForCreator(id);
       setProfile(profile);
@@ -74,7 +110,7 @@ const Account = ({ data, selectedView }) => {
       const balance = await getBalance(id);
       setBalance(balance);
     })();
-  }
+  }; */
 
   const _handleTokenClick = tokenId => e => {
     router.push('/assets/' + tokenId);
@@ -93,7 +129,7 @@ const Account = ({ data, selectedView }) => {
     console.log("success!");
     setLoading(false);
     if (window != "undefined") {
-      getData();
+      updateData();
     }
   };
   const handleError = err => {
@@ -246,30 +282,11 @@ export default Account;
 
 export async function getServerSideProps(context) {
   const id = context.params.id;
-
-  const [
-    profile,
-    inventory,
-    store,
-    loadout,
-    balance,
-  ] = await Promise.all([
-    getProfileForCreator(id),
-    getInventoryForCreator(id),
-    getStoreForCreator(id),
-    getLoadout(id),
-    getBalance(id),
-  ]);
+  const data = await getData(id);
 
   return { 
     props: { 
-      data: {
-        profile,
-        inventory,
-        store,
-        loadout,
-        balance,
-      }
+      data,
     } 
   }
 }

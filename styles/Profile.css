@@ -165,8 +165,8 @@
 .profileHeader .profileName {
   flex: 1 1 auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center;
+  justify-content: center; */
   flex-wrap: wrap;
   flex-direction: column;
   margin-right: 50px;
@@ -176,25 +176,34 @@
 @media screen and (max-width: 600px) {
   .profileHeader .profileName {
     padding-bottom: 175px;
-    width: 100%
+    width: 100%;
   }
 }
+.profileHeader .profileWrap {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
 .profileHeader .profileText {
+  display: flex;
+  justify-content: flex-start;
   font-size: 1em;
-  padding: 10px;
+  margin: 0;
+  padding: 10px 0;
   border-radius: 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
   text-shadow: 2px 2px 2px black;
+  font-weight: 400;
 }
 .profileHeader .profileText.mainName {
   font-size: 3em;
   margin: unset;
 }
 .profileHeader .profileText.address {
+  /* font-family: monospace; */
   font-size: .65em;
   margin: 0;
-  padding: 0;
 }

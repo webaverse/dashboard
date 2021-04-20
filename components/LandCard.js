@@ -12,7 +12,7 @@ const LandCard = ({
     onClickFunction,
 }) => {
     let networkIcon;
-    if (networkType === "webaverse") {
+    if (networkType === "sidechain") {
         networkIcon = "/icon-webaverse.svg";
     } else if (networkType === "ethereum") {
         extIcon = "/icon-ethereum.svg";

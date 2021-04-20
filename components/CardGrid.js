@@ -17,6 +17,7 @@ const CardGrid = ({ data, cardSize }) => {
                                     key={asset.id}
                                     id={asset.id}
                                     isMainnet={asset.isMainnet}
+                                    isPolygon={asset.isPolygon}
                                     assetName={asset.name}
                                     description={asset.description}
                                     image={asset.image}
@@ -40,7 +41,7 @@ const CardGrid = ({ data, cardSize }) => {
                                     minterUsername={asset.minter.username}
                                     minterAddress={asset.minter.address}
                                     cardSize={cardSize}
-                                    networkType="webaverse"
+                                    networkType="sidechain"
                                 />
                             </a>
                         </Link>

@@ -14,6 +14,7 @@ const Card = ({
     minterUsername,
     cardSize,
     isMainnet,
+    isPolygon,
     glow,
     imageView,
 }) => {
@@ -28,6 +29,8 @@ const Card = ({
     let networkIcon;
     if (isMainnet) {
         networkIcon = "/icon-ethereum.svg";
+    } else if(isPolygon) {
+        networkIcon = "/icon-polygon.svg";
     } else {
         networkIcon = "/icon-webaverse.svg";
     }
@@ -107,7 +110,7 @@ const Card = ({
             <div className={`assetImage assetImage ${cardSize}`}>
                 {!imageView || imageView === "2d" ? (
                     video ? (
-                        <video autoPlay playsInLine controls loop src={image} />
+                        <video autoPlay playsInline loop muted={cardSize !== ''} controls={cardSize === ''} src={image} />
                     ) : (
                         <img src={image} />
                     )

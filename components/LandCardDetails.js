@@ -59,12 +59,12 @@ const LandCardDetails = ({
     const [otherNetworkName, setOtherNetworkName] = useState(null);
     const [stuck, setStuck] = useState(false);
 
-    useEffect(() => {
+    /* useEffect(() => {
         if (globalState.loginToken) {
             getData();
             getOtherData();
         }
-    }, [globalState]);
+    }, [globalState]); */
 
     const getOtherData = () => {
         (async () => {
@@ -108,7 +108,7 @@ const LandCardDetails = ({
     const isForSale =
         buyPrice !== undefined && buyPrice !== null && buyPrice !== "";
 
-    const ethEnabled = async () => {
+    /* const ethEnabled = async () => {
         if (window.ethereum) {
             window.web3 = new Web3(window.ethereum);
             window.ethereum.enable();
@@ -148,7 +148,7 @@ const LandCardDetails = ({
                 handleError(err);
             }
         }
-    };
+    }; */
 
     const handleSuccess = (msg, link) => {
         if (typeof msg === "object") {
@@ -290,13 +290,19 @@ const LandCardDetails = ({
 
     const handleResubmit = async () => {
         await resubmitAsset(
-            "LAND",
+            currentLocationUnstuck,
+            'LAND',
+            'mainnetsidechain',
             id,
-            globalState,
+            globalState.address,
+            landMainnetAddress,
+            globalState.loginToken.mnemonic,
             handleSuccess,
             handleError
         );
     };
+    const currentLocation = 'mainnetsidechain';
+    const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
 
     return (
         <>
@@ -347,7 +353,7 @@ const LandCardDetails = ({
                                         minterUsername={minterUsername}
                                         minterAddress={minterAddress}
                                         cardSize={""}
-                                        networkType="webaverse"
+                                        networkType="sidechain"
                                         glow={false}
                                     />
                                 </div>,
@@ -556,8 +562,7 @@ const LandCardDetails = ({
                                                                                     handleResubmit
                                                                                 }
                                                                             >
-                                                                                Resubmit
-                                                                                Transfer
+                                                                                Resubmit to mainnetsidechain
                                                                             </button>
                                                                         ),
                                                                     landMainnetAddress &&

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default () => {
+const Map = () => {
   return (
     <>
       <p>
@@ -11,4 +11,5 @@ export default () => {
       </div>
     </>
   )
-}
+};
+export default Map;

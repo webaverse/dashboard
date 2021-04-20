@@ -11,7 +11,7 @@ const CardColumn = ({ data, cardSize }) => {
                         return;
                     }
                     return (
-                        <Link href={"/tv/" + asset.id}>
+                        <Link href={"/tv/" + asset.id} key={asset.id}>
                             <a>
                                 <AssetCard
                                     key={asset.id}
@@ -39,7 +39,7 @@ const CardColumn = ({ data, cardSize }) => {
                                     minterUsername={asset.minter.username}
                                     minterAddress={asset.minter.address}
                                     cardSize={cardSize}
-                                    networkType="webaverse"
+                                    networkType="sidechain"
                                 />
                             </a>
                         </Link>

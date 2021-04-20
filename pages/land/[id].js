@@ -6,16 +6,16 @@ import Loader from "../../components/Loader";
 import { getLand } from "../../functions/UIStateFunctions";
 import { useAppContext } from "../../libs/contextLib";
 
-export default ({ data }) => {
+const Land = ({ data }) => {
   const router = useRouter()
   const { id } = router.query
   const { globalState, setGlobalState } = useAppContext();
   const [land, setLand] = useState(data);
-  const [loading, setLoading] = useState(data);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  /* useEffect(() => {
     getData();
-  }, [id]);
+  }, [id]); */
 
   const getData = () => {
     if (id) {
@@ -27,7 +27,7 @@ export default ({ data }) => {
     }
   }
 
-  return (
+  return land ? (
     <>
       <Head>
         <title>{land.name} | Webaverse</title>
@@ -37,7 +37,7 @@ export default ({ data }) => {
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      { !loading ?
+      {!loading ?
           <LandCardDetails
              id={land.id}
              key={land.id}
@@ -57,18 +57,24 @@ export default ({ data }) => {
              ownerUsername={land.owner.username}
              ownerAddress={land.owner.address}
              globalState={globalState}
-             networkType='webaverse'
+             networkType="sidechain"
              getData={getData}
            />
       :
         <Loader loading={true} />
       }
     </>
-  )
-}
+  ) : <div>Token not found.</div>;
+};
+export default Land;
 
 export async function getServerSideProps({ params }) {
-  const data = await getLand(params.id);
+  const id = /^[0-9]+$/.test(params.id) ? parseInt(params.id, 10) : NaN;
+  const data = !isNaN(id) ? (await getLand(id)) : null;
 
-  return { props: { data } }
+  return {
+    props: {
+      data,
+    },
+  };
 }

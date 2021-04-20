@@ -1,34 +1,93 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import CardDetails from "../../components/CardDetails";
 import Loader from "../../components/Loader";
-import { getToken } from "../../functions/UIStateFunctions";
-import { useAppContext } from "../../libs/contextLib";
+import {getToken, getProfileForCreator} from "../../functions/UIStateFunctions";
+import {useAppContext} from "../../libs/contextLib";
+import {getBlockchain} from "../../webaverse/blockchain.js";
+import {getStuckAsset} from "../../functions/AssetFunctions.js";
+import {Networks} from "../../webaverse/blockchain.js";
+import {getAddressProofs, getAddressesFromProofs} from '../../functions/Functions.js';
+import {proofOfAddressMessage} from "../../constants/UnlockConstants.js";
 
-export default ({ data }) => {
-  const router = useRouter()
-  const { id } = router.query
-  const { globalState, setGlobalState } = useAppContext();
-  const [token, setToken] = useState(data);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getData();
-  }, [id]);
-
-  const getData = () => {
-    if (id) {
+const getData = async id => {
+  if (id) {
+    const [
+      token,
+      // stuck,
+      networkName,
+    ] = await Promise.all([
       (async () => {
-        const data = await getToken(id);
-        setToken(data);
-        setLoading(false);
-      })();
-    }
+        const token = await getToken(id);
+        return token;
+      })(),
+      /* (async () => {
+        const stuck = await getStuckAsset('NFT', id);
+        return stuck;
+      })(), */
+      (async () => {
+        const {contracts, getNetworkName} = await getBlockchain();
+        const networkName = await getNetworkName();
+        return networkName;
+      })(),
+    ]);
+    return {
+      token,
+      // stuck,
+      networkName,
+    };
+  } else {
+    return null;
   }
+};
 
-  return (
-    <>
+const Asset = ({ data }) => {
+  // console.log('got data', data);
+  
+  const router = useRouter();
+  const {id} = router.query;
+  const {globalState, setGlobalState} = useAppContext();
+  const [token, setToken] = useState(data.token);
+  const [networkName, setNetworkName] = useState(data.networkName);
+  // const [stuck, setStuck] = useState(data.stuck);
+  // const [tokenOnChains, setTokenOnChains] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [addresses, setAddresses] = useState([]);
+  
+  useEffect(async () => {
+    if (globalState.address) {
+      const {
+        web3,
+      } = await getBlockchain();
+
+      const profile = await getProfileForCreator(globalState.address);
+      const addressProofs = getAddressProofs(profile);
+      const addresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
+      // console.log('got profile', profile, addresses);
+      setAddresses(addresses);
+    }
+  }, [globalState]);
+  /* useEffect(async () => {
+    const {contracts} = await getBlockchain();
+    
+    const tokenOnChains = {};
+    await Promise.all(Networks[networkName + 'sidechain'].transferOptions.map(async transferOptionNetworkName => {
+      const tokenId = parseInt(id, 10);
+      let ownerOnChain;
+      try {
+        ownerOnChain = await contracts[transferOptionNetworkName]['NFT'].methods.ownerOf(tokenId).call();
+      } catch(err) {
+        ownerOnChain = '';
+      }
+      const isOwnerOnChain = globalState.address === ownerOnChain;
+      tokenOnChains[transferOptionNetworkName] = isOwnerOnChain;
+    }));
+    setTokenOnChains(tokenOnChains);
+  }, [globalState]); */
+
+  return token ? (
+    <Fragment>
       <Head>
         <title>{token.name} | Webaverse</title>
         <meta name="description" content={token.description + " | Webaverse"} />
@@ -55,11 +114,13 @@ export default ({ data }) => {
         :
           <meta name="twitter:card" content="summary_large_image" />
         }
+        <script type="text/javascript" src="/geometry.js"></script>
       </Head>
       { !loading ?
           <CardDetails
              id={token.id}
              isMainnet={token.isMainnet}
+             isPolygon={token.isPolygon}
              key={token.id}
              name={token.name}
              description={token.description}
@@ -75,23 +136,50 @@ export default ({ data }) => {
              balance={token.balance}
              ownerAvatarPreview={token.owner.avatarPreview}
              ownerUsername={token.owner.username}
-             ownerAddress={token.owner.address}
+             ownerAddress={token.ownerAddress}
              minterAvatarPreview={token.minter.avatarPreview}
-             minterAddress={token.minter.address}
+             minterAddress={token.minterAddress}
              minterUsername={token.minter.username}
+             currentOwnerAddress={token.currentOwnerAddress}
              globalState={globalState}
-             networkType='webaverse'
-             getData={getData}
+             networkName={networkName}
+             currentLocation={token.currentLocation}
+             getData={async () => {
+               const {
+                 token,
+                 // stuck,
+                 networkName,
+               } = await getData(id);
+               
+               setToken(token);
+               // setStuck(stuck);
+               setNetworkName(networkName);
+               setLoading(false);
+             }}
+             addresses={addresses}
            />
       :
         <Loader loading={true} />
       }
-    </>
-  )
-}
+    </Fragment>
+  ) : <div>Token not found.</div>;
+};
+export default Asset;
 
 export async function getServerSideProps(context) {
-  const data = await getToken(context.params.id);
+  const id = /^[0-9]+$/.test(context.params.id) ? parseInt(context.params.id, 10) : NaN;
+  const o = await getData(id);
+  const token = o?.token;
+  // const stuck = o?.stuck;
+  const networkName = o?.networkName;
 
-  return { props: { data } }
+  return {
+    props: {
+      data: {
+        token,
+        // stuck,
+        networkName,
+      },
+    },
+  };
 }

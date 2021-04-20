@@ -8,6 +8,27 @@ const Navbar = () => {
   const { globalState, setGlobalState } = useAppContext();
   const [dropdown, setDropdown] = useState(false);
 
+  const _switchToSideChain = async e => {
+    e.preventDefault();
+    
+    await ethereum.enable();
+    await ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [{
+            chainId: "0x53A",
+            chainName: "Webaverse Sidechain",
+            rpcUrls: ['https://mainnetsidechain.exokit.org',],
+            iconUrls: ['https://app.webaverse.com/assets/logo-flat.png'],
+            blockExplorerUrls: ['https://webaverse.com/activity'],
+            nativeCurrency: {
+              name: 'Silk',
+              symbol: 'SILK',
+              decimals: 18,
+            },
+        }],
+    });
+  };
+
   return (
     <div className="navbar">
       <div className="navbarContainer">
@@ -57,10 +78,11 @@ const Navbar = () => {
               </div>
             </div>
             <div className="navbarTopLevelMenuOption">
-              <div onClick={e => e.preventDefault} className={`navbarLinkItem item ${dropdown ? "responsive" : ""}`}>Market<ExpandMoreIcon /></div>
+              <div onClick={e => e.preventDefault} className={`navbarLinkItem item ${dropdown ? "responsive" : ""}`}>Blockchain<ExpandMoreIcon /></div>
               <div className={`navbarSubMenuContainer ${dropdown ? "responsive" : ""}`}>
                 <div className="navbarSubMenu">
                   <div className="navbarSubMenuLeftbar">
+                    <Link href="/activity"><a className={`navbarSubMenuLinkItem item`} onClick={_switchToSideChain}>Sidechain</a></Link>
                     <Link href="/activity"><a className={`navbarSubMenuLinkItem item`}>Activity</a></Link>
                   </div>
                 </div>
@@ -75,8 +97,6 @@ const Navbar = () => {
                     <Link href="/pets"><a className={`navbarSubMenuLinkItem item`}>Pet</a></Link>
                     <Link href="/fly"><a className={`navbarSubMenuLinkItem item`}>Flying Pet</a></Link>
                     <Link href="/mounts"><a className={`navbarSubMenuLinkItem item`}>Mount</a></Link>
-                    <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://editaverse.com">World Editor</a>
-                    <a className={`navbarSubMenuLinkItem item`} target="_blank" href="https://voxel.editaverse.com">Voxel Editor</a>
                   </div>
                 </div>
               </div>
@@ -111,9 +131,11 @@ const Navbar = () => {
           </div>
           <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
             { globalState.address ?
-              <a href={"/accounts/" + globalState.address}>
-                <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} />
-              </a>
+              <Link href={"/accounts/" + globalState.address}>
+                <a>
+                  <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} />
+                </a>
+              </Link>
             :
               <Link href="/login">
                 <a>

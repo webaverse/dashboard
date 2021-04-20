@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import Head from "next/head";
 import { getTokens } from "../functions/UIStateFunctions.js";
 import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import Loader from "../components/Loader";
-import Hiring from "../pages/hiring";
-
-export default () => {
-    return <Hiring/>
-}
-
-/* export default () => {
+const PagesRoot = () => {
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
     const [models, setModels] = useState(null);
@@ -43,7 +37,7 @@ export default () => {
     }, []);
 
     return (
-        <>
+        <Fragment>
             <Head>
                 <title>Webaverse</title>
                 <meta
@@ -69,7 +63,7 @@ export default () => {
                 {loading ? (
                     <Loader loading={loading} />
                 ) : (
-                    <>
+                    <Fragment>
                         <CardRowHeader name="Avatars" />
                         <CardRow data={avatars} cardSize="small" />
 
@@ -78,9 +72,10 @@ export default () => {
 
                         <CardRowHeader name="3D Models" />
                         <CardRow data={models} cardSize="small" />
-                    </>
+                    </Fragment>
                 )}
             </div>
-        </>
+        </Fragment>
     );
-}; */
+};
+export default PagesRoot;

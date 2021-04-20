@@ -19,6 +19,7 @@
   text-align: center;
   width: unset !important;
   max-width: unset !important;
+  cursor: pointer;
 }
 .content:hover,
 .content:hover .contentBackground {

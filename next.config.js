@@ -10,6 +10,7 @@ module.exports = {
       }
     })
     config.plugins.push(new webpack.IgnorePlugin(/^electron$/));
+    // config.optimization.minimize = false;
 
     return config
   }

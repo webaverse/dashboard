@@ -12,7 +12,7 @@ export default function Hiring() {
             We're inspired to build the actual metaverse on the web. We're VC funded and actively hiring.<br/>
             The tech is 7 years in the making, and it's open source.<br/>
             You can log in and chop down your friend's garden with your laser sword.<br/>
-            You can upload your favorite custom avatar into the world and embody it in VR.<br/>
+            You can upload your avatar to Discord and dance your visemes off in the VR mirror.<br/>
             You can use the Blender plugin to export a digital pet and feed it your cryptoart.<br/>
             You can walk seamlessly between Cryptovoxels to Decentraland and join a friend with a link.<br/>
             None of these are the metaverse. But when you get a group of people together to do this, it might turn into one.<br/>

@@ -23,6 +23,10 @@
 
 }
 
+.assetDetailsContent {
+  display: flex;
+}
+
 .assetDetailsLeftColumn {
     
 }
@@ -312,4 +316,117 @@
         align-items: center;
     }
 
+}
+
+.fileBrowser {
+  display: flex;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+}
+.fileBrowser .background {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #0004;
+}
+.fileBrowser .wrap {
+  position: relative;
+  display: flex;
+  width: 800px;
+  height: 400px;
+  background-color: #222;
+  border-radius: 10px;
+  flex-direction: column;
+}
+.fileBrowser .wrap header,
+.fileBrowser .wrap footer
+{
+  padding: 10px;
+}
+.fileBrowser .wrap header {
+  display: flex;
+  background-color: #66bb6a;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.fileBrowser .wrap header.disabled {
+  background-color: #ef5350;
+}
+.fileBrowser .wrap footer {
+  display: flex;
+  margin-top: auto;
+  background-color: #333;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.fileBrowser .wrap .tabs {
+  display: flex;
+}
+.fileBrowser .wrap .tabs .tab {
+  padding: 5px;
+  background-color: #333;
+  border-bottom: 3px solid transparent;
+  flex: 1;
+}
+.fileBrowser .wrap .tabs .tab + .tab {
+  margin-left: 3px;
+}
+.fileBrowser .wrap .tabs .tab.selected {
+  border-bottom-color: #ab47bc;
+}
+.fileBrowser .wrap .file-drop {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.fileBrowser .wrap .file-drop .file-drop-target {
+  flex: 1;
+}
+.fileBrowser .wrap .file,
+.fileBrowser .wrap .file-contents,
+.fileBrowser .wrap .history
+{
+  position: relative;
+  flex: 1;
+  overflow: auto;
+}
+.fileBrowser .wrap .file .file-drop,
+.fileBrowser .wrap .file .file-drop-target,
+.fileBrowser .wrap .file .file-drop-background
+{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.fileBrowser .wrap .file ul {
+  position: relative;
+}
+.fileBrowser .wrap ul li {
+  display: flex;
+  padding: 5px;
+  list-style-type: none;
+}
+.fileBrowser .wrap ul li.selected {
+  background-color: #333;
+  border-radius: 3px;
+}
+.fileBrowser .wrap ul li a,
+.fileBrowser .wrap ul li input[type="text"] {
+  display: flex;
+  margin: 0;
+  margin-right: auto;
+  height: 20px;
+  flex: 1;
+}
+.fileBrowser .wrap ul li input[type="text"] {
+  font: inherit;
 }

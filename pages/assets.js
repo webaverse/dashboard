@@ -5,19 +5,19 @@ import { getTokens } from "../functions/UIStateFunctions.js";
 import CardGrid from "../components/CardGrid";
 import Loader from "../components/Loader";
 
-export default ({ data }) => {
+const Assets = ({ data }) => {
   const [hasMore, setHasMore] = useState(true);
   const [start, setStart] = useState(51);
   const [end, setEnd] = useState(60);
-  const [cardData, setCardData] = useState(null);
+  const [cardData, setCardData] = useState(data.tokens);
   const { globalState, setGlobalState } = useAppContext();
 
-  useEffect(() => {
+  /* useEffect(() => {
     (async () => {
       const data = await getTokens(1, 50);
       setCardData(data);
     })();
-  }, []);
+  }, []); */
 
   const fetchData = async () => {
     const newData = await getTokens(start, end);
@@ -29,9 +29,9 @@ export default ({ data }) => {
 
 
     setCardData(cardData.concat(newData));
-    setStart(start+20);
-    setEnd(end+20);
-  }
+    setStart(start + 20);
+    setEnd(end + 20);
+  };
 
   return (
     <div className="container">
@@ -54,4 +54,16 @@ export default ({ data }) => {
       }
     </div>
   )
+};
+export default Assets;
+
+export async function getServerSideProps(context) {
+  const tokens = await getTokens(1, 50);
+  return { 
+    props: { 
+      data: {
+        tokens,
+      }
+    } 
+  }
 }

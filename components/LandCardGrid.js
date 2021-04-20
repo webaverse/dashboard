@@ -36,7 +36,7 @@ const LandCardGrid = ({ data, currentCard, setCurrentCard, cardSize }) => {
                     showCardDetails(asset);
                 }
                 return (
-                    <Link href={"/land/" + asset.id}>
+                    <Link href={"/land/" + asset.id} key={asset.id}>
                         <a>
                             <AssetCard
                                 key={asset.id}
@@ -58,7 +58,7 @@ const LandCardGrid = ({ data, currentCard, setCurrentCard, cardSize }) => {
                                 ownerAddress={asset.owner.address}
                                 cardSize={cardSize}
                                 onClickFunction={() => showCardDetails(asset)}
-                                networkType="webaverse"
+                                networkType="sidechain"
                             />
                         </a>
                     </Link>

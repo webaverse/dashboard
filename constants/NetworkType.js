@@ -1,6 +1,6 @@
 
 export const NetworkType = {
-    Webaverse: "webaverse",
+    Webaverse: "sidechain",
     Mainnet: "mainnet"
   };
   

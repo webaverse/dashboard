@@ -1,6 +1,6 @@
 import React from "react";
 
-export default ({ percentage, progress, loadingMessage }) => {
+const ProgressBar = ({ percentage, progress, loadingMessage }) => {
     return (
         <div className={`progress-button ${progress}`}>
             <span className="loading-text">{loadingMessage}</span>
@@ -13,3 +13,4 @@ export default ({ percentage, progress, loadingMessage }) => {
         </div>
     );
 };
+export default ProgressBar;

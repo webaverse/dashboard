@@ -1,13 +1,15 @@
 import React from "react";
 import { Col } from "react-grid-system";
 import { useAppContext } from "../libs/contextLib";
+import {proofOfAddressMessage} from "../constants/UnlockConstants";
+import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
 
-const Profile = ({ loadout, balance, profile }) => {
+const Profile = ({ loadout, balance, profile, addresses }) => {
     if (!profile) {
         return null;
     }
 
-    const { globalState, setGlobalState } = useAppContext();
+    const {globalState, setGlobalState} = useAppContext();
 
     const logout = () => {
         setGlobalState({ ...globalState, logout: "true" });
@@ -36,13 +38,16 @@ const Profile = ({ loadout, balance, profile }) => {
             />
             <div className="profileHeader">
                 <div className="profileName">
-                    <>
+                    <div className="profileWrap">
                         <h1 className="profileText mainName">
                             {profile.name ? profile.name : "Anonymous"}
                         </h1>
-                        <p className="profileText address">
-                            Sidechain: {profile.address ? profile.address : ""}
-                        </p>
+                        <p className="profileText address">{profile.address} (sidechain)</p>
+                        {addresses.map(address => {
+                          return (
+                            <p className="profileText address" key={address}>{address} (mainnet)</p>
+                          );
+                        })}
                         {profile.mainnetAddress ? (
                             <p className="profileText address">
                                 Mainnet:{" "}
@@ -56,7 +61,7 @@ const Profile = ({ loadout, balance, profile }) => {
                                 SILK Balance: {balance ? balance : "0"}
                             </p>
                         ) : null}
-                    </>
+                    </div>
                 </div>
                 <div className="profilePictureContainer">
                     <div
@@ -68,7 +73,7 @@ const Profile = ({ loadout, balance, profile }) => {
                                           /\.[^.]*$/,
                                           ".png"
                                       )
-                                    : "./preview.png"
+                                    : "/preview.png"
                             }")`,
                             backgroundSize: "contain",
                             backgroundRepeat: "no-repeat",

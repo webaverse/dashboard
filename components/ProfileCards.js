@@ -27,6 +27,7 @@ const ProfileCards = ({profiles}) => {
                   src={`https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm`
                   }
                   className="profileVideo"
+                  autoPlay={true}
                   loop={true}
                   muted={true}
                 />

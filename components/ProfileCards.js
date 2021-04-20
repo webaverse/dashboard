@@ -8,7 +8,7 @@ const ProfileCards = ({profiles}) => {
         // console.log('check item', item);
         const image = item.avatarPreview.replace(/\.[^.]*$/, '.png');
 
-        console.log('got image', image);
+        // console.log('got image', image);
 
         const homeSpaceImage = item.homeSpacePreview || "./defaulthomespace.svg";
 

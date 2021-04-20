@@ -212,8 +212,9 @@
   }
 }
 .profileHeader .profileWrap {
-  min-width: 320px;
   display: flex;
+  min-width: 320px;
+  margin-right: -200px;
   flex-direction: column;
   align-items: flex-start;
 }

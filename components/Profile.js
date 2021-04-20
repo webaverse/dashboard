@@ -92,12 +92,13 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 }}
               /> */}
               <div className="profileAvatar">
-              {profile.avatarPreview ? <video
+                {profile.avatarPreview ?
+                  <video
                     className="profileVideo"
                     src={/* `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm` */
                       profile.avatarPreview.replace(
                         /\.[^.]*$/,
-                        ".webm"
+                        '.webm'
                       )
                     }
                     loop={true}

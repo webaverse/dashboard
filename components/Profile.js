@@ -103,7 +103,10 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                     loop={true}
                     autoPlay={true}
                     muted={true}
-                /> : null}
+                  />
+                :
+                  <div className="profileVideoPlaceholder" />
+                }
                 <div className="profileLoadout">
                   <div className="profileLoadoutHeader">Wear</div>
                   {

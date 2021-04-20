@@ -188,10 +188,13 @@
   border: none;
   padding-bottom: 1px;
 }
+.profileHeader .profileVideo,
+.profileHeader .profileVideoPlaceholder {
+  --size: 512px;
+  width: var(--size);
+  height: var(--size);
+}
 .profileHeader .profileVideo {
-  /* position: absolute; */
-  width: 512px;
-  height: 512px;
   mix-blend-mode: multiply;
 }
 .profileHeader .profileAvatar {

@@ -36,11 +36,6 @@ const ProfileCards = ({profiles}) => {
                   autoPlay={true}
                   loop={true}
                   muted={true}
-                  ref={el => {
-                    if (el) {
-                      el.load();
-                    }
-                  }}
                 />
               :
                 <div

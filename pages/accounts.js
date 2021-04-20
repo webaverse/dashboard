@@ -26,7 +26,7 @@ const Accounts = ({data}) => {
       <Head>
         <title>Members | Webaverse</title>
         <meta name="description" content={"Check out the awesome members on Webaverse."} />
-        <meta property="og:title" content={"Members | Webaverse"} />
+        <meta property="og:title" content={"Accounts | Webaverse"} />
         <meta property="og:image" content={"https://webaverse.com/webaverse.png"} />
         <meta name="theme-color" content="#c4005d" />
         <meta name="twitter:card" content="summary_large_image" />

@@ -195,7 +195,7 @@ const Navbar = ({
             </div>
           </div>
           <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
-            { globalState.address ?
+            {globalState.address ?
               <Link href={"/accounts/" + globalState.address}>
                 <a>
                   <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} />

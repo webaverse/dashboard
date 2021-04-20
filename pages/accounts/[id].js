@@ -276,7 +276,7 @@ const Account = ({ data, selectedView }) => {
           :
             <div className="placeholder">
               <img src="/info.svg" />
-              This person has no NFTs :(
+              This person has no NFTs yet :'(
             </div>
           }
         </div>

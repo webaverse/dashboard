@@ -2,53 +2,46 @@ import React from "react";
 import Link from "next/link";
 
 const ProfileCards = ({profiles}) => {
-  return profiles.map((item, i) => {
-    let url, name;
-    // console.log('check item', item);
-    const image = item.image || item.avatarPreview.replace(/\.[^.]*$/, ".png");
+  return (
+    <div className="accounts">
+      {profiles.map((item, i) => {
+        // console.log('check item', item);
+        const image = item.avatarPreview.replace(/\.[^.]*$/, '.png');
 
-    const homeSpaceImage = item.homeSpacePreview || "./defaulthomespace.svg";
+        console.log('got image', image);
 
-    if (!image) { // blank card
-      return;
-    }
+        const homeSpaceImage = item.homeSpacePreview || "./defaulthomespace.svg";
 
-    if (/^0x/.test(item.id)) {
-      url = "/accounts/" + item.address;
-      name = item.name ? item.name : "Anonymous";
-    } else if (item.address) {
-      url = "/assets/" + item.id;
-      name = item.name;
-    }
+        /* if (!image) { // blank card
+          return;
+        } */
 
-    return (
-      <a
-        key={i}
-        className="content"
-        style={{
-          backgroundImage: `url("${image}")`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center center",
-        }}
-      >
-        <div
-          className="contentBackground"
-          style={{
-            backgroundImage: `url("${homeSpaceImage}")`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center center",
-          }}
-        />
-        <Link href={url}>
-          <div className="content-inner">
-            <h3 className="contentText">{name}</h3>
-          </div>
-        </Link>
-      </a>
-    );
-  });
+        const url = "/accounts/" + item.address;
+        const name = item.name ? item.name : "Anonymous";
+
+        return (
+          <Link href={url} key={i}>
+            <a className="account">
+              {image ?
+                <video
+                  src={`https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm`
+                  }
+                  className="profileVideo"
+                  loop={true}
+                  muted={true}
+                />
+              :
+                <div
+                  className="profileVideoPlaceholder"
+                />
+              }
+              <div className="profileName">{name}</div>
+            </a>
+          </Link>
+        );
+      })}
+    </div>
+  );
 };
 
 export default ProfileCards;

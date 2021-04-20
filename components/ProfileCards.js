@@ -1,13 +1,6 @@
 import React from "react";
 import Link from "next/link";
-
-function Clip(props) {
-  return (
-    <video {...props} key={props.url}>
-      <source src={props.url} />
-    </video>
-  );
-}
+import Clip from './Clip';
 
 const ProfileCards = ({profiles}) => {
   return (

@@ -105,6 +105,17 @@ a {
 }
 .accounts-page .accounts .account {
   display: flex;
+  flex-direction: column;
+}
+.accounts-page .accounts .account .profileVideo,
+.accounts-page .accounts .account .profileVideoPlaceholder {
+  --size: 200px;
+  width: var(--size);
+  height: var(--size);
+}
+.accounts-page .accounts .account .profileVideoPlaceholder {
+  background-color: #e0e0e0;
+  border-radius: 10px;
 }
 .containerText {
   color: #676370;

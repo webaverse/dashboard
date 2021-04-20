@@ -22,7 +22,7 @@ const Accounts = ({data}) => {
   }, []); */
 
   return (
-    <div className="container">
+    <div className="accounts-page">
       <Head>
         <title>Members | Webaverse</title>
         <meta name="description" content={"Check out the awesome members on Webaverse."} />

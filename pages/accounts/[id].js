@@ -47,7 +47,7 @@ const Account = ({ data, selectedView }) => {
   const [loadout, setLoadout] = useState(data.loadout);
   const [profile, setProfile] = useState(data.profile);
   const [store, setStore] = useState(data.store);
-  const [selectedTab, setSelectedTab] = useState("inventory");
+  // const [selectedTab, setSelectedTab] = useState("inventory");
   const [loading, setLoading] = useState(false);
   const [stuck, setStuck] = useState(false);
   const [addresses, setAddresses] = useState([]);
@@ -115,9 +115,9 @@ const Account = ({ data, selectedView }) => {
   const _handleTokenClick = tokenId => e => {
     router.push('/assets/' + tokenId);
   };
-  const handleTabToggle = tab => {
+  /* const handleTabToggle = tab => {
     setSelectedTab(tab);
-  };
+  }; */
   const logout = () => {
     setGlobalState({ ...globalState, logout: "true" });
   };
@@ -268,12 +268,17 @@ const Account = ({ data, selectedView }) => {
           <div className="assetDetailsLeft">
             <div className="name">NFTs</div>
           </div>
-          {selectedTab === "store" && store && (
+          {/* selectedTab === "store" && store && (
             <CardGrid key="storeCards" data={store} globalState={globalState} selectedView={selectedView} cardSize="small"onTokenClick={_handleTokenClick} />
-          )}
-          {selectedTab === "inventory" && inventory && (
+          ) */}
+          {(inventory && inventory.length > 0) ?
             <CardGrid key="inventoryCards" data={inventory} globalState={globalState} selectedView={selectedView}cardSize="small" onTokenClick={_handleTokenClick} />
-          )}
+          :
+            <div className="placeholder">
+              <img src="/info.svg" />
+              This person has no NFTs :(
+            </div>
+          }
         </div>
     </div>
   }</>)

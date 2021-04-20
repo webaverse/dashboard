@@ -96,7 +96,8 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 {profile.avatarPreview ?
                   <Clip
                     className="profileVideo"
-                    src={/* `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm` */
+                    src={
+                      /* `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm` */
                       profile.avatarPreview.replace(
                         /\.[^.]*$/,
                         '.webm'

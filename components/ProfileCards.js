@@ -25,7 +25,12 @@ const ProfileCards = ({profiles}) => {
             <a className="account">
               {image ?
                 <Clip
-                  src={`https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm`
+                  src={
+                    /* `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm` */
+                    image.replace(
+                      /\.[^.]*$/,
+                      '.webm'
+                    )
                   }
                   className="profileVideo"
                   autoPlay={true}

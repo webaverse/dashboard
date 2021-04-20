@@ -92,6 +92,20 @@ a {
 .container .wrap.open {
   transform: translateY(var(--mint-menu-size));
 }
+.accounts-page {
+  /* display: flex; */
+  position: relative;
+  min-height: calc(100vh - 90px - 74px);
+  margin-top: 90px;
+  padding: 0 8vw;
+}
+.accounts-page .accounts {
+  display: flex;
+  flex-wrap: wrap;
+}
+.accounts-page .accounts .account {
+  display: flex;
+}
 .containerText {
   color: #676370;
 }
@@ -584,4 +598,19 @@ a {
 .card-buttons .card-button:not(.selected) .only-selected
 {
   display: none;
+}
+
+.placeholder {
+  display: flex;
+  margin-right: auto;
+  padding: 5px;
+  padding-right: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  align-items: center;
+}
+.placeholder img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
 }

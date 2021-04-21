@@ -258,10 +258,6 @@ a {
 .container.large {
   --mint-menu-size: 400px;
 }
-.container.open .slider .contents
-{
-  margin-top: 0;
-}
 .mint-menu-bar {
   width: calc(100vw - 16vw);
   height: 2px;
@@ -314,9 +310,10 @@ a {
 .slider .contents {
   display: flex;
   width: 100vw;
-  min-height: 100vh;
+  margin-top: 90px;
+  min-height: calc(100vh - 90px);
   padding: 0 8vw;
-  padding-top: calc(90px + 20px);
+  padding-top: 20px;
   background-color: #FFF;
   background-image: linear-gradient(0deg
 , rgb(230, 230, 230) 0%, rgba(230, 230, 230, 0) 100%);

@@ -235,9 +235,21 @@ a {
 .container .slider .contents,
 .container .streetchain,
 .mint-placeholder,
-.container .wrap
+.container .wrap 
 {
   transition: all 0.5s ease-out;
+}
+.container .slider .contents {
+  transform: translateY(100px);
+}
+.container.open .slider .contents {
+  transform: translateY(0);
+}
+.container > .wrap {
+  transform: translateY(0);
+}
+.container.open > .wrap {
+  transform: translateY(-100px);
 }
 .container.large {
   --mint-menu-size: 400px;

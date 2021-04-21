@@ -309,7 +309,7 @@ const PagesRoot = ({
                     <div className="wrap-slider">
                       <div className="lhs">
                         <div className="stage">
-                          
+                          <img className="card-placeholder" src="cards-placeholder.svg" />
                         </div>
                       </div>
                       <div className="wrap rhs">

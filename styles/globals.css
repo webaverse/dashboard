@@ -334,6 +334,16 @@ a {
   flex: 1;
 }
 .slider .contents .wrap-slider .lhs .stage {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.slider .contents .wrap-slider .lhs .stage .card-placeholder {
+  --size: 300px;
+  width: var(--size);
+  height: calc(var(--size) / 2.5 * 3.5);
 }
 .slider .contents .wrap-slider .rhs {
   width: 200px;

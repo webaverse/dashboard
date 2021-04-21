@@ -23,7 +23,7 @@ const CardSvg = ({
     tilt,
     onClick,
 }) => {
-    const [perspective, setPerspective] = useState([false, false]);
+    const [perspective, setPerspective] = useState([0, 0]);
     const [flip, setFlip] = useState(false);
     const [transitioning, setTransitioning] = useState(false);
     const [cardSpecHighlight, setCardSpecHighlight] = useState(null);

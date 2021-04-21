@@ -103,6 +103,7 @@ const PagesRoot = ({
     const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [helpOpen, setHelpOpen] = useState(false);
+    const [perspective, setPerspective] = useState([0, 0]);;
     
     const router = useRouter();
 
@@ -268,6 +269,16 @@ const PagesRoot = ({
         scroll: false,
       });
     };
+    let nameEl = null;
+    
+    const _updateNameFocus = () => {
+      if (mintMenuOpen && nameEl) {
+        nameEl.focus();
+      }
+    };
+    useEffect(() => {
+      _updateNameFocus();
+    }, [mintMenuOpen]);
 
     return (
         <Fragment>
@@ -314,14 +325,40 @@ const PagesRoot = ({
                   <div className="contents">
                     <div className="wrap-slider">
                       <div className="lhs">
-                        <div className="stage">
-                          <div className="card-placeholder-wrap">
-                            <img className="card-placeholder" src="cards-placeholder.svg" />
+                        <div className="stage" onMouseMove={e => {
+                        const {pageX, pageY} = e;
+                        // const boundingBox = lhsEl.getBoundingClientRect();
+                        const boundingBox = {
+                          x: 0,
+                          y: 0,
+                          width: window.innerWidth,
+                          height: window.innerHeight,
+                        };
+                        const x = pageX - boundingBox.x;
+                        const fx = x / boundingBox.width - 0.5;
+                        const y = pageY - boundingBox.y;
+                        const fy = 1.0 - (y / boundingBox.height) - 0.5;
+                        setPerspective([fx, fy]);
+                      }}>
+                          <div
+                            className="card-placeholder-outer"
+                          >
+                            <div
+                              className="card-placeholder-wrap"
+                              style={{
+                                transform: `rotateY(${perspective[0] * 180 * 0.1}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
+                              }}>
+                              <img
+                                className="card-placeholder"
+                                src="cards-placeholder.svg"
+                              />
+                            </div>
                           </div>
                           <form className="form">
                             <div className="label">Name</div>
                             <input type="text" placeholder="Name" ref={el => {
-                              el && el.focus();
+                              nameEl = el;
+                              // _updateNameFocus();
                             }} />
                             <div className="label">Description</div>
                             <textarea placeholder="Description"/>
@@ -354,7 +391,7 @@ const PagesRoot = ({
                           </div>
                       </div>
                       <div className="wrap rhs">
-                        <div className="label">Type of NFT</div>
+                        <div className="label">Templates</div>
                         <div className="subtabs">
                           {[
                             ['image', '/image.svg'],

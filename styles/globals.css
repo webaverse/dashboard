@@ -413,6 +413,9 @@ a {
 .slider .contents .wrap-slider:not(.step-1) .step-1-only {
   transform: translateX(-100px);
 }
+.slider .contents .wrap-slider:not(.step-2) .step-2-only {
+  transform: translateX(100px);
+}
 .slider .contents .wrap-slider .step-1-only,
 .slider .contents .wrap-slider .step-2-only {
   transition: transform 0.5s cubic-bezier(0, 1, 0, 1), opacity 1s cubic-bezier(0, 1, 0, 1);

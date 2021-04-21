@@ -304,7 +304,7 @@ const PagesRoot = ({
                 {/* <div className="blocker" /> */}
                 <div className="mint-menu-bar" />
                 <div className="slider">
-                  <div className="left-bar" />
+                  {/* <div className="left-bar" /> */}
                   <div className="contents">
                     <div
                       className="wrap-slider"

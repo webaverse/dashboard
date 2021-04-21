@@ -223,7 +223,7 @@ a {
   width: 2px;
 }
 
-.container:not(.open) .slider .contents,
+.container:not(.open) .slider,
 .container.open > .wrap,
 .container.open .streetchain,
 .mint-placeholder.open
@@ -232,7 +232,7 @@ a {
   opacity: 0;
   pointer-events: none;
 }
-.container .slider .contents,
+.container .slider,
 .container .streetchain,
 .mint-placeholder,
 .container .wrap 

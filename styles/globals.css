@@ -414,17 +414,15 @@ a {
   line-height: 1.6;
   text-align: left;
 }
-.slider .contents .wrap-slider .middle .description .h1 {
+.slider .contents .wrap-slider .middle .h1 {
   margin-bottom: 10px;
-  font-size: 20px;
+  font-family: 'FuturaStd-Heavy';
+  font-size: 30px;
   line-height: 2;
   text-align: left;
 }
 .slider .contents .wrap-slider .middle p {
   margin: 5px 0;
-}
-.slider .contents .wrap-slider .middle .h1 {
-  font-family: 'PressStart2P-Regular';
 }
 .slider .contents .wrap-slider .middle .sub span {
   padding: 5px;

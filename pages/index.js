@@ -432,6 +432,11 @@ const PagesRoot = ({
                     className="contents"
                   >
                     <div className={`wrap-slider step-${mintMenuStep}`}>
+                      <div className="back-button step-2-only" onClick={e => {
+                        setMintMenuStep(1);
+                      }}>
+                        <img src="/chevron-left.svg" /><span>Back</span>
+                      </div>
                       <Lhs
                         mintMenuOpen={mintMenuOpen}
                         helpOpen={helpOpen}

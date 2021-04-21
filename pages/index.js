@@ -269,7 +269,8 @@ const PagesRoot = ({
       video: `Video NFT lets you store video clips on the blockchain. They are represented as screens in the virtual world.`,
       audio: `Audio NFT lets you store audio compositions on the blockchain. They are represented as audio nodes in the virtual world.`,
       avatar: `Avatar NFT lets you create VRM avatars on the blockchain. They can be worn in the virtual world.`,
-      item: `Item NFT lets you create virtual objects on the blockchain. They can be pulled out of your inventory in the virtual world.`,
+      model: `Model NFT lets you create 3D virtual objects on the blockchain. They can be pulled out of your inventory in the virtual world.`,
+      html: `HMTL NFT lets you create web sites on the blockchain. They can be shon in the virtual world.`,
       wearable: `Wearable NFT lets you create digital fashion on the blockchain. They can be worn by your avatar in the virtual world.`,
       pet: `Pet NFT lets you create virtual pets on the blockchain. They can be interacted with in the virtual world.`,
       scene: `Scene NFT lets you create digital scenes on the blockchain. They can be visited in the virtual world.`,
@@ -461,6 +462,10 @@ const PagesRoot = ({
                           quantity={quantity}
                           setQuantity={setQuantity}
                         />
+                        <div className="rrhs">
+                          <div className="label">{selectedTab} NFT</div>
+                          <div className="description">{nftTypeDescriptions[selectedTab]}</div>
+                        </div>
                       </div>
                       <div className="wrap step-1-only">
                         <Lhs

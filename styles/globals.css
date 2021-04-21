@@ -422,11 +422,20 @@ a {
 }
 .slider .contents .wrap-slider .back-button {
   display: flex;
+  margin-top: 20px;
+  font-size: 20px;
   align-items: center;
+  cursor: pointer;
+}
+.slider .contents .wrap-slider .back-button:hover {
+  color: #29b6f6;
 }
 .slider .contents .wrap-slider .back-button img {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
+}
+.slider .contents .wrap-slider .back-button:hover img {
+  filter: invert(53%) sepia(33%) saturate(1089%) hue-rotate(156deg) brightness(110%) contrast(93%);
 }
 .slider .contents .wrap-slider .lhs {
   display: flex;

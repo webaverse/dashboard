@@ -313,13 +313,6 @@ const PagesRoot = ({
                   {/* <div className="left-bar" /> */}
                   <div className="contents">
                     <div className="wrap-slider">
-                      <div className="card-buttons like">
-                        <div className={`card-button help ${helpOpen ? 'open' : ''}`} onClick={e => {
-                          setHelpOpen(!helpOpen);
-                        }}>
-                          <img src="/help.svg" />
-                        </div>
-                      </div>
                       <div className="lhs">
                         <div className="stage">
                           <img className="card-placeholder" src="cards-placeholder.svg" />
@@ -335,7 +328,17 @@ const PagesRoot = ({
                               setQuantity(e.target.value);
                             }} min={1} step={1}/>
                           </form>
-                          <div className={`description ${helpOpen ? 'open' : ''}`}>
+                          <div className="card-buttons like">
+                            <div className={`card-button help ${helpOpen ? 'open' : ''}`} onClick={e => {
+                              setHelpOpen(!helpOpen);
+                            }}>
+                              <img src="/help.svg" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="middle">
+                        <div className={`helper ${helpOpen ? 'open' : ''}`}>
                             <div className="h1">Ready to mint your first NFT?</div>
                             <p>Drag and drop a file to get started. Or, click here to choose file. Lazy? Choose a template --&gt;</p>
                             <p className="h2">Supported file types:</p>
@@ -347,10 +350,7 @@ const PagesRoot = ({
                               <span>vox</span>
                             </p>
                           </div>
-                        </div>
                       </div>
-                      {/* <div className="middle">
-                      </div> */}
                       <div className="wrap rhs">
                         <div className="label">Type of NFT</div>
                         <div className="subtabs">

@@ -382,14 +382,11 @@ a {
 .slider .contents .wrap-slider .lhs {
   display: flex;
   flex: 1;
-  flex-direction: column;
+  justify-content: center;
 }
 .slider .contents .wrap-slider .lhs .stage {
   display: flex;
-  width: 100%;
-  height: 100%;
   margin-top: 30px;
-  justify-content: center;
   align-items: flex-start;
 }
 .slider .contents .wrap-slider .lhs .form {
@@ -433,6 +430,9 @@ a {
   border-color: #29b6f6;
   outline: none;
 }
+/* .slider .contents .wrap-slider .lhs .stage {
+  position: relative;
+} */
 .slider .contents .wrap-slider .lhs .stage .card-placeholder {
   --size: 300px;
   width: var(--size);
@@ -441,31 +441,32 @@ a {
 .slider .contents .wrap-slider .middle {
 
 }
-.slider .contents .wrap-slider .description {
+.slider .contents .wrap-slider .helper {
   position: absolute;
   width: 330px;
+  margin-left: -400px;
   padding: 30px;
-  /* background-color: #e0e0e0;
-  background-image: linear-gradient(to right, #eeeeee, #FFF); */
+  background-color: #e0e0e0;
+  background-image: linear-gradient(to right, #eeeeee, #FFF);
   border-radius: 5px;
   font-family: 'MS-Gothic';
   line-height: 1.6;
   text-align: left;
 }
-.slider .contents .wrap-slider .description:not(.open) {
+.slider .contents .wrap-slider .helper:not(.open) {
   display: none;
 }
-.slider .contents .wrap-slider .description .h1 {
+.slider .contents .wrap-slider .helper .h1 {
   margin-bottom: 10px;
   font-family: 'FuturaStd-Heavy';
   font-size: 30px;
   line-height: 1.6;
   text-align: left;
 }
-.slider .contents .wrap-slider .description p {
+.slider .contents .wrap-slider .helper p {
   margin: 5px 0;
 }
-.slider .contents .wrap-slider .description .sub span {
+.slider .contents .wrap-slider .helper .sub span {
   padding: 5px;
   margin-right: 5px;
   background-color: #e0e0e0;

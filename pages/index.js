@@ -147,7 +147,7 @@ const FakeCard = ({onClick}) => {
   );
 };
 
-const Form = ({className, mintMenuOpen, quantity, setQuantity}) => {
+const Form = ({mintMenuOpen, quantity, setQuantity}) => {
   let nameEl = null;
   const _updateNameFocus = () => {
     if (mintMenuOpen && nameEl) {
@@ -159,7 +159,7 @@ const Form = ({className, mintMenuOpen, quantity, setQuantity}) => {
   }, [mintMenuOpen]);
   
   return (
-    <form className={`form ${className || ''}`}>
+    <form className={`form`}>
       <div className="label">Name</div>
       <input type="text" placeholder="Name" ref={el => {
         nameEl = el;
@@ -179,10 +179,10 @@ const Form = ({className, mintMenuOpen, quantity, setQuantity}) => {
   );
 };
 
-const Lhs = ({name, setName, description, setDescription, quantity, setQuantity, mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
+const Lhs = ({className, name, setName, description, setDescription, quantity, setQuantity, mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
   return (
     <div
-      className="lhs"
+      className={`lhs ${className}`}
     >
       <div className={`stage`}>
         <FakeCard onClick={e => {
@@ -197,13 +197,6 @@ const Lhs = ({name, setName, description, setDescription, quantity, setQuantity,
           quantity={quantity}
           setQuantity={setQuantity}
         />
-        <div className="card-buttons like">
-          <div className={`card-button help ${helpOpen ? 'open' : ''}`} onClick={e => {
-            setHelpOpen(!helpOpen);
-          }}>
-            <img src="/help.svg" />
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -451,6 +444,19 @@ const PagesRoot = ({
                         }}>
                           <img src="/chevron-left.svg" /><span>Back</span>
                         </div>
+                        <Lhs
+                          className="small"
+                          mintMenuOpen={mintMenuOpen}
+                          helpOpen={helpOpen}
+                          setHelpOpen={setHelpOpen}
+                          setMintMenuStep={setMintMenuStep}
+                          name={name}
+                          setName={setName}
+                          description={description}
+                          setDescription={setDescription}
+                          quantity={quantity}
+                          setQuantity={setQuantity}
+                        />
                       </div>
                       <div className="wrap step-1-only">
                         <Lhs
@@ -466,6 +472,13 @@ const PagesRoot = ({
                           setQuantity={setQuantity}
                         />
                         <div className="middle">
+                          <div className="card-buttons like">
+                            <div className={`card-button help ${helpOpen ? 'open' : ''}`} onClick={e => {
+                              setHelpOpen(!helpOpen);
+                            }}>
+                              <img src="/help.svg" />
+                            </div>
+                          </div>
                           <div className={`helper ${helpOpen ? 'open' : ''}`}>
                               <div className="h1">Ready to mint your first NFT?</div>
                               <p>Drag and drop a file to get started. Or, click here to choose file. Lazy? Choose a template --&gt;</p>

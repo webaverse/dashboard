@@ -235,7 +235,7 @@ a {
 .container .slider,
 .container .streetchain,
 .mint-placeholder,
-.container .wrap 
+.container .wrap
 {
   transition: transform 0.5s cubic-bezier(0, 1, 0, 1), opacity 1s cubic-bezier(0, 1, 0, 1);
 }
@@ -311,7 +311,6 @@ a {
 }
 .slider .contents {
   display: flex;
-  height: var(--mint-menu-size);
   padding: 10px;
   background-color: #FFF;
   border-left-width: 0;
@@ -321,9 +320,16 @@ a {
 }
 .slider .contents .wrap-slider {
   display: flex;
-  width: 500vw;
-  height: 100%;
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
+}
+.slider .contents .wrap-slider .lhs {
+  display: flex;
+  flex: 1;
+}
+.slider .contents .wrap-slider .lhs .stage {
+}
+.slider .contents .wrap-slider .rhs {
+  width: 200px;
 }
 .slider .contents .wrap {
   display: flex;
@@ -338,9 +344,11 @@ a {
 .slider .contents .label {
   display: flex;
   margin-bottom: 15px;
-  font-family: 'FuturaLT';
-  font-size: 20px;
-  color: #BBB;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-family: 'FuturaStd-Heavy';
+  letter-spacing: 1px;
+  color: #AAA;
   align-items: center;
 }
 .slider .contents .label .back-button {
@@ -450,35 +458,49 @@ a {
 
 .slider .contents .subtabs {
   display: flex;
+  flex-direction: column;
 }
+/* .slider .contents .subtabs .tab-wrap {
+  display: flex;
+  margin: 5px 0;
+  padding: 10px;
+  cursor: pointer;
+} */
 .slider .contents .subtabs .tab {
   display: flex;
-  width: 90px;
-  height: 90px;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin: 5px 0;
+  padding: 5px 10px;
   border-radius: 5px;
   background-color: #DDD;
+  font-family: 'GillSans-CondensedBold';
   font-size: 13px;
+  opacity: 0.3;
   text-transform: uppercase;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
   cursor: pointer;
+  transition: transform 0.3s ease-out;
+}
+.slider .contents .subtabs .tab img,
+.slider .contents .subtabs .tab span {
+  pointer-events: none;
 }
 .slider .contents .subtabs .tab img {
-  width: 50px;
-  height: 50px;
-  margin-top: 5px;
-  transition: transform 0.3s ease-out;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+.slider .contents .subtabs .tab span {
+  display: flex;
+  justify-content: center;
 }
 .slider .contents .subtabs .tab:hover,
 .slider .contents .subtabs .tab.selected
 {
   background-color: #29b6f6;
+  opacity: 1;
 }
-.slider .contents .subtabs .tab:hover img {
-  transform: translateY(-10px);
+.slider .contents .subtabs .tab:hover {
+  transform: translateY(-5px);
 }
 .slider .contents .subtabs .tab.selected {
   color: #FFF;

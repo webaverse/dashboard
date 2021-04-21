@@ -306,27 +306,28 @@ const PagesRoot = ({
                 <div className="slider">
                   {/* <div className="left-bar" /> */}
                   <div className="contents">
-                    <div
-                      className="wrap-slider"
-                    >
-                      <div className="wrap">
-                        <div className="label">Choose type of NFT to mint:</div>
-                        <div className="subtabs">
-                          <div className={`tab ${selectedTab === 'image' ? 'selected' : ''}`} onClick={e => _setSelectedTab('image')}>Image <img src="/image.svg" /></div>
-                          <div className={`tab ${selectedTab === 'video' ? 'selected' : ''}`} onClick={e => _setSelectedTab('video')}>Video <img src="/video.svg" /></div>
-                          <div className={`tab ${selectedTab === 'audio' ? 'selected' : ''}`} onClick={e => _setSelectedTab('audio')}>Audio <img src="/audio.svg" /></div>
+                    <div className="wrap-slider">
+                      <div className="lhs">
+                        <div className="stage">
+                          
                         </div>
+                      </div>
+                      <div className="wrap rhs">
+                        <div className="label">Type of NFT</div>
                         <div className="subtabs">
-                          <div className={`tab ${selectedTab === 'avatar' ? 'selected' : ''}`} onClick={e => _setSelectedTab('avatar')}>Avatar <img src="/avatar.svg" /> </div>
-                          <div className={`tab ${selectedTab === 'item' ? 'selected' : ''}`} onClick={e => _setSelectedTab('item')}>Item <img src="/sword.svg" /></div>
-                          <div className={`tab ${selectedTab === 'wearable' ? 'selected' : ''}`} onClick={e => _setSelectedTab('wearable')}>Wearable <img src="/chain-mail.svg" /></div>
-                          <div className={`tab ${selectedTab === 'pet' ? 'selected' : ''}`} onClick={e => _setSelectedTab('pet')}>Pet <img src="/rabbit.svg" /></div>
-                          <div className={`tab ${selectedTab === 'scene' ? 'selected' : ''}`} onClick={e => _setSelectedTab('scene')}>Scene <img src="/road.svg" /></div>
-                          <div className={`tab ${selectedTab === 'vehicle' ? 'selected' : ''}`} onClick={e => _setSelectedTab('vehicle')}>Vehicle <img src="/scooter.svg" /></div>
+                          <div className={`tab ${selectedTab === 'image' ? 'selected' : ''}`} onClick={e => _setSelectedTab('image')}><img src="/image.svg" /><span>Image</span></div>
+                          <div className={`tab ${selectedTab ===  'video' ? 'selected' : ''}`} onClick={e => _setSelectedTab('video')}><img src="/video.svg" /><span>Video</span></div>
+                          <div className={`tab ${selectedTab === 'audio' ? 'selected' : ''}`} onClick={e => _setSelectedTab('audio')}><img src="/audio.svg" /><span>Audio</span></div>
+                          <div className={`tab ${selectedTab === 'avatar' ? 'selected' : ''}`} onClick={e => _setSelectedTab('avatar')}><img src="/avatar.svg" /><span>Avatar</span></div>
+                          <div className={`tab ${selectedTab === 'item' ? 'selected' : ''}`} onClick={e => _setSelectedTab('item')}><img src="/sword.svg" /><span>Item</span></div>
+                          <div className={`tab ${selectedTab === 'wearable' ? 'selected' : ''}`} onClick={e => _setSelectedTab('wearable')}><img src="/chain-mail.svg" /><span>Wearable</span></div>
+                          <div className={`tab ${selectedTab === 'pet' ? 'selected' : ''}`} onClick={e => _setSelectedTab('pet')}><img src="/rabbit.svg" /><span>Pet</span></div>
+                          <div className={`tab ${selectedTab === 'scene' ? 'selected' : ''}`} onClick={e => _setSelectedTab('scene')}><img src="/road.svg" /><span>Scene</span></div>
+                          <div className={`tab ${selectedTab === 'vehicle' ? 'selected' : ''}`} onClick={e => _setSelectedTab('vehicle')}><img src="/scooter.svg" /><span>Vehicle</span></div>
                         </div>
                         <div className="text"></div>
                       </div>
-                      <div className="wrap">
+                      {/* <div className="wrap">
                         <div className="subwraps">
                           <div className="subwrap">
                             <div className="label">
@@ -424,7 +425,7 @@ const PagesRoot = ({
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

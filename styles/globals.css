@@ -399,8 +399,8 @@ a {
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
 .slider .contents .wrap-slider .card-buttons {
-  top: -10px;
-  right: 240px;
+  top: -30px;
+  right: 220px;
 }
 .slider .contents .wrap-slider:not(.step-1) .step-1-only,
 .slider .contents .wrap-slider:not(.step-2) .step-2-only
@@ -422,7 +422,6 @@ a {
 }
 .slider .contents .wrap-slider .back-button {
   display: flex;
-  margin-top: 20px;
   font-size: 20px;
   align-items: center;
   cursor: pointer;
@@ -555,13 +554,14 @@ a {
   width: 200px;
 }
 .slider .contents .wrap {
+  position: absolute;
   display: flex;
-  width: calc(100vw - 16vw - 20px);
+  width: calc(100vw - 16vw);
   height: 100%;
-  padding: 20px 30px;
-  margin-right: 20px;
+  margin: 20px 0;
   border-radius: 10px;
   transform: translateY(0);
+  align-items: flex-start;
 }
 .slider .contents .label {
   display: flex;

@@ -445,10 +445,12 @@ const PagesRoot = ({
                     className="contents"
                   >
                     <div className={`wrap-slider step-${mintMenuStep}`}>
-                      <div className="back-button step-2-only" onClick={e => {
-                        setMintMenuStep(1);
-                      }}>
-                        <img src="/chevron-left.svg" /><span>Back</span>
+                      <div className="wrap step-2-only">
+                        <div className="back-button" onClick={e => {
+                          setMintMenuStep(1);
+                        }}>
+                          <img src="/chevron-left.svg" /><span>Back</span>
+                        </div>
                       </div>
                       <div className="wrap step-1-only">
                         <Lhs

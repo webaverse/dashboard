@@ -81,6 +81,119 @@ class AssetOverlayBackground extends Component {
   }
 }
 
+const FakeCard = ({el}) => {
+  const [perspective, setPerspective] = useState([0, 0]);
+  const [transitioning, setTransitioning ] = useState(false);
+  
+  const flip = false;
+  const tilt = true;
+  const cardSize = 'large';
+  const cardSpecHighlight = null;
+  
+  const _handleMouseMove = e => {
+    if (el) {
+      const {pageX, pageY} = e;
+      // const boundingBox = el.getBoundingClientRect();
+      const boundingBox = {
+        x: 0,
+        y: 0,
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+      const x = pageX - boundingBox.x;
+      const fx = x / boundingBox.width - 0.5;
+      const y = pageY - boundingBox.y;
+      const fy = 1.0 - (y / boundingBox.height) - 0.5;
+      tilt && setPerspective([fx, fy]);
+    }
+  };
+  const _handleMouseOut = e => {
+    setPerspective([0, 0]);
+  };
+  const _cancelDragStart = e => {
+    e.preventDefault();
+  };
+  
+  return (
+    <div className="card-outer">
+      <div className="card-outer-flip">
+        {/* <div className='card-glossy' /> */}
+        <div
+          className={`card-wrap`}
+          ref={newEl => {
+            el = newEl;
+          }}
+          onMouseMove={_handleMouseMove}
+          onMouseOut={_handleMouseOut}
+        >
+          <div
+            className={`card-svg`}
+            style={{
+              transform: `rotateY(${perspective[0] * 180 * 0.2 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.2}deg)`,
+            }}
+          >
+            <img
+              src={`cards-placeholder.png`}
+              className={`card-svg-inner ${cardSize}`}
+              onDragStart={_cancelDragStart}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Lhs = ({mintMenuOpen, helpOpen}) => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  
+  let lhsEl = null;
+  let nameEl = null;
+  const _updateNameFocus = () => {
+    if (mintMenuOpen && nameEl) {
+      nameEl.focus();
+    }
+  };
+  useEffect(() => {
+    _updateNameFocus();
+  }, [mintMenuOpen]);
+
+  return (
+    <div
+      className="lhs"
+      ref={el => {
+        lhsEl = el;
+      }}
+    >
+      <div className="stage">
+        <FakeCard el={lhsEl} />
+        <form className="form">
+          <div className="label">Name</div>
+          <input type="text" placeholder="Name" ref={el => {
+            nameEl = el;
+            // _updateNameFocus();
+          }} />
+          <div className="label">Description</div>
+          <textarea placeholder="Description"/>
+          <div className="label">Quantity</div>
+          <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
+            setQuantity(e.target.value);
+          }} min={1} step={1}/>
+        </form>
+        <div className="card-buttons like">
+          <div className={`card-button help ${helpOpen ? 'open' : ''}`} onClick={e => {
+            setHelpOpen(!helpOpen);
+          }}>
+            <img src="/help.svg" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const PagesRoot = ({
   data,
   selectedView,
@@ -99,11 +212,7 @@ const PagesRoot = ({
     const [selectedPage, setSelectedPage] = useState(0);
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [quantity, setQuantity] = useState(1);
     const [helpOpen, setHelpOpen] = useState(false);
-    const [perspective, setPerspective] = useState([0, 0]);;
     
     const router = useRouter();
 
@@ -269,16 +378,6 @@ const PagesRoot = ({
         scroll: false,
       });
     };
-    let nameEl = null;
-    
-    const _updateNameFocus = () => {
-      if (mintMenuOpen && nameEl) {
-        nameEl.focus();
-      }
-    };
-    useEffect(() => {
-      _updateNameFocus();
-    }, [mintMenuOpen]);
 
     return (
         <Fragment>
@@ -322,60 +421,14 @@ const PagesRoot = ({
                 <div className="mint-menu-bar" />
                 <div className="slider">
                   {/* <div className="left-bar" /> */}
-                  <div className="contents">
+                  <div
+                    className="contents"
+                  >
                     <div className="wrap-slider">
-                      <div className="lhs">
-                        <div className="stage" onMouseMove={e => {
-                        const {pageX, pageY} = e;
-                        // const boundingBox = lhsEl.getBoundingClientRect();
-                        const boundingBox = {
-                          x: 0,
-                          y: 0,
-                          width: window.innerWidth,
-                          height: window.innerHeight,
-                        };
-                        const x = pageX - boundingBox.x;
-                        const fx = x / boundingBox.width - 0.5;
-                        const y = pageY - boundingBox.y;
-                        const fy = 1.0 - (y / boundingBox.height) - 0.5;
-                        setPerspective([fx, fy]);
-                      }}>
-                          <div
-                            className="card-placeholder-outer"
-                          >
-                            <div
-                              className="card-placeholder-wrap"
-                              style={{
-                                transform: `rotateY(${perspective[0] * 180 * 0.1}deg) rotateX(${perspective[1] * 180 * 0.1}deg)`,
-                              }}>
-                              <img
-                                className="card-placeholder"
-                                src="cards-placeholder.svg"
-                              />
-                            </div>
-                          </div>
-                          <form className="form">
-                            <div className="label">Name</div>
-                            <input type="text" placeholder="Name" ref={el => {
-                              nameEl = el;
-                              // _updateNameFocus();
-                            }} />
-                            <div className="label">Description</div>
-                            <textarea placeholder="Description"/>
-                            <div className="label">Quantity</div>
-                            <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
-                              setQuantity(e.target.value);
-                            }} min={1} step={1}/>
-                          </form>
-                          <div className="card-buttons like">
-                            <div className={`card-button help ${helpOpen ? 'open' : ''}`} onClick={e => {
-                              setHelpOpen(!helpOpen);
-                            }}>
-                              <img src="/help.svg" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <Lhs
+                        mintMenuOpen={mintMenuOpen}
+                        helpOpen={helpOpen}
+                      />
                       <div className="middle">
                         <div className={`helper ${helpOpen ? 'open' : ''}`}>
                             <div className="h1">Ready to mint your first NFT?</div>

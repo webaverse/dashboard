@@ -315,15 +315,28 @@ const PagesRoot = ({
                       <div className="wrap rhs">
                         <div className="label">Type of NFT</div>
                         <div className="subtabs">
-                          <div className={`tab ${selectedTab === 'image' ? 'selected' : ''}`} onClick={e => _setSelectedTab('image')}><img src="/image.svg" /><span>Image</span></div>
-                          <div className={`tab ${selectedTab ===  'video' ? 'selected' : ''}`} onClick={e => _setSelectedTab('video')}><img src="/video.svg" /><span>Video</span></div>
-                          <div className={`tab ${selectedTab === 'audio' ? 'selected' : ''}`} onClick={e => _setSelectedTab('audio')}><img src="/audio.svg" /><span>Audio</span></div>
-                          <div className={`tab ${selectedTab === 'avatar' ? 'selected' : ''}`} onClick={e => _setSelectedTab('avatar')}><img src="/avatar.svg" /><span>Avatar</span></div>
-                          <div className={`tab ${selectedTab === 'item' ? 'selected' : ''}`} onClick={e => _setSelectedTab('item')}><img src="/sword.svg" /><span>Item</span></div>
-                          <div className={`tab ${selectedTab === 'wearable' ? 'selected' : ''}`} onClick={e => _setSelectedTab('wearable')}><img src="/chain-mail.svg" /><span>Wearable</span></div>
-                          <div className={`tab ${selectedTab === 'pet' ? 'selected' : ''}`} onClick={e => _setSelectedTab('pet')}><img src="/rabbit.svg" /><span>Pet</span></div>
-                          <div className={`tab ${selectedTab === 'scene' ? 'selected' : ''}`} onClick={e => _setSelectedTab('scene')}><img src="/road.svg" /><span>Scene</span></div>
-                          <div className={`tab ${selectedTab === 'vehicle' ? 'selected' : ''}`} onClick={e => _setSelectedTab('vehicle')}><img src="/scooter.svg" /><span>Vehicle</span></div>
+                          {[
+                            ['image', '/image.svg'],
+                            ['video', '/video.svg'],
+                            ['audio', '/audio.svg'],
+                            ['avatar', '/avatar.svg'],
+                            ['item', '/sword.svg'],
+                            ['wearable', '/chain-mail.svg'],
+                            ['pet', '/rabbit.svg'],
+                            ['scene', '/road.svg'],
+                            ['vehicle', '/scooter.svg'],
+                          ].map(([name, imgSrc]) => {
+                            return (
+                              <div className="tab-wrap" onClick={e => _setSelectedTab(name)}>
+                                <div
+                                  className={`tab ${selectedTab === name ? 'selected' : ''}`}
+                                >
+                                  <img src={imgSrc} />
+                                  <span>{name}</span>
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                         <div className="text"></div>
                       </div>

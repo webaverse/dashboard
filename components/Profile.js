@@ -65,15 +65,11 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                       ) : null}
                       <br />
                       <div className="profileText label">SILK</div>
-                      {balance && balance > 0 ? (
-                        <Fragment>
-                          <div className="silk">
-                            <img className="icon" src="/curve.svg" />
-                            <div className="value">{balance ? Number(balance).toLocaleString() : '0'}</div>
-                          </div>
-                          <br />
-                        </Fragment>
-                      ) : null}
+                      <div className="silk">
+                        <img className="icon" src="/curve.svg" />
+                        <div className="value">{balance ? Number(balance).toLocaleString() : '0'}</div>
+                      </div>
+                      <br />
                   </div>
               </div>
               {/* <div

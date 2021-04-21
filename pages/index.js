@@ -147,11 +147,7 @@ const FakeCard = ({onClick}) => {
   );
 };
 
-const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [quantity, setQuantity] = useState(1);
-  
+const Form = ({mintMenuOpen, quantity, setQuantity}) => {
   let nameEl = null;
   const _updateNameFocus = () => {
     if (mintMenuOpen && nameEl) {
@@ -161,6 +157,32 @@ const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
   useEffect(() => {
     _updateNameFocus();
   }, [mintMenuOpen]);
+  
+  return (
+    <form className="form">
+      <div className="label">Name</div>
+      <input type="text" placeholder="Name" ref={el => {
+        nameEl = el;
+        // _updateNameFocus();
+      }} />
+      <div className="label">Description</div>
+      <textarea placeholder="Description"/>
+      <div className="label">File</div>
+      <input type="file" placeholder="File" onChange={e => {
+        console.log('file change', e);
+      }} />
+      <div className="label">Quantity</div>
+      <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
+        setQuantity(e.target.value);
+      }} min={1} step={1}/>
+    </form>
+  );
+};
+
+const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <div
@@ -170,23 +192,11 @@ const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
         <FakeCard onClick={e => {
           setMintMenuStep(2);
         }} />
-        <form className="form">
-          <div className="label">Name</div>
-          <input type="text" placeholder="Name" ref={el => {
-            nameEl = el;
-            // _updateNameFocus();
-          }} />
-          <div className="label">Description</div>
-          <textarea placeholder="Description"/>
-          <div className="label">File</div>
-          <input type="file" placeholder="File" onChange={e => {
-            console.log('file change', e);
-          }} />
-          <div className="label">Quantity</div>
-          <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
-            setQuantity(e.target.value);
-          }} min={1} step={1}/>
-        </form>
+        <Form
+          mintMenuOpen={mintMenuOpen}
+          quantity={quantity}
+          setQuantity={setQuantity}
+        />
         <div className="card-buttons like">
           <div className={`card-button help ${helpOpen ? 'open' : ''}`} onClick={e => {
             setHelpOpen(!helpOpen);

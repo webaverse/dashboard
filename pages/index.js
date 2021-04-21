@@ -109,7 +109,7 @@ const FakeCard = () => {
   let frame = null;
   useEffect(_scheduleFrame, () => {
     cancelAnimationFrame(frame);
-  });
+  }, []);
   
   const _cancelDragStart = e => {
     e.preventDefault();

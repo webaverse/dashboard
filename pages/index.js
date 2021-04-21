@@ -311,30 +311,31 @@ const PagesRoot = ({
                     <div className="wrap-slider">
                       <div className="lhs">
                         <div className="stage">
+                          <form className="form">
+                            <div className="label">Name</div>
+                            <input type="text" placeholder="Name"/>
+                            <div className="label">Description</div>
+                            <textarea placeholder="Description"/>
+                            <div className="label">Quantity</div>
+                            <input type="number" placeholder="Quantity"value={1} min={0} step={1}/>
+                          </form>
                           <img className="card-placeholder" src="cards-placeholder.svg" />
-                        </div>
-                        <form className="form">
-                          <input type="text" placeholder="Name"/>
-                          <textarea placeholder="Description"/>
-                          <input type="number" placeholder="Quantity"value={1} min={0} step={1}/>
-                        </form>
-                      </div>
-                      <div className="middle">
-                        <div className="description">
-                          <div className="h1">Ready to mint your first NFT?</div>
-                          <p>Drag and drop a file to get started.</p>
-                          <p>Or, click here to choose file.</p>
-                          <p>Lazy? Choose a template --&gt;</p>
-                          <p className="h2">Supported file types:</p>
-                          <p className="sub">
-                            <span>png</span>
-                            <span>jpg</span>
-                            <span>glb</span>
-                            <span>vrm</span>
-                            <span>vox</span>
-                          </p>
+                          <div className="description">
+                            <div className="h1">Ready to mint your first NFT?</div>
+                            <p>Drag and drop a file to get started. Or, click here to choose file. Lazy? Choose a template --&gt;</p>
+                            <p className="h2">Supported file types:</p>
+                            <p className="sub">
+                              <span>png</span>
+                              <span>jpg</span>
+                              <span>glb</span>
+                              <span>vrm</span>
+                              <span>vox</span>
+                            </p>
+                          </div>
                         </div>
                       </div>
+                      {/* <div className="middle">
+                      </div> */}
                       <div className="wrap rhs">
                         <div className="label">Type of NFT</div>
                         <div className="subtabs">

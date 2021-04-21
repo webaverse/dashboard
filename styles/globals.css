@@ -191,7 +191,9 @@ a {
   z-index: 4;
   user-select: none;
 }
-.mint-button:hover {
+.mint-button:hover,
+.container.open .mint-button
+{
   background-color: #9ccc65;
   border-color: rgba(255, 255, 255, 0.1);
   color: #FFF;
@@ -203,7 +205,9 @@ a {
   width: 13px;
   height: 13px;
 }
-.mint-button:hover img {
+.mint-button:hover img,
+.container.open .mint-button img
+{
   filter: invert(100%);
 }
 .blocker {
@@ -286,7 +290,8 @@ a {
   left: 8vw;
 }
 .slider img,
-.mint-button img {
+.mint-button img,
+{
   user-drag: none; 
   user-select: none;
   -moz-user-select: none;

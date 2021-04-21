@@ -840,6 +840,133 @@
 	.st834{clip-path:url(#SVGID_986_);mask:url(#SVGID_987_);fill:url(#SVGID_989_);}
 	.st835{fill:url(#SVGID_990_);}
 	.st836{fill:#B3B3B3;}
+	.st837{clip-path:url(#SVGID_992_);}
+	.st838{filter:url(#Adobe_OpacityMaskFilter_108_);}
+	.st839{clip-path:url(#SVGID_994_);fill:url(#SVGID_996_);}
+	.st840{clip-path:url(#SVGID_994_);mask:url(#SVGID_995_);fill:url(#SVGID_997_);}
+	.st841{filter:url(#Adobe_OpacityMaskFilter_109_);}
+	.st842{clip-path:url(#SVGID_999_);fill:url(#SVGID_1001_);}
+	.st843{clip-path:url(#SVGID_999_);mask:url(#SVGID_1000_);fill:url(#SVGID_1002_);}
+	.st844{clip-path:url(#SVGID_1004_);}
+	.st845{filter:url(#Adobe_OpacityMaskFilter_110_);}
+	.st846{clip-path:url(#SVGID_1006_);fill:url(#SVGID_1008_);}
+	.st847{clip-path:url(#SVGID_1006_);mask:url(#SVGID_1007_);fill:url(#SVGID_1009_);}
+	.st848{clip-path:url(#SVGID_1011_);}
+	.st849{filter:url(#Adobe_OpacityMaskFilter_111_);}
+	.st850{clip-path:url(#SVGID_1013_);fill:url(#SVGID_1015_);}
+	.st851{clip-path:url(#SVGID_1013_);mask:url(#SVGID_1014_);fill:url(#SVGID_1016_);}
+	.st852{clip-path:url(#SVGID_1018_);}
+	.st853{filter:url(#Adobe_OpacityMaskFilter_112_);}
+	.st854{clip-path:url(#SVGID_1020_);fill:url(#SVGID_1022_);}
+	.st855{clip-path:url(#SVGID_1020_);mask:url(#SVGID_1021_);fill:url(#SVGID_1023_);}
+	.st856{filter:url(#Adobe_OpacityMaskFilter_113_);}
+	.st857{clip-path:url(#SVGID_1025_);fill:url(#SVGID_1027_);}
+	.st858{clip-path:url(#SVGID_1025_);mask:url(#SVGID_1026_);fill:url(#SVGID_1028_);}
+	.st859{clip-path:url(#SVGID_1030_);}
+	.st860{filter:url(#Adobe_OpacityMaskFilter_114_);}
+	.st861{clip-path:url(#SVGID_1032_);fill:url(#SVGID_1034_);}
+	.st862{clip-path:url(#SVGID_1032_);mask:url(#SVGID_1033_);fill:url(#SVGID_1035_);}
+	.st863{filter:url(#Adobe_OpacityMaskFilter_115_);}
+	.st864{clip-path:url(#SVGID_1037_);fill:url(#SVGID_1039_);}
+	.st865{clip-path:url(#SVGID_1037_);mask:url(#SVGID_1038_);fill:url(#SVGID_1040_);}
+	.st866{clip-path:url(#SVGID_1042_);}
+	.st867{filter:url(#Adobe_OpacityMaskFilter_116_);}
+	.st868{clip-path:url(#SVGID_1044_);fill:url(#SVGID_1046_);}
+	.st869{clip-path:url(#SVGID_1044_);mask:url(#SVGID_1045_);fill:url(#SVGID_1047_);}
+	.st870{filter:url(#Adobe_OpacityMaskFilter_117_);}
+	.st871{clip-path:url(#SVGID_1049_);fill:url(#SVGID_1051_);}
+	.st872{clip-path:url(#SVGID_1049_);mask:url(#SVGID_1050_);fill:url(#SVGID_1052_);}
+	.st873{clip-path:url(#SVGID_1054_);}
+	.st874{filter:url(#Adobe_OpacityMaskFilter_118_);}
+	.st875{clip-path:url(#SVGID_1056_);fill:url(#SVGID_1058_);}
+	.st876{clip-path:url(#SVGID_1056_);mask:url(#SVGID_1057_);fill:url(#SVGID_1059_);}
+	.st877{filter:url(#Adobe_OpacityMaskFilter_119_);}
+	.st878{clip-path:url(#SVGID_1061_);fill:url(#SVGID_1063_);}
+	.st879{clip-path:url(#SVGID_1061_);mask:url(#SVGID_1062_);fill:url(#SVGID_1064_);}
+	.st880{clip-path:url(#SVGID_1066_);}
+	.st881{filter:url(#Adobe_OpacityMaskFilter_120_);}
+	.st882{clip-path:url(#SVGID_1068_);fill:url(#SVGID_1070_);}
+	.st883{clip-path:url(#SVGID_1068_);mask:url(#SVGID_1069_);fill:url(#SVGID_1071_);}
+	.st884{filter:url(#Adobe_OpacityMaskFilter_121_);}
+	.st885{clip-path:url(#SVGID_1073_);fill:url(#SVGID_1075_);}
+	.st886{clip-path:url(#SVGID_1073_);mask:url(#SVGID_1074_);fill:url(#SVGID_1076_);}
+	.st887{clip-path:url(#SVGID_1078_);}
+	.st888{filter:url(#Adobe_OpacityMaskFilter_122_);}
+	.st889{clip-path:url(#SVGID_1080_);fill:url(#SVGID_1082_);}
+	.st890{clip-path:url(#SVGID_1080_);mask:url(#SVGID_1081_);fill:url(#SVGID_1083_);}
+	.st891{filter:url(#Adobe_OpacityMaskFilter_123_);}
+	.st892{clip-path:url(#SVGID_1085_);fill:url(#SVGID_1087_);}
+	.st893{clip-path:url(#SVGID_1085_);mask:url(#SVGID_1086_);fill:url(#SVGID_1088_);}
+	.st894{clip-path:url(#SVGID_1090_);}
+	.st895{filter:url(#Adobe_OpacityMaskFilter_124_);}
+	.st896{clip-path:url(#SVGID_1092_);fill:url(#SVGID_1094_);}
+	.st897{clip-path:url(#SVGID_1092_);mask:url(#SVGID_1093_);fill:url(#SVGID_1095_);}
+	.st898{filter:url(#Adobe_OpacityMaskFilter_125_);}
+	.st899{clip-path:url(#SVGID_1097_);fill:url(#SVGID_1099_);}
+	.st900{clip-path:url(#SVGID_1097_);mask:url(#SVGID_1098_);fill:url(#SVGID_1100_);}
+	.st901{clip-path:url(#SVGID_1102_);}
+	.st902{filter:url(#Adobe_OpacityMaskFilter_126_);}
+	.st903{clip-path:url(#SVGID_1104_);fill:url(#SVGID_1106_);}
+	.st904{clip-path:url(#SVGID_1104_);mask:url(#SVGID_1105_);fill:url(#SVGID_1107_);}
+	.st905{filter:url(#Adobe_OpacityMaskFilter_127_);}
+	.st906{clip-path:url(#SVGID_1109_);fill:url(#SVGID_1111_);}
+	.st907{clip-path:url(#SVGID_1109_);mask:url(#SVGID_1110_);fill:url(#SVGID_1112_);}
+	.st908{clip-path:url(#SVGID_1114_);}
+	.st909{filter:url(#Adobe_OpacityMaskFilter_128_);}
+	.st910{clip-path:url(#SVGID_1116_);fill:url(#SVGID_1118_);}
+	.st911{clip-path:url(#SVGID_1116_);mask:url(#SVGID_1117_);fill:url(#SVGID_1119_);}
+	.st912{filter:url(#Adobe_OpacityMaskFilter_129_);}
+	.st913{clip-path:url(#SVGID_1121_);fill:url(#SVGID_1123_);}
+	.st914{clip-path:url(#SVGID_1121_);mask:url(#SVGID_1122_);fill:url(#SVGID_1124_);}
+	.st915{clip-path:url(#SVGID_1126_);}
+	.st916{filter:url(#Adobe_OpacityMaskFilter_130_);}
+	.st917{clip-path:url(#SVGID_1128_);fill:url(#SVGID_1130_);}
+	.st918{clip-path:url(#SVGID_1128_);mask:url(#SVGID_1129_);fill:url(#SVGID_1131_);}
+	.st919{filter:url(#Adobe_OpacityMaskFilter_131_);}
+	.st920{clip-path:url(#SVGID_1133_);fill:url(#SVGID_1135_);}
+	.st921{clip-path:url(#SVGID_1133_);mask:url(#SVGID_1134_);fill:url(#SVGID_1136_);}
+	.st922{clip-path:url(#SVGID_1138_);}
+	.st923{filter:url(#Adobe_OpacityMaskFilter_132_);}
+	.st924{clip-path:url(#SVGID_1140_);fill:url(#SVGID_1142_);}
+	.st925{clip-path:url(#SVGID_1140_);mask:url(#SVGID_1141_);fill:url(#SVGID_1143_);}
+	.st926{filter:url(#Adobe_OpacityMaskFilter_133_);}
+	.st927{clip-path:url(#SVGID_1145_);fill:url(#SVGID_1147_);}
+	.st928{clip-path:url(#SVGID_1145_);mask:url(#SVGID_1146_);fill:url(#SVGID_1148_);}
+	.st929{clip-path:url(#SVGID_1150_);}
+	.st930{filter:url(#Adobe_OpacityMaskFilter_134_);}
+	.st931{clip-path:url(#SVGID_1152_);fill:url(#SVGID_1154_);}
+	.st932{clip-path:url(#SVGID_1152_);mask:url(#SVGID_1153_);fill:url(#SVGID_1155_);}
+	.st933{filter:url(#Adobe_OpacityMaskFilter_135_);}
+	.st934{clip-path:url(#SVGID_1157_);fill:url(#SVGID_1159_);}
+	.st935{clip-path:url(#SVGID_1157_);mask:url(#SVGID_1158_);fill:url(#SVGID_1160_);}
+	.st936{clip-path:url(#SVGID_1162_);}
+	.st937{filter:url(#Adobe_OpacityMaskFilter_136_);}
+	.st938{clip-path:url(#SVGID_1164_);fill:url(#SVGID_1166_);}
+	.st939{clip-path:url(#SVGID_1164_);mask:url(#SVGID_1165_);fill:url(#SVGID_1167_);}
+	.st940{filter:url(#Adobe_OpacityMaskFilter_137_);}
+	.st941{clip-path:url(#SVGID_1169_);fill:url(#SVGID_1171_);}
+	.st942{clip-path:url(#SVGID_1169_);mask:url(#SVGID_1170_);fill:url(#SVGID_1172_);}
+	.st943{clip-path:url(#SVGID_1174_);}
+	.st944{filter:url(#Adobe_OpacityMaskFilter_138_);}
+	.st945{clip-path:url(#SVGID_1176_);fill:url(#SVGID_1178_);}
+	.st946{clip-path:url(#SVGID_1176_);mask:url(#SVGID_1177_);fill:url(#SVGID_1179_);}
+	.st947{filter:url(#Adobe_OpacityMaskFilter_139_);}
+	.st948{clip-path:url(#SVGID_1181_);fill:url(#SVGID_1183_);}
+	.st949{clip-path:url(#SVGID_1181_);mask:url(#SVGID_1182_);fill:url(#SVGID_1184_);}
+	.st950{clip-path:url(#SVGID_1186_);}
+	.st951{filter:url(#Adobe_OpacityMaskFilter_140_);}
+	.st952{clip-path:url(#SVGID_1188_);fill:url(#SVGID_1190_);}
+	.st953{clip-path:url(#SVGID_1188_);mask:url(#SVGID_1189_);fill:url(#SVGID_1191_);}
+	.st954{filter:url(#Adobe_OpacityMaskFilter_141_);}
+	.st955{clip-path:url(#SVGID_1193_);fill:url(#SVGID_1195_);}
+	.st956{clip-path:url(#SVGID_1193_);mask:url(#SVGID_1194_);fill:url(#SVGID_1196_);}
+	.st957{clip-path:url(#SVGID_1198_);}
+	.st958{filter:url(#Adobe_OpacityMaskFilter_142_);}
+	.st959{clip-path:url(#SVGID_1200_);fill:url(#SVGID_1202_);}
+	.st960{clip-path:url(#SVGID_1200_);mask:url(#SVGID_1201_);fill:url(#SVGID_1203_);}
+	.st961{filter:url(#Adobe_OpacityMaskFilter_143_);}
+	.st962{clip-path:url(#SVGID_1205_);fill:url(#SVGID_1207_);}
+	.st963{clip-path:url(#SVGID_1205_);mask:url(#SVGID_1206_);fill:url(#SVGID_1208_);}
 </style>
 <g id="Image">
 	<defs>
@@ -6138,7 +6265,7 @@ AElFTkSuQmCC" transform="matrix(1 0 0 1 391.4961 476.4961)">
 	</linearGradient>
 	<rect id="title-bar" x="28.09" y="56.57" class="st142" width="112.49" height="1"/>
 	<rect x="28.09" y="43.78" class="st143" width="217.52" height="17.34"/>
-	<text id="title-subtext" transform="matrix(1 0 0 1 28.0928 53.011)" class="st144 st145">VRMの形式</text>
+	<text id="title-subtext" transform="matrix(1 0 0 1 28.0938 53.011)" class="st144 st145">VRMの形式</text>
 	<rect x="27.09" y="16.26" class="st143" width="217.52" height="46.83"/>
 	<text id="title-text" transform="matrix(1 0 0 1 27.0938 38.8235)" class="st146 st147">The Oasis</text>
 </g>

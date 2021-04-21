@@ -223,10 +223,10 @@ a {
   width: 2px;
 }
 
-.container.open .slider .contents,
-.container:not(.open) > .wrap,
-.container:not(.open) .streetchain,
-.mint-placeholder:not(.open)
+.container:not(.open) .slider .contents,
+.container.open > .wrap,
+.container.open .streetchain,
+.mint-placeholder.open
 {
   /* transform: translateY(calc(var(--mint-menu-size) * -1)); */
   opacity: 0;

@@ -147,7 +147,7 @@ const FakeCard = ({onClick}) => {
   );
 };
 
-const Form = ({mintMenuOpen, quantity, setQuantity}) => {
+const Form = ({className, mintMenuOpen, quantity, setQuantity}) => {
   let nameEl = null;
   const _updateNameFocus = () => {
     if (mintMenuOpen && nameEl) {
@@ -159,7 +159,7 @@ const Form = ({mintMenuOpen, quantity, setQuantity}) => {
   }, [mintMenuOpen]);
   
   return (
-    <form className="form">
+    <form className={`form ${className || ''}`}>
       <div className="label">Name</div>
       <input type="text" placeholder="Name" ref={el => {
         nameEl = el;
@@ -179,11 +179,7 @@ const Form = ({mintMenuOpen, quantity, setQuantity}) => {
   );
 };
 
-const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [quantity, setQuantity] = useState(1);
-
+const Lhs = ({name, setName, description, setDescription, quantity, setQuantity, mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
   return (
     <div
       className="lhs"
@@ -194,6 +190,10 @@ const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
         }} />
         <Form
           mintMenuOpen={mintMenuOpen}
+          name={name}
+          setName={setName}
+          description={description}
+          setDescription={setDescription}
           quantity={quantity}
           setQuantity={setQuantity}
         />
@@ -229,6 +229,9 @@ const PagesRoot = ({
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
     const [helpOpen, setHelpOpen] = useState(false);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [quantity, setQuantity] = useState(1);
     
     const router = useRouter();
 
@@ -453,6 +456,12 @@ const PagesRoot = ({
                           helpOpen={helpOpen}
                           setHelpOpen={setHelpOpen}
                           setMintMenuStep={setMintMenuStep}
+                          name={name}
+                          setName={setName}
+                          description={description}
+                          setDescription={setDescription}
+                          quantity={quantity}
+                          setQuantity={setQuantity}
                         />
                         <div className="middle">
                           <div className={`helper ${helpOpen ? 'open' : ''}`}>

@@ -319,6 +319,15 @@ const PagesRoot = ({
                           <input type="number" placeholder="Quantity"value={1} min={0} step={1}/>
                         </form>
                       </div>
+                      <div className="middle">
+                        <div className="description">
+                          <div className="h1">Ready to mint your first NFT?</div>
+                          <p>Drag and drop a file to get started.</p>
+                          <p>Or, click here to choose file.</p>
+                          <p>Lazy? Choose a template on the right.</p>
+                          <p className="sub">Supported file types:</p>
+                        </div>
+                      </div>
                       <div className="wrap rhs">
                         <div className="label">Type of NFT</div>
                         <div className="subtabs">

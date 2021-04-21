@@ -401,6 +401,27 @@ a {
   width: var(--size);
   height: calc(var(--size) / 2.5 * 3.5);
 }
+.slider .contents .wrap-slider .middle {
+
+}
+.slider .contents .wrap-slider .middle .description {
+  width: 330px;
+  padding: 30px;
+  background-color: #e0e0e0;
+  background-image: linear-gradient(to right, #eeeeee, #FFF);
+  border-radius: 5px;
+}
+.slider .contents .wrap-slider .middle .description .h1 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  line-height: 2;
+}
+.slider .contents .wrap-slider .middle p {
+  margin: 0;
+}
+.slider .contents .wrap-slider .middle .h1 {
+  font-family: 'PressStart2P-Regular';
+}
 .slider .contents .wrap-slider .rhs {
   width: 200px;
 }

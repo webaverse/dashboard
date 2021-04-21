@@ -237,7 +237,7 @@ a {
 .mint-placeholder,
 .container .wrap 
 {
-  transition: all 0.5s ease-out;
+  transition: transform 0.5s cubic-bezier(0, 1, 0, 1), opacity 1s cubic-bezier(0, 1, 0, 1);
 }
 .container .slider .contents {
   transform: translateY(100px);

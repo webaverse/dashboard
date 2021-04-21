@@ -312,6 +312,11 @@ const PagesRoot = ({
                   {/* <div className="left-bar" /> */}
                   <div className="contents">
                     <div className="wrap-slider">
+                      <div className="card-buttons like">
+                        <div className="card-button help">
+                          <img src="/help.svg" />
+                        </div>
+                      </div>
                       <div className="lhs">
                         <div className="stage">
                           <img className="card-placeholder" src="cards-placeholder.svg" />

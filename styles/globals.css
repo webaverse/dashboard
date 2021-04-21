@@ -375,6 +375,10 @@ a {
   display: flex;
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
+.slider .contents .wrap-slider .card-buttons {
+  top: 100px;
+  right: calc(8vw + 200px + 30px);
+}
 .slider .contents .wrap-slider .lhs {
   display: flex;
   flex: 1;
@@ -416,6 +420,7 @@ a {
   font-family: 'FuturaStd-Heavy';
   align-items: center;
 }
+
 .slider .contents .wrap-slider .lhs .form input[type=text]::placeholder,
 .slider .contents .wrap-slider .lhs .form input[type=number]::placeholder,
 .slider .contents .wrap-slider .lhs .form textarea::placeholder {

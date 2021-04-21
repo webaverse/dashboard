@@ -202,8 +202,8 @@ a {
   z-index: 3;
 }
 .mint-button img {
-  width: 13px;
-  height: 13px;
+  width: 24px;
+  height: 24px;
 }
 .mint-button:hover img,
 .container.open .mint-button img

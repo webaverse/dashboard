@@ -405,7 +405,7 @@ a {
 .slider .contents .wrap-slider:not(.step-1) .step-1-only,
 .slider .contents .wrap-slider:not(.step-2) .step-2-only
 {
-  display: none;
+  display: none !important;
 }
 .slider .contents .wrap-slider .back-button {
   display: flex;

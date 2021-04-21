@@ -166,7 +166,7 @@ const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
     <div
       className="lhs"
     >
-      <div className="stage">
+      <div className={`stage step-1-only`}>
         <FakeCard onClick={e => {
           setMintMenuStep(2);
         }} />
@@ -457,7 +457,7 @@ const PagesRoot = ({
                             </p>
                           </div>
                       </div>
-                      <div className="wrap rhs">
+                      <div className="wrap rhs step-1-only">
                         <div className="label">Templates</div>
                         <div className="subtabs">
                           {[

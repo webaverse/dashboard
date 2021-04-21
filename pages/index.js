@@ -308,9 +308,6 @@ const PagesRoot = ({
                   <div className="contents">
                     <div
                       className="wrap-slider"
-                      style={{
-                        transform: `translateX(calc(-1 * (100vw - 16vw) * ${selectedPage}))`,
-                      }}
                     >
                       <div className="wrap">
                         <div className="label">Choose type of NFT to mint:</div>

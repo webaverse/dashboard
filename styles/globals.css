@@ -239,10 +239,10 @@ a {
 {
   transition: transform 0.5s cubic-bezier(0, 1, 0, 1), opacity 1s cubic-bezier(0, 1, 0, 1);
 }
-.container .slider .contents {
+.container .slider {
   transform: translateY(100px);
 }
-.container.open .slider .contents {
+.container.open .slider {
   transform: translateY(0);
 }
 .container > .wrap {

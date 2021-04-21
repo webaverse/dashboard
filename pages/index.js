@@ -317,7 +317,9 @@ const PagesRoot = ({
                           <img className="card-placeholder" src="cards-placeholder.svg" />
                           <form className="form">
                             <div className="label">Name</div>
-                            <input type="text" placeholder="Name"/>
+                            <input type="text" placeholder="Name" ref={el => {
+                              el && el.focus();
+                            }} />
                             <div className="label">Description</div>
                             <textarea placeholder="Description"/>
                             <div className="label">Quantity</div>

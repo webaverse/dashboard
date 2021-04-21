@@ -102,6 +102,7 @@ const PagesRoot = ({
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState(1);
+    const [helpOpen, setHelpOpen] = useState();
     
     const router = useRouter();
 
@@ -313,7 +314,9 @@ const PagesRoot = ({
                   <div className="contents">
                     <div className="wrap-slider">
                       <div className="card-buttons like">
-                        <div className="card-button help">
+                        <div className={`card-button help ${helpOpen ? 'open' : ''}`} onClick={e => {
+                          setHelpOpen(!helpOpen);
+                        }}>
                           <img src="/help.svg" />
                         </div>
                       </div>
@@ -332,7 +335,7 @@ const PagesRoot = ({
                               setQuantity(e.target.value);
                             }} min={1} step={1}/>
                           </form>
-                          <div className="description">
+                          <div className={`description ${helpOpen ? 'open' : ''}`}>
                             <div className="h1">Ready to mint your first NFT?</div>
                             <p>Drag and drop a file to get started. Or, click here to choose file. Lazy? Choose a template --&gt;</p>
                             <p className="h2">Supported file types:</p>

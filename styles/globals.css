@@ -388,13 +388,14 @@ a {
   display: flex;
   width: 100%;
   height: 100%;
+  margin-top: 30px;
   justify-content: center;
   align-items: flex-start;
 }
 .slider .contents .wrap-slider .lhs .form {
   display: flex;
   width: 300px;
-  padding: 20px;
+  padding: 0 20px;
   flex-direction: column;
 }
 .slider .contents .wrap-slider .lhs .form .label {
@@ -441,6 +442,7 @@ a {
 
 }
 .slider .contents .wrap-slider .description {
+  position: absolute;
   width: 330px;
   padding: 30px;
   /* background-color: #e0e0e0;
@@ -449,6 +451,9 @@ a {
   font-family: 'MS-Gothic';
   line-height: 1.6;
   text-align: left;
+}
+.slider .contents .wrap-slider .description:not(.open) {
+  display: none;
 }
 .slider .contents .wrap-slider .description .h1 {
   margin-bottom: 10px;

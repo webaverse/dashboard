@@ -209,6 +209,7 @@ const PagesRoot = ({
     const [models, setModels] = useState(null);
     const [loading, setLoading] = useState(true);
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
+    const [mintMenuStep, setMintMenuStep] = useState(1);
     // const [mintMenuLarge, setMintMenuLarge] = useState(false);
     const [selectedTab, setSelectedTab] = useState('image');
     const [selectedPage, setSelectedPage] = useState(0);
@@ -220,7 +221,8 @@ const PagesRoot = ({
 
     const _setSelectedTab = newTab => {
       setSelectedTab(newTab);
-      setSelectedPage(1);
+      // setSelectedPage(1);
+      setMintMenuStep(2);
       // console.log('new page', selectedPage + 1);
     };
 
@@ -262,7 +264,7 @@ const PagesRoot = ({
       vehicle: `Vehicle NFT lets you create virtual vehicles on the blockchain. They can be ridden in the virtual world.`,
     };
     const _reset = () => {
-      setSelectedPage(0);
+      // setSelectedPage(0);
       setSelectedTab('image');
       setLoadingMessage('');
     };

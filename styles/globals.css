@@ -432,13 +432,19 @@ a {
 .slider .contents .wrap-slider .lhs .form input[type=text],
 .slider .contents .wrap-slider .lhs .form input[type=number],
 .slider .contents .wrap-slider .lhs .form textarea {
+  border: 0;
+  border: 2px solid #bbb;
+  align-items: center;
+}
+
+.slider .contents .wrap-slider .lhs .form input[type=text],
+.slider .contents .wrap-slider .lhs .form input[type=number],
+.slider .contents .wrap-slider .lhs .form textarea,
+.slider .contents .wrap-slider .lhs .form input[type=file] {
   display: flex;
   margin: 0;
   margin-bottom: 10px;
-  border: 0;
-  border: 2px solid #bbb;
   font-family: 'FuturaStd-Heavy';
-  align-items: center;
 }
 
 .slider .contents .wrap-slider .lhs .form input[type=text]::placeholder,
@@ -448,7 +454,8 @@ a {
 }
 .slider .contents .wrap-slider .lhs .form input[type=text]:focus,
 .slider .contents .wrap-slider .lhs .form input[type=number]:focus,
-.slider .contents .wrap-slider .lhs .form textarea:focus {
+.slider .contents .wrap-slider .lhs .form textarea:focus,
+.slider .contents .wrap-slider .lhs .form input[type=file]:focus {
   border-color: #29b6f6;
   outline: none;
 }

@@ -175,6 +175,10 @@ const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen}) => {
           }} />
           <div className="label">Description</div>
           <textarea placeholder="Description"/>
+          <div className="label">File</div>
+          <input type="file" placeholder="File" onChange={e => {
+            console.log('file change', e);
+          }} />
           <div className="label">Quantity</div>
           <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
             setQuantity(e.target.value);

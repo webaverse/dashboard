@@ -89,9 +89,9 @@ a {
   transform: translateY(0);
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
-.container .wrap.open {
+/* .container .wrap.open {
   transform: translateY(var(--mint-menu-size));
-}
+} */
 .accounts-page {
   /* display: flex; */
   position: relative;
@@ -224,9 +224,17 @@ a {
 }
 
 .container:not(.open) .slider,
-.mint-placeholder:not(.open)
+.mint-placeholder:not(.open),
+.container .wrap.open
 {
-  transform: translateY(calc(var(--mint-menu-size) * -1));
+  /* transform: translateY(calc(var(--mint-menu-size) * -1)); */
+  opacity: 0;
+}
+.container:not(.open) .slider,
+.mint-placeholder,
+.container .wrap.open
+{
+  transition: all 0.5s ease-out;
 }
 .container.large {
   --mint-menu-size: 400px;

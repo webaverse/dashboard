@@ -164,9 +164,9 @@ const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
 
   return (
     <div
-      className="lhs"
+      className="lhs step-1-only"
     >
-      <div className={`stage step-1-only`}>
+      <div className={`stage`}>
         <FakeCard onClick={e => {
           setMintMenuStep(2);
         }} />

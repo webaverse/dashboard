@@ -81,7 +81,7 @@ class AssetOverlayBackground extends Component {
   }
 }
 
-const FakeCard = ({onClick}) => {
+const FakeCard = ({animate, onClick}) => {
   const [translation, setTranslation] = useState([0, 0, 0]);
   const [perspective, setPerspective] = useState([0, 0]);
   const [transitioning, setTransitioning ] = useState(false);
@@ -110,9 +110,9 @@ const FakeCard = ({onClick}) => {
     }
   };
   useEffect(() => {
-    _scheduleFrame();
+    animate && _scheduleFrame();
     return () => {
-      cancelAnimationFrame(frame);
+      frame && cancelAnimationFrame(frame);
       frame = null;
     };
   });
@@ -185,9 +185,12 @@ const Lhs = ({className, name, setName, description, setDescription, quantity, s
       className={`lhs ${className}`}
     >
       <div className={`stage`}>
-        <FakeCard onClick={e => {
-          setMintMenuStep(2);
-        }} />
+        <FakeCard
+          onClick={e => {
+            setMintMenuStep(2);
+          }}
+          animate={className === 'large'}
+        />
         <Form
           mintMenuOpen={mintMenuOpen}
           name={name}
@@ -460,6 +463,7 @@ const PagesRoot = ({
                       </div>
                       <div className="wrap step-1-only">
                         <Lhs
+                          className="large"
                           mintMenuOpen={mintMenuOpen}
                           helpOpen={helpOpen}
                           setHelpOpen={setHelpOpen}

@@ -419,7 +419,7 @@ a {
 .slider .contents .wrap-slider .lhs .form input[type=text]::placeholder,
 .slider .contents .wrap-slider .lhs .form input[type=number]::placeholder,
 .slider .contents .wrap-slider .lhs .form textarea::placeholder {
-  color: #300;
+  color: #CCC;
 }
 .slider .contents .wrap-slider .lhs .form input[type=text]:focus,
 .slider .contents .wrap-slider .lhs .form input[type=number]:focus,

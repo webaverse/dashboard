@@ -99,6 +99,9 @@ const PagesRoot = ({
     const [selectedPage, setSelectedPage] = useState(0);
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [quantity, setQuantity] = useState(1);
     
     const router = useRouter();
 
@@ -311,15 +314,17 @@ const PagesRoot = ({
                     <div className="wrap-slider">
                       <div className="lhs">
                         <div className="stage">
+                          <img className="card-placeholder" src="cards-placeholder.svg" />
                           <form className="form">
                             <div className="label">Name</div>
                             <input type="text" placeholder="Name"/>
                             <div className="label">Description</div>
                             <textarea placeholder="Description"/>
                             <div className="label">Quantity</div>
-                            <input type="number" placeholder="Quantity"value={1} min={0} step={1}/>
+                            <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
+                              setQuantity(e.target.value);
+                            }} min={1} step={1}/>
                           </form>
-                          <img className="card-placeholder" src="cards-placeholder.svg" />
                           <div className="description">
                             <div className="h1">Ready to mint your first NFT?</div>
                             <p>Drag and drop a file to get started. Or, click here to choose file. Lazy? Choose a template --&gt;</p>

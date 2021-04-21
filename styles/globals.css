@@ -399,14 +399,19 @@ a {
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
 .slider .contents .wrap-slider .card-buttons {
-  top: 100px;
-  right: calc(8vw + 200px + 60px);
+  top: -10px;
+  right: 240px;
 }
 .slider .contents .wrap-slider:not(.step-1) .step-1-only,
 .slider .contents .wrap-slider:not(.step-2) .step-2-only
 {
   /* display: none !important; */
   opacity: 0;
+  pointer-events: none;
+  user-select: none;
+}
+.slider .contents .wrap-slider:not(.step-1) .step-1-only {
+  transform: translateX(-100px);
 }
 .slider .contents .wrap-slider .step-1-only,
 .slider .contents .wrap-slider .step-2-only {
@@ -544,6 +549,7 @@ a {
   padding: 20px 30px;
   margin-right: 20px;
   border-radius: 10px;
+  transform: translateY(0);
 }
 .slider .contents .label {
   display: flex;

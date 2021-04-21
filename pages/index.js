@@ -81,7 +81,7 @@ class AssetOverlayBackground extends Component {
   }
 }
 
-const FakeCard = () => {
+const FakeCard = ({onClick}) => {
   const [translation, setTranslation] = useState([0, 0, 0]);
   const [perspective, setPerspective] = useState([0, 0]);
   const [transitioning, setTransitioning ] = useState(false);
@@ -127,6 +127,7 @@ const FakeCard = () => {
         {/* <div className='card-glossy' /> */}
         <div
           className={`card-wrap`}
+          onClick={onClick}
         >
           <div
             className={`card-svg`}
@@ -146,7 +147,7 @@ const FakeCard = () => {
   );
 };
 
-const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen}) => {
+const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -166,7 +167,9 @@ const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen}) => {
       className="lhs"
     >
       <div className="stage">
-        <FakeCard />
+        <FakeCard onClick={e => {
+          setMintMenuStep(2);
+        }} />
         <form className="form">
           <div className="label">Name</div>
           <input type="text" placeholder="Name" ref={el => {
@@ -428,11 +431,12 @@ const PagesRoot = ({
                   <div
                     className="contents"
                   >
-                    <div className="wrap-slider">
+                    <div className={`wrap-slider step-${mintMenuStep}`}>
                       <Lhs
                         mintMenuOpen={mintMenuOpen}
                         helpOpen={helpOpen}
                         setHelpOpen={setHelpOpen}
+                        setMintMenuStep={setMintMenuStep}
                       />
                       <div className="middle">
                         <div className={`helper ${helpOpen ? 'open' : ''}`}>

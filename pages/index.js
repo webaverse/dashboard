@@ -91,26 +91,29 @@ const FakeCard = () => {
   const cardSize = 'large';
   const cardSpecHighlight = null;
   
+  let frame = null;
   const _scheduleFrame = () => {
     frame = requestAnimationFrame(_recurse);
   };
   const _recurse = () => {
-    setTranslation([
-      0,
-      Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * 20,
-      0
-    ]);
-    setPerspective([
-      Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * 0.5,
-      Math.cos((Date.now() % 3000) / 3000 * Math.PI * 2) * 0.2
-    ]);
-    _scheduleFrame();
+    if (frame) {
+      _scheduleFrame();
+      setTranslation([
+        0,
+        Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * 20,
+        0
+      ]);
+      setPerspective([
+        Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * 0.5,
+        Math.cos((Date.now() % 3000) / 3000 * Math.PI * 2) * 0.2
+      ]);
+    }
   };
-  let frame = null;
   useEffect(() => {
     _scheduleFrame();
     return () => {
       cancelAnimationFrame(frame);
+      frame = null;
     };
   });
   
@@ -452,9 +455,9 @@ const PagesRoot = ({
                             ['pet', '/rabbit.svg'],
                             ['scene', '/road.svg'],
                             ['vehicle', '/scooter.svg'],
-                          ].map(([name, imgSrc]) => {
+                          ].map(([name, imgSrc], i) => {
                             return (
-                              <div className="tab-wrap" onClick={e => _setSelectedTab(name)}>
+                              <div className="tab-wrap" onClick={e => _setSelectedTab(name)} key={i}>
                                 <div
                                   className={`tab ${selectedTab === name ? 'selected' : ''}`}
                                 >

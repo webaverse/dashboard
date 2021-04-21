@@ -315,7 +315,9 @@ const PagesRoot = ({
                     <div className="wrap-slider">
                       <div className="lhs">
                         <div className="stage">
-                          <img className="card-placeholder" src="cards-placeholder.svg" />
+                          <div className="card-placeholder-wrap">
+                            <img className="card-placeholder" src="cards-placeholder.svg" />
+                          </div>
                           <form className="form">
                             <div className="label">Name</div>
                             <input type="text" placeholder="Name" ref={el => {

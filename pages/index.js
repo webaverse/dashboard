@@ -81,7 +81,7 @@ class AssetOverlayBackground extends Component {
   }
 }
 
-const FakeCard = ({el}) => {
+const FakeCard = () => {
   const [translation, setTranslation] = useState([0, 0, 0]);
   const [perspective, setPerspective] = useState([0, 0]);
   const [transitioning, setTransitioning ] = useState(false);
@@ -140,12 +140,11 @@ const FakeCard = ({el}) => {
   );
 };
 
-const Lhs = ({mintMenuOpen, helpOpen}) => {
+const Lhs = ({mintMenuOpen, helpOpen, setHelpOpen}) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState(1);
   
-  let lhsEl = null;
   let nameEl = null;
   const _updateNameFocus = () => {
     if (mintMenuOpen && nameEl) {
@@ -159,12 +158,9 @@ const Lhs = ({mintMenuOpen, helpOpen}) => {
   return (
     <div
       className="lhs"
-      ref={el => {
-        lhsEl = el;
-      }}
     >
       <div className="stage">
-        <FakeCard el={lhsEl} />
+        <FakeCard />
         <form className="form">
           <div className="label">Name</div>
           <input type="text" placeholder="Name" ref={el => {
@@ -424,6 +420,7 @@ const PagesRoot = ({
                       <Lhs
                         mintMenuOpen={mintMenuOpen}
                         helpOpen={helpOpen}
+                        setHelpOpen={setHelpOpen}
                       />
                       <div className="middle">
                         <div className={`helper ${helpOpen ? 'open' : ''}`}>

@@ -446,6 +446,9 @@ a {
   height: calc(var(--size) / 2.5 * 3.5);
 
 }
+.slider .contents .wrap-slider .lhs .stage .card-wrap .card-svg {
+  transition: none;
+}
 .slider .contents .wrap-slider .middle {
 
 }

@@ -102,7 +102,7 @@ const PagesRoot = ({
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState(1);
-    const [helpOpen, setHelpOpen] = useState();
+    const [helpOpen, setHelpOpen] = useState(false);
     
     const router = useRouter();
 

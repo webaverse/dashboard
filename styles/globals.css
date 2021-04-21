@@ -500,7 +500,7 @@ a {
   opacity: 0.3;
   text-transform: uppercase;
   align-items: center;
-  transition: transform 0.3s ease-out;
+  transition: transform 1s cubic-bezier(0, 1, 0, 1);
 }
 .slider .contents .subtabs .tab img,
 .slider .contents .subtabs .tab span {
@@ -530,6 +530,7 @@ a {
 }
 .slider .contents .subtabs .tab-wrap:hover .tab {
   transform: translateY(-5px);
+  transition: transform 0.1s ease-out;
 }
 .slider .contents .subtabs .tab.selected img {
   filter: invert(100%);

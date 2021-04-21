@@ -82,6 +82,7 @@ class AssetOverlayBackground extends Component {
 }
 
 const FakeCard = ({el}) => {
+  const [translation, setTranslation] = useState([0, 0, 0]);
   const [perspective, setPerspective] = useState([0, 0]);
   const [transitioning, setTransitioning ] = useState(false);
   
@@ -90,26 +91,26 @@ const FakeCard = ({el}) => {
   const cardSize = 'large';
   const cardSpecHighlight = null;
   
-  const _handleMouseMove = e => {
-    if (el) {
-      const {pageX, pageY} = e;
-      // const boundingBox = el.getBoundingClientRect();
-      const boundingBox = {
-        x: 0,
-        y: 0,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      };
-      const x = pageX - boundingBox.x;
-      const fx = x / boundingBox.width - 0.5;
-      const y = pageY - boundingBox.y;
-      const fy = 1.0 - (y / boundingBox.height) - 0.5;
-      tilt && setPerspective([fx, fy]);
-    }
+  const _scheduleFrame = () => {
+    frame = requestAnimationFrame(_recurse);
   };
-  const _handleMouseOut = e => {
-    setPerspective([0, 0]);
+  const _recurse = () => {
+    setTranslation([
+      0,
+      Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * 20,
+      0
+    ]);
+    setPerspective([
+      Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * 0.5,
+      Math.cos((Date.now() % 3000) / 3000 * Math.PI * 2) * 0.2
+    ]);
+    _scheduleFrame();
   };
+  let frame = null;
+  useEffect(_scheduleFrame, () => {
+    cancelAnimationFrame(frame);
+  });
+  
   const _cancelDragStart = e => {
     e.preventDefault();
   };
@@ -120,16 +121,11 @@ const FakeCard = ({el}) => {
         {/* <div className='card-glossy' /> */}
         <div
           className={`card-wrap`}
-          ref={newEl => {
-            el = newEl;
-          }}
-          onMouseMove={_handleMouseMove}
-          onMouseOut={_handleMouseOut}
         >
           <div
             className={`card-svg`}
             style={{
-              transform: `rotateY(${perspective[0] * 180 * 0.2 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.2}deg)`,
+              transform: `translate3D(${translation.map(n => n + 'px').join(', ')}) rotateY(${perspective[0] * 180 * 0.2 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.2}deg)`,
             }}
           >
             <img

@@ -266,10 +266,18 @@ a {
   z-index: 2;
 }
 .mint-menu,
-.mint-menu-bar,
-.slider,
-.street-filters
+.mint-menu-bar {
+  position: fixed;
+  width: calc(100vw - 16vw);
+  top: 90px;
+  left: 8vw;
+}
+.slider
 {
+  position: absolute;
+  width: calc(100vw - 16vw);
+}
+.street-filters {
   position: fixed;
   width: calc(100vw - 16vw);
   top: 90px;
@@ -278,9 +286,7 @@ a {
 .slider {
   display: flex;
   left: calc(8vw + 2px);
-  margin-top: 2px;
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
-  z-index: 1;
 }
 .slider img,
 .mint-button img {
@@ -313,8 +319,8 @@ a {
   display: flex;
   padding: 10px;
   background-color: #FFF;
-  border-left-width: 0;
-  border-bottom: 2px solid #e0e0e0;
+  background-image: linear-gradient(0deg
+, rgb(230, 230, 230) 0%, rgba(230, 230, 230, 0) 100%);
   flex: 1;
   flex-direction: column;
 }

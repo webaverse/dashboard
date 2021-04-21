@@ -279,7 +279,7 @@ const PagesRoot = ({
       // setSelectedPage(0);
       setSelectedTab('image');
       setLoadingMessage('');
-      mintMenuStep(1);
+      setMintMenuStep(1);
     };
     const handleFilesMagically = async (files = []) => {
       // setLoading(true);

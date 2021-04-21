@@ -146,8 +146,6 @@ const CardSvg = ({
         e.preventDefault();
       };
       
-      
-      
       return (
         <div className="card-outer">
           <div className="card-outer-flip">

@@ -299,7 +299,9 @@ const PagesRoot = ({
                     _reset();
                   }
                 }}>
-                  <img src="/icons/plus.svg" />
+                  <img src="/mint.svg" onDragStart={e => {
+                    e.preventDefault();
+                  }}/>
                 </div>
                 {/* <div className="blocker" /> */}
                 <div className="mint-menu-bar" />

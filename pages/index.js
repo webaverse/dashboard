@@ -95,7 +95,7 @@ const PagesRoot = ({
     const [loading, setLoading] = useState(true);
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
     // const [mintMenuLarge, setMintMenuLarge] = useState(false);
-    const [selectedTab, setSelectedTab] = useState('');
+    const [selectedTab, setSelectedTab] = useState('image');
     const [selectedPage, setSelectedPage] = useState(0);
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
@@ -147,7 +147,7 @@ const PagesRoot = ({
     };
     const _reset = () => {
       setSelectedPage(0);
-      setSelectedTab('');
+      setSelectedTab('image');
       setLoadingMessage('');
     };
     const handleFilesMagically = async (files = []) => {

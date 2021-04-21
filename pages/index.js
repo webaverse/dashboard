@@ -437,154 +437,156 @@ const PagesRoot = ({
                       }}>
                         <img src="/chevron-left.svg" /><span>Back</span>
                       </div>
-                      <Lhs
-                        mintMenuOpen={mintMenuOpen}
-                        helpOpen={helpOpen}
-                        setHelpOpen={setHelpOpen}
-                        setMintMenuStep={setMintMenuStep}
-                      />
-                      <div className="middle">
-                        <div className={`helper ${helpOpen ? 'open' : ''}`}>
-                            <div className="h1">Ready to mint your first NFT?</div>
-                            <p>Drag and drop a file to get started. Or, click here to choose file. Lazy? Choose a template --&gt;</p>
-                            <p className="h2">Supported file types:</p>
-                            <p className="sub">
-                              <span>png</span>
-                              <span>jpg</span>
-                              <span>glb</span>
-                              <span>vrm</span>
-                              <span>vox</span>
-                            </p>
+                      <div className="wrap step-1-only">
+                        <Lhs
+                          mintMenuOpen={mintMenuOpen}
+                          helpOpen={helpOpen}
+                          setHelpOpen={setHelpOpen}
+                          setMintMenuStep={setMintMenuStep}
+                        />
+                        <div className="middle">
+                          <div className={`helper ${helpOpen ? 'open' : ''}`}>
+                              <div className="h1">Ready to mint your first NFT?</div>
+                              <p>Drag and drop a file to get started. Or, click here to choose file. Lazy? Choose a template --&gt;</p>
+                              <p className="h2">Supported file types:</p>
+                              <p className="sub">
+                                <span>png</span>
+                                <span>jpg</span>
+                                <span>glb</span>
+                                <span>vrm</span>
+                                <span>vox</span>
+                              </p>
+                            </div>
+                        </div>
+                        <div className="rhs">
+                          <div className="label">Templates</div>
+                          <div className="subtabs">
+                            {[
+                              ['image', '/image.svg'],
+                              ['video', '/video.svg'],
+                              ['audio', '/audio.svg'],
+                              ['avatar', '/avatar.svg'],
+                              ['model', '/sword.svg'],
+                              ['html', '/html.svg'],
+                              ['wearable', '/chain-mail.svg'],
+                              ['pet', '/rabbit.svg'],
+                              ['scene', '/road.svg'],
+                              ['vehicle', '/scooter.svg'],
+                            ].map(([name, imgSrc], i) => {
+                              return (
+                                <div className="tab-wrap" onClick={e => _setSelectedTab(name)} key={i}>
+                                  <div
+                                    className={`tab ${selectedTab === name ? 'selected' : ''}`}
+                                  >
+                                    <img src={imgSrc} />
+                                    <span>{name}</span>
+                                  </div>
+                                </div>
+                              );
+                            })}
                           </div>
-                      </div>
-                      <div className="wrap rhs step-1-only">
-                        <div className="label">Templates</div>
-                        <div className="subtabs">
-                          {[
-                            ['image', '/image.svg'],
-                            ['video', '/video.svg'],
-                            ['audio', '/audio.svg'],
-                            ['avatar', '/avatar.svg'],
-                            ['model', '/sword.svg'],
-                            ['html', '/html.svg'],
-                            ['wearable', '/chain-mail.svg'],
-                            ['pet', '/rabbit.svg'],
-                            ['scene', '/road.svg'],
-                            ['vehicle', '/scooter.svg'],
-                          ].map(([name, imgSrc], i) => {
-                            return (
-                              <div className="tab-wrap" onClick={e => _setSelectedTab(name)} key={i}>
-                                <div
-                                  className={`tab ${selectedTab === name ? 'selected' : ''}`}
+                          <div className="text"></div>
+                        </div>
+                        {/* <div className="wrap">
+                          <div className="subwraps">
+                            <div className="subwrap">
+                              <div className="label">
+                                <nav
+                                  className="back-button"
+                                  onClick={e => {
+                                    setSelectedPage(selectedPage - 1);
+                                  }}
                                 >
-                                  <img src={imgSrc} />
-                                  <span>{name}</span>
+                                  <img
+                                    src="/chevron-left.svg"
+                                    onDragStart={e => {
+                                      e.preventDefault();
+                                    }}
+                                  />
+                                </nav>
+                                <div className="text">{selectedTab}</div>
+                              </div>
+                              <div className="description">
+                                <div className="text">
+                                  {nftTypeDescriptions[selectedTab]}
+                                </div>
+                                <div className="card-hype">
+                                  
                                 </div>
                               </div>
-                            );
-                          })}
-                        </div>
-                        <div className="text"></div>
-                      </div>
-                      {/* <div className="wrap">
-                        <div className="subwraps">
-                          <div className="subwrap">
-                            <div className="label">
-                              <nav
-                                className="back-button"
-                                onClick={e => {
-                                  setSelectedPage(selectedPage - 1);
-                                }}
-                              >
-                                <img
-                                  src="/chevron-left.svg"
-                                  onDragStart={e => {
-                                    e.preventDefault();
-                                  }}
-                                />
-                              </nav>
-                              <div className="text">{selectedTab}</div>
                             </div>
-                            <div className="description">
-                              <div className="text">
-                                {nftTypeDescriptions[selectedTab]}
-                              </div>
-                              <div className="card-hype">
+                            <div className="subwrap">
+                              <Dropper
+                                onDrop={handleFilesMagically}
+                              />
+                              <label className="upload-section file-drop-container" htmlFor="input-file">
+                                <Head>
+                                  <script type="text/javascript" src="/geometry.js"></script>
+                                </Head>
+                              
+                                <div className="text">Drop a file here to mint<br/>Click to choose file</div>
+                                <img src="/upload.svg" />
                                 
+                                <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
+                                
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="wrap">
+                          <div className="subwraps">
+                            <div className="subwrap">
+                              <div className="label">
+                                <nav
+                                  className="back-button"
+                                  onClick={e => {
+                                    setSelectedPage(selectedPage - 1);
+                                  }}
+                                >
+                                  <img
+                                    src="/chevron-left.svg"
+                                    onDragStart={e => {
+                                      e.preventDefault();
+                                    }}
+                                  />
+                                </nav>
+                                <div className="text">Cancel</div>
+                              </div>
+                              <div className="description">
+                                Uploading NFT...
                               </div>
                             </div>
                           </div>
-                          <div className="subwrap">
-                            <Dropper
-                              onDrop={handleFilesMagically}
-                            />
-                            <label className="upload-section file-drop-container" htmlFor="input-file">
-                              <Head>
-                                <script type="text/javascript" src="/geometry.js"></script>
-                              </Head>
-                            
-                              <div className="text">Drop a file here to mint<br/>Click to choose file</div>
-                              <img src="/upload.svg" />
-                              
-                              <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
-                              
-                            </label>
-                          </div>
                         </div>
-                      </div>
-                      <div className="wrap">
-                        <div className="subwraps">
-                          <div className="subwrap">
-                            <div className="label">
-                              <nav
-                                className="back-button"
-                                onClick={e => {
-                                  setSelectedPage(selectedPage - 1);
-                                }}
-                              >
-                                <img
-                                  src="/chevron-left.svg"
-                                  onDragStart={e => {
-                                    e.preventDefault();
+                        <div className="wrap">
+                          <div className="subwraps">
+                            <div className="subwrap">
+                              <div className="label">
+                                <nav
+                                  className="back-button"
+                                  onClick={e => {
+                                    setSelectedPage(selectedPage - 2);
                                   }}
-                                />
-                              </nav>
-                              <div className="text">Cancel</div>
-                            </div>
-                            <div className="description">
-                              Uploading NFT...
+                                >
+                                  <img
+                                    src="/chevron-left.svg"
+                                    onDragStart={e => {
+                                      e.preventDefault();
+                                    }}
+                                  />
+                                </nav>
+                                <div className="text">Preview NFT</div>
+                              </div>
+                              <div className="description">
+                                Upload complete, here is the preview:
+                                {previewId ? <div className="IFrameContainer">
+                                  <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + previewId} />
+                                </div> : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
-                      <div className="wrap">
-                        <div className="subwraps">
-                          <div className="subwrap">
-                            <div className="label">
-                              <nav
-                                className="back-button"
-                                onClick={e => {
-                                  setSelectedPage(selectedPage - 2);
-                                }}
-                              >
-                                <img
-                                  src="/chevron-left.svg"
-                                  onDragStart={e => {
-                                    e.preventDefault();
-                                  }}
-                                />
-                              </nav>
-                              <div className="text">Preview NFT</div>
-                            </div>
-                            <div className="description">
-                              Upload complete, here is the preview:
-                              {previewId ? <div className="IFrameContainer">
-                                <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + previewId} />
-                              </div> : null}
-                            </div>
-                          </div>
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                 </div>

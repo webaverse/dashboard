@@ -332,6 +332,7 @@ a {
 .slider .contents .wrap-slider .lhs {
   display: flex;
   flex: 1;
+  flex-direction: column;
 }
 .slider .contents .wrap-slider .lhs .stage {
   display: flex;
@@ -339,6 +340,15 @@ a {
   height: 100%;
   justify-content: center;
   align-items: center;
+}
+.slider .contents .wrap-slider .lhs .form {
+  display: flex;
+  flex-direction: column;
+}
+.slider .contents .wrap-slider .lhs .form input[type=text],
+.slider .contents .wrap-slider .lhs .form input[type=number],
+.slider .contents .wrap-slider .lhs .form textarea {
+  border: 0;
 }
 .slider .contents .wrap-slider .lhs .stage .card-placeholder {
   --size: 300px;

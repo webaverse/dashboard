@@ -311,6 +311,11 @@ const PagesRoot = ({
                         <div className="stage">
                           <img className="card-placeholder" src="cards-placeholder.svg" />
                         </div>
+                        <form className="form">
+                          <input type="text" placeholder="Name"/>
+                          <textarea placeholder="Description"/>
+                          <input type="number" placeholder="Quantity"value={1} min={0} step={1}/>
+                        </form>
                       </div>
                       <div className="wrap rhs">
                         <div className="label">Type of NFT</div>

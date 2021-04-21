@@ -240,12 +240,34 @@ a {
   z-index: 4;
   user-select: none;
 }
+@keyframes pulse {
+  from {
+    filter: invert(71%) sepia(12%) saturate(1550%) hue-rotate(73deg) brightness(91%) contrast(85%);
+    transform: scale(1.2, 1.2);
+  }
+  to {
+    filter: none;
+    transform: none);
+  }
+}
+.mint-button img {
+  animation-name: pulse;
+  animation-duration: 0.3s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in;
+  
+}
 .mint-button:hover,
-.container.open .mint-button
-{
+.container.open .mint-button {
   background-color: #333;
   border-color: rgba(255, 255, 255, 0.1);
   color: #FFF;
+}
+.mint-button:hover img,
+.container.open .mint-button img {
+  filter: none;
+  animation-name: none;
 }
 .mint-button.below {
   z-index: 3;

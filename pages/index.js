@@ -324,8 +324,15 @@ const PagesRoot = ({
                           <div className="h1">Ready to mint your first NFT?</div>
                           <p>Drag and drop a file to get started.</p>
                           <p>Or, click here to choose file.</p>
-                          <p>Lazy? Choose a template on the right.</p>
-                          <p className="sub">Supported file types:</p>
+                          <p>Lazy? Choose a template --&gt;</p>
+                          <p className="h2">Supported file types:</p>
+                          <p className="sub">
+                            <span>png</span>
+                            <span>jpg</span>
+                            <span>glb</span>
+                            <span>vrm</span>
+                            <span>vox</span>
+                          </p>
                         </div>
                       </div>
                       <div className="wrap rhs">

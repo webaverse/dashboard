@@ -410,17 +410,27 @@ a {
   background-color: #e0e0e0;
   background-image: linear-gradient(to right, #eeeeee, #FFF);
   border-radius: 5px;
+  font-family: 'MS-Gothic';
+  line-height: 1.6;
+  text-align: left;
 }
 .slider .contents .wrap-slider .middle .description .h1 {
   margin-bottom: 10px;
   font-size: 20px;
   line-height: 2;
+  text-align: left;
 }
 .slider .contents .wrap-slider .middle p {
-  margin: 0;
+  margin: 5px 0;
 }
 .slider .contents .wrap-slider .middle .h1 {
   font-family: 'PressStart2P-Regular';
+}
+.slider .contents .wrap-slider .middle .sub span {
+  padding: 5px;
+  margin-right: 5px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
 }
 .slider .contents .wrap-slider .rhs {
   width: 200px;

@@ -391,6 +391,7 @@ a {
   min-height: calc(100vh - 90px);
   padding: 0 8vw;
   padding-top: 20px;
+  /* background-image: linear-gradient(0deg, rgb(230, 230, 230) 0%, rgba(230, 230, 230, 0) 100%); */
   flex: 1;
   flex-direction: column;
 }

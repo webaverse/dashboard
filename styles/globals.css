@@ -422,7 +422,7 @@ a {
   width: calc(100vw - 16vw - 200px - 200px);
   position: absolute;
   top: 0;
-  right: calc(8vw + 20px);
+  right: 220px;
   border: 0;
 }
 .slider .contents .wrap-slider .step-1-only,

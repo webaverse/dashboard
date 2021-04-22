@@ -418,10 +418,10 @@ a {
   transform: translateX(100px);
 }
 .slider .iframe {
-  height: calc(100vh - 90px);
+  height: calc(100vh - 170px);
   width: calc(100vw - 16vw - 200px - 200px);
   position: absolute;
-  top: -40px;
+  top: 0;
   right: calc(8vw + 20px);
   border: 0;
 }

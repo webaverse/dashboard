@@ -445,6 +445,7 @@ a {
   align-items: center;
   outline: none;
   background-color: #FFF;
+  background-image: linear-gradient(0deg, #ddd, #f8f8f8);
   border-radius: 100px;
   overflow: hidden;
 }
@@ -819,11 +820,11 @@ a {
   margin-left: 15px;
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].ok {
-  background-color: #66bb6a;
   color: #FFF;
+  background-color: #7e57c2;
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].ok:hover {
-  background-color: #43a047;
+  background-color: #9575cd;
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].cancel {
   border-color: currentColor;

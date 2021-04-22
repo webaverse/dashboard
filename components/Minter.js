@@ -186,7 +186,7 @@ const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuSte
       <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
         setQuantity(e.target.value);
       }} min={1} step={1} />
-      <input className={source === 'url' ? '' : 'disabled'} type="button" value="Preview NFT" disabled={source !== 'url'} onClick={e => {
+      <input className={source === 'url' ? '' : 'disabled'} type="button" value="Preview NFT" onChange={e => {}} disabled={source !== 'url'} onClick={e => {
         setMintMenuStep(2);
       }} />
     </form>
@@ -305,6 +305,7 @@ frontendUrl
                 <div className="bold">{quantity || 1}</div>
                 <div> and the content will be </div>
                 <input type="text" value={frontendUrl} />
+                <div>. Here's a preview:</div>
               </div>
               <iframe
                 className="iframe"

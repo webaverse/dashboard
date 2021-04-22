@@ -296,25 +296,6 @@ frontendUrl
           }}>
             <img src="/chevron-left.svg" /><span>Back</span>
           </div>
-          <Lhs
-            className="small"
-            mintMenuOpen={mintMenuOpen}
-            helpOpen={helpOpen}
-            setHelpOpen={setHelpOpen}
-            mintMenuStep={mintMenuStep}
-            setMintMenuStep={setMintMenuStep}
-            name={name}
-            setName={setName}
-            description={description}
-            setDescription={setDescription}
-            quantity={quantity}
-            setQuantity={setQuantity}
-            url={url}
-            setUrl={setUrl}
-            source={source}
-            setSource={setSource}
-            frontendUrl={frontendUrl}
-          />
           {frontendUrl ?
             <div className="preview">
               <div className="preview-header">

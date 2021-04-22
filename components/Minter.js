@@ -281,6 +281,8 @@ frontendUrl
       } else {
         console.warn('invalid repo url', url);
       }
+      
+      setLoading(false);
     }
   }, [mintMenuStep]);
   
@@ -290,6 +292,7 @@ frontendUrl
     setMintMenuStep(2);
     // console.log('new page', selectedPage + 1);
   };
+  const selectedTabDefaulted = selectedTab || 'image';
   
   return (
     <div className="slider">
@@ -301,6 +304,7 @@ frontendUrl
         <div className="wrap step-2-only">
           <div className="back-button" onClick={e => {
             setMintMenuStep(1);
+            setSelectedTab('');
           }}>
             <img src="/chevron-left.svg" /><span>Back</span>
           </div>
@@ -330,8 +334,8 @@ frontendUrl
               </div>
             : null}
             <div className="rrhs">
-              <div className="label">{selectedTab} NFT</div>
-              <div className="description">{nftTypeDescriptions[selectedTab]}</div>
+              <div className="label">{selectedTabDefaulted} NFT</div>
+              <div className="description">{nftTypeDescriptions[selectedTabDefaulted]}</div>
               <div className="infobox">
                 <div className="h1">Mint with SILK</div>
                 <div className="label">SILK balance</div>

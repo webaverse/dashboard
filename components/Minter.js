@@ -334,16 +334,16 @@ frontendUrl
               </div>
             : null}
             <div className="rrhs">
-              <div className="label">{selectedTabDefaulted} NFT</div>
+              <div className="h1">{selectedTabDefaulted} NFT</div>
               <div className="description">{nftTypeDescriptions[selectedTabDefaulted]}</div>
               <div className="infobox">
                 <div className="h1">Mint with SILK</div>
-                <div className="label">SILK balance</div>
                 <div className="row">
+                  <div className="label">SILK balance</div>
                   <div className="value"><img src="/curve.svg" /> 1337</div>
                 </div>
-                <div className="label">Minting fee</div>
                 <div className="row">
+                  <div className="label">Minting fee</div>
                   <div className="value"><img src="/curve.svg" />- 10</div>
                 </div>
                 <input type="button" value="Confirm mint" onChange={e => {}} />

@@ -748,13 +748,19 @@ a {
   padding: 5px 20px;
   font-size: 14px;
 } */
-.slider .contents .rrhs > .label {
+.slider .contents .rrhs > .h1 {
   font-size: 24px;
+  display: flex;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  font-family: 'FuturaStd-Heavy';
+  letter-spacing: 1px;
+  color: #CCC;
+  align-items: center;
 }
 .slider .contents .rrhs .infobox {
   margin-top: auto;
   padding: 10px;
-  border: 2px solid #333;
   border-radius: 5px;
 }
 .slider .contents .rrhs .infobox .h1 {
@@ -762,6 +768,10 @@ a {
   margin-bottom: 20px;
   font-size: 24px;
   /* font-family: 'MS-Gothic'; */
+}
+.slider .contents .rrhs .infobox .label {
+  margin-right: auto;
+  color: #aaa;
 }
 .slider .contents .rrhs .infobox .row {
   display: flex;

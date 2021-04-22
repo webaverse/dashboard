@@ -316,10 +316,15 @@ frontendUrl
             frontendUrl={frontendUrl}
           />
           {frontendUrl ?
-            <iframe
-              className="iframe"
-              src={frontendUrl}
-            />
+            <div className="preview">
+              <div className="preview-header">
+                <input type="text" value={frontendUrl} />
+              </div>
+              <iframe
+                className="iframe"
+                src={frontendUrl}
+              />
+            </div>
           : null}
           <div className="rrhs">
             <div className="label">{selectedTab} NFT</div>

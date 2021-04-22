@@ -302,12 +302,12 @@ frontendUrl
     >
       <div className={`wrap-slider step-${mintMenuStep}`}>
         <div className="wrap step-2-only">
-          <div className="back-button" onClick={e => {
+          {/* <div className="back-button" onClick={e => {
             setMintMenuStep(1);
             setSelectedTab('');
           }}>
             <img src="/chevron-left.svg" /><span>Back</span>
-          </div>
+          </div> */}
           <div className="main">
             {frontendUrl ?
               <div className="preview">
@@ -361,8 +361,12 @@ frontendUrl
                   <div className="value">1327</div>
                 </div>
                 <div className="buttons">
-                  <input className="ok" type="button" value="Confirm" onChange={e => {}} />
-                  <input className="cancel" type="button" value="Reject" onChange={e => {}} />
+                  <input className="ok" type="button" value="Confirm" onChange={e => {}} onClick={e => {
+                    setMintMenuStep(1);
+                  }} />
+                  <input className="cancel" type="button" value="Reject" onChange={e => {}} onClick={e => {
+                    setMintMenuStep(1);
+                  }} />
                 </div>
               </div>
             </div>

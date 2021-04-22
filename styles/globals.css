@@ -424,6 +424,7 @@ a {
 .slider .main {
   display: flex;
   flex: 1;
+  margin-top: 20px;
 }
 .slider .preview {
   position: relative;
@@ -808,6 +809,7 @@ a {
   border: 2px solid transparent;
   border-radius: 10px;
   font-family: 'MS-Gothic';
+  outline: none;
   cursor: pointer;
 }
 .slider .contents .rrhs .infobox .buttons input[type=button] + input[type=button] {

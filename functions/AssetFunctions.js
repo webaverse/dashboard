@@ -326,7 +326,7 @@ export const cancelSale = async (id, networkType, handleSuccess, handleError) =>
   }
 };
 
-export const setAssetName = async (name, hash, state, handleSuccess, handleError) => {
+export const setAssetHash = async (name, hash, state, handleSuccess, handleError) => {
   if (!state.loginToken)
     throw new Error('not logged in');
   try {
@@ -346,7 +346,7 @@ export const setAssetName = async (name, hash, state, handleSuccess, handleError
 };
 
 
-export const setName = async (name, state, handleSuccess, handleError) => {
+export const setAssetName = async (name, state, handleSuccess, handleError) => {
   if (!state.loginToken)
     throw new Error('not logged in');
   try {

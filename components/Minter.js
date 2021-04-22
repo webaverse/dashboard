@@ -41,7 +41,7 @@ const urlToRepoZipUrl = url => {
   }
 };
 
-const FakeCard = ({animate, onClick}) => {
+const FakeCard = ({animate, animationSize, onClick}) => {
   const [translation, setTranslation] = useState([0, 0, 0]);
   const [perspective, setPerspective] = useState([0, 0]);
   const [transitioning, setTransitioning ] = useState(false);
@@ -60,12 +60,12 @@ const FakeCard = ({animate, onClick}) => {
       _scheduleFrame();
       setTranslation([
         0,
-        Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * 20,
+        Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * (animationSize === 'large' ? 20 : 3),
         0
       ]);
       setPerspective([
-        Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * 0.5,
-        Math.cos((Date.now() % 3000) / 3000 * Math.PI * 2) * 0.2
+        Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * (animationSize === 'large' ? 0.5 : 1),
+        Math.cos((Date.now() % 3000) / 3000 * Math.PI * 2) * (animationSize === 'large' ? 0.2 : 0.5)
       ]);
     }
   };
@@ -306,6 +306,13 @@ frontendUrl
           {frontendUrl ?
             <div className="preview">
               <div className="preview-header">
+                <FakeCard
+                  onClick={e => {
+                    setMintMenuStep(2);
+                  }}
+                  animate={true}
+                  animationSize="small"
+                />
                 <div>Your NFT called </div>
                 <div className="bold">{name || '[blank]'}</div>
                 <div> will be minted as an edition of </div>
@@ -524,6 +531,7 @@ const Lhs = ({className, name, setName, description, setDescription, quantity, s
             setMintMenuStep(2);
           }}
           animate={className === 'large'}
+          animationSize="large"
         />
         <Form
           mintMenuOpen={mintMenuOpen}

@@ -300,9 +300,9 @@ frontendUrl
             <div className="preview">
               <div className="preview-header">
                 <div>Your NFT called </div>
-                <div className="bold">{'Lollercopter'}</div>
+                <div className="bold">{name || '[blank]'}</div>
                 <div> will be minted as an edition of </div>
-                <div className="bold">{'1'}</div>
+                <div className="bold">{quantity || 1}</div>
                 <div> and the content will be </div>
                 <input type="text" value={frontendUrl} />
               </div>

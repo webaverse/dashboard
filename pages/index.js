@@ -331,7 +331,7 @@ const PagesRoot = ({
     const mintMenuLarge = selectedPage === 3;
     
     useEffect(async () => {
-      console.log('effect update', mintMenuStep);
+      // console.log('effect update', mintMenuStep);
       if (mintMenuStep === 2 && !loading) {
         setLoading(true);
 

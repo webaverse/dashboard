@@ -309,30 +309,32 @@ frontendUrl
             <img src="/chevron-left.svg" /><span>Back</span>
           </div> */}
           <div className="main">
-            {frontendUrl ?
-              <div className="preview">
-                <div className="preview-header">
-                  <FakeCard
-                    onClick={e => {
-                      setMintMenuStep(2);
-                    }}
-                    animate={true}
-                    animationSize="small"
-                  />
-                  <div>Your NFT called </div>
-                  <div className="bold">{name || '[blank]'}</div>
-                  <div> will be minted as an edition of </div>
-                  <div className="bold">{quantity || 1}</div>
-                  <div> and the content will be </div>
-                  <input type="text" value={frontendUrl} onChange={e => {}} />
-                  <div>. Here's a preview:</div>
-                </div>
+            <div className="preview">
+              <div className="preview-header">
+                <FakeCard
+                  onClick={e => {
+                    setMintMenuStep(2);
+                  }}
+                  animate={true}
+                  animationSize="small"
+                />
+                <div>Your NFT called </div>
+                <div className="bold">{name || '[blank]'}</div>
+                <div> will be minted as an edition of </div>
+                <div className="bold">{quantity || 1}</div>
+                <div> and the content will be </div>
+                <input type="text" value={frontendUrl} onChange={e => {}} />
+                <div>. Here's a preview:</div>
+              </div>
+              {frontendUrl ?
                 <iframe
                   className="iframe"
                   src={frontendUrl}
                 />
-              </div>
-            : null}
+              :
+                <div className="iframe-placeholder" />
+              }
+            </div>
             <div className="rrhs">
               <div className="h1">{selectedTabDefaulted} NFT</div>
               <div className="description">{nftTypeDescriptions[selectedTabDefaulted]}</div>

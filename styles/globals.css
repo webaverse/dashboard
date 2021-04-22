@@ -828,11 +828,11 @@ a {
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].cancel {
   border-color: currentColor;
-  color: #ef5350;
+  color: #ff5722;
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].cancel:hover {
   color: #FFF;
-  background-color: #ef5350;
+  background-color: #ff5722;
 }
 .slider .contents .rrhs .infobox img {
   width: 16px;

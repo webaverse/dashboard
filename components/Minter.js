@@ -360,7 +360,10 @@ frontendUrl
                   <img src="/curve.svg" />
                   <div className="value">1327</div>
                 </div>
-                <input type="button" value="Confirm mint" onChange={e => {}} />
+                <div className="buttons">
+                  <input className="ok" type="button" value="Confirm" onChange={e => {}} />
+                  <input className="cancel" type="button" value="Reject" onChange={e => {}} />
+                </div>
               </div>
             </div>
           </div>

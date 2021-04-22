@@ -418,6 +418,9 @@ a {
 .slider .contents .wrap-slider:not(.step-2) .step-2-only {
   transform: translateX(100px);
 }
+.slider .contents .wrap-slider .step-1-only {
+  margin-top: 20px;
+}
 .slider .main {
   display: flex;
   flex: 1;
@@ -597,6 +600,7 @@ a {
   display: flex;
   margin: 0;
   margin-bottom: 10px;
+  padding: 5px;
   font-family: 'FuturaStd-Heavy';
 }
 .slider .contents .wrap-slider .lhs .form input[type=button] {
@@ -780,7 +784,10 @@ a {
 .slider .contents .rrhs .infobox .row {
   display: flex;
   width: 100%;
+  margin: 5px 0;
   align-items: center;
+}
+.slider .contents .rrhs .infobox .row.red {
 }
 .slider .contents .rrhs .infobox .minus {
   display: flex;
@@ -789,6 +796,37 @@ a {
 .slider .contents .rrhs .infobox .line {
   width: 100%;
   border-top: 2px solid #CCC;
+}
+.slider .contents .rrhs .infobox .buttons {
+  display: flex;
+  margin-top: 20px;
+}
+.slider .contents .rrhs .infobox .buttons input[type=button] {
+  padding: 10px;
+  font-size: 20px;
+  flex: 1;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-family: 'MS-Gothic';
+  cursor: pointer;
+}
+.slider .contents .rrhs .infobox .buttons input[type=button] + input[type=button] {
+  margin-left: 15px;
+}
+.slider .contents .rrhs .infobox .buttons input[type=button].ok {
+  background-color: #66bb6a;
+  color: #FFF;
+}
+.slider .contents .rrhs .infobox .buttons input[type=button].ok:hover {
+  background-color: #43a047;
+}
+.slider .contents .rrhs .infobox .buttons input[type=button].cancel {
+  border-color: currentColor;
+  color: #ef5350;
+}
+.slider .contents .rrhs .infobox .buttons input[type=button].cancel:hover {
+  color: #FFF;
+  background-color: #ef5350;
 }
 .slider .contents .rrhs .infobox img {
   width: 16px;

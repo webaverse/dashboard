@@ -340,11 +340,25 @@ frontendUrl
                 <div className="h1">Mint with SILK</div>
                 <div className="row">
                   <div className="label">SILK balance</div>
-                  <div className="value"><img src="/curve.svg" /> 1337</div>
+                  <img src="/curve.svg" />
+                  <div className="value">1337</div>
+                </div>
+                {/* <div className="row">
+                  <div className="minus">-</div>
+                </div> */}
+                <div className="row red">
+                  <div className="label">Minting fee</div>
+                  <div className="minus">-</div>
+                  <img src="/curve.svg" />
+                  <div className="value">10</div>
                 </div>
                 <div className="row">
-                  <div className="label">Minting fee</div>
-                  <div className="value"><img src="/curve.svg" />- 10</div>
+                  <div className="line" />
+                </div>
+                <div className="row red">
+                  <div className="label">New balance</div>
+                  <img src="/curve.svg" />
+                  <div className="value">1327</div>
                 </div>
                 <input type="button" value="Confirm mint" onChange={e => {}} />
               </div>

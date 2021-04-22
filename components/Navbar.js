@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Link from 'next/link'
 import {useRouter} from 'next/router';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -118,7 +118,10 @@ const Navbar = ({
         <div className="navbarMenu">
           <div onClick={() => setDropdown(false)} className="leftMenuContainer">
             <Link href="/">
-              <img className="logo" src="/webaverse.png" alt="Webaverse logo" />
+              <Fragment>
+                <img className="logo" src="/webaverse.png" alt="Webaverse logo" />
+                <div className="beta-label">beta</div>
+              </Fragment>
             </Link>
           </div>
           {/* <div className="secondaryMenu">

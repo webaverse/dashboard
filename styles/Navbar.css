@@ -83,6 +83,16 @@
   margin-top: 2px;
   margin-right: 10px;
 }
+.navbar .leftMenuContainer .beta-label {
+  position: absolute;
+  left: 14px;
+  top: 26px;
+  padding: 0 5px;
+  background-color: #1e88e5;
+  color: #FFF;
+  font-size: 11px;
+  transform: rotate(45deg);
+}
 .accountPicture {
   /* border: 2px solid #312936 !important; */
   border-radius: 10px;

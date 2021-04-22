@@ -148,6 +148,7 @@ const FakeCard = ({animate, onClick}) => {
 };
 
 const Form = ({mintMenuOpen, quantity, setQuantity}) => {
+  const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
   const [source, setSource] = useState('file');
   
   let nameEl = null;
@@ -213,8 +214,9 @@ const Form = ({mintMenuOpen, quantity, setQuantity}) => {
       :
         <Fragment>
           <div className="label">URL</div>
-          <input type="text" placeholder="https://" onChange={e => {
-            console.log('url change', e);
+          <input type="text" placeholder="https://" value={url} onChange={e => {
+            // console.log('url change', e);
+            setUrl(e.target.value);
           }} ref={el => {
             urlEl = el;
           }} />

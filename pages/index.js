@@ -148,9 +148,8 @@ const FakeCard = ({animate, onClick}) => {
   );
 };
 
-const Form = ({mintMenuOpen, quantity, setQuantity, setMintMenuStep}) => {
-  const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
-  const [source, setSource] = useState('file');
+const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuStep, url, setUrl, source, setSource}) => {
+  const [loading, setLoading] = useState(false);
   
   let nameEl = null;
   const _updateNameFocus = () => {
@@ -237,7 +236,7 @@ const Form = ({mintMenuOpen, quantity, setQuantity, setMintMenuStep}) => {
   );
 };
 
-const Lhs = ({className, name, setName, description, setDescription, quantity, setQuantity, mintMenuOpen, helpOpen, setHelpOpen, setMintMenuStep}) => {
+const Lhs = ({className, name, setName, description, setDescription, quantity, setQuantity, mintMenuOpen, helpOpen, setHelpOpen, mintMenuStep, setMintMenuStep, url, setUrl, source, setSource}) => {
   return (
     <div
       className={`lhs ${className}`}
@@ -257,7 +256,12 @@ const Lhs = ({className, name, setName, description, setDescription, quantity, s
           setDescription={setDescription}
           quantity={quantity}
           setQuantity={setQuantity}
+          mintMenuStep={mintMenuStep}
           setMintMenuStep={setMintMenuStep}
+          url={url}
+          setUrl={setUrl}
+          source={source}
+          setSource={setSource}
         />
       </div>
     </div>
@@ -286,7 +290,10 @@ const PagesRoot = ({
     const [helpOpen, setHelpOpen] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [quantity, setQuantity] = useState(1);
+    const oldUrl = `https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`;
+    const [url, setUrl] = useState(`https://http-github-com.proxy.exokit.org/hicetnunc2000/hicetnunc/archive/main.zip`);
+    const [source, setSource] = useState('file');
+    const [quantity, setQuantity] =  useState(1);
     
     const router = useRouter();
 
@@ -513,6 +520,7 @@ const PagesRoot = ({
                           mintMenuOpen={mintMenuOpen}
                           helpOpen={helpOpen}
                           setHelpOpen={setHelpOpen}
+                          mintMenuStep={mintMenuStep}
                           setMintMenuStep={setMintMenuStep}
                           name={name}
                           setName={setName}
@@ -520,6 +528,10 @@ const PagesRoot = ({
                           setDescription={setDescription}
                           quantity={quantity}
                           setQuantity={setQuantity}
+                          url={url}
+                          setUrl={setUrl}
+                          source={source}
+                          setSource={setSource}
                         />
                         <div className="rrhs">
                           <div className="label">{selectedTab} NFT</div>
@@ -532,6 +544,7 @@ const PagesRoot = ({
                           mintMenuOpen={mintMenuOpen}
                           helpOpen={helpOpen}
                           setHelpOpen={setHelpOpen}
+                          mintMenuStep={mintMenuStep}
                           setMintMenuStep={setMintMenuStep}
                           name={name}
                           setName={setName}
@@ -539,6 +552,10 @@ const PagesRoot = ({
                           setDescription={setDescription}
                           quantity={quantity}
                           setQuantity={setQuantity}
+                          url={url}
+                          setUrl={setUrl}
+                          source={source}
+                          setSource={setSource}
                         />
                         <div className="middle">
                           <div className="card-buttons like">

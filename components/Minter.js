@@ -283,6 +283,13 @@ frontendUrl
     }
   }, [mintMenuStep]);
   
+  const _setSelectedTab = newTab => {
+    setSelectedTab(newTab);
+    // setSelectedPage(1);
+    setMintMenuStep(2);
+    // console.log('new page', selectedPage + 1);
+  };
+  
   return (
     <div className="slider">
     {/* <div className="left-bar" /> */}
@@ -316,6 +323,18 @@ frontendUrl
           <div className="rrhs">
             <div className="label">{selectedTab} NFT</div>
             <div className="description">{nftTypeDescriptions[selectedTab]}</div>
+            <div className="infobox">
+              <div className="h1">Mint with SILK</div>
+              <div className="label">SILK balance</div>
+              <div className="row">
+                <div className="value"><img src="/curve.svg" /> 1337</div>
+              </div>
+              <div className="label">Minting fee</div>
+              <div className="row">
+                <div className="value"><img src="/curve.svg" />- 10</div>
+              </div>
+              <input type="button" value="Confirm mint" onChange={e => {}} />
+            </div>
           </div>
         </div>
         <div className="wrap step-1-only">

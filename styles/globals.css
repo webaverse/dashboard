@@ -542,6 +542,7 @@ a {
   top: 0;
   right: 0;
   width: 200px;
+  min-height: calc(100vh - 90px - 60px);
 }
 .slider .contents .wrap-slider .rrhs .description {
   text-align: left;
@@ -703,7 +704,7 @@ a {
   color: #AAA;
   align-items: center;
 }
-.slider .contents .rrhs .label {
+.slider .contents .rrhs > .label {
   display: flex;
   margin-bottom: 15px;
   text-transform: uppercase;
@@ -716,6 +717,28 @@ a {
   color: #333;
   padding: 5px 20px;
   font-size: 14px;
+}
+.slider .contents .rrhs .infobox {
+  margin-top: auto;
+  padding: 10px;
+  border: 2px solid #333;
+  border-radius: 5px;
+}
+.slider .contents .rrhs .infobox .h1 {
+  display: flex;
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-family: 'MS-Gothic';
+}
+.slider .contents .rrhs .infobox .row {
+  display: flex;
+  width: 100%;
+}
+.slider .contents .rrhs .infobox img {
+  width: 16px;
+  height: 16px;
+  margin-right: auto;
+  object-fit: contain;
 }
 
 .slider .contents .label .back-button {

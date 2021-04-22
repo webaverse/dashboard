@@ -105,13 +105,6 @@ const PagesRoot = ({
     
     const router = useRouter();
 
-    const _setSelectedTab = newTab => {
-      setSelectedTab(newTab);
-      // setSelectedPage(1);
-      setMintMenuStep(2);
-      // console.log('new page', selectedPage + 1);
-    };
-
     useEffect(() => {
         (async () => {
             const tokens1 = await getTokens(1, 100);

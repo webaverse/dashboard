@@ -148,6 +148,8 @@ const FakeCard = ({animate, onClick}) => {
 };
 
 const Form = ({mintMenuOpen, quantity, setQuantity}) => {
+  const [source, setSource] = useState('file');
+  
   let nameEl = null;
   const _updateNameFocus = () => {
     if (mintMenuOpen && nameEl) {
@@ -167,14 +169,50 @@ const Form = ({mintMenuOpen, quantity, setQuantity}) => {
       }} />
       <div className="label">Description</div>
       <textarea placeholder="Description"/>
-      <div className="label">File</div>
-      <input type="file" placeholder="File" onChange={e => {
-        console.log('file change', e);
-      }} />
+      <div className="label">Source</div>
+      <div className="radio">
+        <label>
+          <input
+            type="radio"
+            name="source"
+            value="file"
+            checked={source === 'file'}
+            onChange={e => {
+              setSource('file');
+            }}
+          />File
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="source"
+            value="file"
+            checked={source === 'url'}
+            onChange={e => {
+              setSource('url');
+            }}
+          />URL
+        </label>
+      </div>
+      {source === 'file' ?
+        <Fragment>
+          <div className="label">File</div>
+          <input type="file" placeholder="File" onChange={e => {
+            console.log('file change', e);
+          }} />
+        </Fragment>
+      :
+        <Fragment>
+          <div className="label">URL</div>
+          <input type="text" placeholder="https://" onChange={e => {
+            console.log('url change', e);
+          }} />
+        </Fragment>
+      }
       <div className="label">Quantity</div>
       <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
         setQuantity(e.target.value);
-      }} min={1} step={1}/>
+      }} min={1} step={1} />
     </form>
   );
 };

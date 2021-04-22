@@ -226,6 +226,7 @@ const Form = ({mintMenuOpen, quantity, setQuantity}) => {
       <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
         setQuantity(e.target.value);
       }} min={1} step={1} />
+      <input className={source === 'url' ? '' : 'disabled'} type="button" value="Mint" />
     </form>
   );
 };

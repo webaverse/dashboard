@@ -427,8 +427,15 @@ a {
   width: calc(100vw - 16vw - 200px - 200px);
   top: 0;
   right: 220px;
-  font-family: 'FuturaStd-Heavy';
+  font-family: 'GillSans';
+  align-items: center;
   outline: none;
+}
+.slider .preview .preview-header > div {
+  white-space: pre;
+}
+.slider .preview .preview-header > .bold {
+  font-family: 'FuturaStd-Heavy';
 }
 .slider .preview .preview-header input[type=text] {
   margin: 0;

@@ -270,12 +270,17 @@ const Lhs = ({className, name, setName, description, setDescription, quantity, s
 
 const urlToRepoZipUrl = url => {
   const u = new URL(url);
-  const match = u.pathname.match(/^\/(.+?)\/((.+?))(\/.*)?$/);
-  const username = match[1]; 
-  const reponame = match[2];
-  const tail = match[3];
- 
-  return `https://http-github-com.proxy.exokit.org/hicetnunc2000/hicetnunc/archive/main.zip`;
+  const match = u.pathname.match(/^\/(.+?)\/(.+?)\/tree\/(.+)(\/.*)?$/);
+  if (match) {
+    const username = match[1]; 
+    const reponame = match[2];
+    const branchname = match[3];
+    const tail = match[4];
+
+    return `https://http-github-com.proxy.exokit.org/${username}/${reponame}/archive/${branchname}.zip`;
+  } else {
+    return null;
+  }
 };
 
 const PagesRoot = ({
@@ -345,64 +350,70 @@ const PagesRoot = ({
         setLoading(true);
 
         const repoZipUrl = urlToRepoZipUrl(url);
-        const res = await fetch(repoZipUrl);
-        const ab = await res.arrayBuffer();
-        
-        const zip = await JSZip.loadAsync(ab);
-        
-        const fileNames = [];
-        const isDirectoryName = fileName => /\/$/.test(fileName);
-        const filePredicate = fileName => {
-          return /html-three-template/.test(fileName);
-        };
-        for (const fileName in zip.files) {
-          // const file = zip.files[fileName];
-          if (filePredicate(fileName)) {
-            fileNames.push(fileName);
-          }
-        }
-        
-        const files = await Promise.all(fileNames.map(async fileName => {
-          const file = zip.file(fileName);
-          const b = file && await file.async('blob');
-          return {
-            name: fileName,
-            data: b,
+        if (repoZipUrl) {
+          // console.log('got repo zip', repoZipUrl);
+          const res = await fetch(repoZipUrl);
+          const ab = await res.arrayBuffer();
+          
+          const zip = await JSZip.loadAsync(ab);
+          
+          const fileNames = [];
+          const isDirectoryName = fileName => /\/$/.test(fileName);
+          const filePredicate = fileName => {
+            return /html-three-template/.test(fileName);
           };
-        }));
-        console.log('got r', files);
-        
-        const fd = new FormData();
-        for (const file of files) {
-          const {name} = file;
-          const basename = name.replace(/\/(.*)$/, '$1');
-          if (isDirectoryName(name)) {
-            fd.append(
-              basename,
-              new Blob([], {
-                type: 'application/x-directory',
-              }),
-              name
-            );
-          } else {
-            fd.append(basename, file.data, name);
+          for (const fileName in zip.files) {
+            // const file = zip.files[fileName];
+            if (filePredicate(fileName)) {
+              fileNames.push(fileName);
+            }
           }
+          
+          const files = await Promise.all(fileNames.map(async fileName => {
+            const file = zip.file(fileName);
+            const b = file && await file.async('blob');
+            return {
+              name: fileName,
+              data: b,
+            };
+          }));
+          console.log('got r', files);
+          
+          const fd = new FormData();
+          for (const file of files) {
+            const {name} = file;
+            const basename = name.replace(/\/(.*)$/, '$1');
+            if (isDirectoryName(name)) {
+              fd.append(
+                basename,
+                new Blob([], {
+                  type: 'application/x-directory',
+                }),
+                name
+              );
+            } else {
+              fd.append(basename, file.data, name);
+            }
+          }
+          
+          // console.log('got form data', fd);
+          const r = await axios({
+            method: 'post',
+            url: storageHost,
+            data: fd,
+          });
+          const {data} = r;
+          const startUrl = `hicetnunc-main/templates/html-three-template`;
+          const startFile = data.find(e => e.name === startUrl);
+          const {hash} = startFile;
+          
+          const frontendUrl = `${storageHost}/ipfs/${hash}/`;
+          console.log('got result', r, frontendUrl);
+  frontendUrl
+          
         }
-        
-        // console.log('got form data', fd);
-        const r = await axios({
-          method: 'post',
-          url: storageHost,
-          data: fd,
-        });
-        const {data} = r;
-        const startUrl = `hicetnunc-main/templates/html-three-template`;
-        const startFile = data.find(e => e.name === startUrl);
-        const {hash} = startFile;
-        
-        const frontendUrl = `${storageHost}/ipfs/${hash}/`;
-        console.log('got result', r, frontendUrl);
-frontendUrl        
+      } else {
+        console.warn('invalid repo url');
       }
     }, [mintMenuStep]);
     

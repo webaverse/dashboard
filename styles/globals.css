@@ -527,25 +527,26 @@ a {
 }
 .slider .contents .wrap-slider .lhs .form input[type=button] {
   display: flex;
-  height: 80px;
-  margin: 10px 0;
+  height: 50px;
+  margin: 20px 0;
   border: 0;
   border-bottom: 3px solid #333;
   border-radius: 5px;
   background-color: #7e57c2;
   font-family: 'MS-Gothic';
-  font-size: 26px;
+  font-size: 20px;
   color: #FFF;
   cursor: pointer;
   justify-content: center;
   align-items: center;
+  transform: translateY(0);
   outline: none;
 }
 .slider .contents .wrap-slider .lhs .form input[type=button]:hover {
   background-color: #9575cd;
 }
 .slider .contents .wrap-slider .lhs .form input[type=button]:active {
-  margin-top: calc(10px + 3px);
+  transform: translateY(3px);
   border-bottom: 0;
 }
 @keyframes gloob {
@@ -561,6 +562,7 @@ a {
 .slider .contents .wrap-slider .lhs .form input[type=button].disabled {
   background-color: #333;
   opacity: 0.3;
+  cursor: default;
 }
 .slider .contents .wrap-slider .lhs .form input[type=button]:not(.disabled) {
   animation-name: gloob;

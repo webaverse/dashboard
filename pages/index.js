@@ -147,7 +147,7 @@ const FakeCard = ({animate, onClick}) => {
   );
 };
 
-const Form = ({mintMenuOpen, quantity, setQuantity}) => {
+const Form = ({mintMenuOpen, quantity, setQuantity, setMintMenuStep}) => {
   const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
   const [source, setSource] = useState('file');
   
@@ -172,7 +172,10 @@ const Form = ({mintMenuOpen, quantity, setQuantity}) => {
   }, [source]);
   
   return (
-    <form className={`form`}>
+    <form className={`form`} onSubmit={e => {
+      e.preventDefault();
+      setMintMenuStep(2);
+    }}>
       <div className="label">Name</div>
       <input type="text" placeholder="Name" ref={el => {
         nameEl = el;
@@ -226,7 +229,9 @@ const Form = ({mintMenuOpen, quantity, setQuantity}) => {
       <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
         setQuantity(e.target.value);
       }} min={1} step={1} />
-      <input className={source === 'url' ? '' : 'disabled'} type="button" value="Mint" />
+      <input className={source === 'url' ? '' : 'disabled'} type="button" value="Preview NFT" disabled={source !== 'url'} onClick={e => {
+        setMintMenuStep(2);
+      }} />
     </form>
   );
 };
@@ -251,6 +256,7 @@ const Lhs = ({className, name, setName, description, setDescription, quantity, s
           setDescription={setDescription}
           quantity={quantity}
           setQuantity={setQuantity}
+          setMintMenuStep={setMintMenuStep}
         />
       </div>
     </div>

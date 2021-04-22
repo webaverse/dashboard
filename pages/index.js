@@ -330,6 +330,19 @@ const PagesRoot = ({
     }, []);
     const mintMenuLarge = selectedPage === 3;
     
+    useEffect(async () => {
+      console.log('effect update', mintMenuStep);
+      if (mintMenuStep === 2 && !loading) {
+        setLoading(true);
+
+        const res = await fetch(url);
+        const ab = await res.arrayBuffer();
+        
+        const zip = await JSZip.loadAsync(ab);
+        console.log('got zip', zip);
+      }
+    }, [mintMenuStep]);
+    
     const nftTypeDescriptions = {
       image: `Image NFT lets you store visual art on the blockchain. They are represented as planes in the virtual world.`,
       video: `Video NFT lets you store video clips on the blockchain. They are represented as screens in the virtual world.`,

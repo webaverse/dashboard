@@ -304,44 +304,46 @@ frontendUrl
           }}>
             <img src="/chevron-left.svg" /><span>Back</span>
           </div>
-          {frontendUrl ?
-            <div className="preview">
-              <div className="preview-header">
-                <FakeCard
-                  onClick={e => {
-                    setMintMenuStep(2);
-                  }}
-                  animate={true}
-                  animationSize="small"
+          <div className="main">
+            {frontendUrl ?
+              <div className="preview">
+                <div className="preview-header">
+                  <FakeCard
+                    onClick={e => {
+                      setMintMenuStep(2);
+                    }}
+                    animate={true}
+                    animationSize="small"
+                  />
+                  <div>Your NFT called </div>
+                  <div className="bold">{name || '[blank]'}</div>
+                  <div> will be minted as an edition of </div>
+                  <div className="bold">{quantity || 1}</div>
+                  <div> and the content will be </div>
+                  <input type="text" value={frontendUrl} onChange={e => {}} />
+                  <div>. Here's a preview:</div>
+                </div>
+                <iframe
+                  className="iframe"
+                  src={frontendUrl}
                 />
-                <div>Your NFT called </div>
-                <div className="bold">{name || '[blank]'}</div>
-                <div> will be minted as an edition of </div>
-                <div className="bold">{quantity || 1}</div>
-                <div> and the content will be </div>
-                <input type="text" value={frontendUrl} onChange={e => {}} />
-                <div>. Here's a preview:</div>
               </div>
-              <iframe
-                className="iframe"
-                src={frontendUrl}
-              />
-            </div>
-          : null}
-          <div className="rrhs">
-            <div className="label">{selectedTab} NFT</div>
-            <div className="description">{nftTypeDescriptions[selectedTab]}</div>
-            <div className="infobox">
-              <div className="h1">Mint with SILK</div>
-              <div className="label">SILK balance</div>
-              <div className="row">
-                <div className="value"><img src="/curve.svg" /> 1337</div>
+            : null}
+            <div className="rrhs">
+              <div className="label">{selectedTab} NFT</div>
+              <div className="description">{nftTypeDescriptions[selectedTab]}</div>
+              <div className="infobox">
+                <div className="h1">Mint with SILK</div>
+                <div className="label">SILK balance</div>
+                <div className="row">
+                  <div className="value"><img src="/curve.svg" /> 1337</div>
+                </div>
+                <div className="label">Minting fee</div>
+                <div className="row">
+                  <div className="value"><img src="/curve.svg" />- 10</div>
+                </div>
+                <input type="button" value="Confirm mint" onChange={e => {}} />
               </div>
-              <div className="label">Minting fee</div>
-              <div className="row">
-                <div className="value"><img src="/curve.svg" />- 10</div>
-              </div>
-              <input type="button" value="Confirm mint" onChange={e => {}} />
             </div>
           </div>
         </div>

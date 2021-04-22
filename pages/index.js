@@ -96,7 +96,7 @@ const PagesRoot = ({
     const [models, setModels] = useState(null);
     const [loading, setLoading] = useState(true);    
     // const [mintMenuLarge, setMintMenuLarge] = useState(false);
-    const [selectedTab, setSelectedTab] = useState('image');
+    const [selectedTab, setSelectedTab] = useState('');
     const [selectedPage, setSelectedPage] = useState(0);
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
@@ -133,7 +133,7 @@ const PagesRoot = ({
 
     const _reset = () => {
       // setSelectedPage(0);
-      setSelectedTab('image');
+      setSelectedTab('');
       setLoadingMessage('');
       setMintMenuStep(1);
     };
@@ -298,6 +298,7 @@ const PagesRoot = ({
                   mintMenuStep={mintMenuStep}
                   setMintMenuStep={setMintMenuStep}
                   selectedTab={selectedTab}
+                  setSelectedTab={setSelectedTab}
                   loading={loading}
                   setLoading={setLoading}
                 />

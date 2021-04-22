@@ -199,6 +199,7 @@ const Minter = ({
   mintMenuStep,
   setMintMenuStep,
   selectedTab,
+  setSelectedTab,
   loading,
   setLoading,
 }) => {
@@ -318,7 +319,7 @@ frontendUrl
                 <div> will be minted as an edition of </div>
                 <div className="bold">{quantity || 1}</div>
                 <div> and the content will be </div>
-                <input type="text" value={frontendUrl} />
+                <input type="text" value={frontendUrl} onChange={e => {}} />
                 <div>. Here's a preview:</div>
               </div>
               <iframe

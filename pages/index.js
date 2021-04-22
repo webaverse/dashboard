@@ -693,7 +693,7 @@ const PagesRoot = ({
                     </div>
                   </div>
                 </div>
-                {loading ? (
+                {(loading && !mintMenuOpen) ? (
                   <Loader loading={loading} />
                 ) : (
                   searchResults ? (

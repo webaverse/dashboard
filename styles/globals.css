@@ -435,11 +435,12 @@ a {
   width: 80px;
   height: 80px;
 } */
-.slider .preview .preview-header .card-outer {
+.slider .preview-header .card-outer {
   display: flex;
   min-width: 60px;
   min-height: 60px;
-  border: 2px solid #333;
+  background: radial-gradient(#7986cb, #3949ab);
+  border: 2px solid #3949ab;
   border-radius: 100px;
 }
 .slider .preview .preview-header .card-svg-inner {
@@ -748,9 +749,9 @@ a {
 }
 .slider .contents .rrhs .infobox .h1 {
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   font-size: 24px;
-  font-family: 'MS-Gothic';
+  /* font-family: 'MS-Gothic'; */
 }
 .slider .contents .rrhs .infobox .row {
   display: flex;

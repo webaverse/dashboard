@@ -341,9 +341,9 @@ const PagesRoot = ({
         const zip = await JSZip.loadAsync(ab);
         
         const fileNames = [];
+        const isDirectoryName = fileName => /\/$/.test(fileName);
         const filePredicate = fileName => {
-          return /html-three-template/.test(fileName) &&
-            !/\/$/.test(fileName);
+          return /html-three-template/.test(fileName);
         };
         for (const fileName in zip.files) {
           // const file = zip.files[fileName];
@@ -353,13 +353,46 @@ const PagesRoot = ({
         }
         
         const files = await Promise.all(fileNames.map(async fileName => {
-          const b = await zip.file('hicetnunc-main/templates/html-template/thumbnail.jpg').async('blob');
+          const file = zip.file(fileName);
+          const b = file && await file.async('blob');
           return {
             name: fileName,
             data: b,
           };
         }));
         console.log('got r', files);
+        
+        const fd = new FormData();
+        for (const file of files) {
+          const {name} = file;
+          const basename = name.replace(/\/(.*)$/, '$1');
+          if (isDirectoryName(name)) {
+            fd.append(
+              basename,
+              new Blob([], {
+                type: 'application/x-directory',
+              }),
+              name
+            );
+          } else {
+            fd.append(basename, file.data, name);
+          }
+        }
+        
+        // console.log('got form data', fd);
+        const r = await axios({
+          method: 'post',
+          url: storageHost,
+          data: fd,
+        });
+        const {data} = r;
+        const startUrl = `hicetnunc-main/templates/html-three-template`;
+        const startFile = data.find(e => e.name === startUrl);
+        const {hash} = startFile;
+        
+        const frontendUrl = `${storageHost}/ipfs/${hash}/`;
+        console.log('got result', r, frontendUrl);
+frontendUrl        
       }
     }, [mintMenuStep]);
     

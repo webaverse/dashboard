@@ -149,8 +149,6 @@ const FakeCard = ({animate, onClick}) => {
 };
 
 const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuStep, url, setUrl, source, setSource}) => {
-  const [loading, setLoading] = useState(false);
-  
   let nameEl = null;
   const _updateNameFocus = () => {
     if (mintMenuOpen && nameEl) {

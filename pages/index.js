@@ -14,6 +14,19 @@ import {blobToFile, getExt, parseQuery} from "../webaverse/util";
 import {storageHost} from "../webaverse/constants";
 import JSZip from '../webaverse/jszip.js';
 
+const nftTypeDescriptions = {
+  image: `Image NFT lets you store visual art on the blockchain. They are represented as planes in the virtual world.`,
+  video: `Video NFT lets you store video clips on the blockchain. They are represented as screens in the virtual world.`,
+  audio: `Audio NFT lets you store audio compositions on the blockchain. They are represented as audio nodes in the virtual world.`,
+  avatar: `Avatar NFT lets you create VRM avatars on the blockchain. They can be worn in the virtual world.`,
+  model: `Model NFT lets you create 3D virtual objects on the blockchain. They can be pulled out of your inventory in the virtual world.`,
+  html: `HMTL NFT lets you create web sites on the blockchain. They are represented as screens in the virtual world.`,
+  wearable: `Wearable NFT lets you create digital fashion on the blockchain. They can be worn by your avatar in the virtual world.`,
+  pet: `Pet NFT lets you create virtual pets on the blockchain. They can be interacted with in the virtual world.`,
+  scene: `Scene NFT lets you create digital scenes on the blockchain. They can be visited in the virtual world.`,
+  vehicle: `Vehicle NFT lets you create virtual vehicles on the blockchain. They can be ridden in the virtual world.`,
+};
+
 class Dropper extends Component {
   constructor(props) {
     super(props);
@@ -282,6 +295,315 @@ const urlToRepoZipUrl = url => {
   }
 };
 
+const Minter = ({
+  mintMenuOpen,
+  setMintMenuOpen,
+  mintMenuStep,
+  setMintMenuStep,
+  selectedTab,
+  loading,
+  setLoading,
+}) => {
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
+  const [source, setSource] = useState('file');
+  const [frontendUrl, setFrontendUrl] = useState('');
+  
+  useEffect(async () => {
+    // console.log('effect update', mintMenuStep);
+    if (mintMenuStep === 2 && !loading) {
+      setLoading(true);
+
+      const repoZipUrl = urlToRepoZipUrl(url);
+      if (repoZipUrl) {
+        // console.log('got repo zip', repoZipUrl);
+        const res = await fetch(repoZipUrl);
+        const ab = await res.arrayBuffer();
+        
+        const zip = await JSZip.loadAsync(ab);
+        
+        const fileNames = [];
+        const isDirectoryName = fileName => /\/$/.test(fileName);
+        const filePredicate = fileName => {
+          return /html-three-template/.test(fileName);
+        };
+        for (const fileName in zip.files) {
+          // const file = zip.files[fileName];
+          if (filePredicate(fileName)) {
+            fileNames.push(fileName);
+          }
+        }
+        
+        const files = await Promise.all(fileNames.map(async fileName => {
+          const file = zip.file(fileName);
+          const b = file && await file.async('blob');
+          return {
+            name: fileName,
+            data: b,
+          };
+        }));
+        console.log('got r', files);
+        
+        const fd = new FormData();
+        for (const file of files) {
+          const {name} = file;
+          const basename = name.replace(/\/(.*)$/, '$1');
+          if (isDirectoryName(name)) {
+            fd.append(
+              basename,
+              new Blob([], {
+                type: 'application/x-directory',
+              }),
+              name
+            );
+          } else {
+            fd.append(basename, file.data, name);
+          }
+        }
+        
+        // console.log('got form data', fd);
+        const r = await axios({
+          method: 'post',
+          url: storageHost,
+          data: fd,
+        });
+        const {data} = r;
+        const startUrl = `hicetnunc-main/templates/html-three-template`;
+        const startFile = data.find(e => e.name === startUrl);
+        const {hash} = startFile;
+        
+        const newFrontendUrl = `${storageHost}/ipfs/${hash}/`;
+        console.log('got result', r, frontendUrl);
+frontendUrl
+        setFrontendUrl(newFrontendUrl);
+      } else {
+        console.warn('invalid repo url', url);
+      }
+    }
+  }, [mintMenuStep]);
+  
+  return (
+    <div className="slider">
+    {/* <div className="left-bar" /> */}
+    <div
+      className="contents"
+    >
+      <div className={`wrap-slider step-${mintMenuStep}`}>
+        <div className="wrap step-2-only">
+          <div className="back-button" onClick={e => {
+            setMintMenuStep(1);
+          }}>
+            <img src="/chevron-left.svg" /><span>Back</span>
+          </div>
+          <Lhs
+            className="small"
+            mintMenuOpen={mintMenuOpen}
+            helpOpen={helpOpen}
+            setHelpOpen={setHelpOpen}
+            mintMenuStep={mintMenuStep}
+            setMintMenuStep={setMintMenuStep}
+            name={name}
+            setName={setName}
+            description={description}
+            setDescription={setDescription}
+            quantity={quantity}
+            setQuantity={setQuantity}
+            url={url}
+            setUrl={setUrl}
+            source={source}
+            setSource={setSource}
+            frontendUrl={frontendUrl}
+          />
+          {frontendUrl ?
+            <iframe
+              className="iframe"
+              src={frontendUrl}
+            />
+          : null}
+          <div className="rrhs">
+            <div className="label">{selectedTab} NFT</div>
+            <div className="description">{nftTypeDescriptions[selectedTab]}</div>
+          </div>
+        </div>
+        <div className="wrap step-1-only">
+          <Lhs
+            className="large"
+            mintMenuOpen={mintMenuOpen}
+            helpOpen={helpOpen}
+            setHelpOpen={setHelpOpen}
+            mintMenuStep={mintMenuStep}
+            setMintMenuStep={setMintMenuStep}
+            name={name}
+            setName={setName}
+            description={description}
+            setDescription={setDescription}
+            quantity={quantity}
+            setQuantity={setQuantity}
+            url={url}
+            setUrl={setUrl}
+            source={source}
+            setSource={setSource}
+            frontendUrl={frontendUrl}
+          />
+          <div className="middle">
+            <div className="card-buttons like">
+              <div className={`card-button help ${helpOpen ? 'open' : ''}`} onClick={e => {
+                setHelpOpen(!helpOpen);
+              }}>
+                <img src="/help.svg" />
+              </div>
+            </div>
+            <div className={`helper ${helpOpen ? 'open' : ''}`}>
+                <div className="h1">Ready to mint your first NFT?</div>
+                <p>Drag and drop a file to get started. Or, click here to choose file. Lazy? Choose a template --&gt;</p>
+                <p className="h2">Supported file types:</p>
+                <p className="sub">
+                  <span>png</span>
+                  <span>jpg</span>
+                  <span>glb</span>
+                  <span>vrm</span>
+                  <span>vox</span>
+                </p>
+              </div>
+          </div>
+          <div className="rhs">
+            <div className="label">Templates</div>
+            <div className="subtabs">
+              {[
+                ['image', '/image.svg'],
+                ['video', '/video.svg'],
+                ['audio', '/audio.svg'],
+                ['avatar', '/avatar.svg'],
+                ['model', '/sword.svg'],
+                ['html', '/html.svg'],
+                ['wearable', '/chain-mail.svg'],
+                ['pet', '/rabbit.svg'],
+                ['scene', '/road.svg'],
+                ['vehicle', '/scooter.svg'],
+              ].map(([name, imgSrc], i) => {
+                return (
+                  <div className="tab-wrap" onClick={e => _setSelectedTab(name)} key={i}>
+                    <div
+                      className={`tab ${selectedTab === name ? 'selected' : ''}`}
+                    >
+                      <img src={imgSrc} />
+                      <span>{name}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="text"></div>
+          </div>
+          {/* <div className="wrap">
+            <div className="subwraps">
+              <div className="subwrap">
+                <div className="label">
+                  <nav
+                    className="back-button"
+                    onClick={e => {
+                      setSelectedPage(selectedPage - 1);
+                    }}
+                  >
+                    <img
+                      src="/chevron-left.svg"
+                      onDragStart={e => {
+                        e.preventDefault();
+                      }}
+                    />
+                  </nav>
+                  <div className="text">{selectedTab}</div>
+                </div>
+                <div className="description">
+                  <div className="text">
+                    {nftTypeDescriptions[selectedTab]}
+                  </div>
+                  <div className="card-hype">
+                    
+                  </div>
+                </div>
+              </div>
+              <div className="subwrap">
+                <Dropper
+                  onDrop={handleFilesMagically}
+                />
+                <label className="upload-section file-drop-container" htmlFor="input-file">
+                  <Head>
+                    <script type="text/javascript" src="/geometry.js"></script>
+                  </Head>
+                
+                  <div className="text">Drop a file here to mint<br/>Click to choose file</div>
+                  <img src="/upload.svg" />
+                  
+                  <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
+                  
+                </label>
+              </div>
+            </div>
+          </div>
+          <div className="wrap">
+            <div className="subwraps">
+              <div className="subwrap">
+                <div className="label">
+                  <nav
+                    className="back-button"
+                    onClick={e => {
+                      setSelectedPage(selectedPage - 1);
+                    }}
+                  >
+                    <img
+                      src="/chevron-left.svg"
+                      onDragStart={e => {
+                        e.preventDefault();
+                      }}
+                    />
+                  </nav>
+                  <div className="text">Cancel</div>
+                </div>
+                <div className="description">
+                  Uploading NFT...
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="wrap">
+            <div className="subwraps">
+              <div className="subwrap">
+                <div className="label">
+                  <nav
+                    className="back-button"
+                    onClick={e => {
+                      setSelectedPage(selectedPage - 2);
+                    }}
+                  >
+                    <img
+                      src="/chevron-left.svg"
+                      onDragStart={e => {
+                        e.preventDefault();
+                      }}
+                    />
+                  </nav>
+                  <div className="text">Preview NFT</div>
+                </div>
+                <div className="description">
+                  Upload complete, here is the preview:
+                  {previewId ? <div className="IFrameContainer">
+                    <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + previewId} />
+                  </div> : null}
+                </div>
+              </div>
+            </div>
+          </div> */}
+        </div>
+      </div>
+    </div>
+  </div>
+  );
+};
+
 const PagesRoot = ({
   data,
   selectedView,
@@ -293,21 +615,14 @@ const PagesRoot = ({
     const [avatars, setAvatars] = useState(null);
     const [art, setArt] = useState(null);
     const [models, setModels] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [mintMenuOpen, setMintMenuOpen] = useState(false);
-    const [mintMenuStep, setMintMenuStep] = useState(1);
+    const [loading, setLoading] = useState(true);    
     // const [mintMenuLarge, setMintMenuLarge] = useState(false);
     const [selectedTab, setSelectedTab] = useState('image');
     const [selectedPage, setSelectedPage] = useState(0);
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
-    const [helpOpen, setHelpOpen] = useState(false);
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
-    const [source, setSource] = useState('file');
-    const [quantity, setQuantity] = useState(1);
-    const [frontendUrl, setFrontendUrl] = useState('');
+    const [mintMenuOpen, setMintMenuOpen] = useState(false);
+    const [mintMenuStep, setMintMenuStep] = useState(1);    
     
     const router = useRouter();
 
@@ -343,92 +658,7 @@ const PagesRoot = ({
         })();
     }, []);
     const mintMenuLarge = selectedPage === 3;
-    
-    useEffect(async () => {
-      // console.log('effect update', mintMenuStep);
-      if (mintMenuStep === 2 && !loading) {
-        setLoading(true);
 
-        const repoZipUrl = urlToRepoZipUrl(url);
-        if (repoZipUrl) {
-          // console.log('got repo zip', repoZipUrl);
-          const res = await fetch(repoZipUrl);
-          const ab = await res.arrayBuffer();
-          
-          const zip = await JSZip.loadAsync(ab);
-          
-          const fileNames = [];
-          const isDirectoryName = fileName => /\/$/.test(fileName);
-          const filePredicate = fileName => {
-            return /html-three-template/.test(fileName);
-          };
-          for (const fileName in zip.files) {
-            // const file = zip.files[fileName];
-            if (filePredicate(fileName)) {
-              fileNames.push(fileName);
-            }
-          }
-          
-          const files = await Promise.all(fileNames.map(async fileName => {
-            const file = zip.file(fileName);
-            const b = file && await file.async('blob');
-            return {
-              name: fileName,
-              data: b,
-            };
-          }));
-          console.log('got r', files);
-          
-          const fd = new FormData();
-          for (const file of files) {
-            const {name} = file;
-            const basename = name.replace(/\/(.*)$/, '$1');
-            if (isDirectoryName(name)) {
-              fd.append(
-                basename,
-                new Blob([], {
-                  type: 'application/x-directory',
-                }),
-                name
-              );
-            } else {
-              fd.append(basename, file.data, name);
-            }
-          }
-          
-          // console.log('got form data', fd);
-          const r = await axios({
-            method: 'post',
-            url: storageHost,
-            data: fd,
-          });
-          const {data} = r;
-          const startUrl = `hicetnunc-main/templates/html-three-template`;
-          const startFile = data.find(e => e.name === startUrl);
-          const {hash} = startFile;
-          
-          const newFrontendUrl = `${storageHost}/ipfs/${hash}/`;
-          console.log('got result', r, frontendUrl);
-  frontendUrl
-          setFrontendUrl(newFrontendUrl);
-        } else {
-          console.warn('invalid repo url', url);
-        }
-      }
-    }, [mintMenuStep]);
-    
-    const nftTypeDescriptions = {
-      image: `Image NFT lets you store visual art on the blockchain. They are represented as planes in the virtual world.`,
-      video: `Video NFT lets you store video clips on the blockchain. They are represented as screens in the virtual world.`,
-      audio: `Audio NFT lets you store audio compositions on the blockchain. They are represented as audio nodes in the virtual world.`,
-      avatar: `Avatar NFT lets you create VRM avatars on the blockchain. They can be worn in the virtual world.`,
-      model: `Model NFT lets you create 3D virtual objects on the blockchain. They can be pulled out of your inventory in the virtual world.`,
-      html: `HMTL NFT lets you create web sites on the blockchain. They are represented as screens in the virtual world.`,
-      wearable: `Wearable NFT lets you create digital fashion on the blockchain. They can be worn by your avatar in the virtual world.`,
-      pet: `Pet NFT lets you create virtual pets on the blockchain. They can be interacted with in the virtual world.`,
-      scene: `Scene NFT lets you create digital scenes on the blockchain. They can be visited in the virtual world.`,
-      vehicle: `Vehicle NFT lets you create virtual vehicles on the blockchain. They can be ridden in the virtual world.`,
-    };
     const _reset = () => {
       // setSelectedPage(0);
       setSelectedTab('image');
@@ -549,6 +779,8 @@ const PagesRoot = ({
         scroll: false,
       });
     };
+    
+
 
     return (
         <Fragment>
@@ -590,221 +822,15 @@ const PagesRoot = ({
                 </div>
                 {/* <div className="blocker" /> */}
                 <div className="mint-menu-bar" />
-                <div className="slider">
-                  {/* <div className="left-bar" /> */}
-                  <div
-                    className="contents"
-                  >
-                    <div className={`wrap-slider step-${mintMenuStep}`}>
-                      <div className="wrap step-2-only">
-                        <div className="back-button" onClick={e => {
-                          setMintMenuStep(1);
-                        }}>
-                          <img src="/chevron-left.svg" /><span>Back</span>
-                        </div>
-                        <Lhs
-                          className="small"
-                          mintMenuOpen={mintMenuOpen}
-                          helpOpen={helpOpen}
-                          setHelpOpen={setHelpOpen}
-                          mintMenuStep={mintMenuStep}
-                          setMintMenuStep={setMintMenuStep}
-                          name={name}
-                          setName={setName}
-                          description={description}
-                          setDescription={setDescription}
-                          quantity={quantity}
-                          setQuantity={setQuantity}
-                          url={url}
-                          setUrl={setUrl}
-                          source={source}
-                          setSource={setSource}
-                          frontendUrl={frontendUrl}
-                        />
-                        {frontendUrl ?
-                          <iframe
-                            className="iframe"
-                            src={frontendUrl}
-                          />
-                        : null}
-                        <div className="rrhs">
-                          <div className="label">{selectedTab} NFT</div>
-                          <div className="description">{nftTypeDescriptions[selectedTab]}</div>
-                        </div>
-                      </div>
-                      <div className="wrap step-1-only">
-                        <Lhs
-                          className="large"
-                          mintMenuOpen={mintMenuOpen}
-                          helpOpen={helpOpen}
-                          setHelpOpen={setHelpOpen}
-                          mintMenuStep={mintMenuStep}
-                          setMintMenuStep={setMintMenuStep}
-                          name={name}
-                          setName={setName}
-                          description={description}
-                          setDescription={setDescription}
-                          quantity={quantity}
-                          setQuantity={setQuantity}
-                          url={url}
-                          setUrl={setUrl}
-                          source={source}
-                          setSource={setSource}
-                          frontendUrl={frontendUrl}
-                        />
-                        <div className="middle">
-                          <div className="card-buttons like">
-                            <div className={`card-button help ${helpOpen ? 'open' : ''}`} onClick={e => {
-                              setHelpOpen(!helpOpen);
-                            }}>
-                              <img src="/help.svg" />
-                            </div>
-                          </div>
-                          <div className={`helper ${helpOpen ? 'open' : ''}`}>
-                              <div className="h1">Ready to mint your first NFT?</div>
-                              <p>Drag and drop a file to get started. Or, click here to choose file. Lazy? Choose a template --&gt;</p>
-                              <p className="h2">Supported file types:</p>
-                              <p className="sub">
-                                <span>png</span>
-                                <span>jpg</span>
-                                <span>glb</span>
-                                <span>vrm</span>
-                                <span>vox</span>
-                              </p>
-                            </div>
-                        </div>
-                        <div className="rhs">
-                          <div className="label">Templates</div>
-                          <div className="subtabs">
-                            {[
-                              ['image', '/image.svg'],
-                              ['video', '/video.svg'],
-                              ['audio', '/audio.svg'],
-                              ['avatar', '/avatar.svg'],
-                              ['model', '/sword.svg'],
-                              ['html', '/html.svg'],
-                              ['wearable', '/chain-mail.svg'],
-                              ['pet', '/rabbit.svg'],
-                              ['scene', '/road.svg'],
-                              ['vehicle', '/scooter.svg'],
-                            ].map(([name, imgSrc], i) => {
-                              return (
-                                <div className="tab-wrap" onClick={e => _setSelectedTab(name)} key={i}>
-                                  <div
-                                    className={`tab ${selectedTab === name ? 'selected' : ''}`}
-                                  >
-                                    <img src={imgSrc} />
-                                    <span>{name}</span>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                          <div className="text"></div>
-                        </div>
-                        {/* <div className="wrap">
-                          <div className="subwraps">
-                            <div className="subwrap">
-                              <div className="label">
-                                <nav
-                                  className="back-button"
-                                  onClick={e => {
-                                    setSelectedPage(selectedPage - 1);
-                                  }}
-                                >
-                                  <img
-                                    src="/chevron-left.svg"
-                                    onDragStart={e => {
-                                      e.preventDefault();
-                                    }}
-                                  />
-                                </nav>
-                                <div className="text">{selectedTab}</div>
-                              </div>
-                              <div className="description">
-                                <div className="text">
-                                  {nftTypeDescriptions[selectedTab]}
-                                </div>
-                                <div className="card-hype">
-                                  
-                                </div>
-                              </div>
-                            </div>
-                            <div className="subwrap">
-                              <Dropper
-                                onDrop={handleFilesMagically}
-                              />
-                              <label className="upload-section file-drop-container" htmlFor="input-file">
-                                <Head>
-                                  <script type="text/javascript" src="/geometry.js"></script>
-                                </Head>
-                              
-                                <div className="text">Drop a file here to mint<br/>Click to choose file</div>
-                                <img src="/upload.svg" />
-                                
-                                <input type="file" id="input-file" onChange={(e) => handleFilesMagically(e.target.files)} multiple={true} style={{display: 'none'}} />
-                                
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="wrap">
-                          <div className="subwraps">
-                            <div className="subwrap">
-                              <div className="label">
-                                <nav
-                                  className="back-button"
-                                  onClick={e => {
-                                    setSelectedPage(selectedPage - 1);
-                                  }}
-                                >
-                                  <img
-                                    src="/chevron-left.svg"
-                                    onDragStart={e => {
-                                      e.preventDefault();
-                                    }}
-                                  />
-                                </nav>
-                                <div className="text">Cancel</div>
-                              </div>
-                              <div className="description">
-                                Uploading NFT...
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="wrap">
-                          <div className="subwraps">
-                            <div className="subwrap">
-                              <div className="label">
-                                <nav
-                                  className="back-button"
-                                  onClick={e => {
-                                    setSelectedPage(selectedPage - 2);
-                                  }}
-                                >
-                                  <img
-                                    src="/chevron-left.svg"
-                                    onDragStart={e => {
-                                      e.preventDefault();
-                                    }}
-                                  />
-                                </nav>
-                                <div className="text">Preview NFT</div>
-                              </div>
-                              <div className="description">
-                                Upload complete, here is the preview:
-                                {previewId ? <div className="IFrameContainer">
-                                  <iframe className="IFrame" src={"https://app.webaverse.com/?t=" + previewId} />
-                                </div> : null}
-                              </div>
-                            </div>
-                          </div>
-                        </div> */}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <Minter
+                  mintMenuOpen={mintMenuOpen}
+                  setMintMenuOpen={setMintMenuOpen}
+                  mintMenuStep={mintMenuStep}
+                  setMintMenuStep={setMintMenuStep}
+                  selectedTab={selectedTab}
+                  loading={loading}
+                  setLoading={setLoading}
+                />
                 {(loading && !mintMenuOpen) ? (
                   <Loader loading={loading} />
                 ) : (

@@ -208,22 +208,22 @@ const Form = ({mintMenuOpen, quantity, setQuantity, setMintMenuStep}) => {
         </label>
       </div>
       {source === 'file' ?
-        <Fragment>
-          <div className="label">File</div>
-          <input type="file" placeholder="File" onChange={e => {
+        [
+          (<div className="label" key="file">File</div>),
+          (<input type="file" placeholder="File" value={null} onChange={e => {
             console.log('file change', e);
-          }} />
-        </Fragment>
+          }} key="file2" />),
+        ]
       :
-        <Fragment>
-          <div className="label">URL</div>
-          <input type="text" placeholder="https://" value={url} onChange={e => {
+        [
+          (<div className="label" key="file3">URL</div>),
+          (<input type="text" placeholder="https://" value={url} onChange={e => {
             // console.log('url change', e);
             setUrl(e.target.value);
           }} ref={el => {
             urlEl = el;
-          }} />
-        </Fragment>
+          }} key="file4" />),
+        ]
       }
       <div className="label">Quantity</div>
       <input type="number" placeholder="Quantity" value={quantity} onChange={e => {

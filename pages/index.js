@@ -13,6 +13,11 @@ import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {blobToFile, getExt, parseQuery} from "../webaverse/util";
 import {storageHost} from "../webaverse/constants";
 
+if (typeof window !== 'undefined') {
+  window.axios = axios;
+  window.storageHost = storageHost;
+}
+
 class Dropper extends Component {
   constructor(props) {
     super(props);

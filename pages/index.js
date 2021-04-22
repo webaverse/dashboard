@@ -12,6 +12,7 @@ import {FileDrop} from "react-file-drop";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {blobToFile, getExt, parseQuery} from "../webaverse/util";
 import {storageHost} from "../webaverse/constants";
+import JSZip from '../webaverse/jszip.js';
 
 class Dropper extends Component {
   constructor(props) {

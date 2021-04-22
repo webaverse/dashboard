@@ -236,7 +236,7 @@ const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuSte
   );
 };
 
-const Lhs = ({className, name, setName, description, setDescription, quantity, setQuantity, mintMenuOpen, helpOpen, setHelpOpen, mintMenuStep, setMintMenuStep, url, setUrl, source, setSource}) => {
+const Lhs = ({className, name, setName, description, setDescription, quantity, setQuantity, mintMenuOpen, helpOpen, setHelpOpen, mintMenuStep, setMintMenuStep, url, setUrl, source, setSource, frontendUrl}) => {
   return (
     <div
       className={`lhs ${className}`}
@@ -271,6 +271,7 @@ const Lhs = ({className, name, setName, description, setDescription, quantity, s
 const urlToRepoZipUrl = url => {
   const u = new URL(url);
   const match = u.pathname.match(/^\/(.+?)\/(.+?)\/tree\/(.+)(\/.*)?$/);
+  console.log('match pathname', [url, u.pathname, match]);
   if (match) {
     const username = match[1]; 
     const reponame = match[2];
@@ -307,7 +308,8 @@ const PagesRoot = ({
     const [description, setDescription] = useState('');
     const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
     const [source, setSource] = useState('file');
-    const [quantity, setQuantity] =  useState(1);
+    const [quantity, setQuantity] = useState(1);
+    const [frontendUrl, setFrontendUrl] = useState('');
     
     const router = useRouter();
 
@@ -407,13 +409,13 @@ const PagesRoot = ({
           const startFile = data.find(e => e.name === startUrl);
           const {hash} = startFile;
           
-          const frontendUrl = `${storageHost}/ipfs/${hash}/`;
+          const newFrontendUrl = `${storageHost}/ipfs/${hash}/`;
           console.log('got result', r, frontendUrl);
   frontendUrl
-          
+          setFrontendUrl(newFrontendUrl);
+        } else {
+          console.warn('invalid repo url', url);
         }
-      } else {
-        console.warn('invalid repo url');
       }
     }, [mintMenuStep]);
     
@@ -619,7 +621,14 @@ const PagesRoot = ({
                           setUrl={setUrl}
                           source={source}
                           setSource={setSource}
+                          frontendUrl={frontendUrl}
                         />
+                        {frontendUrl ?
+                          <iframe
+                            className="iframe"
+                            src={frontendUrl}
+                          />
+                        : null}
                         <div className="rrhs">
                           <div className="label">{selectedTab} NFT</div>
                           <div className="description">{nftTypeDescriptions[selectedTab]}</div>
@@ -643,6 +652,7 @@ const PagesRoot = ({
                           setUrl={setUrl}
                           source={source}
                           setSource={setSource}
+                          frontendUrl={frontendUrl}
                         />
                         <div className="middle">
                           <div className="card-buttons like">

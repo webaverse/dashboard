@@ -417,6 +417,14 @@ a {
 .slider .contents .wrap-slider:not(.step-2) .step-2-only {
   transform: translateX(100px);
 }
+.slider .iframe {
+  height: calc(100vh - 90px);
+  width: calc(100vw - 16vw - 200px - 200px);
+  position: absolute;
+  top: -40px;
+  right: calc(8vw + 20px);
+  border: 0;
+}
 .slider .contents .wrap-slider .step-1-only,
 .slider .contents .wrap-slider .step-2-only {
   transition: transform 0.5s cubic-bezier(0, 1, 0, 1), opacity 1s cubic-bezier(0, 1, 0, 1);

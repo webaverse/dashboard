@@ -160,12 +160,21 @@ const Form = ({mintMenuOpen, quantity, setQuantity}) => {
     _updateNameFocus();
   }, [mintMenuOpen]);
   
+  let urlEl = null;
+  const _updateUrlFocus = () => {
+    if (source === 'url' && urlEl) {
+      urlEl.focus();
+    }
+  };
+  useEffect(() => {
+    _updateUrlFocus();
+  }, [source]);
+  
   return (
     <form className={`form`}>
       <div className="label">Name</div>
       <input type="text" placeholder="Name" ref={el => {
         nameEl = el;
-        // _updateNameFocus();
       }} />
       <div className="label">Description</div>
       <textarea placeholder="Description"/>
@@ -206,6 +215,8 @@ const Form = ({mintMenuOpen, quantity, setQuantity}) => {
           <div className="label">URL</div>
           <input type="text" placeholder="https://" onChange={e => {
             console.log('url change', e);
+          }} ref={el => {
+            urlEl = el;
           }} />
         </Fragment>
       }

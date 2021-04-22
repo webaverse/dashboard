@@ -469,6 +469,22 @@ a {
   padding: 0 20px;
   flex-direction: column;
 }
+.slider .contents .wrap-slider .lhs .form .radio {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  user-select: none;
+}
+.slider .contents .wrap-slider .lhs .form .radio input[type=radio] {
+  margin: 0;
+  margin-right: 5px;
+}
+.slider .contents .wrap-slider .lhs .form .radio label {
+  display: flex;
+  margin-right: 10px;
+  font-family: inherit;
+  align-items: center;
+}
 .slider .contents .wrap-slider .lhs .form .label {
   margin: 0;
   margin-bottom: 5px;

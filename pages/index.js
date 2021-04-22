@@ -339,7 +339,27 @@ const PagesRoot = ({
         const ab = await res.arrayBuffer();
         
         const zip = await JSZip.loadAsync(ab);
-        console.log('got zip', zip);
+        
+        const fileNames = [];
+        const filePredicate = fileName => {
+          return /html-three-template/.test(fileName) &&
+            !/\/$/.test(fileName);
+        };
+        for (const fileName in zip.files) {
+          // const file = zip.files[fileName];
+          if (filePredicate(fileName)) {
+            fileNames.push(fileName);
+          }
+        }
+        
+        const files = await Promise.all(fileNames.map(async fileName => {
+          const b = await zip.file('hicetnunc-main/templates/html-template/thumbnail.jpg').async('blob');
+          return {
+            name: fileName,
+            data: b,
+          };
+        }));
+        console.log('got r', files);
       }
     }, [mintMenuStep]);
     

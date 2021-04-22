@@ -268,6 +268,16 @@ const Lhs = ({className, name, setName, description, setDescription, quantity, s
   );
 };
 
+const urlToRepoZipUrl = url => {
+  const u = new URL(url);
+  const match = u.pathname.match(/^\/(.+?)\/((.+?))(\/.*)?$/);
+  const username = match[1]; 
+  const reponame = match[2];
+  const tail = match[3];
+ 
+  return `https://http-github-com.proxy.exokit.org/hicetnunc2000/hicetnunc/archive/main.zip`;
+};
+
 const PagesRoot = ({
   data,
   selectedView,
@@ -290,8 +300,7 @@ const PagesRoot = ({
     const [helpOpen, setHelpOpen] = useState(false);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const oldUrl = `https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`;
-    const [url, setUrl] = useState(`https://http-github-com.proxy.exokit.org/hicetnunc2000/hicetnunc/archive/main.zip`);
+    const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
     const [source, setSource] = useState('file');
     const [quantity, setQuantity] =  useState(1);
     
@@ -335,7 +344,8 @@ const PagesRoot = ({
       if (mintMenuStep === 2 && !loading) {
         setLoading(true);
 
-        const res = await fetch(url);
+        const repoZipUrl = urlToRepoZipUrl(url);
+        const res = await fetch(repoZipUrl);
         const ab = await res.arrayBuffer();
         
         const zip = await JSZip.loadAsync(ab);

@@ -170,7 +170,7 @@ const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuSte
       {source === 'file' ?
         [
           (<div className="label" key="file">File</div>),
-          (<input type="file" placeholder="File" value={null} onChange={e => {
+          (<input type="file" placeholder="File" value={''} onChange={e => {
             console.log('file change', e);
           }} key="file2" />),
         ]

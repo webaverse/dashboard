@@ -363,9 +363,7 @@ class ShadertoyRenderer {
       // wait for images to load
       await Promise.all(promises);
       
-      console.log('tick passes 1');
       for (let i = 0; i < shader.renderpass.length; i++) {
-        console.log('tick passes 2', i);
         const {type, code} = shader.renderpass[i];
         const {is, os} = renderPassIos[i];
         const renderPass = new ShaderToyPass({
@@ -378,7 +376,6 @@ class ShadertoyRenderer {
         }, this);
         this.renderPasses.push(renderPass);
       }
-      console.log('tick passes 3', this.renderPasses);
     };
     _initRenderPasses();
     

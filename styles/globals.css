@@ -196,6 +196,7 @@ a {
   padding-top: 93px;
   display: flex;
   padding-top: 72px; */
+  background-color: #FFF;
 }
 .hidden {
   display: none;
@@ -1203,4 +1204,11 @@ a {
 }
 .profile-page .placeholder {
   margin: 30px auto;
+}
+html {
+  transition: filter 5s cubic-bezier(0, 1.1, 0, 1.1);
+}
+html.hit {
+  filter: invert(1);
+  transition: none;
 }

@@ -428,6 +428,13 @@ frontendUrl
       frame = null;
     });
   }
+  const _hitEffect = () => {
+    const htmlEl = document.querySelector('html');
+    htmlEl.classList.add('hit');
+    requestAnimationFrame(() => {
+      htmlEl.classList.remove('hit');
+    });
+  };
   
   return (
     <div className="slider">
@@ -524,11 +531,14 @@ frontendUrl
               transform: `translate3D(${jitter[0].toFixed(8)}px, ${jitter[1].toFixed(8)}px, 0px)`,
             }}
           >
-            <div className="h1" onClick={e => {
-              setMintMenuStep(2);
-            }}>
-              <div>Minting...</div>
-              <div>{Math.floor(mintProgress * 100)}%</div>
+            <div className="h1">
+              <div onClick={e => {
+                setMintMenuStep(2);
+              }}>Minting...</div>
+              <div onClick={e => {
+                // setMintMenuStep(4);
+                _hitEffect();
+              }}>{Math.floor(mintProgress * 100)}%</div>
             </div>
             <ProgressBar
               value={mintProgress}

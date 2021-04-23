@@ -428,12 +428,33 @@ frontendUrl
       frame = null;
     });
   }
+  const _delayFrames = (fn, numFrames) => {
+    let frame = 0;
+    const _recurse = () => {
+      if (++frame >= numFrames) {
+        fn();
+      } else {
+        requestAnimationFrame(_recurse);
+      }
+    };
+    requestAnimationFrame(_recurse);
+  };
   const _hitEffect = () => {
     const htmlEl = document.querySelector('html');
-    htmlEl.classList.add('hit');
-    requestAnimationFrame(() => {
-      htmlEl.classList.remove('hit');
-    });
+    
+    let hits = 0;
+    const numHits = 3;
+    const _recurse = () => {
+      if (++hits <= numHits) {
+        htmlEl.classList.add('hit');
+        requestAnimationFrame(() => {
+          htmlEl.classList.remove('hit');
+          
+          _delayFrames(_recurse, 2);
+        })
+      }
+    };
+    _recurse();
   };
   
   return (

@@ -1206,7 +1206,7 @@ a {
   margin: 30px auto;
 }
 html {
-  transition: filter 5s cubic-bezier(0, 1.1, 0, 1.1);
+  transition: filter 5s cubic-bezier(0, 1.5, 0, 1.5);
 }
 html.hit {
   filter: invert(1);

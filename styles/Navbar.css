@@ -2,14 +2,14 @@
   position: fixed;
   top: 0;
   height: 90px;
-  width: 100%;
+  width: 100vw;
   margin-bottom: 0;
   border-bottom: none;
   box-sizing: content-box;
   background-color: #FFF;
   border-color: transparent;
   transition: background-color .5s ease,border-color .5s ease;
-  padding: 0 8%;
+  padding: 0 8vw;
   box-sizing: border-box;
   z-index: 4;
 }

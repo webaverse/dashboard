@@ -8,6 +8,7 @@ import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import ProgressBar from "../components/ProgressBar";
 import Asset from "../components/Asset";
+import ShaderToyRenderer from "../components/ShaderToyRenderer";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {blobToFile, getExt, parseQuery} from "../webaverse/util";
 import {storageHost} from "../webaverse/constants";
@@ -201,12 +202,6 @@ const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuSte
         setMintMenuStep(2);
       }} />
     </form>
-  );
-};
-
-const ShaderToyRenderer = () => {
-  return (
-    <div />
   );
 };
 

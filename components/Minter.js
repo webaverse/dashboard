@@ -329,6 +329,7 @@ frontendUrl
       className="contents"
     >
       <div className={`wrap-slider step-${mintMenuStep}`}>
+        <div className="preview-background step-2-only" />
         <div className="wrap step-2-only">
           {/* <div className="back-button" onClick={e => {
             setMintMenuStep(1);

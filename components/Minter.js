@@ -324,7 +324,7 @@ const Minter = ({
         
         const newFrontendUrl = `${storageHost}/ipfs/${hash}/`;
         console.log('got result', r, frontendUrl);
-frontendUrl
+
         setFrontendUrl(newFrontendUrl);
       } else {
         console.warn('invalid repo url', url);

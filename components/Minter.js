@@ -204,6 +204,12 @@ const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuSte
   );
 };
 
+const ShaderToyRenderer = () => {
+  return (
+    <div />
+  );
+};
+
 const Minter = ({
   mintMenuOpen,
   setMintMenuOpen,
@@ -222,6 +228,8 @@ const Minter = ({
   const [source, setSource] = useState('file');
   const [mintProgress, setMintProgress] = useState(0);
   const [frontendUrl, setFrontendUrl] = useState('');
+  // const [animals, setAnimals] = useState([]);
+  const [jitter, setJitter] = useState([0, 0]);
   
   /* const spec = procgen(id + '')[0];
 
@@ -392,9 +400,42 @@ frontendUrl
       frame = null;
     });
   } */
+  {
+    let frame = null;
+    let startTime = 0;
+    const _scheduleFrame = () => {
+      frame = requestAnimationFrame(_recurse);
+    };
+    const _recurse = () => {
+      _scheduleFrame();
+      if (mintMenuStep === 3) {
+        const _makeValue = () => {
+          const now = Date.now();
+          const f = 1 + Math.sin((now - startTime)/1000 * Math.PI) / 2;
+          return (-1 + Math.random() * 2) * 10 * f;
+        };
+        setJitter([
+          _makeValue(),
+          _makeValue(),
+        ]);
+      }
+    };
+    schedulePerFrame(() => {
+      startTime = Date.now();
+      _scheduleFrame();
+    }, () => {
+      frame && cancelAnimationFrame(frame);
+      frame = null;
+    });
+  }
   
   return (
     <div className="slider">
+    {mintMenuStep === 3 ?
+      <ShaderToyRenderer
+        
+      />
+    : null}
     {/* <div className="left-bar" /> */}
     <div
       className="contents"
@@ -477,10 +518,15 @@ frontendUrl
           </div>
         </div>
         <div className="progress-subpage wrap step-3-only">
-          <div className="progress-subpage-wrap">
+          <div className="progress-subpage-wrap" style={{
+            transform: `translate3D(${jitter[0].toFixed(8)}px, ${jitter[1].toFixed(8)}px, 0px)`,
+          }}>
             <div className="h1" onClick={e => {
               setMintMenuStep(2);
-            }}>Minting...</div>
+            }}>
+              <div>Minting...</div>
+              <div>{Math.floor(mintProgress * 100)}%</div>
+            </div>
             <ProgressBar value={mintProgress} />
           </div>
           {/* animals.map((animal, i) => {

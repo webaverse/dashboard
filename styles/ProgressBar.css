@@ -9,7 +9,7 @@
 }
 .progress-subpage-wrap .h1 {
   margin-bottom: 20px;
-  font-size: 20px;
+  font-size: 40px;
 }
 .progress-subpage-wrap {
   display: flex;
@@ -38,7 +38,7 @@
 .progress-bar .progress-bar-inner {
   width: 100%;
   height: 2px;
-  background-color: #29b6f6;
+  background-color: #673ab7;
   border-radius: 100px;
   transform-origin: 0 50%;
 }

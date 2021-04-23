@@ -404,6 +404,7 @@ class ShadertoyRenderer {
   }
   update(timeDiff) {
     this.currentTime += timeDiff;
+    // console.log('new current time', this.currentTime);
     this.frame++;
 
     if (this.loaded) {
@@ -422,7 +423,7 @@ class ShadertoyRenderer {
       
       this.scene.mesh.material.uniforms.colorTex.value = this.renderPasses[this.renderPasses.length - 1].os[0].buffer.texture;
       // this.renderer.setClearColor(new THREE.Color(1, 0, 0), 1);
-      // this.renderer.clear();
+      this.renderer.clear();
       this.renderer.render(this.scene, this.camera);
       
       // console.log('update end');
@@ -475,24 +476,22 @@ const shader = {
 const ShaderToyRenderer = () => {
   // console.log('load shader toy renderer');
   
-  const [loaded, setLoaded] = useState(false);
-  // const [shaderToyRenderer, setShaderToyRenderer] = useState(null);
+  // const [loaded, setLoaded] = useState(false);
+  const [shaderToyRenderer, setShaderToyRenderer] = useState(null);
   
   let el = null;
-  let shaderToyRenderer = null;
   let lastTimestamp = Date.now();
   useEffect(async () => {
-    if (!loaded && el) {
-      shaderToyRenderer = new ShadertoyRenderer({
+    if (!shaderToyRenderer && el) {
+      const newShaderToyRenderer = new ShadertoyRenderer({
         canvas: el,
         shader,
       });
+      // console.log('new renderer', shaderToyRenderer);
       
-      await shaderToyRenderer.waitForLoad();
+      await newShaderToyRenderer.waitForLoad();
       
-      setLoaded(true);
-      
-      console.log('load renderer', shaderToyRenderer);
+      setShaderToyRenderer(newShaderToyRenderer);
     }
   });
   
@@ -505,11 +504,12 @@ const ShaderToyRenderer = () => {
       if (frame) {
         _scheduleFrame();
         
+        // console.log('rendering', shaderToyRenderer);
         if (shaderToyRenderer) {
           const now = Date.now();
           const timeDiff = now - lastTimestamp;
           lastTimestamp = now;
-          shaderToyRenderer.update(timeDiff/1000/1000);
+          shaderToyRenderer.update(timeDiff/1000);
         }
       }
     };

@@ -509,7 +509,7 @@ const ShaderToyRenderer = () => {
           const now = Date.now();
           const timeDiff = now - lastTimestamp;
           lastTimestamp = now;
-          shaderToyRenderer.update(timeDiff/1000);
+          shaderToyRenderer.update(timeDiff/1000/1000);
         }
       }
     };

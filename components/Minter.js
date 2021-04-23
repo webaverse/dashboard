@@ -6,6 +6,7 @@ import {getTokens} from "../functions/UIStateFunctions.js";
 import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
+import ProgressBar from "../components/ProgressBar";
 import Asset from "../components/Asset";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {blobToFile, getExt, parseQuery} from "../webaverse/util";
@@ -41,6 +42,15 @@ const urlToRepoZipUrl = url => {
   }
 };
 
+const schedulePerFrame = (startFn, endFn) => {
+  useEffect(() => {
+    startFn();
+    return () => {
+      endFn();
+    };
+  });
+};
+
 const FakeCard = ({animate, animationSize, onClick}) => {
   const [translation, setTranslation] = useState([0, 0, 0]);
   const [perspective, setPerspective] = useState([0, 0]);
@@ -51,31 +61,32 @@ const FakeCard = ({animate, animationSize, onClick}) => {
   const cardSize = 'large';
   const cardSpecHighlight = null;
   
-  let frame = null;
-  const _scheduleFrame = () => {
-    frame = requestAnimationFrame(_recurse);
-  };
-  const _recurse = () => {
-    if (frame) {
-      _scheduleFrame();
-      setTranslation([
-        0,
-        Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * (animationSize === 'large' ? 20 : 3),
-        0
-      ]);
-      setPerspective([
-        Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * (animationSize === 'large' ? 0.5 : 1),
-        Math.cos((Date.now() % 3000) / 3000 * Math.PI * 2) * (animationSize === 'large' ? 0.2 : 0.5)
-      ]);
-    }
-  };
-  useEffect(() => {
-    animate && _scheduleFrame();
-    return () => {
+  {
+    let frame = null;
+    const _scheduleFrame = () => {
+      frame = requestAnimationFrame(_recurse);
+    };
+    const _recurse = () => {
+      if (frame) {
+        _scheduleFrame();
+        setTranslation([
+          0,
+          Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * (animationSize === 'large' ? 20 : 3),
+          0
+        ]);
+        setPerspective([
+          Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * (animationSize === 'large' ? 0.5 : 1),
+          Math.cos((Date.now() % 3000) / 3000 * Math.PI * 2) * (animationSize === 'large' ? 0.2 : 0.5)
+        ]);
+      }
+    };
+    schedulePerFrame(() => {
+      animate && _scheduleFrame();
+    }, () => {
       frame && cancelAnimationFrame(frame);
       frame = null;
-    };
-  });
+    });
+  }
   
   const _cancelDragStart = e => {
     e.preventDefault();
@@ -209,6 +220,7 @@ const Minter = ({
   const [quantity, setQuantity] = useState(1);
   const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
   const [source, setSource] = useState('file');
+  const [mintProgress, setMintProgress] = useState(0);
   const [frontendUrl, setFrontendUrl] = useState('');
   
   /* const spec = procgen(id + '')[0];
@@ -321,6 +333,25 @@ frontendUrl
     // console.log('new page', selectedPage + 1);
   };
   const selectedTabDefaulted = selectedTab || 'image';
+
+  {
+    let frame = null;
+    const _scheduleFrame = () => {
+      frame = requestAnimationFrame(_recurse);
+    };
+    const _recurse = () => {
+      _scheduleFrame();
+      if (mintMenuStep === 3) {
+        setMintProgress(Date.now() % 1000 / 1000);
+      }
+    };
+    schedulePerFrame(() => {
+      _scheduleFrame();
+    }, () => {
+      frame && cancelAnimationFrame(frame);
+      frame = null;
+    });
+  }
   
   return (
     <div className="slider">
@@ -406,9 +437,12 @@ frontendUrl
           </div>
         </div>
         <div className="wrap step-3-only">
-          <div onClick={e => {
-            setMintMenuStep(2);
-          }}>Back</div>
+          <div className="progress-subpage">
+            <div className="h1" onClick={e => {
+              setMintMenuStep(2);
+            }}>Minting...</div>
+            <ProgressBar value={mintProgress} />
+          </div>
         </div>
         <div className="wrap step-1-only">
           <Lhs

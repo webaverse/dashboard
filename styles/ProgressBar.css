@@ -1,12 +1,43 @@
+.progress-subpage {
+  display: flex;
+  height: calc(100vh - 90px);
+  justify-content: center;
+  align-items: center;
+}
+.progress-subpage-wrap {
+  border-radius: 10px;
+}
+.progress-subpage-wrap .h1 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+.progress-subpage-wrap {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s ease-out
+}
+.progress-subpage .animal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  align-items: center;
+  transition: transform 0.1s ease-out
+}
+
 .progress-bar {
+  display: flex;
   width: 600px;
   padding: 2px;
-  border: 2px solid #CCC;
+  border: 2px solid #333;
   border-radius: 100px;
   transform-origin: 0 50%;
 }
 .progress-bar .progress-bar-inner {
-  height: 5px;
+  width: 100%;
+  height: 2px;
   background-color: #29b6f6;
   border-radius: 100px;
   transform-origin: 0 50%;

@@ -176,6 +176,72 @@ class ShadertoyRenderer {
     shader,
   }) {
     // this.shader = shader;
+    
+    this.camera = copySceneCamera;
+    this.scene = (() => {
+      const mesh = new THREE.Mesh(
+        copyScenePlaneGeometry,
+        new THREE.RawShaderMaterial({
+          uniforms: {
+            colorTex: {
+              value: null,
+              // needsUpdate: false,
+            },
+          },
+          vertexShader: copySceneVertexShader,
+          fragmentShader: `#version 300 es
+            precision highp float;
+
+            uniform sampler2D colorTex;
+            in vec2 vUv;
+            out vec4 fragColor;
+
+            void main() {
+              fragColor = texture(colorTex, vUv);
+            }
+          `,
+          depthWrite: false,
+          depthTest: false,
+        })
+      );
+      mesh.frustumCulled = false;
+      
+      /* const mesh = new THREE.Mesh(
+        copyScenePlaneGeometry,
+        new THREE.ShaderMaterial({
+          uniforms: {
+            colorTex: {
+              value: null,
+              // needsUpdate: false,
+            },
+          },
+          vertexShader: `\
+            out vec2 vUv;
+
+            void main() {
+              vUv = uv;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `\
+            #include <packing>
+
+            uniform sampler2D colorTex;
+            in vec2 vUv;
+            
+            void main() {
+              gl_FragColor = vec4(1., 0., 0., 1.);
+            }
+          `,
+          depthWrite: false,
+          depthTest: false,
+        })
+      ); */
+      const scene = new THREE.Scene();
+      scene.add(mesh);
+      scene.mesh = mesh;
+      return scene;
+    })();
 
     this.renderer = (() => {
       // let canvas = document.createElement('canvas');
@@ -192,8 +258,8 @@ class ShadertoyRenderer {
         alpha: true,
         // preserveDrawingBuffer: false,
       });
-      renderer.setSize(globalThis.innerWidth, globalThis.innerHeight);
-      renderer.setPixelRatio(globalThis.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
       renderer.autoClear = false;
       renderer.sortObjects = false;
       renderer.physicallyCorrectLights = true;
@@ -297,7 +363,9 @@ class ShadertoyRenderer {
       // wait for images to load
       await Promise.all(promises);
       
+      console.log('tick passes 1');
       for (let i = 0; i < shader.renderpass.length; i++) {
+        console.log('tick passes 2', i);
         const {type, code} = shader.renderpass[i];
         const {is, os} = renderPassIos[i];
         const renderPass = new ShaderToyPass({
@@ -310,6 +378,7 @@ class ShadertoyRenderer {
         }, this);
         this.renderPasses.push(renderPass);
       }
+      console.log('tick passes 3', this.renderPasses);
     };
     _initRenderPasses();
     
@@ -348,6 +417,13 @@ class ShadertoyRenderer {
       }
       
       context.enable(context.SAMPLE_ALPHA_TO_COVERAGE);
+      
+      console.log('got render passes', this.renderPasses);
+      
+      this.scene.mesh.material.uniforms.colorTex.value = this.renderPasses[this.renderPasses.length - 1].os[0].buffer.texture;
+      // this.renderer.setClearColor(new THREE.Color(1, 0, 0), 1);
+      // this.renderer.clear();
+      this.renderer.render(this.scene, this.camera);
       
       // console.log('update end');
     }

@@ -1211,6 +1211,8 @@ a {
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: #e0e0e0;
+  z-index: 100;
 }
 html {
   transition: filter 5s cubic-bezier(0, 1.5, 0, 1.5);

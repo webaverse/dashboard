@@ -1,8 +1,15 @@
-import React from "react";
+import React from 'react';
 
-const ProgressBar = ({ value }) => {
+const ProgressBar = ({
+  className,
+  style,
+  value,
+}) => {
     return (
-        <div className={`progress-bar`}>
+        <div
+          className={`progress-bar ${className || ''}`}
+          style={style}
+        >
           <div className="progress-bar-inner" style={{
             transform: `scaleX(${value})`,
           }} />

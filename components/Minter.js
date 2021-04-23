@@ -412,7 +412,7 @@ frontendUrl
         const _makeValue = () => {
           const now = Date.now();
           const f = 1 + Math.sin((now - startTime)/1000 * Math.PI) / 2;
-          return (-1 + Math.random() * 2) * 10 * f;
+          return (-1 + Math.random() * 2) * 5 * f;
         };
         setJitter([
           _makeValue(),
@@ -518,16 +518,21 @@ frontendUrl
           </div>
         </div>
         <div className="progress-subpage wrap step-3-only">
-          <div className="progress-subpage-wrap" style={{
-            transform: `translate3D(${jitter[0].toFixed(8)}px, ${jitter[1].toFixed(8)}px, 0px)`,
-          }}>
+          <div
+            className="progress-subpage-wrap"
+            style={{
+              transform: `translate3D(${jitter[0].toFixed(8)}px, ${jitter[1].toFixed(8)}px, 0px)`,
+            }}
+          >
             <div className="h1" onClick={e => {
               setMintMenuStep(2);
             }}>
               <div>Minting...</div>
               <div>{Math.floor(mintProgress * 100)}%</div>
             </div>
-            <ProgressBar value={mintProgress} />
+            <ProgressBar
+              value={mintProgress}
+            />
           </div>
           {/* animals.map((animal, i) => {
             return (

@@ -792,7 +792,13 @@ a {
   margin: 5px 0;
   align-items: center;
 }
-.slider .contents .rrhs .infobox .row.red {
+.slider .contents .rrhs .infobox .row.red,
+.slider .contents .rrhs .infobox .row.red .label
+{
+  color: #ef5350;
+}
+.slider .contents .rrhs .infobox .row.red img {
+  filter: invert(76%) sepia(85%) saturate(5427%) hue-rotate(325deg) brightness(92%) contrast(104%);
 }
 .slider .contents .rrhs .infobox .minus {
   display: flex;
@@ -811,7 +817,7 @@ a {
   font-size: 20px;
   flex: 1;
   border: 2px solid transparent;
-  border-radius: 10px;
+  border-radius: 5px;
   font-family: 'MS-Gothic';
   outline: none;
   cursor: pointer;
@@ -821,18 +827,18 @@ a {
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].ok {
   color: #FFF;
-  background-color: #7e57c2;
+  background-color: #66bb6a;
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].ok:hover {
-  background-color: #9575cd;
+  background-color: #43a047;
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].cancel {
   border-color: currentColor;
-  color: #ff5722;
+  color: #aaa;
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].cancel:hover {
   color: #FFF;
-  background-color: #ff5722;
+  background-color: #ef5350;
 }
 .slider .contents .rrhs .infobox img {
   width: 16px;

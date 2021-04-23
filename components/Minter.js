@@ -357,7 +357,7 @@ frontendUrl
                 <div className="row">
                   <div className="line" />
                 </div>
-                <div className="row red">
+                <div className="row">
                   <div className="label">New balance</div>
                   <img src="/curve.svg" />
                   <div className="value">1327</div>

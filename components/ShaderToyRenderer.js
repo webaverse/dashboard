@@ -167,12 +167,15 @@ let numRenderTargetMeshes = 0; */
   numRenderTargetMeshes++;
 }; */
 class ShadertoyRenderer {
-  constructor({shader}) {
+  constructor({
+    canvas,
+    shader,
+  }) {
     // this.shader = shader;
 
     this.renderer = (() => {
-      let canvas = document.createElement('canvas');
-      let context = canvas && canvas.getContext('webgl2', {
+      // let canvas = document.createElement('canvas');
+      let context = canvas.getContext('webgl2', {
         antialias: true,
         alpha: true,
         preserveDrawingBuffer: false,
@@ -392,18 +395,24 @@ const ShaderToyRenderer = () => {
   // console.log('load shader toy renderer');
   
   const [loaded, setLoaded] = useState(false);
+  // const [shaderToyRenderer, setShaderToyRenderer] = useState(null);
   
+  let el = null;
   useEffect(() => {
-    if (loaded) {
+    if (!loaded && el) {
+      setLoaded(true);
       const shaderToyRenderer = new ShadertoyRenderer({
+        canvas: el,
         shader,
       });
       console.log('load renderer', shaderToyRenderer);
     }
-  }, [loaded]);
+  });
   
   return (
-    <div />
+    <canvas ref={newEl => {
+      el = newEl;
+    }} />
   );
 };
 export default ShaderToyRenderer;

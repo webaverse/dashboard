@@ -1205,6 +1205,13 @@ a {
 .profile-page .placeholder {
   margin: 30px auto;
 }
+.slider > canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 html {
   transition: filter 5s cubic-bezier(0, 1.5, 0, 1.5);
 }

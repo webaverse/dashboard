@@ -395,7 +395,7 @@ frontendUrl
                 </div>
                 <div className="buttons">
                   <input className="ok" type="button" value="Confirm" onChange={e => {}} onClick={e => {
-                    setMintMenuStep(1);
+                    setMintMenuStep(3);
                   }} />
                   <input className="cancel" type="button" value="Reject" onChange={e => {}} onClick={e => {
                     setMintMenuStep(1);
@@ -404,6 +404,11 @@ frontendUrl
               </div>
             </div>
           </div>
+        </div>
+        <div className="wrap step-3-only">
+          <div onClick={e => {
+            setMintMenuStep(2);
+          }}>Back</div>
         </div>
         <div className="wrap step-1-only">
           <Lhs

@@ -211,6 +211,34 @@ const Minter = ({
   const [source, setSource] = useState('file');
   const [frontendUrl, setFrontendUrl] = useState('');
   
+  /* const spec = procgen(id + '')[0];
+
+  const svg = document.createElement('svg');
+  svg.setAttribute('width', cardWidth);
+  svg.setAttribute('height', cardHeight);
+  svg.innerHTML = cardSvgSource;
+
+  const container = document.getElementById('container');
+  container.style.width = `${cardWidth}px`;
+  container.style.height = `${cardHeight}px`;
+  container.appendChild(svg);
+
+  {
+    const el = svg;
+
+    {
+      const stopEls = el.querySelectorAll('#Background linearGradient > stop');
+      // const c = `stop-color:${spec.art.colors[0]}`;
+      stopEls[1].style.cssText = `stop-color:${spec.art.colors[0]}`;
+      stopEls[3].style.cssText = `stop-color:${spec.art.colors[1]}`;
+
+      const g = el.querySelector('#Background linearGradient');
+      g.id = 'background-' + id;
+      const p = g.nextElementSibling;
+      p.style = `fill:url(#${g.id});`;
+    }
+  } */
+  
   useEffect(async () => {
     // console.log('effect update', mintMenuStep);
     if (mintMenuStep === 2 && !loading) {
@@ -310,21 +338,23 @@ frontendUrl
           </div> */}
           <div className="main">
             <div className="preview">
-              <div className="preview-header">
-                <FakeCard
-                  onClick={e => {
-                    setMintMenuStep(2);
-                  }}
-                  animate={true}
-                  animationSize="small"
-                />
-                <div>Your NFT called </div>
-                <div className="bold">{name || '[blank]'}</div>
-                <div> will be minted as an edition of </div>
-                <div className="bold">{quantity || 1}</div>
-                <div> and the content will be </div>
-                <input type="text" value={frontendUrl} onChange={e => {}} />
-                <div>. Here's a preview:</div>
+              <div className="preview-header-wrap">
+                <div className="preview-header">
+                  <FakeCard
+                    onClick={e => {
+                      setMintMenuStep(2);
+                    }}
+                    animate={true}
+                    animationSize="small"
+                  />
+                  <div>Your NFT called </div>
+                  <div className="bold">{name || '[blank]'}</div>
+                  <div> will be minted as an edition of </div>
+                  <div className="bold">{quantity || 1}</div>
+                  <div> and the content will be </div>
+                  <input type="text" value={frontendUrl} onChange={e => {}} />
+                  <div>. Here's a preview:</div>
+                </div>
               </div>
               {frontendUrl ?
                 <iframe

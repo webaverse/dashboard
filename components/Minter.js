@@ -10,7 +10,7 @@ import ProgressBar from "../components/ProgressBar";
 import Asset from "../components/Asset";
 import ShaderToyRenderer from "../components/ShaderToyRenderer";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
-import {blobToFile, getExt, parseQuery} from "../webaverse/util";
+import {blobToFile, getExt, parseQuery, schedulePerFrame} from "../webaverse/util";
 import {storageHost} from "../webaverse/constants";
 import JSZip from '../webaverse/jszip.js';
 
@@ -41,15 +41,6 @@ const urlToRepoZipUrl = url => {
   } else {
     return null;
   }
-};
-
-const schedulePerFrame = (startFn, endFn) => {
-  useEffect(() => {
-    startFn();
-    return () => {
-      endFn();
-    };
-  });
 };
 
 const FakeCard = ({animate, animationSize, onClick}) => {

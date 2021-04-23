@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import * as THREE from '../libs/three.module.js';
 import atlaspack from '../libs/atlaspack.js';
 import {BufferGeometryUtils} from '../libs/BufferGeometryUtils.js';
@@ -363,3 +364,12 @@ export function convertMeshToPhysicsMesh(mesh) {
   const physicsMesh = new THREE.Mesh(newGeometry);
   return physicsMesh;
 }
+
+export const schedulePerFrame = (startFn, endFn) => {
+  useEffect(() => {
+    startFn();
+    return () => {
+      endFn();
+    };
+  });
+};

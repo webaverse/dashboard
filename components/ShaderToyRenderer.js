@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import * as THREE from '../webaverse/three.module.js';
 import {scene, camera, copyScenePlaneGeometry, copySceneVertexShader, copyScene, copySceneCamera} from '../webaverse/app-object.js';
+import {schedulePerFrame} from '../webaverse/util.js';
 
 const size = 1024;
 const worldSize = 2;
@@ -13,11 +14,12 @@ const _makeRenderTarget = () => new THREE.WebGLRenderTarget(size, size, {
 });
 const copyBuffer = _makeRenderTarget();
 class ShaderToyPass {
-  constructor({type, is, code, os, renderTarget}, parent) {
+  constructor({type, is, code, os, renderer, renderTarget}, parent) {
     this.type = type;
     this.is = is;
     this.code = code;
     this.os = os;
+    this.renderer = renderer;
     this.renderTarget = renderTarget;
     this.parent = parent;
 
@@ -107,6 +109,7 @@ class ShaderToyPass {
     {
       const [{buffer} = {}] = this.os;
       if (buffer) {
+        const {renderer} = this;
         const oldRenderTarget = renderer.getRenderTarget();
         if (this.is.some(input => input.buffer === buffer)) {
           renderer.setRenderTarget(copyBuffer);
@@ -130,7 +133,7 @@ class ShaderToyPass {
     if (this.type === 'buffer') {
       
     } else if (this.type === 'image') {
-      const oldRenderTarget = renderer.getRenderTarget();
+      const oldRenderTarget = this.renderer.getRenderTarget();
 
       renderer.setRenderTarget(this.renderTarget);
       renderer.clear();
@@ -301,6 +304,7 @@ class ShadertoyRenderer {
           is,
           code,
           os,
+          renderer: this.renderer,
           renderTarget: this.renderTarget,
         }, this);
         this.renderPasses.push(renderPass);
@@ -335,7 +339,7 @@ class ShadertoyRenderer {
     if (this.loaded) {
       // console.log('update start');
 
-      const context = renderer.getContext();
+      const context = this.renderer.getContext();
       context.disable(context.SAMPLE_ALPHA_TO_COVERAGE);
 
       for (const renderPass of this.renderPasses) {
@@ -398,16 +402,47 @@ const ShaderToyRenderer = () => {
   // const [shaderToyRenderer, setShaderToyRenderer] = useState(null);
   
   let el = null;
-  useEffect(() => {
+  let shaderToyRenderer = null;
+  let lastTimestamp = Date.now();
+  useEffect(async () => {
     if (!loaded && el) {
-      setLoaded(true);
-      const shaderToyRenderer = new ShadertoyRenderer({
+      shaderToyRenderer = new ShadertoyRenderer({
         canvas: el,
         shader,
       });
+      
+      await shaderToyRenderer.waitForLoad();
+      
+      setLoaded(true);
+      
       console.log('load renderer', shaderToyRenderer);
     }
   });
+  
+  {
+    let frame = null;
+    const _scheduleFrame = () => {
+      frame = requestAnimationFrame(_recurse);
+    };
+    const _recurse = () => {
+      if (frame) {
+        _scheduleFrame();
+        
+        if (shaderToyRenderer) {
+          const now = Date.now();
+          const timeDiff = now - lastTimestamp;
+          lastTimestamp = now;
+          shaderToyRenderer.update(timeDiff/1000);
+        }
+      }
+    };
+    schedulePerFrame(() => {
+      _scheduleFrame();
+    }, () => {
+      frame && cancelAnimationFrame(frame);
+      frame = null;
+    });
+  }
   
   return (
     <canvas ref={newEl => {

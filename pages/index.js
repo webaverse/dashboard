@@ -52,7 +52,7 @@ class Dropper extends Component {
   }
 }
 
-/* class AssetOverlayBackground extends Component {
+class AssetOverlayBackground extends Component {
   constructor(props) {
     super(props);
     this.keyDown = this.keyDown.bind(this);
@@ -81,7 +81,7 @@ class Dropper extends Component {
       }} />
     );
   }
-} */
+}
 
 const PagesRoot = ({
   data,

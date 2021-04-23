@@ -635,7 +635,7 @@ a {
 }
 .slider .contents .wrap-slider .lhs .form input[type=button] {
   display: flex;
-  height: 50px;
+  height: 60px;
   margin: 20px 0;
   border: 0;
   border-bottom: 3px solid rgba(0, 0, 0, 0.5);

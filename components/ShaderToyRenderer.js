@@ -133,7 +133,8 @@ class ShaderToyPass {
     if (this.type === 'buffer') {
       
     } else if (this.type === 'image') {
-      const oldRenderTarget = this.renderer.getRenderTarget();
+      const {renderer} = this;
+      const oldRenderTarget = renderer.getRenderTarget();
 
       renderer.setRenderTarget(this.renderTarget);
       renderer.clear();

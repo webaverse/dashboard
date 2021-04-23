@@ -412,7 +412,7 @@ frontendUrl
         const _makeValue = () => {
           const now = Date.now();
           const f = 1 + Math.sin((now - startTime)/1000 * Math.PI) / 2;
-          return (-1 + Math.random() * 2) * 5 * f;
+          return (-1 + Math.random() * 2) * 10 * f;
         };
         setJitter([
           _makeValue(),

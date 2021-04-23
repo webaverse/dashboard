@@ -339,7 +339,7 @@ frontendUrl
           </div> */}
           <div className="main">
             <div className="preview">
-              <div className="preview-header-wrap">
+              {/* <div className="preview-header-wrap">
                 <div className="preview-header">
                   <FakeCard
                     onClick={e => {
@@ -356,7 +356,7 @@ frontendUrl
                   <input type="text" value={frontendUrl} onChange={e => {}} />
                   <div>. Here's a preview:</div>
                 </div>
-              </div>
+              </div> */}
               {frontendUrl ?
                 <iframe
                   className="iframe"

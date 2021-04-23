@@ -495,7 +495,6 @@ a {
 .slider .preview .iframe,
 .slider .preview .iframe-placeholder {
   flex: 1;
-  margin: 20px 0;
   border-radius: 10px;
 }
 .slider .preview .iframe {
@@ -587,7 +586,7 @@ a {
   width: 300px;
   margin-left: 20px;
   padding: 20px;
-  margin-top: -40px;
+  margin-top: -20px;
   margin-bottom: -100px;
   padding-bottom: 90px;
 }

@@ -419,8 +419,6 @@ class ShadertoyRenderer {
       
       context.enable(context.SAMPLE_ALPHA_TO_COVERAGE);
       
-      console.log('got render passes', this.renderPasses);
-      
       this.scene.mesh.material.uniforms.colorTex.value = this.renderPasses[this.renderPasses.length - 1].os[0].buffer.texture;
       // this.renderer.setClearColor(new THREE.Color(1, 0, 0), 1);
       this.renderer.clear();

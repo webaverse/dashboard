@@ -218,36 +218,7 @@ const Minter = ({
   const [source, setSource] = useState('file');
   const [mintProgress, setMintProgress] = useState(0);
   const [frontendUrl, setFrontendUrl] = useState('');
-  // const [animals, setAnimals] = useState([]);
   const [jitter, setJitter] = useState([0, 0]);
-  
-  /* const spec = procgen(id + '')[0];
-
-  const svg = document.createElement('svg');
-  svg.setAttribute('width', cardWidth);
-  svg.setAttribute('height', cardHeight);
-  svg.innerHTML = cardSvgSource;
-
-  const container = document.getElementById('container');
-  container.style.width = `${cardWidth}px`;
-  container.style.height = `${cardHeight}px`;
-  container.appendChild(svg);
-
-  {
-    const el = svg;
-
-    {
-      const stopEls = el.querySelectorAll('#Background linearGradient > stop');
-      // const c = `stop-color:${spec.art.colors[0]}`;
-      stopEls[1].style.cssText = `stop-color:${spec.art.colors[0]}`;
-      stopEls[3].style.cssText = `stop-color:${spec.art.colors[1]}`;
-
-      const g = el.querySelector('#Background linearGradient');
-      g.id = 'background-' + id;
-      const p = g.nextElementSibling;
-      p.style = `fill:url(#${g.id});`;
-    }
-  } */
   
   useEffect(async () => {
     // console.log('effect update', mintMenuStep);
@@ -571,19 +542,11 @@ const Minter = ({
               value={mintProgress}
             />
           </div>
-          {/* animals.map((animal, i) => {
-            return (
-              <img className="animal" src={animal.url} style={{
-                transform: `translateX(${animal.x}px) translateY(${animal.y}px)`,
-              }} key={i} />
-            );
-          }) */}
         </div>
         <div className="progress-subpage wrap step-4-only">
           <div
             className="deed-subpage-wrap"
           >
-            {/* <div className="background" /> */}
             <div className="h1">NFT Minted!</div>
             <User
               label="minter"

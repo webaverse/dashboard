@@ -390,6 +390,7 @@ const Minter = ({
     address,
     avatarPreview,
   } = globalState;
+  const tokenId = 1; // XXX
   
   return (
     <div className="slider">
@@ -507,7 +508,7 @@ const Minter = ({
           <div
             className="deed-subpage-wrap"
           >
-            <div className="h1">NFT Minted!</div>
+            {/* <div className="h1">NFT Minted!</div> */}
             <User
               label="minter"
               userName={userName}
@@ -515,6 +516,11 @@ const Minter = ({
               avatarPreview={avatarPreview}
             />
             <Link href={`/accounts/${address}`}>
+              <a>
+                <input type="button" value="View in inventory" onChange={e => {}}/>
+              </a>
+            </Link>
+            <Link href={`/assets/${tokenId}`}>
               <a className={`item`}>
                 <FakeCard
                   onClick={e => {

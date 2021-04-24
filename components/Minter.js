@@ -15,6 +15,7 @@ import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {blobToFile, getExt, parseQuery, schedulePerFrame} from "../webaverse/util";
 import {useAppContext} from "../libs/contextLib";
 import {storageHost} from "../webaverse/constants";
+// import WaveSurfer from '../webaverse/wavesurfer.js';
 import JSZip from '../webaverse/jszip.js';
 
 const nftTypeDescriptions = {
@@ -113,6 +114,12 @@ const FakeCard = ({animate, animationSize, onClick}) => {
   );
 };
 
+/* const WaveSurferAudio = () => {
+  return (
+    <div />
+  );
+}; */
+
 const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuStep, url, setUrl, source, setSource}) => {
   let nameEl = null;
   const _updateNameFocus = () => {
@@ -199,6 +206,22 @@ const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuSte
   );
 };
 
+const PreviewIframe = ({
+  hash,
+  ext,
+}) => {
+  // `{storageHost}/ipfs/${hash}`
+  const src = `https://app.webaverse.com/preview.html?hash=${hash}&ext=${ext}`;
+  return (
+    <iframe src={src} />
+  );
+  /* <WaveSurferAudio /> */
+  /* <iframe
+    className="iframe"
+    src={frontendUrl}
+  /> */
+};
+
 const Minter = ({
   mintMenuOpen,
   setMintMenuOpen,
@@ -217,7 +240,9 @@ const Minter = ({
   const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
   const [source, setSource] = useState('file');
   const [mintProgress, setMintProgress] = useState(0);
-  const [frontendUrl, setFrontendUrl] = useState('');
+  // const [frontendUrl, setFrontendUrl] = useState('');
+  const [hash, setHash] = useState('');
+  const [ext, setExt] = useState('');
   const [jitter, setJitter] = useState([0, 0]);
   
   useEffect(async () => {
@@ -281,12 +306,12 @@ const Minter = ({
         const {data} = r;
         const startUrl = `hicetnunc-main/templates/html-three-template`;
         const startFile = data.find(e => e.name === startUrl);
-        const {hash} = startFile;
+        const {hash: newHash} = startFile;
+        const newExt = 'vrm';
         
-        const newFrontendUrl = `${storageHost}/ipfs/${hash}/`;
-        console.log('got result', r, frontendUrl);
-
-        setFrontendUrl(newFrontendUrl);
+        console.log('got result', startFile);
+        setHash(newHash);
+        setExt(newExt);
       } else {
         console.warn('invalid repo url', url);
       }
@@ -435,10 +460,10 @@ const Minter = ({
                     <div>. Here's a preview:</div>
                   </div>
                 </div> */}
-                {frontendUrl ?
-                  <iframe
-                    className="iframe"
-                    src={frontendUrl}
+                {(hash && ext) ?
+                  <PreviewIframe
+                    hash={hash}
+                    ext={ext}
                   />
                 :
                   <div className="iframe-placeholder" />
@@ -548,7 +573,8 @@ const Minter = ({
             setUrl={setUrl}
             source={source}
             setSource={setSource}
-            frontendUrl={frontendUrl}
+            hash={hash}
+            ext={ext}
           />
           <div className="middle">
             <div className="card-buttons like">
@@ -706,7 +732,7 @@ const Minter = ({
   );
 };
 
-const Lhs = ({className, name, setName, description, setDescription, quantity, setQuantity, mintMenuOpen, helpOpen, setHelpOpen, mintMenuStep, setMintMenuStep, url, setUrl, source, setSource, frontendUrl}) => {
+const Lhs = ({className, name, setName, description, setDescription, quantity, setQuantity, mintMenuOpen, helpOpen, setHelpOpen, mintMenuStep, setMintMenuStep, url, setUrl, source, setSource, hash, ext}) => {
   return (
     <div
       className={`lhs ${className}`}

@@ -291,7 +291,7 @@ const PagesRoot = ({
                   }}/>
                 </div>
                 {/* <div className="blocker" /> */}
-                <div className="mint-menu-bar" />
+                {/* <div className="mint-menu-bar" /> */}
                 <Minter
                   mintMenuOpen={mintMenuOpen}
                   setMintMenuOpen={setMintMenuOpen}

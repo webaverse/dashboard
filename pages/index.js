@@ -101,7 +101,7 @@ const PagesRoot = ({
     const [loadingMessge, setLoadingMessage] = useState('');
     const [previewId, setPreviewId] = useState('');
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
-    const [mintMenuStep, setMintMenuStep] = useState(1);    
+    const [mintMenuStep, setMintMenuStep] = useState(1);
     
     const router = useRouter();
 

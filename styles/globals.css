@@ -1256,6 +1256,11 @@ a {
   line-height: 1;
   margin-bottom: 30px;
 }
+.deed-subpage-wrap .assetDetailsOwnedBy {
+  position: absolute;
+  top: 70px;
+  right: -270px;
+}
 html {
   transition: filter 5s cubic-bezier(0, 1.5, 0, 1.5);
 }

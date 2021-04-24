@@ -7,6 +7,7 @@ import AssetCardSvg from "./CardSvg";
 import AssetCard2D from "./Card2D";
 import AssetCard3D from "./Card3D";
 import AssetCardLive from "./CardLive";
+import User from "./User";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import {Networks} from "../webaverse/constants.js";
 import {getData} from "./Asset";
@@ -364,32 +365,6 @@ const CardActions = ({
         </div>
       )}
     </Fragment>
-  );
-};
-
-const User = ({
-  label,
-  userName,
-  address,
-  avatarPreview,
-}) => {
-  return (
-    <div className="assetDetailsOwnedBy">
-      <Link href={`/accounts/` + address}>
-        <a>
-          <img
-            className="creatorIcon"
-            src={avatarPreview.replace(/\.[^.]*$/, ".png")}
-          />
-        </a>
-      </Link>
-      <div className="creatorDetails">
-        <div className="label">{label}</div>
-        <Link href={`/accounts/` + address}>
-          <a className="name">{`@${userName}`}</a>
-        </Link>
-      </div>
-    </div>
   );
 };
 

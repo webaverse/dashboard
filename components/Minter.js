@@ -9,9 +9,11 @@ import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import ProgressBar from "../components/ProgressBar";
 import Asset from "../components/Asset";
+import User from "../components/User";
 import ShaderToyRenderer from "../components/ShaderToyRenderer";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {blobToFile, getExt, parseQuery, schedulePerFrame} from "../webaverse/util";
+import {useAppContext} from "../libs/contextLib";
 import {storageHost} from "../webaverse/constants";
 import JSZip from '../webaverse/jszip.js';
 
@@ -207,6 +209,7 @@ const Minter = ({
   loading,
   setLoading,
 }) => {
+  const {globalState, setGlobalState} = useAppContext();
   const [helpOpen, setHelpOpen] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -450,6 +453,13 @@ const Minter = ({
     }
   }, [mintMenuStep]);
   
+  // console.log('got global state', globalState);
+  const {
+    name: ownerUsername,
+    address: ownerAddress,
+    avatarPreview: ownerAvatarPreview,
+  } = globalState;
+  
   return (
     <div className="slider">
     {mintMenuStep === 3 ?
@@ -575,6 +585,12 @@ const Minter = ({
           >
             {/* <div className="background" /> */}
             <div className="h1">NFT Minted!</div>
+            <User
+              label="minter"
+              userName={ownerUsername}
+              address={ownerAddress}
+              avatarPreview={ownerAvatarPreview}
+            />
             <Link href="/assets">
               <a className={`item`}>
                 <FakeCard

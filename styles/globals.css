@@ -1292,3 +1292,7 @@ html.hit {
   filter: invert(1);
   transition: none;
 }
+
+.fake-card .card-wrap {
+  pointer-events: none;
+}

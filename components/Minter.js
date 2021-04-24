@@ -89,7 +89,7 @@ const FakeCard = ({animate, animationSize, onClick}) => {
   };
   
   return (
-    <div className="card-outer">
+    <div className="fake-card card-outer">
       <div className="card-outer-flip">
         {/* <div className='card-glossy' /> */}
         <div

@@ -671,11 +671,11 @@ a {
   transform: translateY(0);
   outline: none;
 }
-.slider .contents .wrap-slider .lhs .form input[type=button]:hover {
+.slider .contents .wrap-slider .lhs .form input[type=button]:not(.disabled):hover {
   filter: brightness(80%);
-  animation-name: none !important;
+  animation-name: gloob2;
 }
-.slider .contents .wrap-slider .lhs .form input[type=button]:active {
+.slider .contents .wrap-slider .lhs .form input[type=button]:not(.disabled):active {
   transform: translateY(3px);
   border-bottom: 0;
 }
@@ -686,6 +686,14 @@ a {
   }
   to {
     filter: none;
+    transform: none;
+  }
+}
+@keyframes gloob2 {
+  from {
+    transform: scale(1.2, 1.2);
+  }
+  to {
     transform: none;
   }
 }
@@ -883,7 +891,7 @@ a {
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].ok:hover {
   filter: brightness(80%);
-  animation-name: none;
+  animation-name: gloob2;
 }
 .slider .contents .rrhs .infobox .buttons input[type=button].cancel {
   border-color: currentColor;
@@ -1263,12 +1271,8 @@ a {
 }
 .deed-subpage-wrap input[type=button]:hover {
   filter: brightness(80%);
-  animation-name: none;
+  animation-name: gloob2;
 }
-/* .deed-subpage-wrap input[type=button]:active {
-  transform: translateY(2px);
-  animation-name: none;
-} */
 .deed-subpage-wrap .h1 {
   font-family: 'MS-Gothic';
   font-size: 30px;

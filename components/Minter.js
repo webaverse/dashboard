@@ -307,7 +307,7 @@ const Minter = ({
         const startUrl = `hicetnunc-main/templates/html-three-template`;
         const startFile = data.find(e => e.name === startUrl);
         const {name, hash: newHash} = startFile;
-        const newExt = getExt(name);
+        const newExt = 'html'; // getExt(name);
         
         console.log('got result', startFile, newHash, newExt);
         setHash(newHash);

@@ -573,6 +573,7 @@ const Minter = ({
           <div
             className="deed-subpage-wrap"
           >
+            <div className="background" />
             <div className="h1">NFT Minted!</div>
             <Link href="/assets">
               <a className={`item`}>

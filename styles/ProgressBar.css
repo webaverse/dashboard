@@ -31,6 +31,7 @@
   display: flex;
   width: 600px;
   padding: 2px;
+  background-color: #FFF;
   border: 2px solid #333;
   border-radius: 100px;
   transform-origin: 0 50%;

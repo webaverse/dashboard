@@ -3,7 +3,7 @@ import * as THREE from '../webaverse/three.module.js';
 import {scene, camera, copyScenePlaneGeometry, copySceneVertexShader, copyScene, copySceneCamera} from '../webaverse/app-object.js';
 import {schedulePerFrame} from '../webaverse/util.js';
 
-const size = 1024;
+const size = 2048;
 const worldSize = 2;
 const hackShaderName = 'anime radial';
 
@@ -31,7 +31,7 @@ class ShaderToyPass {
         value: copySceneCamera.projectionMatrix,
       },
       iResolution: {
-        value: new THREE.Vector3(size, size, 1),
+        value: new THREE.Vector3(window.innerWidth, window.innerHeight, 1),
       },
       iTime: {
         value: parent.getITime(),
@@ -478,6 +478,10 @@ const ShaderToyRenderer = () => {
   const _resize = e => {
     // if (shaderToyRenderer) {
       shaderToyRenderer.renderer.setSize(window.innerWidth, window.innerHeight);
+      for (const renderPass of shaderToyRenderer.renderPasses) {
+        renderPass.mesh.material.uniforms.iResolution.value.set(window.innerWidth, window.innerHeight);
+      }
+      
     // }
   };
   

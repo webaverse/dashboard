@@ -523,9 +523,6 @@ const Minter = ({
             <Link href={`/assets/${tokenId}`}>
               <a className={`item`}>
                 <FakeCard
-                  onClick={e => {
-                    setMintMenuStep(1);
-                  }}
                   animate={true}
                   animationSize="large"
                 />

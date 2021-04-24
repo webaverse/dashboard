@@ -28,6 +28,7 @@
   overflow: hidden;
   flex-wrap: wrap;
   height: 100%;
+  border-bottom: 2px solid #e0e0e0;
   flex: 1 1;
 }
 .navbar .leftMenuContainer {
@@ -360,6 +361,7 @@
   height: 100%;
   margin: 0;
   /* padding-left: 30px; */
+  background: transparent;
   border: 0;
   font-family: 'GillSans';
   font-size: 16px;

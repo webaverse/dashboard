@@ -318,7 +318,7 @@ const Minter = ({
       
       setLoading(false);
     }
-  }, [mintMenuStep]);
+  }, [mintMenuStep, loading]);
   
   const _setSelectedTab = newTab => {
     setSelectedTab(newTab);
@@ -328,7 +328,7 @@ const Minter = ({
   };
   const selectedTabDefaulted = selectedTab || 'image';
 
-  {
+  const _updateMintProgress = () => {
     let frame = null;
     const _scheduleFrame = () => {
       frame = requestAnimationFrame(_recurse);
@@ -345,8 +345,9 @@ const Minter = ({
       frame && cancelAnimationFrame(frame);
       frame = null;
     });
-  }
-  {
+  };
+  _updateMintProgress();
+  const _updateMintJitter = () => {
     let frame = null;
     let startTime = 0;
     const _scheduleFrame = () => {
@@ -373,7 +374,8 @@ const Minter = ({
       frame && cancelAnimationFrame(frame);
       frame = null;
     });
-  }
+  };
+  _updateMintJitter();
   const _delayFrames = (fn, numFrames) => {
     let frame = 0;
     const _recurse = () => {

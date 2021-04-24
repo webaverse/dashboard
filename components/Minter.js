@@ -306,10 +306,10 @@ const Minter = ({
         const {data} = r;
         const startUrl = `hicetnunc-main/templates/html-three-template`;
         const startFile = data.find(e => e.name === startUrl);
-        const {hash: newHash} = startFile;
-        const newExt = 'vrm';
+        const {name, hash: newHash} = startFile;
+        const newExt = getExt(name);
         
-        console.log('got result', startFile);
+        console.log('got result', startFile, newHash, newExt);
         setHash(newHash);
         setExt(newExt);
       } else {
@@ -503,6 +503,8 @@ const Minter = ({
                   }} />
                   <input className="cancel" type="button" value="Reject" onChange={e => {}} onClick={e => {
                     setMintMenuStep(1);
+                    setHash('');
+                    setExt('');
                   }} />
                 </div>
               </div>

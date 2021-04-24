@@ -431,12 +431,6 @@ const Minter = ({
       <div className={`wrap-slider step-${mintMenuStep}`}>
         <div className="preview-background step-2-only" />
         <div className="wrap step-2-only">
-          {/* <div className="back-button" onClick={e => {
-            setMintMenuStep(1);
-            setSelectedTab('');
-          }}>
-            <img src="/chevron-left.svg" /><span>Back</span>
-          </div> */}
           <div className="main">
             <div className="preview">
               <div className="border">
@@ -480,9 +474,6 @@ const Minter = ({
                   <img src="/curve.svg" />
                   <div className="value">1337</div>
                 </div>
-                {/* <div className="row">
-                  <div className="minus">-</div>
-                </div> */}
                 <div className="row red">
                   <div className="label">Minting fee</div>
                   <div className="minus">-</div>
@@ -535,7 +526,6 @@ const Minter = ({
           <div
             className="deed-subpage-wrap"
           >
-            {/* <div className="h1">NFT Minted!</div> */}
             <User
               label="minter"
               userName={userName}

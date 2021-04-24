@@ -276,7 +276,8 @@ const Minter = ({
     
     setLoading(true);
 
-    {    
+    const fileExt = getExt(file.name);
+    if (fileExt === 'zip') {
       const zip = await JSZip.loadAsync(file);
       
       const fileNames = [];
@@ -333,6 +334,18 @@ const Minter = ({
       console.log('got result', startFile, newHash, newExt);
       setHash(newHash);
       setExt(newExt);
+    } else {
+      const r = await axios({
+        method: 'post',
+        url: storageHost,
+        data: file,
+      });
+      const {data} = r;
+      console.log('uploaded', data);
+      const {hash: newHash} = data;
+      
+      setHash(newHash);
+      setExt(fileExt);
     }
     
     setLoading(false);
@@ -344,6 +357,7 @@ const Minter = ({
     } else {
       const res = await fetch(url);
       const b = await res.blob();
+      b.name = url;
       await handleLoadFile(b);
     }
   };

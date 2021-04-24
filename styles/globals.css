@@ -443,6 +443,25 @@ a {
   min-height: calc(100vh - 157px);
   flex: 1;
 }
+.slider .preview .border {
+  --color: #e0e0e0;
+  position: relative;
+  display: flex;
+  flex: 1;
+  padding: 10px;
+  border: 2px solid var(--color);
+  border-radius: 10px;
+}
+.slider .preview .border .label {
+  position: absolute;
+  top: -9px;
+  left: 30px;
+  padding: 0 2px;
+  background-color: #FFF;
+  color: var(--color);
+  line-height: 1;
+  font-size: 14px;
+}
 .slider .preview .preview-header-wrap {
   display: flex;
   padding: 10px;

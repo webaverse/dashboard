@@ -367,6 +367,32 @@ const CardActions = ({
   );
 };
 
+const User = ({
+  label,
+  userName,
+  address,
+  avatarPreview,
+}) => {
+  return (
+    <div className="assetDetailsOwnedBy">
+      <Link href={`/accounts/` + address}>
+        <a>
+          <img
+            className="creatorIcon"
+            src={avatarPreview.replace(/\.[^.]*$/, ".png")}
+          />
+        </a>
+      </Link>
+      <div className="creatorDetails">
+        <div className="label">{label}</div>
+        <Link href={`/accounts/` + address}>
+          <a className="name">{`@${userName}`}</a>
+        </Link>
+      </div>
+    </div>
+  );
+};
+
 const CardDetails = ({
   id,
   name,
@@ -784,6 +810,8 @@ const CardDetails = ({
                     cardSceneWrapEl = el;
                   }}
                 >
+                
+                
                   <div
                     className="assetDetailsBackground"
                     /* style={{
@@ -877,22 +905,12 @@ const CardDetails = ({
                 <div className="assetDetailsRightColumn">
                   <div className="detailsBlock">
                     <div className="detailsSection left">
-                      <div className="assetDetailsOwnedBy">
-                        <Link href={`/accounts/` + ownerAddress}>
-                          <a>
-                            <img
-                              className="creatorIcon"
-                              src={ownerAvatarPreview.replace(/\.[^.]*$/, ".png")}
-                            />
-                          </a>
-                        </Link>
-                        <div className="creatorDetails">
-                          <div className="label">Owner</div>
-                          <Link href={`/accounts/` + ownerAddress}>
-                            <a className="name">{`@${ownerUsername}`}</a>
-                          </Link>
-                        </div>
-                      </div>
+                      <User
+                        label="owner"
+                        userName={ownerUsername}
+                        address={ownerAddress}
+                        avatarPreview={ownerAvatarPreview}
+                      />
                       <div className="assetDetailsLeft">
                         <div className="name">{name}</div>
                           {/* <div className="description">{description}</div> */}

@@ -1233,20 +1233,28 @@ a {
   bottom: 0;
 }
 .deed-subpage-wrap {
-  padding: 20px;
-  background-color: #f0f0f0;
+  position: relative;
+  padding: 30px;
+  margin-right: 2px;
+  background: radial-gradient(#7986cb, #3949ab);
+  border: 2px solid #3949ab;
   border-radius: 10px;
+  transition: all cubic-bezier(0, 1, 0, 1) 0.3s;
 }
-.deed-subpage-wrap .background {
+/* .deed-subpage-wrap .background {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   background-image: linear-gradient(0deg, rgb(230, 230, 230) 0%, rgba(230, 230, 230, 0) 100%);
-}
+} */
 .deed-subpage-wrap .h1 {
-  font-size: 20px;
+  font-family: 'MS-Gothic';
+  font-size: 30px;
+  color: #FFF;
+  line-height: 1;
+  margin-bottom: 30px;
 }
 html {
   transition: filter 5s cubic-bezier(0, 1.5, 0, 1.5);

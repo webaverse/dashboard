@@ -321,46 +321,6 @@ const Minter = ({
       frame = null;
     });
   }
-  /* const animalSvgUrls = [
-    `Blue Cat-1s-200px.svg`,
-    `Cutie Fox-1s-200px.svg`,
-    `Kaki Dog-1s-200px.svg`,
-    `Midori Kappa-1s-200px.svg`,
-    `Pinky Pig-1s-200px.svg`,
-    `Spooky Ghost-1s-200px.svg`,
-  ];
-  {
-    let frame = null;
-    const _scheduleFrame = () => {
-      frame = requestAnimationFrame(_recurse);
-    };
-    const _recurse = () => {
-      _scheduleFrame();
-      if (mintMenuStep === 3) {
-        const startTime = Date.now();
-        const endTime = startTime + 3000 * Math.random();
-        
-        const newAnimals = animals.slice();   
-        while (newAnimals.length < 10) {    
-          const svgUrl = animalSvgUrls[Math.floor(Math.random() * animalSvgUrls.length)];
-          newAnimals.push({
-            x: Math.floor(Math.random() * window.innerWidth),
-            y: Math.floor(Math.random() * window.innerHeight),
-            url: svgUrl,
-            startTime,
-            endTime,
-          });
-          setAnimals(newAnimals);
-        }
-      }
-    };
-    schedulePerFrame(() => {
-      _scheduleFrame();
-    }, () => {
-      frame && cancelAnimationFrame(frame);
-      frame = null;
-    });
-  } */
   {
     let frame = null;
     let startTime = 0;

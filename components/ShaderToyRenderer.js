@@ -473,6 +473,13 @@ const ShaderToyRenderer = () => {
   
   // const [loaded, setLoaded] = useState(false);
   const [shaderToyRenderer, setShaderToyRenderer] = useState(null);
+  const [resizeListening, setResizeListening] = useState(false);
+  
+  const _resize = e => {
+    // if (shaderToyRenderer) {
+      shaderToyRenderer.renderer.setSize(window.innerWidth, window.innerHeight);
+    // }
+  };
   
   let el = null;
   let lastTimestamp = Date.now();
@@ -489,6 +496,13 @@ const ShaderToyRenderer = () => {
       setShaderToyRenderer(newShaderToyRenderer);
     }
   });
+  useEffect(() => {
+    if (shaderToyRenderer && !resizeListening) {
+      window.addEventListener('resize', _resize);
+      
+      setResizeListening(true);
+    }
+  }, [shaderToyRenderer, resizeListening]);
   
   {
     let frame = null;

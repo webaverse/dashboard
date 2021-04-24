@@ -26,6 +26,9 @@ const CardSwitch = (props) => {
         <AssetCardLive {...props} />
       );
     }
+    default: {
+      return null;
+    }
   }
 };
 

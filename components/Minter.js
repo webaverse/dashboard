@@ -1,5 +1,6 @@
 import React, { Component, Fragment, useState, useEffect } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import {useRouter} from 'next/router';
 import axios from 'axios';
 import {getTokens} from "../functions/UIStateFunctions.js";
@@ -573,13 +574,17 @@ const Minter = ({
             className="deed-subpage-wrap"
           >
             <div className="h1">NFT Minted!</div>
-            <FakeCard
-              onClick={e => {
-                setMintMenuStep(1);
-              }}
-              animate={true}
-              animationSize="large"
-            />
+            <Link href="/assets">
+              <a className={`item`}>
+                <FakeCard
+                  onClick={e => {
+                    setMintMenuStep(1);
+                  }}
+                  animate={true}
+                  animationSize="large"
+                />
+              </a>
+            </Link>
           </div>
         </div>
         <div className="wrap step-1-only">

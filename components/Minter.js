@@ -443,6 +443,12 @@ const Minter = ({
     _recurse();
   };
   
+  useEffect(() => {
+    if (mintMenuStep === 4) {
+      _hitEffect();
+    }
+  }, [mintMenuStep]);
+  
   return (
     <div className="slider">
     {mintMenuStep === 3 ?
@@ -547,8 +553,7 @@ const Minter = ({
                 setMintMenuStep(2);
               }}>Minting...</div>
               <div onClick={e => {
-                // setMintMenuStep(4);
-                _hitEffect();
+                setMintMenuStep(4);
               }}>{Math.floor(mintProgress * 100)}%</div>
             </div>
             <ProgressBar
@@ -562,6 +567,20 @@ const Minter = ({
               }} key={i} />
             );
           }) */}
+        </div>
+        <div className="progress-subpage wrap step-4-only">
+          <div
+            className="deed-subpage-wrap"
+          >
+            <div className="h1">NFT Minted!</div>
+            <FakeCard
+              onClick={e => {
+                setMintMenuStep(1);
+              }}
+              animate={true}
+              animationSize="large"
+            />
+          </div>
         </div>
         <div className="wrap step-1-only">
           <Lhs

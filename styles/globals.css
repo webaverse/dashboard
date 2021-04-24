@@ -406,7 +406,8 @@ a {
 }
 .slider .contents .wrap-slider:not(.step-1) .step-1-only,
 .slider .contents .wrap-slider:not(.step-2) .step-2-only,
-.slider .contents .wrap-slider:not(.step-3) .step-3-only
+.slider .contents .wrap-slider:not(.step-3) .step-3-only,
+.slider .contents .wrap-slider:not(.step-4) .step-4-only
 {
   /* display: none !important; */
   opacity: 0;

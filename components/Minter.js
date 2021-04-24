@@ -386,9 +386,9 @@ const Minter = ({
   
   // console.log('got global state', globalState);
   const {
-    name: ownerUsername,
-    address: ownerAddress,
-    avatarPreview: ownerAvatarPreview,
+    name: userName,
+    address,
+    avatarPreview,
   } = globalState;
   
   return (
@@ -510,11 +510,11 @@ const Minter = ({
             <div className="h1">NFT Minted!</div>
             <User
               label="minter"
-              userName={ownerUsername}
-              address={ownerAddress}
-              avatarPreview={ownerAvatarPreview}
+              userName={userName}
+              address={address}
+              avatarPreview={avatarPreview}
             />
-            <Link href="/assets">
+            <Link href={`/accounts/${address}`}>
               <a className={`item`}>
                 <FakeCard
                   onClick={e => {

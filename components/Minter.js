@@ -44,7 +44,8 @@ const templates = [
 ];
 
 const urlToRepoZipUrl = url => {
-  const u = new URL(url);
+  // console.log('check url', url);
+  const u = new URL(url, window.location.href);
   const match = u.pathname.match(/^\/(.+?)\/(.+?)\/tree\/(.+)(\/.*)?$/);
   console.log('match pathname', [url, u.pathname, match]);
   if (match) {
@@ -132,7 +133,18 @@ const FakeCard = ({animate, animationSize, onClick}) => {
   );
 }; */
 
-const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuStep, url, setUrl, source, setSource}) => {
+const Form = ({
+  mintMenuOpen,
+  quantity,
+  setQuantity,
+  mintMenuStep,
+  setMintMenuStep,
+  url,
+  setUrl,
+  source,
+  setSource,
+  handleLoadUrl,
+}) => {
   let nameEl = null;
   const _updateNameFocus = () => {
     if (mintMenuOpen && nameEl) {
@@ -213,6 +225,8 @@ const Form = ({mintMenuOpen, quantity, setQuantity, mintMenuStep, setMintMenuSte
       }} min={1} step={1} />
       <input className={source === 'url' ? '' : 'disabled'} type="button" value="Preview NFT" onChange={e => {}} disabled={source !== 'url'} onClick={e => {
         setMintMenuStep(2);
+        
+        handleLoadUrl(url);
       }} />
     </form>
   );
@@ -257,20 +271,13 @@ const Minter = ({
   const [ext, setExt] = useState('');
   const [jitter, setJitter] = useState([0, 0]);
   
-  const _handleLoad = async ({
-    name,
-    icon,
-    src,
-  }) => {
+  const handleLoadFile = async file => {
+    console.log('load file name', file);
+    
     setLoading(true);
 
-    const repoZipUrl = urlToRepoZipUrl(url);
-    if (repoZipUrl) {
-      // console.log('got repo zip', repoZipUrl);
-      const res = await fetch(repoZipUrl);
-      const ab = await res.arrayBuffer();
-      
-      const zip = await JSZip.loadAsync(ab);
+    {    
+      const zip = await JSZip.loadAsync(file);
       
       const fileNames = [];
       const isDirectoryName = fileName => /\/$/.test(fileName);
@@ -326,25 +333,35 @@ const Minter = ({
       console.log('got result', startFile, newHash, newExt);
       setHash(newHash);
       setExt(newExt);
-    } else {
-      console.warn('invalid repo url', url);
     }
     
     setLoading(false);
   };
-  const _handleLoadTemplate = async templateName => {
+  const handleLoadUrl = async url => {
+    const repoZipUrl = urlToRepoZipUrl(url);
+    if (repoZipUrl) {
+      await handleLoadUrl(repoZipUrl);
+    } else {
+      const res = await fetch(url);
+      const b = await res.blob();
+      await handleLoadFile(b);
+    }
+  };
+  const handleLoadTemplate = async templateName => {
     const template = templates.find(([name]) => name == templateName);
-    const [name, icon, src] = template;
-    await _handleLoad({
-      name,
-      icon,
-      src,
-    });
+    const [name, icon, url] = template;
+    
+    const repoZipUrl = urlToRepoZipUrl(url);
+    if (repoZipUrl) {
+      await handleLoadUrl(repoZipUrl);
+    } else {
+      await handleLoadUrl(url);
+    }
   };
   const _setSelectedTab = newTab => {
     setSelectedTab(newTab);
     setMintMenuStep(2);
-    _handleLoadTemplate(newTab);
+    handleLoadTemplate(newTab);
   };
   const selectedTabDefaulted = selectedTab || 'image';
 
@@ -589,6 +606,7 @@ const Minter = ({
             setSource={setSource}
             hash={hash}
             ext={ext}
+            handleLoadUrl={handleLoadUrl}
           />
           <div className="middle">
             <div className="card-buttons like">
@@ -735,7 +753,27 @@ const Minter = ({
   );
 };
 
-const Lhs = ({className, name, setName, description, setDescription, quantity, setQuantity, mintMenuOpen, helpOpen, setHelpOpen, mintMenuStep, setMintMenuStep, url, setUrl, source, setSource, hash, ext}) => {
+const Lhs = ({
+  className,
+  name,
+  setName,
+  description,
+  setDescription,
+  quantity,
+  setQuantity,
+  mintMenuOpen,
+  helpOpen,
+  setHelpOpen,
+  mintMenuStep,
+  setMintMenuStep,
+  url,
+  setUrl,
+  source,
+  setSource,
+  hash,
+  ext,
+  handleLoadUrl,
+}) => {
   return (
     <div
       className={`lhs ${className}`}
@@ -762,6 +800,7 @@ const Lhs = ({className, name, setName, description, setDescription, quantity, s
           setUrl={setUrl}
           source={source}
           setSource={setSource}
+          handleLoadUrl={handleLoadUrl}
         />
       </div>
     </div>

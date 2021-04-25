@@ -765,28 +765,32 @@ const Minter = ({
           </div>
         </div>
         <div className="progress-subpage wrap step-4-only">
-          <div
-            className="deed-subpage-wrap"
-          >
+          <div className={`deed-subpage-wrap ${mintError ? 'error' : ''}`}>
             <User
-              label="minter"
+              label={!mintError ? 'minter' : 'status: sad'}
               userName={userName}
               address={address}
               avatarPreview={avatarPreview}
             />
-            <Link href={`/accounts/${address}`}>
-              <a>
-                <input type="button" value="View in inventory" onChange={e => {}}/>
-              </a>
-            </Link>
-            <Link href={`/assets/${mintedTokenId}`}>
-              <a className={`item`}>
-                <FakeCard
-                  animate={true}
-                  animationSize="large"
-                />
-              </a>
-            </Link>
+            {!mintError ?
+              <Fragment>
+                <Link href={`/accounts/${address}`}>
+                  <a>
+                    <input type="button" value="View in inventory" onChange={e => {}}/>
+                  </a>
+                </Link>
+                <Link href={`/assets/${mintedTokenId}`}>
+                  <a className={`item`}>
+                    <FakeCard
+                      animate={true}
+                      animationSize="large"
+                    />
+                  </a>
+                </Link>
+              </Fragment>
+            :
+              <div className="h2">Error minting :|</div>
+            }
           </div>
         </div>
         <div className="wrap step-1-only">

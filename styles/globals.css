@@ -1372,10 +1372,22 @@ a {
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
 .deed-subpage-wrap.error input[type=button] {
+  margin-bottom: 10px;
   background-image: linear-gradient(to bottom, #7474BF, #348AC7);
 }
 .deed-subpage-wrap:not(.error) input[type=button] {
   margin-bottom: 20px;
+}
+.deed-subpage-wrap .error-text {
+  width: 400px;
+  padding: 5px 10px;
+  color: #FFF;
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-word;
 }
 .deed-subpage-wrap input[type=button]:hover {
   filter: brightness(80%);

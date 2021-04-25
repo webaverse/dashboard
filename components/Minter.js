@@ -235,11 +235,32 @@ const Form = ({
 const PreviewIframe = ({
   hash,
   ext,
+  onLoad,
 }) => {
   // `{storageHost}/ipfs/${hash}`
-  const src = `https://app.webaverse.com/preview.html?hash=${hash}&ext=${ext}`;
+  const src = `https://127.0.0.1:3001/preview.html?hash=${hash}&ext=${ext}`;
   return (
-    <iframe className="iframe" src={src} />
+    <iframe
+      className="iframe"
+      src={src}
+      ref={el => {
+        if (el && onLoad) {
+          el.addEventListener('load', e => {
+            window.addEventListener('message', e => {
+              const j = e.data;
+              if (j && typeof j === 'object' && !Array.isArray(j)) {
+                const {_preview, ok} = j;
+                if (_preview && ok) {
+                  onLoad(e);
+                }
+              }
+            });
+          }, {
+            once: true,
+          });
+        }
+      }}
+    />
   );
   /* <WaveSurferAudio /> */
   /* <iframe
@@ -270,6 +291,7 @@ const Minter = ({
   const [hash, setHash] = useState('');
   const [ext, setExt] = useState('');
   const [jitter, setJitter] = useState([0, 0]);
+  const [loaded, setLoaded] = useState(false);
   
   const handleLoadFile = async file => {
     console.log('load file name', file);
@@ -511,14 +533,19 @@ const Minter = ({
                   <PreviewIframe
                     hash={hash}
                     ext={ext}
+                    onLoad={e => {
+                      console.log('set loaded');
+                      setLoaded(true);
+                    }}
                   />
-                :
+                : null}
+                {!loaded ?
                   <div className="iframe-placeholder">
                     <ProgressBar
                       value={mintProgress}
                     />
                   </div>
-                }
+                 : null}
               </div>
             </div>
             <div className="rrhs">

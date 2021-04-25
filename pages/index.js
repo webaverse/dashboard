@@ -9,48 +9,11 @@ import CardRowHeader from "../components/CardRowHeader";
 import Asset from "../components/Asset";
 import Minter from "../components/Minter";
 import Loader from "../components/Loader";
-import {FileDrop} from "react-file-drop";
+// import {FileDrop} from "react-file-drop";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {blobToFile, getExt, parseQuery} from "../webaverse/util";
 import {storageHost} from "../webaverse/constants";
 import JSZip from '../webaverse/jszip.js';
-
-class Dropper extends Component {
-  constructor(props) {
-    super(props);
-    
-    this.dragOverHandler = this.dragOverHandler.bind(this);
-    this.dropHandler = this.dropHandler.bind(this);
-    this.onDrop = props.onDrop;
-  }
-  componentDidMount() {
-    if (window !== 'undefined') {
-      window.document.addEventListener('dragover', this.dragOverHandler);
-      window.document.addEventListener('drop', this.dropHandler);
-    }
-  }
-  componentWillUnmount() {
-    if (window !== 'undefined') {
-      window.document.removeEventListener('dragover', this.dragOverHandler);
-      window.document.removeEventListener('drop', this.dropHandler);
-    }
-  }
-  dragOverHandler(e) {
-    // console.log('drag over');
-    e.preventDefault();
-  }
-  dropHandler(e) {
-    // console.log('drop');
-    e.preventDefault();
-    const {files} = e;
-    this.onDrop(files);
-  }
-  render() {
-    return (
-      <div />
-    );
-  }
-}
 
 class AssetOverlayBackground extends Component {
   constructor(props) {

@@ -266,6 +266,46 @@ const PreviewIframe = ({
   /> */
 };
 
+class DragNDrop extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.dragOverHandler = this.dragOverHandler.bind(this);
+    this.dropHandler = this.dropHandler.bind(this);
+    this.onDrop = props.onDrop;
+  }
+  componentDidMount() {
+    if (window !== 'undefined') {
+      window.document.addEventListener('dragover', this.dragOverHandler);
+      window.document.addEventListener('drop', this.dropHandler);
+    }
+  }
+  componentWillUnmount() {
+    if (window !== 'undefined') {
+      window.document.removeEventListener('dragover', this.dragOverHandler);
+      window.document.removeEventListener('drop', this.dropHandler);
+    }
+  }
+  dragOverHandler(e) {
+    // console.log('drag over');
+    e.preventDefault();
+  }
+  dropHandler(e) {
+    // console.log('drop');
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files);
+    this.onDrop(files);
+  }
+  render() {
+    const {className, children} = this.props;
+    return (
+      <div className={className}>
+        {children}
+      </div>
+    );
+  }
+}
+
 const Minter = ({
   mintMenuOpen,
   setMintMenuOpen,
@@ -519,7 +559,12 @@ const Minter = ({
   });
   
   return (
-    <div className="slider">
+    <DragNDrop
+      className="slider"
+      onDrop={files => {
+        console.log('drop files', files);
+      }}
+    >
     {mintMenuStep === 3 ?
       <ShaderToyRenderer
         
@@ -724,7 +769,7 @@ const Minter = ({
         </div>
       </div>
     </div>
-  </div>
+  </DragNDrop>
   );
 };
 

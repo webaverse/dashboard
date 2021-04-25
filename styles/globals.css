@@ -526,7 +526,6 @@ a {
 .slider .preview .iframe,
 .slider .preview .iframe-placeholder {
   flex: 1;
-  border-radius: 10px;
 }
 .slider .preview .iframe {
   border: 0;

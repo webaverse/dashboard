@@ -1041,6 +1041,17 @@ a {
   flex: 1;
   cursor: pointer;
 }
+.slider .contents .subtabs .tab-wrap.locked {
+  pointer-events: none;
+}
+.slider .contents .subtabs .tab-wrap.locked .tab {
+  opacity: 0.2;
+}
+.slider .contents .subtabs .tab-wrap .tab .lock-icon {
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
+}
 .slider .contents .subtabs .tab {
   display: flex;
   padding: 10px;

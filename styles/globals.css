@@ -1371,6 +1371,9 @@ a {
   animation-timing-function: cubic-bezier(0, 1, 0, 1);
   transition: transform 0.3s cubic-bezier(0, 1, 0, 1);
 }
+.deed-subpage-wrap.error input[type=button] {
+  background-image: linear-gradient(to bottom, #7474BF, #348AC7);
+}
 .deed-subpage-wrap:not(.error) input[type=button] {
   margin-bottom: 20px;
 }

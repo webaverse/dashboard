@@ -335,6 +335,9 @@ const Minter = ({
     console.log('load file name', file);
     
     setLoading(true);
+    setLoaded(false);
+    setHash('');
+    setExt('');
 
     const fileExt = getExt(file.name);
     if (fileExt === 'zip') {

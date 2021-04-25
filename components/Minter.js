@@ -235,7 +235,6 @@ const Form = ({
 const PreviewIframe = ({
   hash,
   ext,
-  onLoad,
 }) => {
   // `{storageHost}/ipfs/${hash}`
   const src = `https://127.0.0.1:3001/preview.html?hash=${hash}&ext=${ext}`;
@@ -243,23 +242,6 @@ const PreviewIframe = ({
     <iframe
       className="iframe"
       src={src}
-      ref={el => {
-        if (el && onLoad) {
-          el.addEventListener('load', e => {
-            window.addEventListener('message', e => {
-              const j = e.data;
-              if (j && typeof j === 'object' && !Array.isArray(j)) {
-                const {_preview, ok} = j;
-                if (_preview && ok) {
-                  onLoad(e);
-                }
-              }
-            });
-          }, {
-            once: true,
-          });
-        }
-      }}
     />
   );
   /* <WaveSurferAudio /> */
@@ -297,6 +279,7 @@ const Minter = ({
     console.log('load file name', file);
     
     setLoading(true);
+    setLoaded(false);
 
     const fileExt = getExt(file.name);
     if (fileExt === 'zip') {
@@ -491,6 +474,26 @@ const Minter = ({
     avatarPreview,
   } = globalState;
   const tokenId = 1; // XXX
+
+  useEffect(() => {
+    const _message = e => {
+      const j = e.data;
+      // console.log('got message', j);
+      if (j && typeof j === 'object' && !Array.isArray(j)) {
+        const {_preview, ok} = j;
+
+        if (_preview && ok) {
+          // console.log('tick load');
+          setLoaded(true);
+        }
+      }
+    };
+    window.addEventListener('message', _message);
+    
+    return () => {
+      window.removeEventListener('message', _message);
+    };
+  });
   
   return (
     <div className="slider">
@@ -533,10 +536,6 @@ const Minter = ({
                   <PreviewIframe
                     hash={hash}
                     ext={ext}
-                    onLoad={e => {
-                      console.log('set loaded');
-                      setLoaded(true);
-                    }}
                   />
                 : null}
                 {!loaded ?

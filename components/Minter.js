@@ -513,7 +513,11 @@ const Minter = ({
                     ext={ext}
                   />
                 :
-                  <div className="iframe-placeholder" />
+                  <div className="iframe-placeholder">
+                    <ProgressBar
+                      value={mintProgress}
+                    />
+                  </div>
                 }
               </div>
             </div>

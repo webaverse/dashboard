@@ -522,7 +522,7 @@ export const deployLand = async (tokenId, contentId, handleSuccess, handleError,
   }
 }
 
-export const mintNft = async (hash, name, ext, description, quantity, handleSuccess, handleError, state) => {
+export const mintNft = async (hash, name, ext, description, quantity, state) => {
   const { web3, contracts } = await getBlockchain();
   const  mnemonic = state.loginToken.mnemonic;
   const address = state.address;
@@ -560,14 +560,18 @@ export const mintNft = async (hash, name, ext, description, quantity, handleSucc
       transactionHash = result.transactionHash;
       const tokenId = new web3['mainnetsidechain'].utils.BN(result.logs[0].topics[3].slice(2), 16).toNumber();
       tokenIds = [tokenId, tokenId + quantity - 1];
-      handleSuccess(tokenId);
+      // handleSuccess(tokenId);
+      return tokenId;
+    } else {
+      throw new Error('minting failed');
     }
   } catch (err) {
     console.warn(err);
     status = false;
     transactionHash = '0x0';
     tokenIds = [];
-    handleError(err);
+    // handleError(err);
+    throw err;
   }
 };
 

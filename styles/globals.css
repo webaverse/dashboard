@@ -689,7 +689,7 @@ a {
 .preview-background {
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: -74px;
   right: 0;
   width: 300px;
   background-image: linear-gradient(to right, #FFF, #ddd);

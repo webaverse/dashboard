@@ -261,7 +261,7 @@ const PreviewIframe = ({
   loaded,
 }) => {
   // `{storageHost}/ipfs/${hash}`
-  const src = `https://127.0.0.1:3001/preview.html?hash=${hash}&ext=${ext}`;
+  const src = `https://app.webaverse.com/preview.html?hash=${hash}&ext=${ext}`;
   return (
     <iframe
       className={`iframe ${loaded ? 'loaded' : ''}`}

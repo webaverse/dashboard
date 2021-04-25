@@ -137,6 +137,8 @@ const Form = ({
   mintMenuOpen,
   quantity,
   setQuantity,
+  file,
+  setFile,
   mintMenuStep,
   setMintMenuStep,
   url,
@@ -164,6 +166,8 @@ const Form = ({
   useEffect(() => {
     _updateUrlFocus();
   }, [source]);
+  
+  const enabled = (source === 'file' && !!file) || source === 'url';
   
   return (
     <form className={`form`} onSubmit={e => {
@@ -205,7 +209,10 @@ const Form = ({
         [
           (<div className="label" key="file">File</div>),
           (<input type="file" placeholder="File" value={''} onChange={e => {
-            console.log('file change', e);
+            const files = Array.from(e.target.files);
+            if (files.length > 0) {
+              setFile(files[0]);
+            }
           }} key="file2" />),
         ]
       :
@@ -223,7 +230,7 @@ const Form = ({
       <input type="number" placeholder="Quantity" value={quantity} onChange={e => {
         setQuantity(e.target.value);
       }} min={1} step={1} />
-      <input className={source === 'url' ? '' : 'disabled'} type="button" value="Preview NFT" onChange={e => {}} disabled={source !== 'url'} onClick={e => {
+      <input className={enabled ? '' : 'disabled'} type="button" value="Preview NFT" onChange={e => {}} disabled={!enabled} onClick={e => {
         setMintMenuStep(2);
         
         handleLoadUrl(url);
@@ -267,6 +274,7 @@ const Minter = ({
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [file, setFile] = useState(null);
   const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
   const [source, setSource] = useState('file');
   const [mintProgress, setMintProgress] = useState(0);
@@ -644,6 +652,8 @@ const Minter = ({
             setDescription={setDescription}
             quantity={quantity}
             setQuantity={setQuantity}
+            file={file}
+            setFile={setFile}
             url={url}
             setUrl={setUrl}
             source={source}
@@ -706,6 +716,8 @@ const Lhs = ({
   setDescription,
   quantity,
   setQuantity,
+  file,
+  setFile,
   mintMenuOpen,
   helpOpen,
   setHelpOpen,
@@ -739,6 +751,8 @@ const Lhs = ({
           setDescription={setDescription}
           quantity={quantity}
           setQuantity={setQuantity}
+          file={file}
+          setFile={setFile}
           mintMenuStep={mintMenuStep}
           setMintMenuStep={setMintMenuStep}
           url={url}

@@ -697,14 +697,14 @@ const Minter = ({
               {templates.map(([name, imgSrc, srcUrl], i) => {
                 const locked = !srcUrl;
                 return (
-                  <div className="tab-wrap" onClick={e => _setSelectedTab(name)} key={i}>
+                  <div className={`tab-wrap ${locked ? 'locked' : ''}`} onClick={e => _setSelectedTab(name)} key={i}>
                     <div
-                      className={`tab ${selectedTab === name ? 'selected' : ''} ${locked ? 'locked' : ''}`}
+                      className={`tab ${selectedTab === name ? 'selected' : ''}`}
                     >
                       <img src={imgSrc} />
                       <span>{name}</span>
                       {locked ?
-                        <img className="lock-icon" src="" />
+                        <img className="lock-icon" src="/lock.svg" />
                       : null}
                     </div>
                   </div>

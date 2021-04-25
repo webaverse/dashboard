@@ -562,7 +562,12 @@ const Minter = ({
     <DragNDrop
       className="slider"
       onDrop={files => {
-        console.log('drop files', files);
+        if (files.length > 0) {
+          setFile(files[0]);
+        } else {
+          setFile(null);
+        }
+        setSource('file');
       }}
     >
     {mintMenuStep === 3 ?

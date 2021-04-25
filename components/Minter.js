@@ -587,8 +587,10 @@ const Minter = ({
       if (j && typeof j === 'object' && !Array.isArray(j)) {
         const {_preview, ok} = j;
 
-        if (_preview && ok) {
-          // console.log('tick load');
+        if (_preview) {
+          /* if (ok) {
+          } else {
+          } */
           setLoaded(true);
         }
       }

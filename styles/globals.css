@@ -530,7 +530,11 @@ a {
 .slider .preview .iframe {
   border: 0;
 }
+.iframe-placeholder {
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .slider .contents .wrap-slider .step-1-only,
 .slider .contents .wrap-slider .step-2-only {
   transition: transform 0.5s cubic-bezier(0, 1, 0, 1), opacity 1s cubic-bezier(0, 1, 0, 1);

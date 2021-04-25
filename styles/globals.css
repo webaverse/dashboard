@@ -1332,6 +1332,11 @@ a {
   border-radius: 10px;
   transition: all cubic-bezier(0, 1, 0, 1) 0.3s;
 }
+.deed-subpage-wrap.error {
+  padding-right: 60px;
+  background: radial-gradient(#b22222, #7d0b0b);
+  border-color: #7d0b0b;
+}
 .deed-subpage-wrap input[type=button] {
   margin-bottom: 20px;
   padding: 10px;
@@ -1355,16 +1360,20 @@ a {
   filter: brightness(80%);
   animation-name: gloob2;
 }
-.deed-subpage-wrap .h1 {
+.deed-subpage-wrap .h1,
+.deed-subpage-wrap .h2
+{
   font-family: 'MS-Gothic';
   font-size: 30px;
   color: #FFF;
   line-height: 1;
+}
+.deed-subpage-wrap .h1 {
   margin-bottom: 30px;
 }
 .deed-subpage-wrap .assetDetailsOwnedBy {
   position: absolute;
-  top: 70px;
+  top: 65px;
   right: -270px;
 }
 html {

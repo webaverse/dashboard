@@ -548,7 +548,7 @@ const Minter = ({
                     <div>. Here's a preview:</div>
                   </div>
                 </div> */}
-                {(hash && ext) ?
+                {loaded ?
                   <PreviewIframe
                     hash={hash}
                     ext={ext}

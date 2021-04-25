@@ -370,6 +370,7 @@ const Minter = ({
   const [loaded, setLoaded] = useState(false);
   const [id, setId] = useState(Math.floor(Math.random() * 1000));
   const [mintedTokenId, setMintedTokenId] = useState(0);
+  const [previewError, setPreviewError] = useState(false);
   
   const handleLoadFile = async file => {
     console.log('load file name', file);
@@ -588,9 +589,11 @@ const Minter = ({
         const {_preview, ok} = j;
 
         if (_preview) {
-          /* if (ok) {
+          if (ok) {
+            setPreviewError(false);
           } else {
-          } */
+            setPreviewError(true);
+          }
           setLoaded(true);
         }
       }
@@ -668,6 +671,11 @@ const Minter = ({
                     value={mintProgress}
                   />
                 </div>
+                {(loaded && previewError) ?
+                  <div className={`iframe-placeholder`}>
+                    <div className="h1">No preview available :'(</div>
+                  </div>
+                : null}
               </div>
             </div>
             <div className="rrhs">

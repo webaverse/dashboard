@@ -35,7 +35,7 @@ const templates = [
   ['video', '/video.svg', '/Steps.mp4'],
   ['audio', '/audio.svg', '/Chill1.mp3'],
   ['avatar', '/avatar.svg', '/Default Bot (2).vrm'],
-  ['model', '/sword.svg', ''],
+  ['model', '/sword.svg', 'backpack_v1.glb'],
   ['html', '/html.svg', 'https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template'],
   ['wearable', '/chain-mail.svg', null],
   ['pet', '/rabbit.svg', null],

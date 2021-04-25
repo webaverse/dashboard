@@ -326,6 +326,12 @@ class DragNDrop extends Component {
 }
 
 const CardIframe = ({
+  id,
+  name,
+  description,
+  image,
+  minterUsername,
+  minterAvatarPreview,
 }) => {
   const width = 200;
   const height = width / 2.5 * 3.5;
@@ -333,7 +339,7 @@ const CardIframe = ({
     <iframe
       width={width}
       height={height}
-      src={`${cardsHost}/?t=${108}&w=${200}`}
+      src={`${cardsHost}/?w=${200}&id=${id}&name=${name}&description=${description}&image=${image}&minterUsername=${minterUsername}&minterAvatarPreview=${minterAvatarPreview}`}
     />
   );
 };
@@ -595,6 +601,11 @@ const Minter = ({
   
   // console.log('got global state', globalState);
   
+  const id = 100;
+  const image = (hash && ext) ? `https://preview.exokit.org/${hash}.${ext}/preview.png` : '';
+  const minterUsername = globalState.username;
+  const minterAvatarPreview = globalState.avatarPreview;
+  
   return (
     <DragNDrop
       className="slider"
@@ -660,9 +671,18 @@ const Minter = ({
             <div className="rrhs">
               <div className="h1">{selectedTabDefaulted} NFT</div>
               <div className="description">{nftTypeDescriptions[selectedTabDefaulted]}</div>
-              <div className="card-preview">
-                <CardIframe />
-              </div>
+              {(hash && ext) ?
+                <div className="card-preview">
+                  <CardIframe
+                    id={id}
+                    name={name}
+                    description={description}
+                    image={image}
+                    minterUsername={minterUsername}
+                    minterAvatarPreview={minterAvatarPreview}
+                  />
+                </div>
+              : null}
               <div className="infobox">
                 <div className="h1">Mint with SILK</div>
                 <div className="row">

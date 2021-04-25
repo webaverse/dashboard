@@ -585,6 +585,8 @@ const Minter = ({
     };
   });
   
+  // console.log('got global state', globalState);
+  
   return (
     <DragNDrop
       className="slider"
@@ -658,7 +660,7 @@ const Minter = ({
                 <div className="row">
                   <div className="label">SILK balance</div>
                   <img src="/curve.svg" />
-                  <div className="value">1337</div>
+                  <div className="value">{Number(globalState.balance).toLocaleString()}</div>
                 </div>
                 <div className="row red">
                   <div className="label">Minting fee</div>
@@ -672,7 +674,7 @@ const Minter = ({
                 <div className="row">
                   <div className="label">New balance</div>
                   <img src="/curve.svg" />
-                  <div className="value">1327</div>
+                  <div className="value">{(globalState.balance - 10).toLocaleString()}</div>
                 </div>
                 <div className="buttons">
                   <input className="ok" type="button" value="Confirm" onChange={e => {}} onClick={e => {

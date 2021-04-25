@@ -208,15 +208,24 @@ const Form = ({
       </div>
       {source === 'file' ?
         [
-          (<div className="label" key="file">File</div>),
-          (<input type="file" placeholder="File" onChange={e => {
-            const files = Array.from(e.target.files);
-            if (files.length > 0) {
-              setFile(files[0]);
-            } else {
-              setFile(null);
-            }
-          }} key="file2" />),
+          (<div className="label" key="file1">File</div>),
+          (file ?
+            <div className="file" key="file2">
+              <div className="text">{file.name}</div>
+              <img className="cancel-button" src="/cancel.svg" onClick={e => {
+                setFile(null);
+              }} />
+            </div>
+          :
+            <input type="file" placeholder="File" onChange={e => {
+              const files = Array.from(e.target.files);
+              if (files.length > 0) {
+                setFile(files[0]);
+              } else {
+                setFile(null);
+              }
+            }} key="file2" />
+          ),
         ]
       :
         [

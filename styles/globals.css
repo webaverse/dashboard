@@ -633,6 +633,31 @@ a {
   letter-spacing: 1px;
   color: #bbb;
 }
+.slider .contents .wrap-slider .lhs .form .file {
+  display: flex;
+  height: 32px;
+  align-items: center;
+}
+.slider .contents .wrap-slider .lhs .form .file .text {
+  font-family: 'MS-Gothic';
+  text-align: left;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.slider .contents .wrap-slider .lhs .form .file .cancel-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 9px;
+  cursor: pointer;
+  opacity: 0.3;
+}
+.slider .contents .wrap-slider .lhs .form .file .cancel-button:hover {
+  opacity: 1;
+}
 
 .slider .contents .wrap-slider .rrhs {
   display: flex;
@@ -732,6 +757,9 @@ a {
   animation-duration: 1s;
   animation-iteration-count: infinite;
   animation-timing-function: cubic-bezier(0, 1, 0, 1);
+}
+.slider .contents .wrap-slider .lhs .form input[type=file] {
+  height: 32px;
 }
 
 .slider .contents .wrap-slider .lhs .form input[type=text]::placeholder,

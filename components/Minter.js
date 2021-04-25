@@ -18,6 +18,8 @@ import {storageHost} from "../webaverse/constants";
 // import WaveSurfer from '../webaverse/wavesurfer.js';
 import JSZip from '../webaverse/jszip.js';
 
+const previewHost = `https://app.webaverse.com/preview.html`;
+const cardsHost = `https://cards.webaverse.com`;
 const nftTypeDescriptions = {
   image: `Image NFT lets you store visual art on the blockchain. They are represented as planes in the virtual world.`,
   video: `Video NFT lets you store video clips on the blockchain. They are represented as screens in the virtual world.`,
@@ -261,7 +263,7 @@ const PreviewIframe = ({
   loaded,
 }) => {
   // `{storageHost}/ipfs/${hash}`
-  const src = `https://app.webaverse.com/preview.html?hash=${hash}&ext=${ext}`;
+  const src = `${previewHost}?hash=${hash}&ext=${ext}`;
   return (
     <iframe
       className={`iframe ${loaded ? 'loaded' : ''}`}
@@ -323,7 +325,7 @@ const CardIframe = ({
     <iframe
       width={width}
       height={height}
-      src={`https://cards.webaverse.com/?t=${108}&w=${200}`}
+      src={`${cardsHost}/?t=${108}&w=${200}`}
     />
   );
 };

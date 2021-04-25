@@ -715,7 +715,7 @@ const Minter = ({
                   <div className="value">{(globalState.balance - 10).toLocaleString()}</div>
                 </div>
                 <div className="buttons">
-                  <input className="ok" type="button" value="Confirm" onChange={e => {}} onClick={e => {
+                  <input className="ok" type="button" value="Confirm" disabled={!loaded} onChange={e => {}} onClick={e => {
                     setMintMenuStep(3);
                   }} />
                   <input className="cancel" type="button" value="Reject" onChange={e => {}} onClick={e => {

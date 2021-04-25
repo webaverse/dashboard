@@ -253,7 +253,7 @@ a {
   }
 }
 .mint-button img,
-.slider .contents .rrhs .infobox .buttons input[type=button].ok {
+.slider .contents .rrhs .infobox .buttons input[type=button]:not(:disabled).ok {
   animation-name: pulse;
   animation-duration: 0.3s;
   animation-direction: alternate;
@@ -941,23 +941,26 @@ a {
   padding: 10px;
   font-size: 20px;
   flex: 1;
-  border: 2px solid rgba(0, 0, 0, 0.5);
+  border: 2px solid currentColor;
   border-radius: 5px;
   font-family: 'MS-Gothic';
+  color: #aaa;
   outline: none;
+}
+.slider .contents .rrhs .infobox .buttons input[type=button]:not(:disabled) {
   cursor: pointer;
 }
 .slider .contents .rrhs .infobox .buttons input[type=button] + input[type=button] {
   margin-left: 15px;
 }
-.slider .contents .rrhs .infobox .buttons input[type=button].ok {
+.slider .contents .rrhs .infobox .buttons input[type=button]:not(:disabled).ok {
   color: #FFF;
   background-image: linear-gradient(to bottom, #654ea3, #eaafc8);
   background-repeat: no-repeat;
   border-width: 0;
   border-bottom-width: 2px;
 }
-.slider .contents .rrhs .infobox .buttons input[type=button].ok:hover {
+.slider .contents .rrhs .infobox .buttons input[type=button]:not(:disabled).ok:hover {
   filter: brightness(80%);
   animation-name: gloob2;
 }

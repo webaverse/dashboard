@@ -19,13 +19,13 @@
   align-items: center;
   transition: transform 0.1s ease-out
 }
-.progress-subpage .animal {
+/* .progress-subpage .animal {
   position: fixed;
   top: 0;
   left: 0;
   align-items: center;
   transition: transform 0.1s ease-out
-}
+} */
 
 .progress-bar {
   display: flex;

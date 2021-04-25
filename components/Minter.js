@@ -137,6 +137,10 @@ const FakeCard = ({animate, animationSize, onClick}) => {
 
 const Form = ({
   mintMenuOpen,
+  name,
+  setName,
+  description,
+  setDescription,
   quantity,
   setQuantity,
   file,
@@ -178,11 +182,15 @@ const Form = ({
       setMintMenuStep(2);
     }}>
       <div className="label">Name</div>
-      <input type="text" placeholder="Name" ref={el => {
+      <input type="text" placeholder="Name" value={name} onChange={e => {
+        setName(e.target.value);
+      }} ref={el => {
         nameEl = el;
       }} />
       <div className="label">Description</div>
-      <textarea placeholder="Description"/>
+      <textarea value={description} onChange={e => {
+        setDescription(e.target.value);
+      }} placeholder="Description" />
       <div className="label">Source</div>
       <div className="radio">
         <label>

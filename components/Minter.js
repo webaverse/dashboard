@@ -315,6 +315,19 @@ class DragNDrop extends Component {
   }
 }
 
+const CardIframe = ({
+}) => {
+  const width = 200;
+  const height = width / 2.5 * 3.5;
+  return (
+    <iframe
+      width={width}
+      height={height}
+      src={`https://cards.webaverse.com/?t=${108}&w=${200}`}
+    />
+  );
+};
+
 const Minter = ({
   mintMenuOpen,
   setMintMenuOpen,
@@ -635,6 +648,9 @@ const Minter = ({
             <div className="rrhs">
               <div className="h1">{selectedTabDefaulted} NFT</div>
               <div className="description">{nftTypeDescriptions[selectedTabDefaulted]}</div>
+              <div className="card-preview">
+                <CardIframe />
+              </div>
               <div className="infobox">
                 <div className="h1">Mint with SILK</div>
                 <div className="row">

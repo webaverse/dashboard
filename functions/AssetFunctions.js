@@ -561,7 +561,8 @@ export const mintNft = async (hash, name, ext, description, quantity, state) => 
       const tokenId = new web3['mainnetsidechain'].utils.BN(result.logs[0].topics[3].slice(2), 16).toNumber();
       tokenIds = [tokenId, tokenId + quantity - 1];
       // handleSuccess(tokenId);
-      return tokenId;
+      // return tokenId;
+      return tokenIds;
     } else {
       throw new Error('minting failed');
     }

@@ -635,6 +635,7 @@ a {
 .slider .contents .wrap-slider .lhs .form .file {
   display: flex;
   height: 32px;
+  margin-bottom: 20px;
   align-items: center;
 }
 .slider .contents .wrap-slider .lhs .form .file .text {

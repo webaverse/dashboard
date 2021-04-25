@@ -669,15 +669,20 @@ a {
   margin-bottom: -100px;
   padding-bottom: 90px;
 }
-.slider .contents .wrap-slider .rrhs .card-preview {
-  display: flex;
-  margin: 50px 0;
-  flex: 1;
-}
+.slider .contents .wrap-slider .rrhs .card-preview,
 .slider .contents .wrap-slider .rrhs .card-preview iframe {
   --size: 200px;
   width: var(--size);
   height: calc(var(--size) / 2.5 * 3.5 + 3px);
+  min-width: var(--size);
+  min-height: calc(var(--size) / 2.5 * 3.5 + 3px);
+}
+.slider .contents .wrap-slider .rrhs .card-preview {
+  display: flex;
+  margin: 30px 0;
+  flex: 1;
+}
+.slider .contents .wrap-slider .rrhs .card-preview iframe {
   border: 0;
   overflow: hidden;
 }

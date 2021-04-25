@@ -145,6 +145,7 @@ const Form = ({
   setUrl,
   source,
   setSource,
+  handleLoadFile,
   handleLoadUrl,
 }) => {
   let nameEl = null;
@@ -208,7 +209,7 @@ const Form = ({
       {source === 'file' ?
         [
           (<div className="label" key="file">File</div>),
-          (<input type="file" placeholder="File" value={''} onChange={e => {
+          (<input type="file" placeholder="File" onChange={e => {
             const files = Array.from(e.target.files);
             if (files.length > 0) {
               setFile(files[0]);
@@ -233,7 +234,11 @@ const Form = ({
       <input className={enabled ? '' : 'disabled'} type="button" value="Preview NFT" onChange={e => {}} disabled={!enabled} onClick={e => {
         setMintMenuStep(2);
         
-        handleLoadUrl(url);
+        if (source === 'file') {
+          handleLoadFile(file);
+        } else if (source === 'url') {
+          handleLoadUrl(url);
+        }
       }} />
     </form>
   );
@@ -660,6 +665,7 @@ const Minter = ({
             setSource={setSource}
             hash={hash}
             ext={ext}
+            handleLoadFile={handleLoadFile}
             handleLoadUrl={handleLoadUrl}
           />
           <div className="middle">
@@ -729,6 +735,7 @@ const Lhs = ({
   setSource,
   hash,
   ext,
+  handleLoadFile,
   handleLoadUrl,
 }) => {
   return (
@@ -759,6 +766,7 @@ const Lhs = ({
           setUrl={setUrl}
           source={source}
           setSource={setSource}
+          handleLoadFile={handleLoadFile}
           handleLoadUrl={handleLoadUrl}
         />
       </div>

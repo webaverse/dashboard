@@ -611,7 +611,6 @@ a {
 .slider .contents .wrap-slider .lhs .form .radio {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
   user-select: none;
 }
 .slider .contents .wrap-slider .lhs .form .radio input[type=radio] {
@@ -712,10 +711,18 @@ a {
 .slider .contents .wrap-slider .lhs .form input[type=text],
 .slider .contents .wrap-slider .lhs .form input[type=number],
 .slider .contents .wrap-slider .lhs .form textarea,
-.slider .contents .wrap-slider .lhs .form input[type=file] {
-  display: flex;
+.slider .contents .wrap-slider .lhs .form input[type=file],
+.slider .contents .wrap-slider .lhs .form .radio
+{
   margin: 0;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+}
+.slider .contents .wrap-slider .lhs .form input[type=text],
+.slider .contents .wrap-slider .lhs .form input[type=number],
+.slider .contents .wrap-slider .lhs .form textarea,
+.slider .contents .wrap-slider .lhs .form input[type=file]
+{
+  display: flex;
   padding: 5px;
   font-family: 'FuturaStd-Heavy';
 }
@@ -777,6 +784,15 @@ a {
 }
 .slider .contents .wrap-slider .lhs .form input[type=file] {
   height: 32px;
+  padding: 0;
+}
+.slider .contents .wrap-slider .lhs .form .sublabel {
+  margin-top: -26px;
+  margin-bottom: 20px;
+  color: #bbb;
+  font-family: 'FuturaStd-Heavy';
+  font-size: 11px;
+  text-align: left;
 }
 
 .slider .contents .wrap-slider .lhs .form input[type=text]::placeholder,

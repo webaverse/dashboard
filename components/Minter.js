@@ -237,16 +237,17 @@ const Form = ({
               }
             }} key="file2" />
           ),
+          (<div className="sublabel" key="file3">(or, drag-and-drop a file)</div>),
         ]
       :
         [
-          (<div className="label" key="file3">URL</div>),
+          (<div className="label" key="file4">URL</div>),
           (<input type="text" placeholder="https://" value={url} onChange={e => {
             // console.log('url change', e);
             setUrl(e.target.value);
           }} ref={el => {
             urlEl = el;
-          }} key="file4" />),
+          }} key="file5" />),
         ]
       }
       <div className="label">Quantity</div>

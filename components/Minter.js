@@ -789,7 +789,17 @@ const Minter = ({
                 </Link>
               </Fragment>
             :
-              <div className="h2">Error minting :|</div>
+              <Fragment>
+                <div className="h1">Error minting :|</div>
+                <Link href="/mint">
+                  <a>
+                    <input type="button" value="Try again" onChange={e => {}} onClick={e => {
+                      e.preventDefault();
+                      setMintMenuStep(1);
+                    }} />
+                  </a>
+                </Link>
+              </Fragment>
             }
           </div>
         </div>

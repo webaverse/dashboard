@@ -372,6 +372,7 @@ const Minter = ({
   const [id, setId] = useState(Math.floor(Math.random() * 1000));
   const [mintedTokenId, setMintedTokenId] = useState(0);
   const [previewError, setPreviewError] = useState(false);
+  const [mintError, setMintError] = useState(false);
   
   const handleLoadFile = async file => {
     console.log('load file name', file);
@@ -568,13 +569,26 @@ const Minter = ({
     };
     _recurse();
   };
-  
   useEffect(() => {
     if (mintMenuStep === 4) {
       _hitEffect();
     }
   }, [mintMenuStep]);
   
+  const _mint = async () => {
+    setMintError(false);
+    
+    try {
+      const quantity = 1000000;
+      const tokenIds = await mintNft(hash, name, ext, description, quantity, globalState);
+      console.log('got token ids', tokenIds);
+    } catch (err) {
+      setMintError(true);
+      console.warn(err);
+    } finally {
+      setMintMenuStep(4);
+    }
+  };
   // console.log('got global state', globalState);
   const {
     name: userName,
@@ -716,8 +730,9 @@ const Minter = ({
                   <div className="value">{(globalState.balance - 10).toLocaleString()}</div>
                 </div>
                 <div className="buttons">
-                  <input className="ok" type="button" value="Confirm" disabled={!loaded} onChange={e => {}} onClick={e => {
+                  <input className="ok" type="button" value="Confirm" disabled={!(hash && ext && loaded)} onChange={e => {}} onClick={async e => {
                     setMintMenuStep(3);
+                    _mint();
                   }} />
                   <input className="cancel" type="button" value="Reject" onChange={e => {}} onClick={e => {
                     setMintMenuStep(1);

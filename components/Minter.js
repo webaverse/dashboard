@@ -296,6 +296,8 @@ const Minter = ({
     
     setLoading(true);
     setLoaded(false);
+    setHash('');
+    setExt('');
 
     const fileExt = getExt(file.name);
     if (fileExt === 'zip') {
@@ -548,7 +550,7 @@ const Minter = ({
                     <div>. Here's a preview:</div>
                   </div>
                 </div> */}
-                {loaded ?
+                {(hash && ext) ?
                   <PreviewIframe
                     hash={hash}
                     ext={ext}

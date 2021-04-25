@@ -213,6 +213,8 @@ const Form = ({
             const files = Array.from(e.target.files);
             if (files.length > 0) {
               setFile(files[0]);
+            } else {
+              setFile(null);
             }
           }} key="file2" />),
         ]
@@ -693,13 +695,17 @@ const Minter = ({
             <div className="label">Templates</div>
             <div className="subtabs">
               {templates.map(([name, imgSrc, srcUrl], i) => {
+                const locked = !srcUrl;
                 return (
                   <div className="tab-wrap" onClick={e => _setSelectedTab(name)} key={i}>
                     <div
-                      className={`tab ${selectedTab === name ? 'selected' : ''}`}
+                      className={`tab ${selectedTab === name ? 'selected' : ''} ${locked ? 'locked' : ''}`}
                     >
                       <img src={imgSrc} />
                       <span>{name}</span>
+                      {locked ?
+                        <img className="lock-icon" src="" />
+                      : null}
                     </div>
                   </div>
                 );

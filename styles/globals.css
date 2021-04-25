@@ -530,6 +530,11 @@ a {
 .slider .preview .iframe {
   border: 0;
 }
+.slider .preview .iframe:not(.loaded),
+.slider .preview .iframe-placeholder.loaded
+{
+  visibility: hidden;
+}
 .iframe-placeholder {
   position: absolute;
   top: 0;
@@ -539,6 +544,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: none;
 }
 .slider .contents .wrap-slider .step-1-only,
 .slider .contents .wrap-slider .step-2-only {

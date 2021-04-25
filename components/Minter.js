@@ -235,12 +235,13 @@ const Form = ({
 const PreviewIframe = ({
   hash,
   ext,
+  loaded,
 }) => {
   // `{storageHost}/ipfs/${hash}`
   const src = `https://127.0.0.1:3001/preview.html?hash=${hash}&ext=${ext}`;
   return (
     <iframe
-      className="iframe"
+      className={`iframe ${loaded ? 'loaded' : ''}`}
       src={src}
     />
   );
@@ -536,15 +537,14 @@ const Minter = ({
                   <PreviewIframe
                     hash={hash}
                     ext={ext}
+                    loaded={loaded}
                   />
                 : null}
-                {!loaded ?
-                  <div className="iframe-placeholder">
-                    <ProgressBar
-                      value={mintProgress}
-                    />
-                  </div>
-                 : null}
+                <div className={`iframe-placeholder ${loaded ? 'loaded' : ''}`}>
+                  <ProgressBar
+                    value={mintProgress}
+                  />
+                </div>
               </div>
             </div>
             <div className="rrhs">

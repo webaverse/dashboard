@@ -542,9 +542,14 @@ a {
   left: 0;
   right: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   pointer-events: none;
+}
+.iframe-placeholder .h1 {
+  margin-bottom: 20px;
+  font-size: 26px;
 }
 .iframe-placeholder .progress-bar {
   border-color: #CCC;

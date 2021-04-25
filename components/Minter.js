@@ -558,6 +558,7 @@ const Minter = ({
                   />
                 : null}
                 <div className={`iframe-placeholder ${loaded ? 'loaded' : ''}`}>
+                  <div className="h1">Loading preview...</div>
                   <ProgressBar
                     value={mintProgress}
                   />

@@ -295,9 +295,6 @@ const Minter = ({
     console.log('load file name', file);
     
     setLoading(true);
-    setLoaded(false);
-    setHash('');
-    setExt('');
 
     const fileExt = getExt(file.name);
     if (fileExt === 'zip') {
@@ -374,6 +371,10 @@ const Minter = ({
     setLoading(false);
   };
   const handleLoadUrl = async url => {
+    setLoaded(false);
+    setHash('');
+    setExt('');
+    
     const repoZipUrl = urlToRepoZipUrl(url);
     if (repoZipUrl) {
       await handleLoadUrl(repoZipUrl);
@@ -387,6 +388,10 @@ const Minter = ({
   const handleLoadTemplate = async templateName => {
     const template = templates.find(([name]) => name == templateName);
     const [name, icon, url] = template;
+    
+    setLoaded(false);
+    setHash('');
+    setExt('');
     
     const repoZipUrl = urlToRepoZipUrl(url);
     if (repoZipUrl) {

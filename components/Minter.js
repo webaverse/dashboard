@@ -368,6 +368,8 @@ const Minter = ({
   const [ext, setExt] = useState('');
   const [jitter, setJitter] = useState([0, 0]);
   const [loaded, setLoaded] = useState(false);
+  const [id, setId] = useState(Math.floor(Math.random() * 1000));
+  const [mintedTokenId, setMintedTokenId] = useState(0);
   
   const handleLoadFile = async file => {
     console.log('load file name', file);
@@ -577,7 +579,6 @@ const Minter = ({
     address,
     avatarPreview,
   } = globalState;
-  const tokenId = 1; // XXX
 
   useEffect(() => {
     const _message = e => {
@@ -601,7 +602,6 @@ const Minter = ({
   
   // console.log('got global state', globalState);
   
-  const id = 100;
   const image = (hash && ext) ? `https://preview.exokit.org/${hash}.${ext}/preview.png` : '';
   const minterUsername = globalState.username;
   const minterAvatarPreview = globalState.avatarPreview;
@@ -753,7 +753,7 @@ const Minter = ({
                 <input type="button" value="View in inventory" onChange={e => {}}/>
               </a>
             </Link>
-            <Link href={`/assets/${tokenId}`}>
+            <Link href={`/assets/${mintedTokenId}`}>
               <a className={`item`}>
                 <FakeCard
                   animate={true}

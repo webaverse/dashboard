@@ -1023,14 +1023,15 @@ const CardDetails = ({
                           <Fragment>
                             <input type="text" className="name-input" value={editedName} onChange={e => {
                               setEditedName(e.target.value);
-                            }} ref={el => {
-                              nameInputEl = el;
-                            }} />
-                            <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onKeyDown={e => {
+                            }} onKeyDown={e => {
+                              console.log('got code', e.which);
                               if (e.which === 13) {
                                 _saveName();
                               }
-                            }} onClick={_saveName} />
+                            }} ref={el => {
+                              nameInputEl = el;
+                            }} />
+                            <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={_saveName} />
                           </Fragment>
                         }
                       </div>
@@ -1093,14 +1094,14 @@ const CardDetails = ({
                         <Fragment>
                           <textarea className="description-input" value={editedDescription} onChange={e => {
                             setEditedDescription(e.target.value);
-                          }} ref={el => {
-                            descriptionInputEl = el;
-                          }} />
-                          <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onKeyDown={e => {
+                          }} onKeyDown={e => {
                             if (e.which === 13) {
                               _saveDescription();
                             }
-                          }}
+                          }} ref={el => {
+                            descriptionInputEl = el;
+                          }} />
+                          <input type="button" className="edit-save-button" value="Save" onChange={e => {}}
                           onClick={_saveDescription} />
                         </Fragment>
                       }

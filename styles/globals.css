@@ -1436,3 +1436,11 @@ html.hit {
 .fake-card .card-wrap {
   pointer-events: none;
 }
+
+#nprogress .bar {
+  background: #29b6f6; 
+  /* background-image: linear-gradient(to right, #7474BF, #348AC7); */
+}
+#nprogress .peg {
+  box-shadow: none;
+}

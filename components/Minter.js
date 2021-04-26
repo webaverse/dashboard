@@ -20,6 +20,7 @@ import JSZip from '../webaverse/jszip.js';
 
 const nftTypeDescriptions = {
   image: `Image NFT lets you store visual art on the blockchain. They are represented as planes in the virtual world.`,
+  gif: `Gif NFT lets you store animated visual art on the blockchain. They are represented as animated planes in the virtual world.`,
   video: `Video NFT lets you store video clips on the blockchain. They are represented as screens in the virtual world.`,
   audio: `Audio NFT lets you store audio compositions on the blockchain. They are represented as audio nodes in the virtual world.`,
   avatar: `Avatar NFT lets you create VRM avatars on the blockchain. They can be worn in the virtual world.`,

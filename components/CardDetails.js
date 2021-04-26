@@ -9,7 +9,8 @@ import AssetCard3D from "./Card3D";
 import AssetCardLive from "./CardLive";
 import User from "./User";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
-import {setNftMetadata} from "../functions/AssetFunctions.js";
+import {getProfileForCreator} from "../functions/UIStateFunctions";
+import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
 import {Networks} from "../webaverse/constants.js";
 import {getData} from "./Asset";
 // import { FileDrop } from 'react-file-drop';
@@ -30,6 +31,7 @@ import {
   cancelSale,
   sellAsset,
   buyAsset,
+  setNftMetadata,
 } from "../functions/AssetFunctions.js";
 import {formatError} from "../functions/Functions.js";
 import Loader from "./Loader";
@@ -404,6 +406,7 @@ const CardDetails = ({
   const [toggleResubmitOpen, setToggleResubmitOpen] = useState(false);
   const [toggleTransferOpen, setToggleTransferOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [owned, setOwned] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [imageView, setImageView] = useState('2d');
@@ -701,6 +704,30 @@ const CardDetails = ({
       handleError(new Error("No address given."));
     }
   };
+  const _getSidechainSignature = async () => {
+    const wallet = hdkey
+      .fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic))
+      .derivePath(`m/44'/60'/0'/0/0`)
+      .getWallet();
+    const privateKey = wallet.getPrivateKey().toString("hex");
+
+    const result2 = await web3['mainnetsidechain'].eth.accounts.sign(proofOfAddressMessage, privateKey);
+    const { v, r, s, signature } = result2;
+    const result3 = await web3['mainnetsidechain'].eth.accounts.recover(proofOfAddressMessage, v, r, s);
+    // console.log('got sig 2', {signature});
+    return signature;
+  };
+  const _getUnlockable = async (signatures, id) => {
+    const res = await fetch("https://unlock.exokit.org/", {
+      method: "POST",
+      body: JSON.stringify({
+        signatures,
+        id,
+      }),
+    });
+    const j = await res.json();
+    return j;
+  };
   const handleUnlock = async () => {
     // const ethereumSpec = await window.ethereum.enable();
     // const [address] = ethereumSpec;
@@ -724,7 +751,7 @@ const CardDetails = ({
         const j = await res.json();
         return j;
       }; */
-    const _getMainnetSignature = async () => {
+    /* const _getMainnetSignature = async () => {
       // const result1 = await window.ethereum.enable();
       await window.ethereum.enable();
       const signature = await web3.front.eth.personal.sign(
@@ -734,47 +761,27 @@ const CardDetails = ({
       const result3 = await web3.front.eth.personal.ecRecover(proofOfAddressMessage, signature);
       // console.log('got sig 1', {signature});
       return signature;
-    };
-    const _getSidechainSignature = async () => {
-      const wallet = hdkey
-        .fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic))
-        .derivePath(`m/44'/60'/0'/0/0`)
-        .getWallet();
-      const privateKey = wallet.getPrivateKey().toString("hex");
+    }; */
 
-      const result2 = await web3['mainnetsidechain'].eth.accounts.sign(proofOfAddressMessage, privateKey);
-      const { v, r, s, signature } = result2;
-      const result3 = await web3['mainnetsidechain'].eth.accounts.recover(proofOfAddressMessage, v, r, s);
-      // console.log('got sig 2', {signature});
-      return signature;
-    };
-    const _getUnlockable = async (signatures, id) => {
-      const res = await fetch("https://unlock.exokit.org/", {
-        method: "POST",
-        body: JSON.stringify({
-          signatures,
-          id,
-        }),
-      });
-      const j = await res.json();
-      return j;
-    };
-
-    const [mainnetSignature, sidechainSignature] = await Promise.all([
-      _getMainnetSignature(),
+    const [
+      addressProofs,
+      sidechainSignature,
+    ] = await Promise.all([
+      (async () => {
+        const profile = await getProfileForCreator(globalState.address);
+        const addressProofs = getAddressProofs(profile);
+        return addressProofs;
+      })(),
       _getSidechainSignature(),
-    ]);
-    const spec = await _getUnlockable(
-      [mainnetSignature, sidechainSignature],
+    ])
+    const spec = _getUnlockable(
+      addressProofs
+        .concat([
+          sidechainSignature,
+        ]),
       id
     );
-    // console.log('get all tokens', spec);
     setUnlockableSpec(spec);
-
-    /* unlocksEl.innerHTML = allTokens.map(t => `<li class=token>
-        ${t.id} - ${t.properties.hash} - ${t.properties.name} - ${t.properties.ext} - ${t.properties.unlockable} = ${t.unlocked}
-      </li>`).join('\n'); */
-    // console.log('got results', results);
   };
   const openFileBrowser = () => {
     setFileBrowserOpen(true);
@@ -808,6 +815,24 @@ const CardDetails = ({
   const spec = procgen(id + '')[0];
   // console.log('got spec', spec);
   let cardSceneWrapEl = null;
+  
+  useEffect(async () => {
+    if (globalState.address) {
+      const {
+        web3,
+      } = await getBlockchain();
+      
+      const profile = await getProfileForCreator(globalState.address);
+      const addressProofs = getAddressProofs(profile);
+      const sidechainAddress = globalState.address;
+      const provenAddresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
+      const addresses = [sidechainAddress].concat(provenAddresses);
+
+      // console.log('got addresses', addresses, currentOwnerAddress);
+
+      setOwned(addresses.includes(currentOwnerAddress));
+    }
+  }, [globalState.address]);
 
   return (
     <Fragment>

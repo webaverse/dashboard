@@ -376,17 +376,23 @@
   flex-direction: column;
 }
 .assetDetailsLeft .name,
+.assetDetailsLeft .name-placeholder,
 .assetDetailsLeft .description,
 .assetDetailsLeft .ipfs
 {
   display: flex;
   justify-content: flex-start;
 }
-.assetDetailsLeft .name {
+.assetDetailsLeft .name,
+.assetDetailsLeft .name-placeholder
+{
   font-family: 'FuturaStd-Heavy';
   font-size: 30px;
   line-height: 50px;
   letter-spacing: 1px;
+}
+.assetDetailsLeft .name-placeholder {
+  color: #CCC;
 }
 .assetDetailsLeft .description {
   font-family: 'GillSans';

@@ -965,8 +965,11 @@ const CardDetails = ({
                         avatarPreview={ownerAvatarPreview}
                       />
                       <div className="assetDetailsLeft">
-                        <div className="name">{name}</div>
-                          {/* <div className="description">{description}</div> */}
+                        {name ?
+                          <div className="name">{name}</div>
+                        :
+                          <div className="name-placeholder">Untitled</div>
+                        }
                       </div>
                       <div className="stats">
                         <div className="stat-label">Edition</div>

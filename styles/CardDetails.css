@@ -104,7 +104,7 @@
   visibility: hidden;
 }
 .detailsSection.middle .edit-icon {
-  margin-top: 30px;
+  margin-top: 40px;
   margin-bottom: auto;
 }
 .detailsSection .description,
@@ -113,8 +113,8 @@
   margin: 30px 50px;
   margin-left: 50px;
   margin-right: 20px;
-  justify-content: flex-start;
-  align-items: flex-start;
+  /* justify-content: flex-start;
+  align-items: flex-start; */
 }
 .detailsSection .description {
   min-height: 600px;

@@ -51,7 +51,7 @@
   width: 100vw;
   height: 80vh;
   margin: 70px;
-  background-color: #FFF;
+  /* background-color: #FFF; */
   object-fit: contain;
 }
 .content-preview-2d {

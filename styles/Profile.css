@@ -254,11 +254,23 @@
   font-family: monospace;
   font-size: 13px;
 }
+
+.profileHeader .profileText.address.main,
+.profileHeader .profileText.address.clickable {
+  cursor: pointer;
+}
+.profileHeader .profileText.address.clickable {
+  background-color: #f0f0f0;
+}
+.profileHeader .profileText.address.clickable:hover {
+  background-color: #e0e0e0;
+}
 .profileHeader .profileText.address.main {
   background-image: linear-gradient(to bottom, #948E99, #2E1437);
   color: #FFF;
 }
 .profileHeader .profileText.main .icon,
+.profileHeader .profileText.clickable .icon,
 .profileHeader .profileText:hover .icon {
   visibility: visible;
 }
@@ -274,7 +286,12 @@
   cursor: pointer;
   visibility: hidden;
 }
-.profileHeader .profileText.main .icon {
+.profileHeader .profileText.main .icon,
+.profileHeader .profileText.clickable .icon
+{
+  opacity: 1;
+}
+.profileHeader .profileText.clickable {
   opacity: 1;
 }
 

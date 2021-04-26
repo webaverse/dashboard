@@ -57,6 +57,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                           <p className="profileText address" key={address}>{address} <img className="icon" src="/cancel.svg" /></p>
                         );
                       })}
+                      <p className="profileText address clickable">+ Add address</p>
                       {profile.mainnetAddress ? (
                           <p className="profileText address">
                               Mainnet:{" "}

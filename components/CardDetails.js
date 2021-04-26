@@ -1023,6 +1023,8 @@ const CardDetails = ({
                               console.log('got code', e.which);
                               if (e.which === 13) {
                                 _saveName();
+                              } else if (e.which === 27) {
+                                setEditName(false);
                               }
                             }} ref={el => {
                               nameInputEl = el;
@@ -1093,6 +1095,8 @@ const CardDetails = ({
                           }} onKeyDown={e => {
                             if (e.which === 13) {
                               _saveDescription();
+                            } else if (e.which === 27) {
+                              setEditDescription(false);
                             }
                           }} ref={el => {
                             descriptionInputEl = el;

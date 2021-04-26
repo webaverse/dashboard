@@ -92,6 +92,8 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                               console.log('got code', e.which);
                               if (e.which === 13) {
                                 _saveName();
+                              } else if (e.which === 27) {
+                                setEditName(false);
                               }
                             }} ref={el => {
                               nameInputEl = el;

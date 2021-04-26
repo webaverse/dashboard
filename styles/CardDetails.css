@@ -99,14 +99,13 @@
   flex-direction: column;
   align-items: center;
 }
-.detailsSection.right .currentLocation {
-  margin-top: 30px;
-  padding: 10px;
-  background-image: linear-gradient(to right, #e0e0e0, #f4f4f4);
+.currentLocation {
+  margin-bottom: 20px;
+  /* background-image: linear-gradient(to right, #e0e0e0, #f4f4f4); */
   /* border: 2px solid #333; */
   border-radius: 5px;
 }
-.detailsSection.right .currentLocation .label {
+.currentLocation .label {
   display: flex;
   font-family: 'FuturaStd-Heavy';
   text-transform: uppercase;
@@ -115,15 +114,18 @@
   line-height: 16px;
   letter-spacing: 1px;
 }
-.detailsSection.right .currentLocation .value {
+.currentLocation .value {
   display: flex;
-  margin: 10px 0;
+  padding: 10px;
+  align-items: center;
 }
-.detailsSection.right .currentLocation .icon {
-  max-width: 30px;
-  max-height: 30px;
+.currentLocation .icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  object-fit: contain;
 }
-.detailsSection.right .currentLocation input[type=button] {
+.currentLocation input[type=button] {
   display: flex;
   padding: 5px;
   background-color: transparent;
@@ -621,7 +623,7 @@
 .details {
   display: flex;
   margin: 0;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   padding: 0;
   flex-direction: column;
 }

@@ -400,7 +400,7 @@ const TransferMenu = ({
           <img className="transfer-icon" src="/chevron-down.svg" onDragStart={cancelEvent} />
           <div className="network">
             <img className="icon" src="/ethereum.png" onDragStart={cancelEvent} />
-            <div className="text">Ethereum Mainnet</div>
+            <div className="text">Ethereum mainnet</div>
           </div>
         </div>
       </div>
@@ -1145,6 +1145,80 @@ const CardDetails = ({
                             <div className="value">{`No`}</div>
                           </div>
                         </ul>
+                        <div className="currentLocation">
+                          <div className="label">Current location</div>
+                          {(() => {
+                            const match = currentLocation.match(/^(.*?)(-stuck)?$/);
+                            const currentLocationRaw = match[1];
+                            const isStuck = !!match[2];
+                            
+                            const MaybeStuck = () => {
+                              return (isStuck ?
+                                <div className="warning">
+                                  <img className="icon" src="/warning.svg" />
+                                  <div>This token is stuck between chains. No worries, you can re-submit the transaction to unstick.</div>
+                                  <input
+                                    type="button"
+                                    onClick={e => {
+                                      console.log('click resubmit', e);
+                                    }}
+                                  />
+                                </div>
+                              : null);
+                            };
+                            const MaybeTransfer = () => {
+                              return (!isStuck ?
+                                <input type="button" value="Transfer" onChange={e => {}} className="transfer" onClick={e => {
+                                  setTransferOpen(true);
+                                }} />
+                              : null);
+                            };
+                            switch (currentLocationRaw) {
+                              case 'mainnetsidechain': {
+                                return (
+                                  <Fragment>
+                                    <div className="value">
+                                      <img className="icon" src="/webaverse.png" />
+                                      <div className="text">Webaverse sidechain</div>
+                                      <MaybeStuck />
+                                    </div>
+                                    {/* <MaybeTransfer /> */}
+                                  </Fragment>
+                                );
+                                break;
+                              }
+                              case 'mainnet': {
+                                return (
+                                  <Fragment>
+                                    <div className="value">
+                                      <img className="icon" src="/ethereum.png" />
+                                      <div className="text">Webaverse sidechain</div>
+                                      <MaybeStuck />
+                                    </div>
+                                    /* <MaybeTransfer /> */}
+                                  </Fragment>
+                                );
+                                break;
+                              }
+                              case 'polygon': {
+                                return (
+                                  <Fragment>
+                                    <div className="value">
+                                      <img className="icon" src="/polygon.png" />
+                                      <div className="text">Webaverse sidechain</div>
+                                      <MaybeStuck />
+                                    </div>
+                                    /* <MaybeTransfer /> */}
+                                  </Fragment>
+                                );
+                                break;
+                              }
+                              default: {
+                                return <div>Unknown</div>
+                              }
+                            }
+                          })()}
+                        </div>
                         <div className="stat collaborators">
                           <div className="collaborator">
                           </div>
@@ -1197,80 +1271,6 @@ const CardDetails = ({
                       }
                     </div>
                     <div className="detailsSection right">
-                      <div className="currentLocation">
-                        <div className="label">Current location</div>
-                        {(() => {
-                          const match = currentLocation.match(/^(.*?)(-stuck)?$/);
-                          const currentLocationRaw = match[1];
-                          const isStuck = !!match[2];
-                          
-                          const MaybeStuck = () => {
-                            return (isStuck ?
-                              <div className="warning">
-                                <img className="icon" src="/warning.svg" />
-                                <div>This token is stuck between chains. No worries, you can re-submit the transaction to unstick.</div>
-                                <input
-                                  type="button"
-                                  onClick={e => {
-                                    console.log('click resubmit', e);
-                                  }}
-                                />
-                              </div>
-                            : null);
-                          };
-                          const MaybeTransfer = () => {
-                            return (!isStuck ?
-                              <input type="button" value="Transfer" onChange={e => {}} className="transfer" onClick={e => {
-                                setTransferOpen(true);
-                              }} />
-                            : null);
-                          };
-                          switch (currentLocationRaw) {
-                            case 'mainnetsidechain': {
-                              return (
-                                <Fragment>
-                                  <div className="value">
-                                    <img className="icon" src="/webaverse.png" />
-                                    <div className="text">Webaverse sidechain</div>
-                                    <MaybeStuck />
-                                  </div>
-                                  <MaybeTransfer />
-                                </Fragment>
-                              );
-                              break;
-                            }
-                            case 'mainnet': {
-                              return (
-                                <Fragment>
-                                  <div className="value">
-                                    <img className="icon" src="/ethereum.png" />
-                                    <div className="text">Webaverse sidechain</div>
-                                    <MaybeStuck />
-                                  </div>
-                                  <MaybeTransfer />
-                                </Fragment>
-                              );
-                              break;
-                            }
-                            case 'polygon': {
-                              return (
-                                <Fragment>
-                                  <div className="value">
-                                    <img className="icon" src="/polygon.png" />
-                                    <div className="text">Webaverse sidechain</div>
-                                    <MaybeStuck />
-                                  </div>
-                                  <MaybeTransfer />
-                                </Fragment>
-                              );
-                              break;
-                            }
-                            default: {
-                              return <div>Unknown</div>
-                            }
-                          }
-                        })()}
-                      </div>
                       <ul className="owners">
                         <li className="owner"></li>
                         <li className="owner"></li>

@@ -118,10 +118,10 @@ const Navbar = ({
         <div className="navbarMenu">
           <div onClick={() => setDropdown(false)} className="leftMenuContainer">
             <Link href="/">
-              <Fragment>
+              <a>
                 <img className="logo" src="/webaverse.png" alt="Webaverse logo" />
                 <div className="beta-label">beta</div>
-              </Fragment>
+              </a>
             </Link>
           </div>
           {/* <div className="secondaryMenu">

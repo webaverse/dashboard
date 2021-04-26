@@ -35,6 +35,9 @@ const Card2D = ({
       e.preventDefault();
     };
     
+    // render gifs as gifs
+    image = image.replace(/\.gif\/preview\.png$/, '.gif/preview.gif');
+    
     return (
       <img
         src={image}

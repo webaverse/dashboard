@@ -1491,3 +1491,20 @@ html.hit {
   opacity: 1;
   filter: invert(58%) sepia(23%) saturate(4129%) hue-rotate(173deg) brightness(107%) contrast(93%);
 }
+.edit-save-button {
+  padding: 5px;
+  border: 2px solid currentColor;
+  border-radius: 5px;
+  font-family: 'GillSans-CondensedBold';
+  font-size: 12px;
+  color: #bbb;
+  text-transform: uppercase;
+  outline: none;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.edit-save-button:hover {
+  background-color: #333;
+  border-color: transparent;
+  color: #FFF;
+}

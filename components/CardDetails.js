@@ -419,7 +419,9 @@ const CardDetails = ({
   const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
   const [liked, setLiked] = useState(false);
   const [editName, setEditName] = useState(false);
+  const [editedName, setEditedName] = useState('');
   const [editDescription, setEditDescription] = useState(false);
+  const [editedDescription, setEditedDescription] = useState('');
 
   let userOwnsThisAsset, userCreatedThisAsset;
   const allAddresses = (globalState.address ? [globalState.address] : []).concat(addresses);
@@ -967,18 +969,30 @@ const CardDetails = ({
                         avatarPreview={ownerAvatarPreview}
                       />
                       <div className="assetDetailsLeft">
-                        {name ?
-                          <div className="name">{name}</div>
+                        {!editName ?
+                          <Fragment>
+                            {name ?
+                              <div className="name">{name}</div>
+                            :
+                              <div className="name-placeholder">Untitled</div>
+                            }
+                            <img
+                              className="edit-icon"
+                              src="/pencil.svg"
+                              onClick={e => {
+                                setEditName(!editName);
+                                setEditedName(name);
+                              }}
+                            />
+                          </Fragment>
                         :
-                          <div className="name-placeholder">Untitled</div>
+                          <Fragment>
+                            <input type="text" className="name-input" value={editedName} onChange={e => {
+                              setEditedName(e.target.value);
+                            }} />
+                            <input type="button" className="edit-save-button" value="Save" onChange={e => {}} />
+                          </Fragment>
                         }
-                        <img
-                          className="edit-icon"
-                          src="/pencil.svg"
-                          onClick={e => {
-                            setEditName(!editName);
-                          }}
-                        />
                       </div>
                       <div className="stats">
                         <div className="stat-label">Edition</div>
@@ -1017,20 +1031,32 @@ const CardDetails = ({
                       </div>
                     </div>
                     <div className="detailsSection middle">
-                      <div className="details-section-wrap">
-                        <div className="description">{description}</div>
-                        <div className="placeholder">
-                          <img src="/info.svg" />
-                          This NFT has no description :(
-                        </div>
-                      </div>
-                      <img
-                        className="edit-icon"
-                        src="/pencil.svg"
-                        onClick={e => {
-                          setEditDescription(!editDescription);
-                        }}
-                      />
+                      {editDescription ?
+                        <Fragment>
+                          <div className="details-section-wrap">
+                            <div className="description">{description}</div>
+                            <div className="placeholder">
+                              <img src="/info.svg" />
+                              This NFT has no description :(
+                            </div>
+                          </div>
+                          <img
+                            className="edit-icon"
+                            src="/pencil.svg"
+                            onClick={e => {
+                              setEditDescription(!editDescription);
+                              setEditedDescription(description);
+                            }}
+                          />
+                        </Fragment>
+                      :
+                        <Fragment>
+                          <textarea className="description-input" value={editedDescription} onChange={e => {
+                            setEditedDescription(e.target.value);
+                          }} />
+                          <input type="button" className="edit-save-button" value="Save" onChange={e => {}} />
+                        </Fragment>
+                      }
                     </div>
                     <div className="detailsSection right">
                       <ul className="owners">

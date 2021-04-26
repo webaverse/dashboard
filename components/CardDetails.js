@@ -9,6 +9,7 @@ import AssetCard3D from "./Card3D";
 import AssetCardLive from "./CardLive";
 import User from "./User";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
+import {setNftMetadata} from "../functions/AssetFunctions.js";
 import {Networks} from "../webaverse/constants.js";
 import {getData} from "./Asset";
 // import { FileDrop } from 'react-file-drop';
@@ -1011,10 +1012,12 @@ const CardDetails = ({
                             }} ref={el => {
                               nameInputEl = el;
                             }} />
-                            <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={e => {
+                            <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={async e => {
                               console.log('save name', editedName);
                               
                               setEditName(false);
+                              
+                              await setNftMetadata(id, 'name', editedName, globalState);
                             }} />
                           </Fragment>
                         }
@@ -1081,9 +1084,11 @@ const CardDetails = ({
                           }} ref={el => {
                             descriptionInputEl = el;
                           }} />
-                          <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={e => {
+                          <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={async e => {
                             console.log('save description', editedDescription);
                             setEditDescription(false);
+                            
+                            await setNftMetadata(id, 'description', editedDescription, globalState);
                           }} />
                         </Fragment>
                       }

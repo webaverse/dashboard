@@ -258,6 +258,25 @@
   background-image: linear-gradient(to bottom, #948E99, #2E1437);
   color: #FFF;
 }
+.profileHeader .profileText.main .icon,
+.profileHeader .profileText:hover .icon {
+  visibility: visible;
+}
+.profileHeader .profileText.main .icon {
+  filter: invert(100%) sepia(0%) saturate(1%) hue-rotate(202deg) brightness(104%) contrast(101%);
+}
+.profileHeader .profileText .icon {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  margin-left: 5px;
+  opacity: 0.5;
+  cursor: pointer;
+  visibility: hidden;
+}
+.profileHeader .profileText.main .icon {
+  opacity: 1;
+}
 
 .profile-page .card-buttons {
   right: 8vw !important;

@@ -51,10 +51,10 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                           {profile.name ? profile.name : "Anonymous"}
                       </h1>
                       <div className="profileText label">Addresses</div>
-                      <p className="profileText address main">{profile.address}</p>
+                      <p className="profileText address main">{profile.address} <img className="icon" src="/wallet.svg" /></p>
                       {addresses.map(address => {
                         return (
-                          <p className="profileText address" key={address}>{address}</p>
+                          <p className="profileText address" key={address}>{address} <img className="icon" src="/cancel.svg" /></p>
                         );
                       })}
                       {profile.mainnetAddress ? (

@@ -368,6 +368,7 @@
   position: absolute;
   display: flex;
   min-width: 300px;
+  min-height: 70px;
   margin-top: -60px;
   background-color: #FFF;
   border-radius: 10px;

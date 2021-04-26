@@ -576,9 +576,36 @@ export const mintNft = async (hash, name, ext, description, quantity, state) => 
   }
 };
 
-export const setHomespace = async (id, state, handleSuccess, handleError) => {
-  if (!state.loginToken)
+export const setNftMetadata = async (id, key, value, state) => {
+  if (!state.loginToken) {
     throw new Error('not logged in');
+  }
+  const { getNetworkName } = await getBlockchain();
+  const networkName = getNetworkName();
+
+  try {
+    const res = await fetch(`https://mainnetall-tokens.webaverse.com/${id}`);
+    const token = await res.json();
+    const {hash} = token.properties;
+    
+    console.log('setting metadata', 'NFT', 'setMetadata', hash, 'name', name);
+    
+    const result = await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setMetadata', hash, 'name', name);
+
+    console.log('got metadata set result', result);
+
+    // const newState = {...state, homeSpacePreview: preview };
+    // return newState;
+  } catch (err) {
+    console.log("ERROR: ", err);
+    throw err;
+  }
+};
+
+export const setHomespace = async (id, state, handleSuccess, handleError) => {
+  if (!state.loginToken) {
+    throw new Error('not logged in');
+  }
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 

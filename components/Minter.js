@@ -9,7 +9,8 @@ import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import ProgressBar from "../components/ProgressBar";
-import Asset from "../components/Asset";
+import AssetCard3D from "../components/Card3D";
+// import Asset from "../components/Asset";
 import User from "../components/User";
 import ShaderToyRenderer from "../components/ShaderToyRenderer";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
@@ -44,6 +45,39 @@ const templates = [
   ['scene', '/road.svg', null],
   ['vehicle', '/scooter.svg', null],
 ];
+
+const Card3D = ({
+  id,
+  hash,
+  ext,
+  loaded,
+}) => {
+  // `{storageHost}/ipfs/${hash}`
+  const qs = {
+    id,
+    hash,
+    ext,
+  };
+  let src = `${appPreviewHost}?`;
+  let first = true;
+  for (const k in qs) {
+    const v = qs[k];
+    if (v !== undefined) {
+      if (first) {
+        first = false;
+      } else {
+        src += '&';
+      }
+      src += `${k}=${v}`;
+    }
+  }
+  return (
+    <iframe
+      className={`iframe ${loaded ? 'loaded' : ''}`}
+      src={src}
+    />
+  );
+};
 
 const urlToRepoZipUrl = url => {
   // console.log('check url', url);
@@ -261,21 +295,6 @@ const Form = ({
         }
       }} />
     </form>
-  );
-};
-
-const AppPreviewIframe = ({
-  hash,
-  ext,
-  loaded,
-}) => {
-  // `{storageHost}/ipfs/${hash}`
-  const src = `${appPreviewHost}?hash=${hash}&ext=${ext}`;
-  return (
-    <iframe
-      className={`iframe ${loaded ? 'loaded' : ''}`}
-      src={src}
-    />
   );
 };
 
@@ -695,7 +714,7 @@ const Minter = ({
                   </div>
                 </div> */}
                 {(hash && ext) ?
-                  <AppPreviewIframe
+                  <AssetCard3D
                     hash={hash}
                     ext={ext}
                     loaded={loaded}

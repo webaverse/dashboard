@@ -54,7 +54,6 @@ const CardActions = ({
   setToggleResubmitOpen,
   toggleTransferOpen,
   setToggleTransferOpen,
-  is3d,
   unlockableSpec,
   imageView,
   handleUnlock,
@@ -86,7 +85,7 @@ const CardActions = ({
                 See in 3d
               </button>
             ) */}
-            {is3d && imageView != "2d" && (
+            {imageView != "2d" && (
               <button
                 className="assetDetailsButton"
                 onClick={() => setImageView("2d")}
@@ -435,11 +434,31 @@ const CardDetails = ({
     userOwnsThisAsset = false;
     userCreatedThisAsset = false;
   }
+  
+  let nameInputEl = null;
+  const _updateNameInputFocus = () => {
+    if (editName && nameInputEl) {
+      nameInputEl.focus();
+    }
+  };
+  useEffect(() => {
+    _updateNameInputFocus();
+  }, [editName]);
+  
+  let descriptionInputEl = null;
+  const _updateDescriptionInputFocus = () => {
+    if (editDescription && descriptionInputEl) {
+      descriptionInputEl.focus();
+    }
+  };
+  useEffect(() => {
+    _updateDescriptionInputFocus();
+  }, [editDescription]);
 
-  let is3d = false;
+  /* let is3d = false;
   if (ext.toLowerCase() === "vrm" || ext.toLowerCase() === "glb") {
     is3d = true;
-  }
+  } */
 
   const isForSale =
     buyPrice !== undefined && buyPrice !== null && buyPrice !== "";
@@ -989,6 +1008,8 @@ const CardDetails = ({
                           <Fragment>
                             <input type="text" className="name-input" value={editedName} onChange={e => {
                               setEditedName(e.target.value);
+                            }} ref={el => {
+                              nameInputEl = el;
                             }} />
                             <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={e => {
                               console.log('save name', editedName);
@@ -1057,6 +1078,8 @@ const CardDetails = ({
                         <Fragment>
                           <textarea className="description-input" value={editedDescription} onChange={e => {
                             setEditedDescription(e.target.value);
+                          }} ref={el => {
+                            descriptionInputEl = el;
                           }} />
                           <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={e => {
                             console.log('save description', editedDescription);
@@ -1084,7 +1107,6 @@ const CardDetails = ({
                     setToggleResubmitOpen={setToggleResubmitOpen}
                     toggleTransferOpen={toggleTransferOpen}
                     setToggleTransferOpen={setToggleTransferOpen}
-                    is3d={is3d}
                     unlockableSpec={unlockableSpec}
                     imageView={imageView}
                     handleUnlock={handleUnlock}

@@ -103,6 +103,10 @@
 .detailsSection:not(:hover) .edit-icon {
   visibility: hidden;
 }
+.detailsSection.middle .edit-icon {
+  margin-top: 30px;
+  margin-bottom: auto;
+}
 .detailsSection .description,
 .detailsSection .placeholder {
   display: flex;
@@ -110,6 +114,7 @@
   margin-left: 50px;
   margin-right: 20px;
   justify-content: flex-start;
+  align-items: flex-start;
 }
 .detailsSection .description {
   min-height: 600px;

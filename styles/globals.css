@@ -73,14 +73,21 @@ body {
   overflow-x: hidden;
   text-align: center;
 }
-#nprogress .bar {
+/* #nprogress .bar {
   background: #c4005d;
-}
+} */
 #nprogress .spinner-icon {
-  border-top-color: #c4005d;
-  border-left-color: #c4005d;
-  width: 5px; 
-  height: 5px; 
+  border-top-color: #29b6f6;
+  border-left-color: #29b6f6;
+  width: 20px; 
+  height: 20px; 
+}
+#nprogress .bar {
+  background: #29b6f6; 
+  /* background-image: linear-gradient(to right, #7474BF, #348AC7); */
+}
+#nprogress .peg {
+  box-shadow: none;
 }
 a {
   color: #000;
@@ -1474,10 +1481,13 @@ html.hit {
   color: #FFF;
 }
 
-#nprogress .bar {
-  background: #29b6f6; 
-  /* background-image: linear-gradient(to right, #7474BF, #348AC7); */
+.edit-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.5;
+  cursor: pointer;
 }
-#nprogress .peg {
-  box-shadow: none;
+.edit-icon:hover {
+  opacity: 1;
+  filter: invert(58%) sepia(23%) saturate(4129%) hue-rotate(173deg) brightness(107%) contrast(93%);
 }

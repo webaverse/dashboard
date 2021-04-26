@@ -269,6 +269,9 @@
   background-image: linear-gradient(to bottom, #948E99, #2E1437);
   color: #FFF;
 }
+.profileHeader .profileText.address.main:hover {
+  
+}
 .profileHeader .profileText.main .icon,
 .profileHeader .profileText.clickable .icon,
 .profileHeader .profileText:hover .icon {

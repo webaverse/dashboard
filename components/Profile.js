@@ -12,10 +12,15 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     if (!profile) {
         return null;
     }
+    
+    const profileName = profile.name || "Anonymous";
 
     // const [addresses, setAddresses] = useState(null);
     const [liked, setLiked] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [name, setName] = useState(profileName);
+    const [editName, setEditName] = useState(false);
+    const [editedName, setEditedName] = useState(profileName);
     const {globalState, setGlobalState} = useAppContext();
 
     const logout = () => {
@@ -33,6 +38,25 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     const handleDropdownOpen = e => {
       setDropdownOpen(!dropdownOpen);
     };
+    
+    const _saveName = async e => {  
+      console.log('save name', editedName);
+
+      setName(editedName);                 
+      setEditName(false);
+      
+      await setName(editedName, globalState);
+    };
+    
+    let nameInputEl = null;
+    const _updateNameInputFocus = () => {
+      if (editName && nameInputEl) {
+        nameInputEl.focus();
+      }
+    };
+    useEffect(() => {
+      _updateNameInputFocus();
+    }, [editName]);
 
     /* useEffect(async () => {
       if (!addresses) {
@@ -49,7 +73,32 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
               <div className="profileLeft">
                   <div className="profileWrap">
                       <h1 className="profileText mainName">
-                          {profile.name ? profile.name : "Anonymous"}
+                        {!editName ?
+                          <Fragment>
+                            <div className="text">{name}</div>
+                            <img
+                              className="edit-icon"
+                              src="/pencil.svg"
+                              onClick={e => {
+                                setEditName(true);
+                              }}
+                            />
+                          </Fragment>
+                        :
+                          <Fragment>
+                            <input type="text" className="name-input" value={editedName} onChange={e => {
+                              setEditedName(e.target.value);
+                            }} onKeyDown={e => {
+                              console.log('got code', e.which);
+                              if (e.which === 13) {
+                                _saveName();
+                              }
+                            }} ref={el => {
+                              nameInputEl = el;
+                            }} />
+                            <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={_saveName} />
+                          </Fragment>
+                        }
                       </h1>
                       <div className="profileText label">Addresses</div>
                       <p className="profileText address main">{profile.address} <img className="icon" src="/wallet.svg" /></p>
@@ -194,12 +243,6 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 </div>
               </div>
               <div className={`actions ${dropdownOpen ? 'open' : ''}`}>
-                {addresses.length > 0 ? <a key="removeMainnetAddressButton" className="action" onClick={() => handleRemoveMainnetAddress()}>
-                  Remove mainnet address
-                </a> : null}
-                <a key="connectMainnetAddressButton" className="action" onClick={() => handleAddMainnetAddress()}>
-                  Connect mainnet address
-                </a>
                 <a key="SILKToMainnetButton" className="action" onClick={() => handleDeposit()}>
                   Transfer SILK to mainnet
                 </a>
@@ -213,13 +256,13 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 <a key="SILKButton" className="action" onClick={() => handleWithdraw()}>
                   Transfer SILK from mainnet
                 </a>
-                <a key="nameChangeButton" className="action" onClick={() => {
+                {/* <a key="nameChangeButton" className="action" onClick={() => {
                   const name = prompt("What is your name?", "Satoshi");
                   setName(name, globalState, handleSuccess, handleError)
                   setLoading(true);
                 }}>
                   Change Name
-                </a>
+                </a> */}
                 <a key="logoutButton" className="action" onClick={() => logout()}>
                   Logout
                 </a>

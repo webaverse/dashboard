@@ -15,7 +15,7 @@ import ShaderToyRenderer from "../components/ShaderToyRenderer";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {blobToFile, getExt, parseQuery, schedulePerFrame} from "../webaverse/util";
 import {useAppContext} from "../libs/contextLib";
-import {storageHost, previewHost, cardsHost} from "../webaverse/constants";
+import {storageHost, appPreviewHost, cardsHost} from "../webaverse/constants";
 // import WaveSurfer from '../webaverse/wavesurfer.js';
 import JSZip from '../webaverse/jszip.js';
 
@@ -270,13 +270,13 @@ const Form = ({
   );
 };
 
-const PreviewIframe = ({
+const AppPreviewIframe = ({
   hash,
   ext,
   loaded,
 }) => {
   // `{storageHost}/ipfs/${hash}`
-  const src = `${previewHost}?hash=${hash}&ext=${ext}`;
+  const src = `${appPreviewHost}?hash=${hash}&ext=${ext}`;
   return (
     <iframe
       className={`iframe ${loaded ? 'loaded' : ''}`}
@@ -706,7 +706,7 @@ const Minter = ({
                   </div>
                 </div> */}
                 {(hash && ext) ?
-                  <PreviewIframe
+                  <AppPreviewIframe
                     hash={hash}
                     ext={ext}
                     loaded={loaded}

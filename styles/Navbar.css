@@ -82,6 +82,10 @@
   width: 40px;
   height: 40px;
 }
+.navbar .logo {
+  margin-top: 2px;
+  margin-right: 10px;
+}
 .navbar .leftMenuContainer .beta-label {
   position: absolute;
   left: 14px;

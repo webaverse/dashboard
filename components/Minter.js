@@ -33,7 +33,7 @@ const nftTypeDescriptions = {
   vehicle: `Vehicle NFT lets you create virtual vehicles on the blockchain. They can be ridden in the virtual world.`,
 };
 const templates = [
-  ['image', '/image.svg', '/gondola.png'],
+  ['image', '/image.svg', '/soundwaves54.jpg'],
   ['gif', '/gif.svg', '/rainbow-dash.gif'],
   ['video', '/video.svg', '/Neon1280.mp4'],
   ['audio', '/audio.svg', '/Chill1.mp3'],

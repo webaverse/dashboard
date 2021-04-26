@@ -348,38 +348,42 @@ const CardIframe = ({
   minterUsername,
   minterAvatarPreview,
 }) => {
-  const width = w;
-  const height = width / 2.5 * 3.5;
-  let src = `${cardsHost}/?`;
-  let first = true;
-  const qs = {
-    t,
-    w,
-    id,
-    name,
-    description,
-    image,
-    minterUsername,
-    minterAvatarPreview,
-  };
-  for (const k in qs) {
-    const v = qs[k];
-    if (v !== undefined) {
-      if (first) {
-        first = false;
-      } else {
-        src += '&';
+  if (t || id) {
+    const width = w;
+    const height = width / 2.5 * 3.5;
+    let src = `${cardsHost}/?`;
+    let first = true;
+    const qs = {
+      t,
+      w,
+      id,
+      name,
+      description,
+      image,
+      minterUsername,
+      minterAvatarPreview,
+    };
+    for (const k in qs) {
+      const v = qs[k];
+      if (v !== undefined) {
+        if (first) {
+          first = false;
+        } else {
+          src += '&';
+        }
+        src += `${k}=${v}`;
       }
-      src += `${k}=${v}`;
     }
+    return (
+      <iframe
+        width={width}
+        height={height}
+        src={src}
+      />
+    );
+  } else {
+    return null;
   }
-  return (
-    <iframe
-      width={width}
-      height={height}
-      src={src}
-    />
-  );
 };
 
 const Minter = ({

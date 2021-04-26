@@ -146,7 +146,7 @@ a {
   /* display: flex; */
   position: relative;
   min-height: calc(100vh - 90px - 74px);
-  margin-top: 90px;
+  margin-top: calc(90px + 10px);
   padding: 0 8vw;
 }
 .accounts-page .accounts {
@@ -156,7 +156,16 @@ a {
 .accounts-page .accounts .account {
   display: flex;
   flex-direction: column;
+  padding: 2px;
+  border: 2px solid transparent;
+  border-radius: 10px;
 }
+.accounts-page .accounts .account:hover {
+  border-color: #333;
+}
+/* .accounts-page .accounts .account:hover video {
+  transform: scale(1.2);
+} */
 .accounts-page .accounts .account .profileVideo,
 .accounts-page .accounts .account .profileVideoPlaceholder {
   --size: 200px;

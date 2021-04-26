@@ -2,20 +2,20 @@ import { runSidechainTransaction, getBlockchain } from '../webaverse/blockchain.
 import { previewExt, previewHost, storageHost } from '../webaverse/constants.js';
 import { getExt } from '../webaverse/util.js';
 
-export const setName = async (name, state, successCallback, errorCallback) => {
-  console.warn("Setting username in user object, but not to server");
+export const setName = async (name, state) => {
+  // console.warn("Setting username in user object, but not to server");
   try {
     await runSidechainTransaction(state.loginToken.mnemonic)(
-        "Account",
-        "setMetadata",
-        state.address,
-        "name",
-        name
-        );
-        if(successCallback) successCallback();
-    } catch(error) {
-        if(errorCallback) errorCallback();
-    }
+      'Account',
+      'setMetadata',
+      state.address,
+      'name',
+      name
+     );
+  } catch(err) {
+    console.warn(err);
+    throw err;
+  }
 };
 
 export const setFtu = async (name, avatarUrl, state) => {

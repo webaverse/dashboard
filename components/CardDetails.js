@@ -37,7 +37,7 @@ import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
 import wbn from '../webaverse/wbn.js';
-// import {blobToFile, getExt} from "../webaverse/util";
+import {cancelEvent} from "../webaverse/util";
 import FileBrowser from './FileBrowser';
 import AssetCardSwitch from './CardSwitch';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
@@ -833,11 +833,11 @@ const CardDetails = ({
                   >
                     <div className="card-buttons like">
                       <div className={`card-button ${liked ? 'selected open' : ''}`} onClick={handleLike}>
-                        <img className="only-selected" src="/heart_full.svg" />
-                        <img className="only-not-selected" src="/heart_empty.svg" />
+                        <img className="only-selected" src="/heart_full.svg" onDragStart={cancelEvent} />
+                        <img className="only-not-selected" src="/heart_empty.svg" onDragStart={cancelEvent} />
                       </div>
                       <div className="card-button help">
-                        <img src="/help.svg" />
+                        <img src="/help.svg" onDragStart={cancelEvent} />
                       </div>
                       <div className="card-button fullscreen" onClick={e => {
                         if (!document.fullscreenElement) {
@@ -848,15 +848,15 @@ const CardDetails = ({
                           document.exitFullscreen();
                         }
                       }}>
-                        <img src="/maximize.svg" />
+                        <img src="/maximize.svg" onDragStart={cancelEvent} />
                       </div>
                       <Link href={`/assets/` + id}>
                         <a className="card-button expand">
-                          <img src="/expand.svg" />
+                          <img src="/expand.svg" onDragStart={cancelEvent} />
                         </a>
                       </Link>
                       <div className={`card-button dropdown ${dropdownOpen ? 'open' : ''}`} onClick={handleDropdownOpen}>
-                        <img src="/dots.svg" />
+                        <img src="/dots.svg" onDragStart={cancelEvent} />
                       </div>
                     </div>
                     <div className={`actions ${dropdownOpen ? 'open' : ''}`}>

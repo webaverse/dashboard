@@ -344,7 +344,6 @@ export function convertMeshToPhysicsMesh(mesh) {
       }
       newGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     } else {
-      const positions = new Float32Array(geometry.attributes.position.array.length);
       for (let i = 0; i < positions.length; i += 3) {
         localVector
           .fromArray(geometry.attributes.position.array, i)
@@ -372,4 +371,8 @@ export const schedulePerFrame = (startFn, endFn) => {
       endFn();
     };
   });
+};
+
+export const cancelEvent = e => {
+  e.preventDefault();
 };

@@ -1,8 +1,10 @@
 import React, {Fragment, useState, useEffect} from "react";
 // import { Col } from "react-grid-system";
-import { useAppContext } from "../libs/contextLib";
+import {useAppContext} from "../libs/contextLib";
 import {proofOfAddressMessage} from "../constants/UnlockConstants";
 import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
+import {cancelEvent} from "../webaverse/util";
+import {setName} from "../functions/UserFunctions";
 import Clip from './Clip';
 
 const Profile = ({ loadout, balance, profile, addresses }) => {
@@ -66,7 +68,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                       <br />
                       <div className="profileText label">SILK</div>
                       <div className="silk">
-                        <img className="icon" src="/curve.svg" />
+                        <img className="icon" src="/curve.svg" onDragStart={cancelEvent} />
                         <div className="value">{balance ? Number(balance).toLocaleString() : '0'}</div>
                       </div>
                       <br />
@@ -156,14 +158,14 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
               </div>
               <div className="card-buttons like">
                 <div className={`card-button ${liked ? 'selected open' : ''}`} onClick={handleLike}>
-                  <img className="only-selected" src="/heart_full.svg" />
-                  <img className="only-not-selected" src="/heart_empty.svg" />
+                  <img className="only-selected" src="/heart_full.svg" onDragStart={cancelEvent} />
+                  <img className="only-not-selected" src="/heart_empty.svg" onDragStart={cancelEvent} />
                 </div>
                 <div className="card-button help">
-                  <img src="/help.svg" />
+                  <img src="/help.svg" onDragStart={cancelEvent} />
                 </div>
                 <div className={`card-button dropdown ${dropdownOpen ? 'open' : ''}`} onClick={handleDropdownOpen}>
-                  <img src="/dots.svg" />
+                  <img src="/dots.svg" onDragStart={cancelEvent} />
                 </div>
               </div>
               <div className={`actions ${dropdownOpen ? 'open' : ''}`}>

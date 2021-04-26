@@ -137,8 +137,8 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 </div>
                 <div className="profileLoadout">
                   <div className="profileLoadoutHeader">Loadout</div>
-                  {loadout ?
-                    loadout.map((item, i) =>
+                  {
+                    loadout.slice(0, 8).map((item, i) =>
                       item && item[3] ? (
                         <div className="profileLoadoutItem" key={i}>
                           <img
@@ -149,10 +149,10 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                             }}
                           />
                         </div>
-                      ) : null
+                      )
+                    :
+                      <div className="profileLoadoutItem light" key={i} />
                     )
-                  :
-                    <div className="profileLoadoutItem light" />
                   }
                 </div>
               </div>

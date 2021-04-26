@@ -272,30 +272,3 @@
   color: #AAA;
   font-size: 13px;
 }
-.actions {
-  position: absolute;
-  top: 60px;
-  right: 8vw;
-  min-width: 150px;
-  display: flex;
-  margin-bottom: auto;
-  padding: 5px;
-  flex-direction: column;
-  background-color: #e0e0e0;
-  background-image: linear-gradient(to right, #e0e0, #FFF);
-  /* border: 2px solid #333; */
-  border-radius: 5px;
-}
-.actions .action {
-  display: flex;
-  padding: 2px 5px;
-  border-radius: 5px;
-  /* font-family: 'FuturaStd-Heavy'; */
-  font-size: 13px;
-  justify-content: flex-start;
-  cursor: pointer;
-}
-.actions .action:hover {
-  background-color: #333;
-  color: #FFF;
-}

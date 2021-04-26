@@ -341,7 +341,7 @@ const CardIframe = ({
   minterUsername,
   minterAvatarPreview,
 }) => {
-  const width = 200;
+  const width = w;
   const height = width / 2.5 * 3.5;
   let src = `${cardsHost}/?`;
   let first = true;
@@ -656,7 +656,7 @@ const Minter = ({
   // console.log('got global state', globalState);
   
   const image = (hash && ext) ? `https://preview.exokit.org/${hash}.${ext}/preview.png` : '';
-  const minterUsername = globalState.username;
+  const minterUsername = globalState.name;
   const minterAvatarPreview = globalState.avatarPreview;
   
   return (
@@ -816,7 +816,13 @@ const Minter = ({
                 <Link href={`/assets/${mintedTokenId}`}>
                   <a className={`item`}>
                     <CardIframe
-                      t={mintedTokenId}
+                      w={300}
+                      id={mintedTokenId}
+                      name={name}
+                      description={description}
+                      image={image}
+                      minterUsername={minterUsername}
+                      minterAvatarPreview={minterAvatarPreview}
                     />
                     {/* <FakeCard
                       animate={true}

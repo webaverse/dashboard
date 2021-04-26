@@ -16,7 +16,6 @@ import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {blobToFile, getExt, parseQuery, schedulePerFrame} from "../webaverse/util";
 import {useAppContext} from "../libs/contextLib";
 import {storageHost, appPreviewHost, cardsHost} from "../webaverse/constants";
-// import WaveSurfer from '../webaverse/wavesurfer.js';
 import JSZip from '../webaverse/jszip.js';
 
 const nftTypeDescriptions = {
@@ -128,12 +127,6 @@ const FakeCard = ({animate, animationSize, onClick}) => {
     </div>
   );
 };
-
-/* const WaveSurferAudio = () => {
-  return (
-    <div />
-  );
-}; */
 
 const Form = ({
   mintMenuOpen,
@@ -283,11 +276,6 @@ const AppPreviewIframe = ({
       src={src}
     />
   );
-  /* <WaveSurferAudio /> */
-  /* <iframe
-    className="iframe"
-    src={frontendUrl}
-  /> */
 };
 
 class DragNDrop extends Component {

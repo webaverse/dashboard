@@ -166,7 +166,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                   <img src="/dots.svg" />
                 </div>
               </div>
-              {dropdownOpen ? <div className="actions">
+              <div className={`actions ${dropdownOpen ? 'open' : ''}`}>
                 {addresses.length > 0 ? <a key="removeMainnetAddressButton" className="action" onClick={() => handleRemoveMainnetAddress()}>
                   Remove mainnet address
                 </a> : null}
@@ -196,7 +196,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 <a key="logoutButton" className="action" onClick={() => logout()}>
                   Logout
                 </a>
-              </div> : null}
+              </div>
             </div>
         </div>
     );

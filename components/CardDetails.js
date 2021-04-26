@@ -859,7 +859,7 @@ const CardDetails = ({
                         <img src="/dots.svg" />
                       </div>
                     </div>
-                    {dropdownOpen ? <div className="actions">
+                    <div className={`actions ${dropdownOpen ? 'open' : ''}`}>
                       <div className="label">View</div>
                       {/* is3d && imageView != "3d" && (
                         <div
@@ -958,7 +958,7 @@ const CardDetails = ({
                         }
                         return results;
                       })()}
-                    </div> : null}
+                    </div>
                     {(() => {
                       const props = {
                         id,

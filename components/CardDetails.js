@@ -990,7 +990,11 @@ const CardDetails = ({
                             <input type="text" className="name-input" value={editedName} onChange={e => {
                               setEditedName(e.target.value);
                             }} />
-                            <input type="button" className="edit-save-button" value="Save" onChange={e => {}} />
+                            <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={e => {
+                              console.log('save name', editedName);
+                              
+                              setEditName(false);
+                            }} />
                           </Fragment>
                         }
                       </div>
@@ -1031,7 +1035,7 @@ const CardDetails = ({
                       </div>
                     </div>
                     <div className="detailsSection middle">
-                      {editDescription ?
+                      {!editDescription ?
                         <Fragment>
                           <div className="details-section-wrap">
                             <div className="description">{description}</div>
@@ -1054,7 +1058,10 @@ const CardDetails = ({
                           <textarea className="description-input" value={editedDescription} onChange={e => {
                             setEditedDescription(e.target.value);
                           }} />
-                          <input type="button" className="edit-save-button" value="Save" onChange={e => {}} />
+                          <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={e => {
+                            console.log('save description', editedDescription);
+                            setEditDescription(false);
+                          }} />
                         </Fragment>
                       }
                     </div>

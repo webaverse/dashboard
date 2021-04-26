@@ -822,6 +822,7 @@ const CardDetails = ({
                       </div>
                     </div>
                     {dropdownOpen ? <div className="actions">
+                      <div className="label">View</div>
                       {/* is3d && imageView != "3d" && (
                         <div
                           className="action"
@@ -864,6 +865,61 @@ const CardDetails = ({
                         File browser
                       </a>
                       
+                      <div className="label">Add</div>
+                      <a
+                        className="action"
+                        onClick={handleSetAvatar}
+                      >
+                        Set As Avatar
+                      </a>
+                      <a
+                        className="action"
+                        onClick={handleSetHomespace}
+                      >
+                        Set As Homespace
+                      </a>
+                      <a
+                        className="action"
+                        onClick={addToLoadout}
+                      >
+                        Add To Loadout
+                      </a>
+                      <a
+                        className="action"
+                        onClick={clearLoadout}
+                      >
+                        Clear From Loadout
+                      </a>
+                      
+                      <div className="label">Transfer</div>
+                      {(() => {
+                        const results = [];
+                        if (!/stuck/.test(currentLocation)) {
+                          // console.log('get network', Networks, currentLocation, Networks[currentLocation]);
+                          for (const transferOptionNetworkName of Networks[currentLocation].transferOptions) {
+                            results.push(
+                              <a
+                                className="action"
+                                onClick={e => {
+                                  handleDeposit(currentLocation, transferOptionNetworkName)(e);
+                                }}
+                                key={transferOptionNetworkName}
+                              >
+                                Transfer to {transferOptionNetworkName}
+                              </a>
+                            );
+                          }
+                          /*{tokenOnMain && (
+                            <button
+                              className="assetDetailsButton"
+                              onClick={handleWithdraw}
+                            >
+                              Transfer From {otherNetworkName}
+                            </button>
+                          )} */
+                        }
+                        return results;
+                      })()}
                     </div> : null}
                     {(() => {
                       const props = {

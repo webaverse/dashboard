@@ -64,15 +64,19 @@
 }
 
 .detailsBlock {
-    width: 100%;
-    display: flex;
+  display: flex;
+  align-items: flex-start;
 }
 .detailsSection {
   display: flex;
+}
+.detailsSection.left,
+.detailsSection.right
+{
   flex-direction: column;
 }
 .detailsSection.middle {
-  flex: 1;
+  align-items: center;
 }
 .detailsSection.left {
 }
@@ -91,11 +95,20 @@
   padding: 0;
 }
 
+.detailsSection .details-section-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.detailsSection:not(:hover) .edit-icon {
+  visibility: hidden;
+}
 .detailsSection .description,
 .detailsSection .placeholder {
   display: flex;
-  margin-top: 30px;
+  margin: 30px 50px;
   margin-left: 50px;
+  margin-right: 20px;
   justify-content: flex-start;
 }
 .detailsSection .description {

@@ -1017,10 +1017,12 @@ const CardDetails = ({
                       </div>
                     </div>
                     <div className="detailsSection middle">
-                      <div className="description">{description}</div>
-                      <div className="placeholder">
-                        <img src="/info.svg" />
-                        This NFT has no description :(
+                      <div className="details-section-wrap">
+                        <div className="description">{description}</div>
+                        <div className="placeholder">
+                          <img src="/info.svg" />
+                          This NFT has no description :(
+                        </div>
                       </div>
                       <img
                         className="edit-icon"

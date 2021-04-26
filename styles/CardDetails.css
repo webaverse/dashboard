@@ -395,6 +395,9 @@
 .assetDetailsLeft .name-placeholder {
   color: #CCC;
 }
+.assetDetailsLeft:not(:hover) .edit-icon {
+  visibility: hidden;
+}
 .assetDetailsLeft .description {
   font-family: 'GillSans';
 }

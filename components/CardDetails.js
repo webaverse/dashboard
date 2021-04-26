@@ -412,6 +412,7 @@ const CardDetails = ({
   const [toggleTradeOpen, setToggleTradeOpen] = useState(false);
   const [toggleResubmitOpen, setToggleResubmitOpen] = useState(false);
   const [toggleTransferOpen, setToggleTransferOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [imageView, setImageView] = useState('2d');
@@ -766,6 +767,9 @@ const CardDetails = ({
   const handleLike = e => {
     setLiked(!liked);
   };
+  const handleDropdownOpen = e => {
+    setDropdownOpen(!dropdownOpen);
+  };
   
   const isStuck = /stuck/.test(currentLocation);
   const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
@@ -817,6 +821,9 @@ const CardDetails = ({
                           <img src="/expand.svg" />
                         </a>
                       </Link>
+                      <div className={`card-button dropdown ${dropdownOpen ? 'open' : ''}`} onClick={handleDropdownOpen}>
+                        <img src="/dots.svg" />
+                      </div>
                     </div>
                     {/* <AssetCard
                       id={id}

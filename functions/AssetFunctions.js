@@ -588,9 +588,9 @@ export const setNftMetadata = async (id, key, value, state) => {
     const token = await res.json();
     const {hash} = token.properties;
     
-    console.log('setting metadata', 'NFT', 'setMetadata', hash, 'name', name);
+    console.log('setting metadata', ['NFT', 'setMetadata', hash, key, value]);
     
-    const result = await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setMetadata', hash, 'name', name);
+    const result = await runSidechainTransaction(state.loginToken.mnemonic)('NFT', 'setMetadata', hash, key, value);
 
     console.log('got metadata set result', result);
 

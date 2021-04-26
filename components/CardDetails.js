@@ -418,6 +418,8 @@ const CardDetails = ({
   const [unlockableSpec, setUnlockableSpec] = useState(null);
   const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [editName, setEditName] = useState(false);
+  const [editDescription, setEditDescription] = useState(false);
 
   let userOwnsThisAsset, userCreatedThisAsset;
   const allAddresses = (globalState.address ? [globalState.address] : []).concat(addresses);
@@ -970,6 +972,13 @@ const CardDetails = ({
                         :
                           <div className="name-placeholder">Untitled</div>
                         }
+                        <img
+                          className="edit-icon"
+                          src="/pencil.svg"
+                          onClick={e => {
+                            setEditName(!editName);
+                          }}
+                        />
                       </div>
                       <div className="stats">
                         <div className="stat-label">Edition</div>
@@ -1013,6 +1022,13 @@ const CardDetails = ({
                         <img src="/info.svg" />
                         This NFT has no description :(
                       </div>
+                      <img
+                        className="edit-icon"
+                        src="/pencil.svg"
+                        onClick={e => {
+                          setEditDescription(!editDescription);
+                        }}
+                      />
                     </div>
                     <div className="detailsSection right">
                       <ul className="owners">

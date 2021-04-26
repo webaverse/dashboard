@@ -155,7 +155,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 </div>
               </div>
               <div className="card-buttons like">
-                <div className={`card-button ${liked ? 'selected' : ''}`} onClick={handleLike}>
+                <div className={`card-button ${liked ? 'selected open' : ''}`} onClick={handleLike}>
                   <img className="only-selected" src="/heart_full.svg" />
                   <img className="only-not-selected" src="/heart_empty.svg" />
                 </div>

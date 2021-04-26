@@ -107,26 +107,6 @@ a {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
-.button {
-  background-color: #c4005d;
-  border-radius: 6px;
-  text-decoration: none;
-  max-width: 250px;
-  padding: .85em 2em;
-  font-size: 15px;
-  margin: 1em;
-  white-space: nowrap;
-  font-style: normal;
-  font-stretch: expanded;
-  letter-spacing: normal;
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: 600;
-}
-.button:hover {
-  transform: translateY(-2.5px);
-  background-color: #d4055a;
-}
 .container {
   position: relative;
   display: flex;
@@ -970,7 +950,7 @@ a {
   display: flex;
   margin-top: 20px;
 }
-.slider .contents .rrhs .infobox .buttons input[type=button] {
+.buttons input[type=button] {
   padding: 10px;
   font-size: 20px;
   flex: 1;
@@ -980,30 +960,31 @@ a {
   color: #aaa;
   outline: none;
 }
-.slider .contents .rrhs .infobox .buttons input[type=button]:not(:disabled) {
+.buttons input[type=button]:not(:disabled) {
   cursor: pointer;
 }
-.slider .contents .rrhs .infobox .buttons input[type=button] + input[type=button] {
+.buttons input[type=button] + input[type=button] {
   margin-left: 15px;
 }
-.slider .contents .rrhs .infobox .buttons input[type=button]:not(:disabled).ok {
+.buttons input[type=button]:not(:disabled).ok {
   color: #FFF;
   background-image: linear-gradient(to bottom, #654ea3, #eaafc8);
   background-repeat: no-repeat;
   border-width: 0;
   border-bottom-width: 2px;
 }
-.slider .contents .rrhs .infobox .buttons input[type=button]:not(:disabled).ok:hover {
+.buttons input[type=button]:not(:disabled).ok:hover {
   filter: brightness(80%);
   animation-name: gloob2;
 }
-.slider .contents .rrhs .infobox .buttons input[type=button].cancel {
+.buttons input[type=button].cancel {
   border-color: currentColor;
   color: #aaa;
 }
-.slider .contents .rrhs .infobox .buttons input[type=button].cancel:hover {
+.buttons input[type=button].cancel:hover {
   color: #FFF;
   background-color: #ef5350;
+  border-color: transparent;
 }
 .slider .contents .rrhs .infobox img {
   width: 16px;

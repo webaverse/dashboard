@@ -89,12 +89,135 @@
 }
 .detailsSection.middle {
   align-items: center;
+  flex: 1;
 }
 .detailsSection.left {
 }
 .detailsSection.right {
+  display: flex;
   width: 310px;
+  flex-direction: column;
+  align-items: center;
 }
+.detailsSection.right .currentLocation {
+  margin-top: 30px;
+  padding: 10px;
+  background-image: linear-gradient(to right, #e0e0e0, #f4f4f4);
+  /* border: 2px solid #333; */
+  border-radius: 5px;
+}
+.detailsSection.right .currentLocation .label {
+  display: flex;
+  font-family: 'FuturaStd-Heavy';
+  text-transform: uppercase;
+  color: #AAA;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 1px;
+}
+.detailsSection.right .currentLocation .value {
+  display: flex;
+  margin: 10px 0;
+}
+.detailsSection.right .currentLocation .icon {
+  max-width: 30px;
+  max-height: 30px;
+}
+.detailsSection.right .currentLocation input[type=button] {
+  display: flex;
+  padding: 5px;
+  background-color: transparent;
+  border: 2px solid #333;
+  border-radius: 5px;
+}
+
+.window {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.window .background {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #00000080;
+}
+.transfer-menu {
+  position: relative;
+  padding: 20px;
+  background-color: #FFF;
+  border-radius: 10px;
+}
+.transfer-menu .transfer-options {
+  display: flex;
+  margin-bottom: 20px;
+}
+.transfer-menu .network {
+  cursor: pointer;
+}
+.transfer-menu .transfer-option {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.transfer-menu .transfer-option.selected {
+  background-color: #e0e0e0;
+}
+.transfer-menu .transfer-option + .transfer-option {
+  margin-left: 10px;
+}
+.transfer-menu .network {
+  display: flex;
+  align-items: center;
+}
+.transfer-menu .transfer-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.3;
+}
+.transfer-menu .network .icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  object-fit: contain;
+}
+.transfer-menu .network .text {
+  text-align: left;
+}
+.transfer-menu .label {
+  text-transform: uppercase;
+  color: #AAA;
+  font-family: 'FuturaStd-Heavy';
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+  text-align: left;
+}
+.transfer-menu > .network {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-image: linear-gradient(to top, #333, #666);
+  border-radius: 10px;
+  color: #FFF;
+}
+.transfer-menu .buttons {
+  display: flex;
+}
+.transfer-menu .buttons .button {
+}
+
 .detailsSection .owners {  
   display: flex;
   margin: 0;

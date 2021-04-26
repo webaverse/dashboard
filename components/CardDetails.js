@@ -359,6 +359,59 @@ import procgen, {types} from '../webaverse/procgen.js';
   );
 }; */
 
+const Window = ({className, children, onBackgroundClick}) => {
+  return <div className={`window ${className}`}>
+    <div className="background" onClick={onBackgroundClick} />
+    {children}
+  </div>
+};
+const TransferMenu = ({
+  onCancel,
+}) => {
+  const [transferOption, setTransferOption] = useState('polygon');
+  
+  return (
+    <div className="transfer-menu">
+      <div className="label">Current location</div>
+      <div className="network">
+        <img className="icon" src="/webaverse.png" onDragStart={cancelEvent} />
+        <div className="text">Webaverse</div>
+      </div>
+      <div className="label">Transfer to</div>
+      <div className="transfer-options">
+        <div
+          className={`transfer-option ${transferOption === 'polygon' ? 'selected' :''}`}
+          onClick={e => {
+            setTransferOption('polygon');
+          }}
+        >
+          <img className="transfer-icon" src="/chevron-down.svg" onDragStart={cancelEvent} />
+          <div className="network">
+            <img className="icon" src="/polygon.png" onDragStart={cancelEvent} />
+            <div className="text">Polygon network</div>
+          </div>
+        </div>
+        <div
+          className={`transfer-option ${transferOption === 'ethereum' ? 'selected' :''}`}
+          onClick={e => {
+            setTransferOption('ethereum');
+          }}
+        >
+          <img className="transfer-icon" src="/chevron-down.svg" onDragStart={cancelEvent} />
+          <div className="network">
+            <img className="icon" src="/ethereum.png" onDragStart={cancelEvent} />
+            <div className="text">Ethereum Mainnet</div>
+          </div>
+        </div>
+      </div>
+      <div className="buttons">
+        <input type="button" value="Transfer" onChange={e => {}} disabled={!transferOption} className="button ok" onClick={onCancel} />
+        <input type="button" value="Cancel" onChange={e => {}} className="button cancel" onClick={onCancel} />
+      </div>
+    </div>
+  );
+};
+
 const CardDetails = ({
   id,
   name,
@@ -418,6 +471,7 @@ const CardDetails = ({
   const [editedName, setEditedName] = useState('');
   const [editDescription, setEditDescription] = useState(false);
   const [editedDescription, setEditedDescription] = useState('');
+  const [transferOpen, setTransferOpen] = useState(false);
 
   let userOwnsThisAsset, userCreatedThisAsset;
   const allAddresses = (globalState.address ? [globalState.address] : []).concat(addresses);
@@ -810,6 +864,10 @@ const CardDetails = ({
     await setNftMetadata(id, 'description', editedDescription, globalState);
   };
   
+  const closeTransferMenu = () => {
+    setTransferOpen(false);
+  };
+  
   const isStuck = /stuck/.test(currentLocation);
   const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
   const spec = procgen(id + '')[0];
@@ -832,7 +890,7 @@ const CardDetails = ({
 
       setOwned(addresses.includes(currentOwnerAddress));
     }
-  }, [globalState.address]);
+  }, [globalState.address]);  
 
   return (
     <Fragment>
@@ -840,6 +898,13 @@ const CardDetails = ({
               <Loader loading={loading} />
             ) : (
               <Fragment>
+                {transferOpen ?
+                  <Window onBackgroundClick={closeTransferMenu}>
+                    <TransferMenu
+                      onCancel={closeTransferMenu}
+                    />
+                  </Window>
+                : null}
                 <div
                   className="assetDetailsLeftColumn"
                   ref={el => {
@@ -1132,6 +1197,80 @@ const CardDetails = ({
                       }
                     </div>
                     <div className="detailsSection right">
+                      <div className="currentLocation">
+                        <div className="label">Current location</div>
+                        {(() => {
+                          const match = currentLocation.match(/^(.*?)(-stuck)?$/);
+                          const currentLocationRaw = match[1];
+                          const isStuck = !!match[2];
+                          
+                          const MaybeStuck = () => {
+                            return (isStuck ?
+                              <div className="warning">
+                                <img className="icon" src="/warning.svg" />
+                                <div>This token is stuck between chains. No worries, you can re-submit the transaction to unstick.</div>
+                                <input
+                                  type="button"
+                                  onClick={e => {
+                                    console.log('click resubmit', e);
+                                  }}
+                                />
+                              </div>
+                            : null);
+                          };
+                          const MaybeTransfer = () => {
+                            return (!isStuck ?
+                              <input type="button" value="Transfer" onChange={e => {}} className="transfer" onClick={e => {
+                                setTransferOpen(true);
+                              }} />
+                            : null);
+                          };
+                          switch (currentLocationRaw) {
+                            case 'mainnetsidechain': {
+                              return (
+                                <Fragment>
+                                  <div className="value">
+                                    <img className="icon" src="/webaverse.png" />
+                                    <div className="text">Webaverse sidechain</div>
+                                    <MaybeStuck />
+                                  </div>
+                                  <MaybeTransfer />
+                                </Fragment>
+                              );
+                              break;
+                            }
+                            case 'mainnet': {
+                              return (
+                                <Fragment>
+                                  <div className="value">
+                                    <img className="icon" src="/ethereum.png" />
+                                    <div className="text">Webaverse sidechain</div>
+                                    <MaybeStuck />
+                                  </div>
+                                  <MaybeTransfer />
+                                </Fragment>
+                              );
+                              break;
+                            }
+                            case 'polygon': {
+                              return (
+                                <Fragment>
+                                  <div className="value">
+                                    <img className="icon" src="/polygon.png" />
+                                    <div className="text">Webaverse sidechain</div>
+                                    <MaybeStuck />
+                                  </div>
+                                  <MaybeTransfer />
+                                </Fragment>
+                              );
+                              break;
+                            }
+                            default: {
+                              return <div>Unknown</div>
+                            }
+                          }
+                        })()}
+                      </div>
                       <ul className="owners">
                         <li className="owner"></li>
                         <li className="owner"></li>

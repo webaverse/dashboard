@@ -370,12 +370,12 @@
   color: #29b6f6;
 }
 .assetDetailsDeployedContent {
-    padding-bottom: 5px;
-    font-size: .7em;
-    max-width: 100%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  padding-bottom: 5px;
+  font-size: .7em;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .assetDetailsLeft {
   position: absolute;

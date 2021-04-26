@@ -1,5 +1,6 @@
 import React, {Fragment, useState, useEffect} from "react";
 // import { Col } from "react-grid-system";
+import Link from "next/link";
 import {useAppContext} from "../libs/contextLib";
 import {proofOfAddressMessage} from "../constants/UnlockConstants";
 import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
@@ -139,21 +140,44 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 <div className="profileLoadout">
                   <div className="profileLoadoutHeader">Loadout</div>
                   {
-                    loadout.slice(0, 8).map((item, i) =>
-                      item && item[3] ? (
-                        <div className="profileLoadoutItem" key={i}>
-                          <img
-                            src={item[3]}
-                            className="profileLoadoutPicture"
-                            onDragStart={e => {
-                              e.preventDefault();
-                            }}
-                          />
-                        </div>
-                      )
-                    :
-                      <div className="profileLoadoutItem light" key={i} />
-                    )
+                    loadout.slice(0, 8).map((item, i) => {
+                        if (item && item[3]) {
+                          console.log('got item', item);
+                          const tokenId = parseInt(item[0], 10);
+                          if (!isNaN(tokenId)) {
+                            return (
+                              <Link href={`/assets/${tokenId}`}>
+                                <a className="profileLoadoutItem" key={i}>
+                                  <img
+                                    src={item[3]}
+                                    className="profileLoadoutPicture"
+                                    onDragStart={e => {
+                                      e.preventDefault();
+                                    }}
+                                  />
+                                </a>
+                              </Link>
+                            );
+                          } else {
+                            return (
+                              <a href={item[3]} className="profileLoadoutItem" key={i}>
+                                <img
+                                  src={item[3]}
+                                  className="profileLoadoutPicture"
+                                  onDragStart={e => {
+                                    e.preventDefault();
+                                  }}
+                                />
+                              </a>
+                            ); 
+                          }
+                        } else {
+                          return (
+                            <div className="profileLoadoutItem light" key={i} />
+                          );
+                        }
+                      
+                    })
                   }
                 </div>
               </div>

@@ -1064,9 +1064,9 @@ const CardDetails = ({
                       </div>
                       <div className="provenance">
                         <div className="stat-label">Provenance</div>
-                        <a className="provenance-node ipfs" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/storage.svg" />IPFS</a>
-                        <a className="provenance-node sidechain" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/sidechain.svg" />Sidechain TX</a>
-                        <a className="provenance-node etherscan" href={`${storageHost}/ipfs/${hash}/${name}.${ext}`}><img src="/ethereum.svg" />Etherscan TX</a>
+                        <a className="provenance-node ipfs" href={`${storageHost}/ipfs/${hash}`}><img src="/storage.svg" />IPFS</a>
+                        <a className="provenance-node sidechain" href={`${storageHost}/${hash}/${name}.${ext}`}><img src="/sidechain.svg" />Sidechain TX</a>
+                        <a className="provenance-node etherscan" href={`${storageHost}/${hash}/${name}.${ext}`}><img src="/ethereum.svg" />Etherscan TX</a>
                       </div>
                     </div>
                     <div className="detailsSection middle">

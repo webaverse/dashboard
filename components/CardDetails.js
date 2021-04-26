@@ -792,6 +792,20 @@ const CardDetails = ({
   const handleDropdownOpen = e => {
     setDropdownOpen(!dropdownOpen);
   };
+
+  const _saveName = async e => {  
+    console.log('save name', editedName);
+                                
+    setEditName(false);
+    
+    await setNftMetadata(id, 'name', editedName, globalState);
+  };
+  const _saveDescription = async e => {
+    console.log('save description', editedDescription);
+    setEditDescription(false);
+    
+    await setNftMetadata(id, 'description', editedDescription, globalState);
+  };
   
   const isStuck = /stuck/.test(currentLocation);
   const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
@@ -1012,13 +1026,11 @@ const CardDetails = ({
                             }} ref={el => {
                               nameInputEl = el;
                             }} />
-                            <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={async e => {
-                              console.log('save name', editedName);
-                              
-                              setEditName(false);
-                              
-                              await setNftMetadata(id, 'name', editedName, globalState);
-                            }} />
+                            <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onKeyDown={e => {
+                              if (e.which === 13) {
+                                _saveName();
+                              }
+                            }} onClick={_saveName} />
                           </Fragment>
                         }
                       </div>
@@ -1084,12 +1096,12 @@ const CardDetails = ({
                           }} ref={el => {
                             descriptionInputEl = el;
                           }} />
-                          <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onClick={async e => {
-                            console.log('save description', editedDescription);
-                            setEditDescription(false);
-                            
-                            await setNftMetadata(id, 'description', editedDescription, globalState);
-                          }} />
+                          <input type="button" className="edit-save-button" value="Save" onChange={e => {}} onKeyDown={e => {
+                            if (e.which === 13) {
+                              _saveDescription();
+                            }
+                          }}
+                          onClick={_saveDescription} />
                         </Fragment>
                       }
                     </div>

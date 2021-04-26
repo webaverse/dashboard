@@ -854,7 +854,7 @@ const CardDetails = ({
                           See in 3d
                         </div>
                       ) */}
-                      {is3d && imageView != "2d" && (
+                      {imageView != "2d" && (
                         <a
                           className="action"
                           onClick={() => setImageView("2d")}

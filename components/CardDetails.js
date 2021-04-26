@@ -78,93 +78,91 @@ const CardActions = ({
         </div>
         {toggleViewOpen && (
           <div className="accordionDropdown">
-              {/* is3d && imageView != "3d" && (
-                <button
-                  className="assetDetailsButton"
-                  onClick={() => setImageView("3d")}
-                >
-                  See in 3d
-                </button>
-              ) */}
-              {is3d && imageView != "2d" && (
-                <button
-                  className="assetDetailsButton"
-                  onClick={() => setImageView("2d")}
-                >
-                  See in 2d
-                </button>
-              )}
-              {/* <Link href={"/preview/" + id}>
-                <button className="assetDetailsButton">
-                  Try in Webaverse
-                </button>
-              </Link> */}
-              {unlockableSpec ? (
-                <div className="assetDetailsButton">
-                  {unlockableSpec.ok
-                    ? (unlockableSpec.result || '[no unlockable]')
-                    : "Could not unlock :("}
-                </div>
-              ) : (
-                <button
-                  className="assetDetailsButton"
-                  onClick={handleUnlock}
-                >
-                  Unlock content
-                </button>
-              )}
+            {/* is3d && imageView != "3d" && (
               <button
                 className="assetDetailsButton"
-                onClick={openFileBrowser}
+                onClick={() => setImageView("3d")}
               >
-                File browser
+                See in 3d
               </button>
+            ) */}
+            {is3d && imageView != "2d" && (
+              <button
+                className="assetDetailsButton"
+                onClick={() => setImageView("2d")}
+              >
+                See in 2d
+              </button>
+            )}
+            {/* <Link href={"/preview/" + id}>
+              <button className="assetDetailsButton">
+                Try in Webaverse
+              </button>
+            </Link> */}
+            {unlockableSpec ? (
+              <div className="assetDetailsButton">
+                {unlockableSpec.ok
+                  ? (unlockableSpec.result || '[no unlockable]')
+                  : "Could not unlock :("}
+              </div>
+            ) : (
+              <button
+                className="assetDetailsButton"
+                onClick={handleUnlock}
+              >
+                Unlock content
+              </button>
+            )}
+            <button
+              className="assetDetailsButton"
+              onClick={openFileBrowser}
+            >
+              File browser
+            </button>
           </div>
         )}
       </div>
-      {(
-        <div className="Accordion">
-          <div
-            className="accordionTitle"
-            onClick={() => setToggleAddOpen(!toggleAddOpen)}
-          >
-            <span className="accordionTitleValue">Add</span>
-            {toggleAddOpen ?
-              <img src="/chevron-up.svg" className="accordionIcon" />
-            :
-              <img src="/chevron-down.svg" className="accordionIcon" />
-            }
-          </div>
-          {toggleAddOpen && (
-            <div className="accordionDropdown">
-                <button
-                  className="assetDetailsButton"
-                  onClick={handleSetAvatar}
-                >
-                  Set As Avatar
-                </button>
-                <button
-                  className="assetDetailsButton"
-                  onClick={handleSetHomespace}
-                >
-                  Set As Homespace
-                </button>
-                <button
-                  className="assetDetailsButton"
-                  onClick={addToLoadout}
-                >
-                  Add To Loadout
-                </button>
-                <button
-                  className="assetDetailsButton"
-                  onClick={clearLoadout}
-                >
-                  Clear From Loadout
-                </button>
-            </div>
-          )}
+      <div className="Accordion">
+        <div
+          className="accordionTitle"
+          onClick={() => setToggleAddOpen(!toggleAddOpen)}
+        >
+          <span className="accordionTitleValue">Add</span>
+          {toggleAddOpen ?
+            <img src="/chevron-up.svg" className="accordionIcon" />
+          :
+            <img src="/chevron-down.svg" className="accordionIcon" />
+          }
         </div>
-      )}
+        {toggleAddOpen && (
+          <div className="accordionDropdown">
+            <button
+              className="assetDetailsButton"
+              onClick={handleSetAvatar}
+            >
+              Set As Avatar
+            </button>
+            <button
+              className="assetDetailsButton"
+              onClick={handleSetHomespace}
+            >
+              Set As Homespace
+            </button>
+            <button
+              className="assetDetailsButton"
+              onClick={addToLoadout}
+            >
+              Add To Loadout
+            </button>
+            <button
+              className="assetDetailsButton"
+              onClick={clearLoadout}
+            >
+              Clear From Loadout
+            </button>
+          </div>
+        )}
+      </div>
       {userOwnsThisAsset && (
         <div className="Accordion">
           <div
@@ -180,30 +178,30 @@ const CardActions = ({
           </div>
           {toggleEditOpen && (
             <div className="accordionDropdown">
-                <button
-                  className="assetDetailsButton"
-                  onClick={handleSetAssetName}
-                >
-                  Change Asset Name
-                </button>
-                <button
-                  className="assetDetailsButton"
-                  onClick={handleDeleteAsset}
-                >
-                  Burn This Item
-                </button>
-                <button
-                  className="assetDetailsButton"
-                  onClick={handleAddCollaborator}
-                >
-                  Add Collaborator
-                </button>
-                <button
-                  className="assetDetailsButton"
-                  onClick={handleRemoveCollaborator}
-                >
-                  Remove Collaborator
-                </button>
+              <button
+                className="assetDetailsButton"
+                onClick={handleSetAssetName}
+              >
+                Change Asset Name
+              </button>
+              <button
+                className="assetDetailsButton"
+                onClick={handleDeleteAsset}
+              >
+                Burn This Item
+              </button>
+              <button
+                className="assetDetailsButton"
+                onClick={handleAddCollaborator}
+              >
+                Add Collaborator
+              </button>
+              <button
+                className="assetDetailsButton"
+                onClick={handleRemoveCollaborator}
+              >
+                Remove Collaborator
+              </button>
             </div>
           )}
         </div>
@@ -789,8 +787,6 @@ const CardDetails = ({
                     cardSceneWrapEl = el;
                   }}
                 >
-                
-                
                   <div
                     className="assetDetailsBackground"
                     /* style={{
@@ -825,31 +821,50 @@ const CardDetails = ({
                         <img src="/dots.svg" />
                       </div>
                     </div>
-                    {/* <AssetCard
-                      id={id}
-                      key={id}
-                      assetName={name}
-                      ext={ext}
-                      animation_url={animation_url}
-                      description={description}
-                      buyPrice={buyPrice}
-                      image={image}
-                      hash={hash}
-                      numberInEdition={numberInEdition}
-                      totalSupply={totalSupply}
-                      balance={balance}
-                      totalInEdition={totalInEdition}
-                      assetType={assetType}
-                      ownerAvatarPreview={ownerAvatarPreview}
-                      ownerUsername={ownerUsername}
-                      ownerAddress={ownerAddress}
-                      minterAvatarPreview={minterAvatarPreview}
-                      minterUsername={minterUsername}
-                      minterAddress={minterAddress}
-                      cardSize={""}
-                      glow={false}
-                      imageView={imageView}
-                    /> */}
+                    {dropdownOpen ? <div className="actions">
+                      {/* is3d && imageView != "3d" && (
+                        <div
+                          className="action"
+                          onClick={() => setImageView("3d")}
+                        >
+                          See in 3d
+                        </div>
+                      ) */}
+                      {is3d && imageView != "2d" && (
+                        <a
+                          className="action"
+                          onClick={() => setImageView("2d")}
+                        >
+                          See in 2d
+                        </a>
+                      )}
+                      {/* <Link href={"/preview/" + id}>
+                        <button className="assetDetailsButton">
+                          Try in Webaverse
+                        </button>
+                      </Link> */}
+                      {unlockableSpec ? (
+                        <div className="action">
+                          {unlockableSpec.ok
+                            ? (unlockableSpec.result || '[no unlockable]')
+                            : "Could not unlock :("}
+                        </div>
+                      ) : (
+                        <a
+                          className="action"
+                          onClick={handleUnlock}
+                        >
+                          Unlock content
+                        </a>
+                      )}
+                      <a
+                        className="action"
+                        onClick={openFileBrowser}
+                      >
+                        File browser
+                      </a>
+                      
+                    </div> : null}
                     {(() => {
                       const props = {
                         id,

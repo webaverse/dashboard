@@ -4,7 +4,7 @@ import {useRouter} from 'next/router';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {useAppContext} from "../libs/contextLib";
-import {parseQuery} from "../webaverse/util";
+import {parseQuery, cancelEvent} from "../webaverse/util";
 
 const StreetFilters = ({
   q,
@@ -201,7 +201,7 @@ const Navbar = ({
             {globalState.address ?
               <Link href={"/accounts/" + globalState.address}>
                 <a>
-                  <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} />
+                  <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} onDragStart={cancelEvent} />
                 </a>
               </Link>
             :

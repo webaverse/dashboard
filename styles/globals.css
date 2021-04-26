@@ -1331,6 +1331,9 @@ a {
 {
   display: none;
 }
+.card-buttons .card-button:active {
+  transform: scale(1.2);
+}
 
 .placeholder {
   display: flex;

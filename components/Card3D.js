@@ -27,10 +27,12 @@ const Card3D = ({
     }
   }
   return (
-    <iframe
-      className={`iframe ${loaded ? 'loaded' : ''}`}
-      src={src}
-    />
+    <div className="content-preview-3d">
+      <iframe
+        className={`iframe ${loaded ? 'loaded' : ''}`}
+        src={src}
+      />
+    </div>
   );
 };
 export default Card3D;

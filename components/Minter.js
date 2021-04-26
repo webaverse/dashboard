@@ -35,6 +35,7 @@ const nftTypeDescriptions = {
 };
 const templates = [
   ['image', '/image.svg', '/gondola.png'],
+  ['gif', '/gif.svg', '/rainbow-dash.gif'],
   ['video', '/video.svg', '/Steps.mp4'],
   ['audio', '/audio.svg', '/Chill1.mp3'],
   ['avatar', '/avatar.svg', '/Default Bot (2).vrm'],

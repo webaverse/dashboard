@@ -369,7 +369,9 @@ const CardActions = ({
 const CardDetails = ({
   id,
   name,
+  setName,
   description,
+  setDescription,
   image,
   hash,
   animation_url,
@@ -795,13 +797,16 @@ const CardDetails = ({
 
   const _saveName = async e => {  
     console.log('save name', editedName);
-                                
+
+    setName(editedName);                 
     setEditName(false);
     
     await setNftMetadata(id, 'name', editedName, globalState);
   };
   const _saveDescription = async e => {
     console.log('save description', editedDescription);
+    
+    setDescription(editedDescription);
     setEditDescription(false);
     
     await setNftMetadata(id, 'description', editedDescription, globalState);

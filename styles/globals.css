@@ -1354,6 +1354,16 @@ a {
   background: radial-gradient(#b22222, #7d0b0b);
   border-color: #7d0b0b;
 }
+.deed-subpage-wrap .item {
+  display: flex;
+}
+.deed-subpage-wrap .item iframe {
+  --size: 300px;
+  width: var(--size);
+  height: calc(var(--size) / 2.5 * 3.5);
+  border: 0;
+  overflow: hidden;
+}
 .deed-subpage-wrap input[type=button] {
   padding: 10px;
   font-size: 20px;

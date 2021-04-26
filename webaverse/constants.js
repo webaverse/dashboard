@@ -86,3 +86,7 @@ export const Networks = {
     transferOptions: ["testnetsidechain"],
   },
 };
+export const previewHost = `https://app.webaverse.com/preview.html`;
+export const cardsHost = `https://cards.webaverse.com`;
+/* const previewHost = `https://127.0.0.1:3001/preview.html`;
+const cardsHost = `http://127.0.0.1:3002`; */

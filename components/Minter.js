@@ -237,7 +237,11 @@ const Form = ({
               }
             }} key="file2" />
           ),
-          (<div className="sublabel" key="file3">(or, drag-and-drop a file)</div>),
+          (!file ?
+            <div className="sublabel" key="file3">(or, drag-and-drop a file)</div>
+          :
+            null
+          ),
         ]
       :
         [
@@ -328,6 +332,8 @@ class DragNDrop extends Component {
 }
 
 const CardIframe = ({
+  t,
+  w,
   id,
   name,
   description,
@@ -337,11 +343,34 @@ const CardIframe = ({
 }) => {
   const width = 200;
   const height = width / 2.5 * 3.5;
+  let src = `${cardsHost}/?`;
+  let first = true;
+  const qs = {
+    t,
+    w,
+    id,
+    name,
+    description,
+    image,
+    minterUsername,
+    minterAvatarPreview,
+  };
+  for (const k in qs) {
+    const v = qs[k];
+    if (v !== undefined) {
+      if (first) {
+        first = false;
+      } else {
+        src += '&';
+      }
+      src += `${k}=${v}`;
+    }
+  }
   return (
     <iframe
       width={width}
       height={height}
-      src={`${cardsHost}/?w=${200}&id=${id}&name=${name}&description=${description}&image=${image}&minterUsername=${minterUsername}&minterAvatarPreview=${minterAvatarPreview}`}
+      src={src}
     />
   );
 };
@@ -372,8 +401,8 @@ const Minter = ({
   const [loaded, setLoaded] = useState(false);
   const [id, setId] = useState(Math.floor(Math.random() * 1000));
   const [mintedTokenId, setMintedTokenId] = useState(0);
-  const [previewError, setPreviewError] = useState(false);
-  const [mintError, setMintError] = useState(false);
+  const [previewError, setPreviewError] = useState('');
+  const [mintError, setMintError] = useState('');
   
   const handleLoadFile = async file => {
     console.log('load file name', file);
@@ -577,14 +606,16 @@ const Minter = ({
   }, [mintMenuStep]);
   
   const _mint = async () => {
-    setMintError(false);
+    setMintError('');
     
     try {
-      const quantity = 1000000;
+      // const quantity = 1000000;
       const tokenIds = await mintNft(hash, name, ext, description, quantity, globalState);
-      console.log('got token ids', tokenIds);
+      const [tokenId] = tokenIds;
+      // console.log('got token ids', tokenIds);
+      setMintedTokenId(tokenId);
     } catch (err) {
-      setMintError(true);
+      setMintError(err.stack);
       console.warn(err);
     } finally {
       setMintMenuStep(4);
@@ -606,9 +637,10 @@ const Minter = ({
 
         if (_preview) {
           if (ok) {
-            setPreviewError(false);
+            setPreviewError('');
           } else {
-            setPreviewError(true);
+            const err = new Error('preview not ok');
+            setPreviewError(err.stack);
           }
           setLoaded(true);
         }
@@ -700,6 +732,7 @@ const Minter = ({
               {(hash && ext) ?
                 <div className="card-preview">
                   <CardIframe
+                    w={200}
                     id={id}
                     name={name}
                     description={description}
@@ -782,10 +815,13 @@ const Minter = ({
                 </Link>
                 <Link href={`/assets/${mintedTokenId}`}>
                   <a className={`item`}>
-                    <FakeCard
+                    <CardIframe
+                      t={mintedTokenId}
+                    />
+                    {/* <FakeCard
                       animate={true}
                       animationSize="large"
-                    />
+                    /> */}
                   </a>
                 </Link>
               </Fragment>
@@ -800,6 +836,7 @@ const Minter = ({
                     }} />
                   </a>
                 </Link>
+                <div className="error-text">{mintError}</div>
               </Fragment>
             }
           </div>

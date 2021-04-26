@@ -43,7 +43,7 @@ import AssetCardSwitch from './CardSwitch';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import procgen, {types} from '../webaverse/procgen.js';
 
-const CardActions = ({
+/* const CardActions = ({
   toggleViewOpen,
   setToggleViewOpen,
   setImageView,
@@ -78,14 +78,14 @@ const CardActions = ({
         </div>
         {toggleViewOpen && (
           <div className="accordionDropdown">
-            {/* is3d && imageView != "3d" && (
+            {imageView != "3d" && (
               <button
                 className="assetDetailsButton"
                 onClick={() => setImageView("3d")}
               >
                 See in 3d
               </button>
-            ) */}
+            )}
             {imageView != "2d" && (
               <button
                 className="assetDetailsButton"
@@ -94,11 +94,11 @@ const CardActions = ({
                 See in 2d
               </button>
             )}
-            {/* <Link href={"/preview/" + id}>
+            <Link href={"/preview/" + id}>
               <button className="assetDetailsButton">
                 Try in Webaverse
               </button>
-            </Link> */}
+            </Link>
             {unlockableSpec ? (
               <div className="assetDetailsButton">
                 {unlockableSpec.ok
@@ -335,7 +335,6 @@ const CardActions = ({
                 {(() => {
                   const results = [];
                   if (!/stuck/.test(currentLocation)) {
-                    // console.log('get network', Networks, currentLocation, Networks[currentLocation]);
                     for (const transferOptionNetworkName of Networks[currentLocation].transferOptions) {
                       results.push(
                         <button
@@ -347,14 +346,6 @@ const CardActions = ({
                         </button>
                       );
                     }
-                    /*{tokenOnMain && (
-                      <button
-                        className="assetDetailsButton"
-                        onClick={handleWithdraw}
-                      >
-                        Transfer From {otherNetworkName}
-                      </button>
-                    )} */
                   }
                   return results;
                 })()}
@@ -364,7 +355,7 @@ const CardActions = ({
       )}
     </Fragment>
   );
-};
+}; */
 
 const CardDetails = ({
   id,
@@ -1118,7 +1109,7 @@ const CardDetails = ({
                       </ul>
                     </div>
                   </div>
-                  <CardActions
+                  {/* <CardActions
                     toggleViewOpen={toggleViewOpen}
                     setToggleViewOpen={setToggleViewOpen}
                     setImageView={setImageView}
@@ -1136,7 +1127,7 @@ const CardDetails = ({
                     openFileBrowser={openFileBrowser}
                     currentLocation={currentLocation}
                     isStuck={isStuck}
-                  />
+                  /> */}
                   {(
                     globalState.address &&
                     !userOwnsThisAsset &&

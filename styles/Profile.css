@@ -237,8 +237,13 @@
   font-weight: 400;
 }
 .profileHeader .profileText.mainName {
-  font-size: 3em;
+  display: flex;
+  font-size: 48px;
   margin: unset;
+  align-items: center;
+}
+.profileHeader .profileWrap:not(:hover) .profileText.mainName .edit-icon {
+  display: none;
 }
 .profileHeader .profileText.label {
   font-family: 'FuturaStd-Heavy';

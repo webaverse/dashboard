@@ -71,9 +71,10 @@
 .content-preview-3d .iframe {
   width: 100%;
   height: 100%;
+}
+.asset-page .content-preview-3d .iframe {
   padding: 0 8vw;
 }
-
 .detailsBlock {
   display: flex;
   align-items: flex-start;

@@ -1420,17 +1420,38 @@ const CardDetails = ({
                             <div className="helper">Coming soon</div>
                           </div>
                         </div>
-                        <div
-                          className={`feature ${unlockable ? '' : 'disabled'}`}
-                          onClick={handleUnlock}
-                        >
-                          <img className="icon" src="/chest.svg" />
-                          <div className="feature-wrap">
-                            <div className="label">Unlockable</div>
-                            <div className="text">Open secret</div>
-                            <div className="helper">Coming soon</div>
+                        {!unlockableSpec ?
+                          <div
+                            className={`feature ${unlockable ? '' : 'disabled'}`}
+                            onClick={handleUnlock}
+                          >
+                            <img className="icon" src="/chest.svg" />
+                            <div className="feature-wrap">
+                              <div className="label">Unlockable</div>
+                              <div className="text">Open secret</div>
+                              <div className="helper">Coming soon</div>
+                            </div>
                           </div>
-                        </div>
+                        :
+                          <div className="feature-text">
+                            {unlockableSpec.ok ?
+                              <div className="text">{unlockableSpec.result}</div>
+                            :
+                              <div className="text">Could not unlock</div>
+                            }
+                          </div>
+                          /* <div
+                            className={`feature ${unlockable ? '' : 'disabled'}`}
+                            onClick={handleUnlock}
+                          >
+                            <img className="icon" src="/chest.svg" />
+                            <div className="feature-wrap">
+                              <div className="label">Unlockable</div>
+                              <div className="text">Open secret</div>
+                              <div className="helper">Coming soon</div>
+                            </div>
+                          </div> */
+                        }
                         <div
                           className="feature disabled"
                           onClick={handleDecrypt}

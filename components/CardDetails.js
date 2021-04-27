@@ -507,7 +507,12 @@ const UnlockableMenu = ({
       tag,
     };
     const s = JSON.stringify(j);
-    await setNftMetadata(id, 'unlockable', s, globalState);
+    const result = await setNftMetadata(
+      id,
+      'unlockable',
+      s,
+      globalState
+    );
     
     onCancel();
   };
@@ -532,7 +537,33 @@ const EncryptionMenu = ({
   const [file, setFile] = useState(null);
   
   const doSetEncryption = async () => {
-    // XXX 
+    const encryptedBlob = await (async () => {
+      const res = await fetch(`${lockHost}/${id}`, {
+        method: 'POST',
+        body: file,
+      });
+      const tag = res.headers.get('tag');
+      const b = await res.blob();
+      return b;
+    })();
+    
+    const res = await fetch(storageHost, {
+      method: 'POST',
+      body: encryptedBlob,
+    });
+    const tag = res.headers.get('tag');
+    const {hash: cipherhash} = await res.json();
+    const j = {
+      cipherhash,
+      tag,
+    };
+    const s = JSON.stringify(j);
+    const result = await setNftMetadata(
+      id,
+      'encrypted',
+      s,
+      globalState
+    );
 
     onCancel();
   };
@@ -965,7 +996,7 @@ const CardDetails = ({
         ]),
       id
     );
-    // console.log('got unlockable spec', spec);
+    console.log('got decryption spec', spec);
     setDecryptionSpec(spec);
   };
   const openFileBrowser = () => {
@@ -1449,17 +1480,29 @@ const CardDetails = ({
                             </div>
                           </div> */
                         }
-                        <div
-                          className="feature disabled"
-                          onClick={handleDecrypt}
-                        >
-                          <img className="icon" src="/secret.svg" />
-                          <div className="feature-wrap">
-                            <div className="label">Encrypted</div>
-                            <div className="text">Decrypt contents</div>
-                            <div className="helper">Coming soon</div>
+                        {decryptionSpec ?
+                          <div
+                            className="feature disabled"
+                            onClick={handleDecrypt}
+                          >
+                            <img className="icon" src="/secret.svg" />
+                            <div className="feature-wrap">
+                              <div className="label">Encrypted</div>
+                              <div className="text">Decrypt contents</div>
+                              <div className="helper">Coming soon</div>
+                            </div>
                           </div>
-                        </div>
+                        :
+                          <div className="feature-text">
+                            {decryptionSpec.ok ?
+                              <Link href={decryptionSpec.result}>
+                                <a>{decryptionSpec.result}</a>
+                              </Link>
+                            :
+                              <div className="text">Could not decrypt</div>
+                            }
+                          </div>
+                        }
                       </div>
                       <div className="provenance">
                         <div className="stat-label">Provenance</div>

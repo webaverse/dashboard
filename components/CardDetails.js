@@ -416,7 +416,8 @@ const TransferMenu = ({
   currentLocation,
   onCancel,
 }) => {
-  const network = Networks[currentLocation];
+  const networkName = currentLocation.replace(/\-stuck$/, '');
+  const network = Networks[networkName];
   const {displayName, transferOptions, iconSrc} = network;
   
   const [transferOption, setTransferOption] = useState(transferOptions[0]);
@@ -436,14 +437,13 @@ const TransferMenu = ({
     console.log('did transfer', receipt);
     onCancel();
   };
-  const currentNetwork = Networks[currentLocation.replace(/\-stuck$/, '')];
   
   return (
     <div className="transfer-menu">
       <div className="label">Current location</div>
       <div className="network">
-        <img className="icon" src={currentNetwork.iconSrc} onDragStart={cancelEvent} />
-        <div className="text">{currentNetwork.displayName}</div>
+        <img className="icon" src={network.iconSrc} onDragStart={cancelEvent} />
+        <div className="text">{network.displayName}</div>
       </div>
       <div className="label">Transfer to</div>
       <div className="transfer-options">

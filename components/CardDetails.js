@@ -411,6 +411,16 @@ const TransferMenu = ({
     </div>
   );
 };
+const UnlockableMenu = () => {
+  return (
+    <div className="unlockable-menu">Unlockable</div>
+  );
+};
+const EncryptionMenu = () => {
+  return (
+    <div className="encryption-menu">Encrypted content</div>
+  );
+};
 
 const CardDetails = ({
   id,
@@ -471,6 +481,8 @@ const CardDetails = ({
   const [editedName, setEditedName] = useState('');
   const [editDescription, setEditDescription] = useState(false);
   const [editedDescription, setEditedDescription] = useState('');
+  const [unlockableOpen, setUnlockableOpen] = useState(false);
+  const [encryptionOpen, setEncryptionOpen] = useState(false);
   const [transferOpen, setTransferOpen] = useState(false);
 
   let userOwnsThisAsset, userCreatedThisAsset;
@@ -758,7 +770,11 @@ const CardDetails = ({
       handleError(new Error("No address given."));
     }
   };
-  const _getSidechainSignature = async () => {
+  const _getSidechainSignature = async mnemonic => {
+    const {
+      web3,
+    } = await getBlockchain();
+    
     const wallet = hdkey
       .fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic))
       .derivePath(`m/44'/60'/0'/0/0`)
@@ -786,11 +802,12 @@ const CardDetails = ({
     // const ethereumSpec = await window.ethereum.enable();
     // const [address] = ethereumSpec;
 
-    const {web3} = await getBlockchain();
-    const mainnetAddress = web3.front.currentProvider.selectedAddress;
+    // const mainnetAddress = globalState.address;
     const {
-      address: sidechainAddress,
-      loginToken: { mnemonic },
+      // address: sidechainAddress,
+      loginToken: {
+        mnemonic,
+      },
     } = globalState;
 
     /* const _getMainnetTokens = async address => {
@@ -826,15 +843,16 @@ const CardDetails = ({
         const addressProofs = getAddressProofs(profile);
         return addressProofs;
       })(),
-      _getSidechainSignature(),
+      _getSidechainSignature(mnemonic),
     ])
-    const spec = _getUnlockable(
+    const spec = await _getUnlockable(
       addressProofs
         .concat([
           sidechainSignature,
         ]),
       id
     );
+    console.log('got unlockable spec', spec);
     setUnlockableSpec(spec);
   };
   const handleDecrypt = async () => {
@@ -865,6 +883,21 @@ const CardDetails = ({
     setEditDescription(false);
     
     await setNftMetadata(id, 'description', editedDescription, globalState);
+  };
+  
+  const openUnlockable = () => {
+    setUnlockableOpen(true);
+    setDropdownOpen(false);
+  };
+  const closeUnlockable = () => {
+    setUnlockableOpen(false);
+  };
+  const openEncryption = () => {
+    setEncryptionOpen(true);
+    setDropdownOpen(false);
+  };
+  const closeEncryption = () => {
+    setEncryptionOpen(false);
   };
   
   const openTransferMenu = () => {
@@ -909,6 +942,20 @@ const CardDetails = ({
                   <Window onBackgroundClick={closeTransferMenu}>
                     <TransferMenu
                       onCancel={closeTransferMenu}
+                    />
+                  </Window>
+                : null}
+                {unlockableOpen ?
+                  <Window onBackgroundClick={closeUnlockable}>
+                    <UnlockableMenu
+                      onCancel={closeUnlockable}
+                    />
+                  </Window>
+                : null}
+                {encryptionOpen ?
+                  <Window onBackgroundClick={closeEncryption}>
+                    <EncryptionMenu
+                      onCancel={closeEncryption}
                     />
                   </Window>
                 : null}
@@ -1025,17 +1072,13 @@ const CardDetails = ({
                       <div className="label">Features</div>
                       <a
                         className="action"
-                        onClick={e => {
-                          // handleDeposit(currentLocation, transferOptionNetworkName)(e);
-                        }}
+                        onClick={openUnlockable}
                       >
                         Set unlockable
                       </a>
                       <a
                         className="action"
-                        onClick={e => {
-                          // handleDeposit(currentLocation, transferOptionNetworkName)(e);
-                        }}
+                        onClick={openEncryption}
                       >
                         Set encrypted content
                       </a>

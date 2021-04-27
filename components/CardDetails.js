@@ -45,6 +45,45 @@ import AssetCardSwitch from './CardSwitch';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import procgen, {types} from '../webaverse/procgen.js';
 
+const handleDeposit = async (
+  id,
+  sourceNetworkName,
+  destinationNetworkName,
+  globalState,
+  {
+    addToast,
+    handleSuccess,
+    handleError,
+  }
+) => {
+  try {
+    const mainnetAddress = await loginWithMetaMask();
+    if (mainnetAddress) {
+      addToast("Starting transfer of this item.", {
+        appearance: "info",
+        autoDismiss: true,
+      });
+      try {
+        await depositAsset(
+          id,
+          sourceNetworkName,
+          destinationNetworkName,
+          mainnetAddress,
+          globalState.address,
+          globalState
+        );
+        handleSuccess();
+      } catch (err) {
+        handleError(err);
+      }
+    } else {
+      handleError("No address received from MetaMask.");
+    }
+  } catch (err) {
+    handleError(err);
+  }
+};
+
 /* const CardActions = ({
   toggleViewOpen,
   setToggleViewOpen,
@@ -366,9 +405,30 @@ const Window = ({className, children, onBackgroundClick}) => {
   </div>
 };
 const TransferMenu = ({
+  id,
+  globalState,
+  addToast,
+  handleSuccess,
+  handleError,
+  currentLocation,
   onCancel,
 }) => {
   const [transferOption, setTransferOption] = useState('polygon');
+  
+  const doTransfer = async () => {
+    const receipt = await handleDeposit(
+      id,
+      currentLocation,
+      transferOption,
+      globalState,
+      {
+        addToast,
+        handleSuccess,
+        handleError,
+      }
+    );
+    console.log('did transfer', receipt);
+  };
   
   return (
     <div className="transfer-menu">
@@ -405,7 +465,7 @@ const TransferMenu = ({
         </div>
       </div>
       <div className="buttons">
-        <input type="button" value="Transfer" onChange={e => {}} disabled={!transferOption} className="button ok" onClick={onCancel} />
+        <input type="button" value="Transfer" onChange={e => {}} disabled={!transferOption} className="button ok" onClick={doTransfer} />
         <input type="button" value="Cancel" onChange={e => {}} className="button cancel" onClick={onCancel} />
       </div>
     </div>
@@ -743,40 +803,6 @@ const CardDetails = ({
     }
   };
 
-  const handleDeposit = (sourceNetworkName, destinationNetworkName) => {
-    const handleDepositLogin = async e => {
-      e.preventDefault();
-
-      try {
-        const mainnetAddress = await loginWithMetaMask();
-        if (mainnetAddress) {
-          addToast("Starting transfer of this item.", {
-            appearance: "info",
-            autoDismiss: true,
-          });
-          try {
-            await depositAsset(
-              id,
-              sourceNetworkName,
-              destinationNetworkName,
-              mainnetAddress,
-              globalState.address,
-              globalState
-            );
-            handleSuccess();
-          } catch (err) {
-            handleError(err);
-          }
-        } else {
-          handleError("No address received from MetaMask.");
-        }
-      } catch (err) {
-        handleError(err);
-      }
-    };
-    return handleDepositLogin;
-  };
-
   const handleAddCollaborator = () => {
     const address = prompt(
       "What is the address of the collaborator to add?",
@@ -999,6 +1025,12 @@ const CardDetails = ({
                 {transferOpen ?
                   <Window onBackgroundClick={closeTransferMenu}>
                     <TransferMenu
+                      id={id}
+                      globalState={globalState}
+                      currentLocation={currentLocation}
+                      addToast={addToast}
+                      handleSuccess={handleSuccess}
+                      handleError={handleError}
                       onCancel={closeTransferMenu}
                     />
                   </Window>

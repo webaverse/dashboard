@@ -1468,7 +1468,7 @@ const CardDetails = ({
                             <img className="icon" src="/chest.svg" />
                             <div className="feature-wrap">
                               <div className="label">Unlockable</div>
-                              <div className="text">Open secret</div>
+                              <div className="text">Open secret message</div>
                               <div className="helper">No unlockable</div>
                             </div>
                           </div>

@@ -12,7 +12,7 @@ import {getBlockchain} from "../../webaverse/blockchain.js";
 
 import Loader from "../../components/Loader";
 import CardGrid from "../../components/CardGrid";
-import ProfileHeader from "../../components/Profile";
+import Profile from "../../components/Profile";
 
 const getData = async id => {
   const [
@@ -51,6 +51,7 @@ const Account = ({ data, selectedView }) => {
   const [loading, setLoading] = useState(false);
   const [stuck, setStuck] = useState(false);
   const [addresses, setAddresses] = useState([]);
+  const [addressProofs, setAddressProofs] = useState([]);
 
   // console.log('render account', router.query.id);
 
@@ -80,9 +81,10 @@ const Account = ({ data, selectedView }) => {
     const addresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
     // console.log('loaded addresses', addresses);
     setAddresses(addresses);
+    setAddressProofs(addressProofs);
   }, [profile]);
 
-  const addressProofs = getAddressProofs(profile);
+  // const addressProofs = getAddressProofs(profile);
   // console.log('render addresses', addresses);
 
   /* const updateData = () => {
@@ -239,12 +241,15 @@ const Account = ({ data, selectedView }) => {
     <Loader loading={true} />
   :
     <div className="profile-page">
-        <ProfileHeader
+        <Profile
           key="profileHeader"
           loadout={loadout}
           balance={balance}
           profile={profile}
           addresses={addresses}
+          setAddresses={setAddresses}
+          addressProofs={addressProofs}
+          setAddressProofs={setAddressProofs}
         />
         {/* <div key="profileBodynav" className="profileBodyNav">
           <div className="profileBodyNavContainer">

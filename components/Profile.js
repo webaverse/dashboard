@@ -9,14 +9,21 @@ import {setName, setAccountMetadata} from "../functions/UserFunctions";
 import Clip from './Clip';
 import {loginWithMetaMask, getBlockchain} from '../webaverse/blockchain';
 
-const Profile = ({ loadout, balance, profile, addresses }) => {
+const Profile = ({
+  profile,
+  addresses,
+  setAddresses,
+  addressProofs,
+  setAddressProofs,
+  balance,
+  loadout,
+}) => {
     if (!profile) {
         return null;
     }
     
     const profileName = profile.name || "Anonymous";
 
-    // const [addresses, setAddresses] = useState(null);
     const {globalState, setGlobalState} = useAppContext();
     const [liked, setLiked] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -60,16 +67,6 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
       _updateNameInputFocus();
     }, [editName]);
 
-    /* useEffect(async () => {
-      if (!addresses) {
-        const {web3} = await getBlockchain();
-        // setWeb3(o.web3);
-        const addressProofs = getAddressProofs(profile);
-        const newAddresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
-        setAddresses(newAddresses);
-      }
-    }, [addresses]); */
-
     return (
         <div className="profileContainer">
             <div className="profileHeader">
@@ -109,7 +106,36 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                       <p className="profileText address main">{profile.address} <img className="icon" src="/wallet.svg" /></p>
                       {addresses.map(address => {
                         return (
-                          <p className="profileText address" key={address}>{address} <img className="icon" src="/cancel.svg" /></p>
+                          <p className="profileText address" key={address}>
+                            {address}
+                            <img
+                              className="icon"
+                              src="/cancel.svg"
+                              onClick={async e => {
+                                const {web3} = await getBlockchain();
+                                
+                                let addressProofs = getAddressProofs(profile);
+                                let addresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
+                                
+                                const localAddresses = addresses.slice();
+                                const localAddressProofs = addressProofs.slice();
+                                
+                                const index = localAddresses.indexOf(address);
+                                if (index !== -1) {
+                                  localAddresses.splice(index, 1);
+                                  localAddressProofs.splice(index, 1);
+                                  
+                                  const result = await setAccountMetadata('addressProofs', JSON.stringify(localAddressProofs), globalState);
+                                  
+                                  setAddresses(localAddresses);
+                                  setAddressProofs(localAddressProofs);
+                                } else {
+                                  console.warn('failed to remove address proof', {localAddresses, localAddressProofs, address, index});
+                                }
+ 
+                              }}
+                            />
+                          </p>
                         );
                       })}
                       <p
@@ -120,15 +146,22 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                           // console.log('sign', web3); // XXX
                           const signature = await web3.mainnet.eth.personal.sign(proofOfAddressMessage, metaMaskAddress);
                           // console.log('got signature', signature, proofOfAddressMessage);
-                          
-                          let addressProofs = getAddressProofs(profile);
-                          addressProofs.push(signature);
-                          addressProofs = uniquify(addressProofs);
+
+                          let localAddresses = addresses.slice();
+                          localAddresses.push(metaMaskAddress);
+                          localAddresses = uniquify(localAddresses);
+
+                          let localAddressProofs = addressProofs.slice();
+                          localAddressProofs.push(signature);
+                          localAddressProofs = uniquify(addressProofs);
                           
                           // console.log('got result 1', addressProofs);
                           
-                          const result = await setAccountMetadata('addressProofs', JSON.stringify(addressProofs), globalState);
+                          const result = await setAccountMetadata('addressProofs', JSON.stringify(localAddressProofs), globalState);
                           // console.log('got result 2', result);
+                          
+                          setAddresses(localAddresses);
+                          setAddressProofs(localAddressProofs);
                         }}
                       >+ Add address</p>
                       {profile.mainnetAddress ? (

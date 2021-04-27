@@ -130,13 +130,20 @@
   margin-right: 10px;
   object-fit: contain;
 }
-.currentLocation input[type=button] {
+/* .currentLocation input[type=button] {
   display: flex;
   padding: 5px;
   background-color: transparent;
   border: 2px solid #333;
   border-radius: 5px;
   cursor: pointer;
+} */
+.currentLocation .warning {
+  display: flex;
+}
+.currentLocation .warning .warning-wrap {
+  display: flex;
+  flex-direction: column;
 }
 
 .features {

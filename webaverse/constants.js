@@ -62,17 +62,17 @@ export const web3MainnetSidechainEndpoint = 'https://mainnetsidechain.exokit.org
 export const web3TestnetSidechainEndpoint = 'https://testnetsidechain.exokit.org';
 export const Networks = {
   mainnet: {
-    displayName: 'Mainnet',
+    displayName: 'Ethereum mainnet',
     transferOptions: ['mainnetsidechain'],
     iconSrc: '/ethereum.png',
   },
   mainnetsidechain: {
-    displayName: 'Webaverse',
+    displayName: 'Webaverse sidechain',
     transferOptions: ['mainnet', 'polygon'],
     iconSrc: '/webaverse.png',
   },
   polygon: {
-    displayName: 'Polygon',
+    displayName: 'Polygon network',
     transferOptions: ['mainnetsidechain'],
     iconSrc: '/polygon.png',
   },

@@ -45,6 +45,7 @@ import AssetCardSwitch from './CardSwitch';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import procgen, {types} from '../webaverse/procgen.js';
 
+const networkNames = Object.keys(Networks);
 const _capitalize = s => s[0].toUpperCase() + s.slice(1);
 const handleDeposit = async (
   id,
@@ -414,7 +415,10 @@ const TransferMenu = ({
   currentLocation,
   onCancel,
 }) => {
-  const [transferOption, setTransferOption] = useState('polygon');
+  const network = Networks[currentLocation];
+  const {displayName, transferOptions, iconSrc} = network;
+  
+  const [transferOption, setTransferOption] = useState(transferOptions[0]);
   
   const doTransfer = async () => {
     const receipt = await handleDeposit(
@@ -431,40 +435,34 @@ const TransferMenu = ({
     console.log('did transfer', receipt);
     onCancel();
   };
+  const currentNetwork = Networks[currentLocation.replace(/\-stuck$/, '')];
   
   return (
     <div className="transfer-menu">
       <div className="label">Current location</div>
       <div className="network">
-        <img className="icon" src="/webaverse.png" onDragStart={cancelEvent} />
-        <div className="text">Webaverse</div>
+        <img className="icon" src={currentNetwork.iconSrc} onDragStart={cancelEvent} />
+        <div className="text">{currentNetwork.displayName}</div>
       </div>
       <div className="label">Transfer to</div>
       <div className="transfer-options">
-        <div
-          className={`transfer-option ${transferOption === 'polygon' ? 'selected' :''}`}
-          onClick={e => {
-            setTransferOption('polygon');
-          }}
-        >
-          <img className="transfer-icon" src="/chevron-down.svg" onDragStart={cancelEvent} />
-          <div className="network">
-            <img className="icon" src="/polygon.png" onDragStart={cancelEvent} />
-            <div className="text">Polygon network</div>
-          </div>
-        </div>
-        <div
-          className={`transfer-option ${transferOption === 'ethereum' ? 'selected' :''}`}
-          onClick={e => {
-            setTransferOption('ethereum');
-          }}
-        >
-          <img className="transfer-icon" src="/chevron-down.svg" onDragStart={cancelEvent} />
-          <div className="network">
-            <img className="icon" src="/ethereum.png" onDragStart={cancelEvent} />
-            <div className="text">Ethereum mainnet</div>
-          </div>
-        </div>
+        {transferOptions.map((n, i) => {
+          const network = Networks[n];
+          return (
+            <div
+              className={`transfer-option ${transferOption === n ? 'selected' : ''}`}
+              onClick={e => {
+                setTransferOption(n);
+              }}
+            >
+              <img className="transfer-icon" src="/chevron-down.svg" onDragStart={cancelEvent} />
+              <div className="network">
+                <img className="icon" src={network.iconSrc} onDragStart={cancelEvent} />
+                <div className="text">{network.displayName}</div>
+              </div>
+            </div>
+          );
+        })}
       </div>
       <div className="buttons">
         <input type="button" value="Transfer" onChange={e => {}} disabled={!transferOption} className="button ok" onClick={doTransfer} />

@@ -754,16 +754,19 @@ const CardDetails = ({
             appearance: "info",
             autoDismiss: true,
           });
-          await depositAsset(
-            id,
-            sourceNetworkName,
-            destinationNetworkName,
-            mainnetAddress,
-            globalState.address,
-            globalState,
-            handleSuccess,
-            handleError
-          );
+          try {
+            await depositAsset(
+              id,
+              sourceNetworkName,
+              destinationNetworkName,
+              mainnetAddress,
+              globalState.address,
+              globalState
+            );
+            handleSuccess();
+          } catch (err) {
+            handleError(err);
+          }
         } else {
           handleError("No address received from MetaMask.");
         }

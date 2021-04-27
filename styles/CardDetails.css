@@ -142,16 +142,17 @@
   display: flex;
   max-width: 260px;
   padding: 0 10px;
-  flex-direction: column;
+  color: #ef5350;
 }
-.currentLocation .warning .row {
-  display: flex;
+.currentLocation .warning .icon {
+  filter: invert(42%) sepia(41%) saturate(1001%) hue-rotate(314deg) brightness(99%) contrast(98%);
 }
 .currentLocation .warning .warning-wrap {
   display: flex;
   flex-direction: column;
 }
 .currentLocation .warning .text {
+  margin-bottom: 10px;
   text-align: left;
 }
 

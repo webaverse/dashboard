@@ -614,12 +614,10 @@ const CardDetails = ({
   // setMainnetAddress,
   cardSvgSpec,
 }) => {
-  /* if (typeof setMainnetAddress !== 'function') {
-    throw new Error('no setMainnetAddress method');
-  } */
-  if (!networkName) {
+  console.log('got encrypted', encrypted);
+  /* if (!networkName) {
     throw new Error('no network name :' + networkName);
-  }
+  } */
   const {addToast} = useToasts();
 
   const [toggleViewOpen, setToggleViewOpen] = useState(true);
@@ -1457,7 +1455,7 @@ const CardDetails = ({
                             <div className="feature-wrap">
                               <div className="label">Unlockable</div>
                               <div className="text">Open secret</div>
-                              <div className="helper">Coming soon</div>
+                              <div className="helper">No unlockable</div>
                             </div>
                           </div>
                         :
@@ -1482,14 +1480,14 @@ const CardDetails = ({
                         }
                         {!decryptionSpec ?
                           <div
-                            className="feature disabled"
+                            className={`feature ${encrypted ? '' : 'disabled'}`}
                             onClick={handleDecrypt}
                           >
                             <img className="icon" src="/secret.svg" />
                             <div className="feature-wrap">
                               <div className="label">Encrypted</div>
                               <div className="text">Decrypt contents</div>
-                              <div className="helper">Coming soon</div>
+                              <div className="helper">No encrypted contents</div>
                             </div>
                           </div>
                         :

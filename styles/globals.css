@@ -971,7 +971,7 @@ a {
   background-image: linear-gradient(to bottom, #654ea3, #eaafc8);
   background-repeat: no-repeat;
   border-width: 0;
-  border-bottom-width: 2px;
+  /* border-bottom-width: 2px; */
 }
 .buttons input[type=button]:not(:disabled).ok:hover {
   filter: brightness(80%);

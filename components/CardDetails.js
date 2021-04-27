@@ -514,7 +514,7 @@ const UnlockableMenu = ({
   return (
     <div className="unlockable-menu">
       <div className="label">Set unlockable</div>
-      <input type="text" value={unlockable} placeholder="Secret string" onChange={e => {
+      <input type="text" value={unlockable} placeholder="Secret text" onChange={e => {
         setUnlockable(e.target.value);
       }} ref={el => {
         inputEl = el;

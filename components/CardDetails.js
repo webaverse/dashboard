@@ -799,40 +799,11 @@ const CardDetails = ({
     return j;
   };
   const handleUnlock = async () => {
-    // const ethereumSpec = await window.ethereum.enable();
-    // const [address] = ethereumSpec;
-
-    // const mainnetAddress = globalState.address;
     const {
-      // address: sidechainAddress,
       loginToken: {
         mnemonic,
       },
     } = globalState;
-
-    /* const _getMainnetTokens = async address => {
-        const res = await fetch(`https://mainnet-tokens.webaverse.com/${address}`);
-        const j = await res.json();
-        return j;
-      };
-      // const tokens = await _getMainnetTokens('0x84310641ea558c5e2f86bfe4f95d426d4f3c7360');
-      // console.log('got tokens', tokens);      
-      const _getSidechainTokens = async address => {
-        const res = await fetch(`https://tokens.webaverse.com/${address}`);
-        const j = await res.json();
-        return j;
-      }; */
-    /* const _getMainnetSignature = async () => {
-      // const result1 = await window.ethereum.enable();
-      await window.ethereum.enable();
-      const signature = await web3.front.eth.personal.sign(
-        proofOfAddressMessage,
-        web3.front.currentProvider.selectedAddress
-      );
-      const result3 = await web3.front.eth.personal.ecRecover(proofOfAddressMessage, signature);
-      // console.log('got sig 1', {signature});
-      return signature;
-    }; */
 
     const [
       addressProofs,
@@ -852,7 +823,7 @@ const CardDetails = ({
         ]),
       id
     );
-    console.log('got unlockable spec', spec);
+    // console.log('got unlockable spec', spec);
     setUnlockableSpec(spec);
   };
   const handleDecrypt = async () => {

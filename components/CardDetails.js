@@ -1480,7 +1480,7 @@ const CardDetails = ({
                             </div>
                           </div> */
                         }
-                        {decryptionSpec ?
+                        {!decryptionSpec ?
                           <div
                             className="feature disabled"
                             onClick={handleDecrypt}

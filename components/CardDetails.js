@@ -837,6 +837,9 @@ const CardDetails = ({
     );
     setUnlockableSpec(spec);
   };
+  const handleDecrypt = async () => {
+    throw new Error('not implemented');
+  };
   const openFileBrowser = () => {
     setFileBrowserOpen(true);
   };
@@ -971,7 +974,7 @@ const CardDetails = ({
                           Try in Webaverse
                         </button>
                       </Link> */}
-                      {unlockableSpec ? (
+                      {/* unlockableSpec ? (
                         <div className="action">
                           {unlockableSpec.ok
                             ? (unlockableSpec.result || '[no unlockable]')
@@ -984,7 +987,7 @@ const CardDetails = ({
                         >
                           Unlock content
                         </a>
-                      )}
+                      ) */}
                       {/* <a
                         className="action"
                         onClick={openFileBrowser}
@@ -1253,6 +1256,7 @@ const CardDetails = ({
                         </div>
                         <div
                           className="feature disabled"
+                          onClick={handleUnlock}
                         >
                           <img className="icon" src="/chest.svg" />
                           <div className="feature-wrap">
@@ -1262,6 +1266,7 @@ const CardDetails = ({
                         </div>
                         <div
                           className="feature disabled"
+                          onClick={handleDecrypt}
                         >
                           <img className="icon" src="/secret.svg" />
                           <div className="feature-wrap">

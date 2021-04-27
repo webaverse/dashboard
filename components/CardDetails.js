@@ -45,6 +45,7 @@ import AssetCardSwitch from './CardSwitch';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import procgen, {types} from '../webaverse/procgen.js';
 
+const _capitalize = s => s[0].toUpperCase() + s.slice(1);
 const handleDeposit = async (
   id,
   sourceNetworkName,
@@ -1352,10 +1353,10 @@ const CardDetails = ({
                                       onClick={openTransferMenu}
                                     >
                                       <img className="icon" src="/polygon.png" />
-                                      <div className="text">Webaverse</div>
+                                      <div className="text">{_capitalize(currentLocation)}</div>
                                       <MaybeStuck />
                                     </div>
-                                    /* <MaybeTransfer /> */}
+                                    {/* <MaybeTransfer /> */}
                                   </Fragment>
                                 );
                                 break;

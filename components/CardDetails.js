@@ -1378,6 +1378,8 @@ const CardDetails = ({
                                   <div>This token is stuck between chains. No worries, you can re-submit the transaction to unstick.</div>
                                   <input
                                     type="button"
+                                    value="Retry"
+                                    onChange={e => {}}
                                     onClick={e => {
                                       console.log('click resubmit', e);
                                     }}

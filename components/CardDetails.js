@@ -1000,19 +1000,19 @@ const CardDetails = ({
                         className="action"
                         onClick={handleSetAvatar}
                       >
-                        Set As Avatar
+                        Set as avatar
                       </a>
                       <a
                         className="action"
                         onClick={handleSetHomespace}
                       >
-                        Set As Homespace
+                        Set as homespace
                       </a>
                       <a
                         className="action"
                         onClick={addToLoadout}
                       >
-                        Add To Loadout
+                        Add to loadout
                       </a>
                       {/* <a
                         className="action"

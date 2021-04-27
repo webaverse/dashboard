@@ -628,20 +628,20 @@ a {
   letter-spacing: 1px;
   color: #bbb;
 }
-.slider .contents .wrap-slider .lhs .form .file {
+.file {
   display: flex;
   height: 32px;
   margin-bottom: 20px;
   align-items: center;
 }
-.slider .contents .wrap-slider .lhs .form .file .text {
+.file .text {
   font-family: 'MS-Gothic';
   text-align: left;
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.slider .contents .wrap-slider .lhs .form .file .cancel-button {
+.file .cancel-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -651,7 +651,7 @@ a {
   cursor: pointer;
   opacity: 0.3;
 }
-.slider .contents .wrap-slider .lhs .form .file .cancel-button:hover {
+.file .cancel-button:hover {
   opacity: 1;
 }
 

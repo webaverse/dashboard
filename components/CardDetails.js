@@ -537,6 +537,7 @@ const EncryptionMenu = ({
   const [file, setFile] = useState(null);
   
   const doSetEncryption = async () => {
+    const {name} = file;
     const {
       encryptedBlob,
       tag,
@@ -560,6 +561,7 @@ const EncryptionMenu = ({
     const {hash: cipherhash} = await res.json();
     const j = {
       cipherhash,
+      name,
       tag,
     };
     const s = JSON.stringify(j);

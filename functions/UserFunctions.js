@@ -18,6 +18,23 @@ export const setName = async (name, state) => {
   }
 };
 
+export const setAccountMetadata = async (key, value, state) => {
+  // console.warn("Setting username in user object, but not to server");
+  try {
+    const result = await runSidechainTransaction(state.loginToken.mnemonic)(
+      'Account',
+      'setMetadata',
+      state.address,
+      key,
+      value
+    );
+    return result;
+  } catch(err) {
+    console.warn(err);
+    throw err;
+  }
+};
+
 export const setFtu = async (name, avatarUrl, state) => {
   const address = state.getAddress();
   const avatarPreview = `${previewHost}/[${avatarUrl}]/preview.${previewExt}`;

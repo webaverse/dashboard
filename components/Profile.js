@@ -16,12 +16,12 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     const profileName = profile.name || "Anonymous";
 
     // const [addresses, setAddresses] = useState(null);
+    const {globalState, setGlobalState} = useAppContext();
     const [liked, setLiked] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [name, setName] = useState(profileName);
     const [editName, setEditName] = useState(false);
     const [editedName, setEditedName] = useState(profileName);
-    const {globalState, setGlobalState} = useAppContext();
 
     const logout = () => {
         setGlobalState({ ...globalState, logout: "true" });

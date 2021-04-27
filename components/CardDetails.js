@@ -537,21 +537,26 @@ const EncryptionMenu = ({
   const [file, setFile] = useState(null);
   
   const doSetEncryption = async () => {
-    const encryptedBlob = await (async () => {
+    const {
+      encryptedBlob,
+      tag,
+    } = await (async () => {
       const res = await fetch(`${lockHost}/${id}`, {
         method: 'POST',
         body: file,
       });
       const tag = res.headers.get('tag');
-      const b = await res.blob();
-      return b;
+      const encryptedBlob = await res.blob();
+      return {
+        encryptedBlob,
+        tag,
+      };
     })();
     
     const res = await fetch(storageHost, {
       method: 'POST',
       body: encryptedBlob,
     });
-    const tag = res.headers.get('tag');
     const {hash: cipherhash} = await res.json();
     const j = {
       cipherhash,
@@ -956,49 +961,55 @@ const CardDetails = ({
     }
   };
   const _getDecryption = async (signatures, id) => {
-    if (encrypted) {
-      console.log('decrypt', {
+    /* console.log('decrypt', {
+      signatures,
+      id,
+    }); */
+    const res = await fetch(`https://decrypt.exokit.org/`, {
+      method: 'POST',
+      body: JSON.stringify({
         signatures,
         id,
-      });
-      const res = await fetch(`https://decrypt.exokit.org/`, {
-        method: 'POST',
-        body: JSON.stringify({
-          signatures,
-          id,
-        }),
-      });
-      const j = await res.json();
-      return j;
-    }
+      }),
+    });
+    const b = await res.blob();
+    return b;
   };
   const handleDecrypt = async () => {
-    const {
-      loginToken: {
-        mnemonic,
-      },
-    } = globalState;
+    if (encrypted) {
+      const {
+        loginToken: {
+          mnemonic,
+        },
+      } = globalState;
 
-    const [
-      addressProofs,
-      sidechainSignature,
-    ] = await Promise.all([
-      (async () => {
-        const profile = await getProfileForCreator(globalState.address);
-        const addressProofs = getAddressProofs(profile);
-        return addressProofs;
-      })(),
-      _getSidechainSignature(mnemonic),
-    ])
-    const spec = await _getDecryption(
-      addressProofs
-        .concat([
-          sidechainSignature,
-        ]),
-      id
-    );
-    console.log('got decryption spec', spec);
-    setDecryptionSpec(spec);
+      const [
+        addressProofs,
+        sidechainSignature,
+      ] = await Promise.all([
+        (async () => {
+          const profile = await getProfileForCreator(globalState.address);
+          const addressProofs = getAddressProofs(profile);
+          return addressProofs;
+        })(),
+        _getSidechainSignature(mnemonic),
+      ])
+      const decryptedBlob = await _getDecryption(
+        addressProofs
+          .concat([
+            sidechainSignature,
+          ]),
+        id
+      );
+      console.log('got decrypted blob', decryptedBlob);
+      const ok = !!decryptedBlob;
+      const result = decryptedBlob ? URL.createObjectURL(decryptedBlob) : null;
+      const spec = {
+        ok,
+        result,
+      };
+      setDecryptionSpec(spec);
+    }
   };
   const openFileBrowser = () => {
     if (false) { // locked for now

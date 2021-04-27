@@ -153,7 +153,7 @@ const Profile = ({
 
                           let localAddressProofs = addressProofs.slice();
                           localAddressProofs.push(signature);
-                          localAddressProofs = uniquify(addressProofs);
+                          localAddressProofs = uniquify(localAddressProofs);
                           
                           // console.log('got result 1', addressProofs);
                           

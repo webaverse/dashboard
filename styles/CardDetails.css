@@ -140,10 +140,15 @@
 } */
 .currentLocation .warning {
   display: flex;
+  max-width: 260px;
+  padding: 0 10px;
 }
 .currentLocation .warning .warning-wrap {
   display: flex;
   flex-direction: column;
+}
+.currentLocation .warning .text {
+  text-align: left;
 }
 
 .features {

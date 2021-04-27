@@ -984,50 +984,6 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
     } else {
       handleError('failed to parse', JSON.stringify(ethNftIdInput.value));
     }
-  /* } else {
-    const id = parseInt(tokenId, 10);
-    const tokenIdSpec = {
-      t: 'uint256',
-      v: new web3['front'].utils.BN(id),
-    };
-
-    const hashSpec = await contracts.front.NFT.methods.getHash(Spec.v).call();
-    const hash = {
-      t: 'uint256',
-      v: new web3['front'].utils.BN(hashSpec),
-    };
-    const filenameSpec = await contracts.front.NFT.methods.getMetadata(hashSpec, 'filename').call();
-    const filename = {
-      t: 'string',
-      v: filenameSpec,
-    };
-
-    const descriptionSpec = await contracts.front.NFT.methods.getMetadata(hashSpec, 'description').call();
-    const description = {
-      t: 'string',
-      v: descriptionSpec,
-    };
-
-
-    await _checkMainNftApproved();
-
-    const receipt = await contracts.front.NFTProxy.methods.deposit(myAddress, tokenId.v).send({
-      from: mainnetAddress,
-    });
-
-    const signature = await getTransactionSignature('front', 'NFT', receipt.transactionHash);
-
-    const { timestamp, r, s, v } = signature;
-
-    try {
-      const receipt = await runSidechainTransaction('NFTProxy', 'withdraw', myAddress, tokenId.v, hash.v, filename.v, description.v, timestamp, r, s, v);
-    } catch (err) {
-      handleError(err.message);
-    }
-
-    handleSuccess(receipt);
-    return;
-  } */
 }
 
 export const getLoadout = async (address) => {

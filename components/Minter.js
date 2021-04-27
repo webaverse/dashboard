@@ -179,6 +179,8 @@ const Form = ({
   setUrl,
   source,
   setSource,
+  selectedTab,
+  setSelectedTab,
   handleLoadFile,
   handleLoadUrl,
 }) => {
@@ -287,6 +289,7 @@ const Form = ({
       }} min={1} step={1} />
       <input className={enabled ? '' : 'disabled'} type="button" value="Preview NFT" onChange={e => {}} disabled={!enabled} onClick={e => {
         setMintMenuStep(2);
+        setSelectedTab('');
         
         if (source === 'file') {
           handleLoadFile(file);
@@ -502,10 +505,14 @@ const Minter = ({
     setHash('');
     setExt('');
     
+    console.log('load url 1', url);
+    
     const repoZipUrl = urlToRepoZipUrl(url);
     if (repoZipUrl) {
+      console.log('load url 2', url);
       await handleLoadUrl(repoZipUrl);
     } else {
+      console.log('load url 3', url);
       const res = await fetch(url);
       const b = await res.blob();
       b.name = url;
@@ -532,7 +539,7 @@ const Minter = ({
     setMintMenuStep(2);
     handleLoadTemplate(newTab);
   };
-  const selectedTabDefaulted = selectedTab || 'image';
+  const selectedTabDefaulted = selectedTab || ext || 'image';
 
   const _updateMintProgress = () => {
     let frame = null;
@@ -878,6 +885,8 @@ const Minter = ({
             setUrl={setUrl}
             source={source}
             setSource={setSource}
+            selectedTab={selectedTab}
+            setSelectedTab={setSelectedTab}
             hash={hash}
             ext={ext}
             handleLoadFile={handleLoadFile}
@@ -952,6 +961,8 @@ const Lhs = ({
   setUrl,
   source,
   setSource,
+  selectedTab,
+  setSelectedTab,
   hash,
   ext,
   handleLoadFile,
@@ -985,6 +996,8 @@ const Lhs = ({
           setUrl={setUrl}
           source={source}
           setSource={setSource}
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
           handleLoadFile={handleLoadFile}
           handleLoadUrl={handleLoadUrl}
         />

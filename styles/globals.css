@@ -972,6 +972,7 @@ input.button[type=button]:not(:disabled).ok {
   background-image: linear-gradient(to bottom, #654ea3, #eaafc8);
   background-repeat: no-repeat;
   border-width: 0;
+  padding: 12px;
   /* border-bottom-width: 2px; */
 }
 input.button[type=button]:not(:disabled).ok:hover {

@@ -60,7 +60,7 @@ const handleDeposit = async (
   try {
     const mainnetAddress = await loginWithMetaMask();
     if (mainnetAddress) {
-      addToast("Starting transfer of this item.", {
+      addToast("Starting NFT chain transfer...", {
         appearance: "info",
         autoDismiss: true,
       });
@@ -429,6 +429,7 @@ const TransferMenu = ({
       }
     );
     console.log('did transfer', receipt);
+    onCancel();
   };
   
   return (

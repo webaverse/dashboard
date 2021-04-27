@@ -6,27 +6,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {useAppContext} from "../libs/contextLib";
 import {parseQuery, cancelEvent} from "../webaverse/util";
 
-const _switchToSideChain = async e => {
-  e.preventDefault();
-  
-  await ethereum.enable();
-  await ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [{
-          chainId: "0x53A",
-          chainName: "Webaverse Sidechain",
-          rpcUrls: ['https://mainnetsidechain.exokit.org',],
-          iconUrls: ['https://app.webaverse.com/assets/logo-flat.png'],
-          blockExplorerUrls: ['https://webaverse.com/activity'],
-          nativeCurrency: {
-            name: 'Silk',
-            symbol: 'SILK',
-            decimals: 18,
-          },
-      }],
-  });
-};
-
 const StreetFilters = ({
   q,
   setQ,

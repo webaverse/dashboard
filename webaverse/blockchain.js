@@ -326,6 +326,25 @@ const ensureMetamaskChain = async networkName => {
   }
 };
 
+const switchToSideChain = async () => {
+  await ethereum.enable();
+  await ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+          chainId: "0x53A",
+          chainName: "Webaverse Sidechain",
+          rpcUrls: ['https://mainnetsidechain.exokit.org',],
+          iconUrls: ['https://app.webaverse.com/assets/logo-flat.png'],
+          blockExplorerUrls: ['https://webaverse.com/activity'],
+          nativeCurrency: {
+            name: 'Silk',
+            symbol: 'SILK',
+            decimals: 18,
+          },
+      }],
+  });
+};
+
 export {
   getBlockchain,
   runSidechainTransaction,
@@ -335,4 +354,5 @@ export {
   loginWithMetaMask,
   blockchainChainIds,
   ensureMetamaskChain,
+  switchToSideChain,
 };

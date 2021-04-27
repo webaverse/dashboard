@@ -1508,7 +1508,7 @@ const CardDetails = ({
                           <div className="feature-text">
                             {decryptionSpec.ok ?
                               <Link href={decryptionSpec.result}>
-                                <a>{decryptionSpec.result}</a>
+                                <a className="text">{decryptionSpec.result}</a>
                               </Link>
                             :
                               <div className="text">Could not decrypt</div>

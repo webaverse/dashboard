@@ -864,6 +864,9 @@ const CardDetails = ({
     await setNftMetadata(id, 'description', editedDescription, globalState);
   };
   
+  const openTransferMenu = () => {
+    setTransferOpen(true);
+  };
   const closeTransferMenu = () => {
     setTransferOpen(false);
   };
@@ -982,12 +985,12 @@ const CardDetails = ({
                           Unlock content
                         </a>
                       )}
-                      <a
+                      {/* <a
                         className="action"
                         onClick={openFileBrowser}
                       >
                         File browser
-                      </a>
+                      </a> */}
                       
                       <div className="label">Add</div>
                       <a
@@ -1008,12 +1011,12 @@ const CardDetails = ({
                       >
                         Add To Loadout
                       </a>
-                      <a
+                      {/* <a
                         className="action"
                         onClick={clearLoadout}
                       >
                         Clear From Loadout
-                      </a>
+                      </a> */}
                       
                       <div className="label">Transfer</div>
                       {(() => {
@@ -1145,7 +1148,9 @@ const CardDetails = ({
                             <div className="value">{`No`}</div>
                           </div>
                         </ul>
-                        <div className="currentLocation">
+                        <div
+                          className="currentLocation"
+                        >
                           <div className="label">Current location</div>
                           {(() => {
                             const match = currentLocation.match(/^(.*?)(-stuck)?$/);
@@ -1177,7 +1182,10 @@ const CardDetails = ({
                               case 'mainnetsidechain': {
                                 return (
                                   <Fragment>
-                                    <div className="value">
+                                    <div
+                                      className="value"
+                                      onClick={openTransferMenu}
+                                    >
                                       <img className="icon" src="/webaverse.png" />
                                       <div className="text">Webaverse sidechain</div>
                                       <MaybeStuck />
@@ -1190,7 +1198,10 @@ const CardDetails = ({
                               case 'mainnet': {
                                 return (
                                   <Fragment>
-                                    <div className="value">
+                                    <div
+                                      className="value"
+                                      onClick={openTransferMenu}
+                                    >
                                       <img className="icon" src="/ethereum.png" />
                                       <div className="text">Webaverse sidechain</div>
                                       <MaybeStuck />
@@ -1203,9 +1214,12 @@ const CardDetails = ({
                               case 'polygon': {
                                 return (
                                   <Fragment>
-                                    <div className="value">
+                                    <div
+                                      className="value"
+                                      onClick={openTransferMenu}
+                                    >
                                       <img className="icon" src="/polygon.png" />
-                                      <div className="text">Webaverse sidechain</div>
+                                      <div className="text">Webaverse</div>
                                       <MaybeStuck />
                                     </div>
                                     /* <MaybeTransfer /> */}
@@ -1223,6 +1237,32 @@ const CardDetails = ({
                           <div className="collaborator">
                           </div>
                           <div className="collaborator">
+                          </div>
+                        </div>
+                      </div>
+                      <div className="features">
+                        <div
+                          className="feature"
+                          onClick={openFileBrowser}
+                        >
+                          <img className="icon" src="/file.svg" />
+                          <div className="feature-wrap">
+                            <div className="label">NFT contents</div>
+                            <div className="text">Browse files</div>
+                          </div>
+                        </div>
+                        <div className="feature">
+                          <img className="icon" src="/chest.svg" />
+                          <div className="feature-wrap">
+                            <div className="label">Unlockable</div>
+                            <div className="text">Open secret</div>
+                          </div>
+                        </div>
+                        <div className="feature">
+                          <img className="icon" src="/secret.svg" />
+                          <div className="feature-wrap">
+                            <div className="label">Encrypted</div>
+                            <div className="text">Decrypt contents</div>
                           </div>
                         </div>
                       </div>

@@ -193,7 +193,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                   {
                     loadout.slice(0, 8).map((item, i) => {
                         if (item && item[3]) {
-                          console.log('got item', item);
+                          // console.log('got item', item);
                           const tokenId = parseInt(item[0], 10);
                           if (!isNaN(tokenId)) {
                             return (

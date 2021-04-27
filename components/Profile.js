@@ -3,10 +3,11 @@ import React, {Fragment, useState, useEffect} from "react";
 import Link from "next/link";
 import {useAppContext} from "../libs/contextLib";
 import {proofOfAddressMessage} from "../constants/UnlockConstants";
-import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
+import {uniquify, getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
 import {cancelEvent} from "../webaverse/util";
-import {setName} from "../functions/UserFunctions";
+import {setName, setAccountMetadata} from "../functions/UserFunctions";
 import Clip from './Clip';
+import {loginWithMetaMask, getBlockchain} from '../webaverse/blockchain';
 
 const Profile = ({ loadout, balance, profile, addresses }) => {
     if (!profile) {
@@ -22,6 +23,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     const [name, setName] = useState(profileName);
     const [editName, setEditName] = useState(false);
     const [editedName, setEditedName] = useState(profileName);
+    const [keysOpen, setManageKeysOpen] = useState(false);
 
     const logout = () => {
         setGlobalState({ ...globalState, logout: "true" });
@@ -61,7 +63,8 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
     /* useEffect(async () => {
       if (!addresses) {
         const {web3} = await getBlockchain();
-        // setWeb3(o.web3);const addressProofs = getAddressProofs(profile);
+        // setWeb3(o.web3);
+        const addressProofs = getAddressProofs(profile);
         const newAddresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
         setAddresses(newAddresses);
       }
@@ -109,7 +112,25 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                           <p className="profileText address" key={address}>{address} <img className="icon" src="/cancel.svg" /></p>
                         );
                       })}
-                      <p className="profileText address clickable">+ Add address</p>
+                      <p
+                        className="profileText address clickable"
+                        onClick={async e => {
+                          const metaMaskAddress = await loginWithMetaMask();
+                          const {web3} = await getBlockchain();
+                          // console.log('sign', web3); // XXX
+                          const signature = await web3.mainnet.eth.personal.sign(proofOfAddressMessage, metaMaskAddress);
+                          // console.log('got signature', signature, proofOfAddressMessage);
+                          
+                          let addressProofs = getAddressProofs(profile);
+                          addressProofs.push(signature);
+                          addressProofs = uniquify(addressProofs);
+                          
+                          // console.log('got result 1', addressProofs);
+                          
+                          const result = await setAccountMetadata('addressProofs', JSON.stringify(addressProofs), globalState);
+                          // console.log('got result 2', result);
+                        }}
+                      >+ Add address</p>
                       {profile.mainnetAddress ? (
                           <p className="profileText address">
                               Mainnet:{" "}
@@ -265,7 +286,12 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 }}>
                   Change Name
                 </a> */}
-                <a key="logoutButton" className="action" onClick={() => logout()}>
+                <a key="manageKeysButton" className="action" onClick={() => {
+                  setManageKeysOpen(true);
+                }}>
+                  Manage keys...
+                </a>
+                <a className="action" onClick={() => logout()}>
                   Logout
                 </a>
               </div>

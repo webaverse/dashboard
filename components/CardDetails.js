@@ -15,7 +15,7 @@ import {Networks} from "../webaverse/constants.js";
 import {getData} from "./Asset";
 // import { FileDrop } from 'react-file-drop';
 // import { makeWbn, makePhysicsBake } from "../webaverse/build";
-import {storageHost} from "../webaverse/constants";
+import {storageHost, lockHost} from "../webaverse/constants";
 import {
   resubmitAsset,
   addNftCollaborator,
@@ -39,7 +39,7 @@ import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
 import wbn from '../webaverse/wbn.js';
-import {cancelEvent} from "../webaverse/util";
+import {cancelEvent, base64ArrayBuffer} from "../webaverse/util";
 import FileBrowser from './FileBrowser';
 import AssetCardSwitch from './CardSwitch';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
@@ -472,6 +472,7 @@ const TransferMenu = ({
   );
 };
 const UnlockableMenu = ({
+  id,
   onCancel,
 }) => {
   const [unlockable, setUnlockable] = useState('');
@@ -489,6 +490,16 @@ const UnlockableMenu = ({
   }, [focused]);
   
   const doSetUnlockable = async () => {
+    const res = await fetch(`${lockHost}/${id}`, {
+      method: 'POST',
+      body: unlockable,
+    });
+    const tag = res.headers.get('tag');
+    const ab = await res.arrayBuffer();
+    
+    const b64 = base64ArrayBuffer(ab);
+    console.log('got base64', b64);
+    
     onCancel();
   };
   
@@ -505,11 +516,14 @@ const UnlockableMenu = ({
   );
 };
 const EncryptionMenu = ({
+  id,
   onCancel,
 }) => {
   const [file, setFile] = useState(null);
   
   const doSetEncryption = async () => {
+    // XXX    
+
     onCancel();
   };
   
@@ -1038,6 +1052,7 @@ const CardDetails = ({
                 {unlockableOpen ?
                   <Window onBackgroundClick={closeUnlockable}>
                     <UnlockableMenu
+                      id={id}
                       onCancel={closeUnlockable}
                     />
                   </Window>
@@ -1045,6 +1060,7 @@ const CardDetails = ({
                 {encryptionOpen ?
                   <Window onBackgroundClick={closeEncryption}>
                     <EncryptionMenu
+                      id={id}
                       onCancel={closeEncryption}
                     />
                   </Window>

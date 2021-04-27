@@ -497,8 +497,15 @@ const UnlockableMenu = ({
     const tag = res.headers.get('tag');
     const ab = await res.arrayBuffer();
     
-    const b64 = base64ArrayBuffer(ab);
-    console.log('got base64', b64);
+    const ciphertext = base64ArrayBuffer(ab);
+    // console.log('got base64', b64);
+    
+    const j = {
+      ciphertext,
+      tag,
+    };
+    const s = JSON.stringify(j);
+    await setNftMetadata(id, 'unlockable', s, globalState);
     
     onCancel();
   };

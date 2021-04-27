@@ -251,7 +251,7 @@ const Profile = ({
                           const tokenId = parseInt(item[0], 10);
                           if (!isNaN(tokenId)) {
                             return (
-                              <Link href={`/assets/${tokenId}`}>
+                              <Link href={`/assets/${tokenId}`} key={i}>
                                 <a className="profileLoadoutItem" key={i}>
                                   <img
                                     src={item[3]}

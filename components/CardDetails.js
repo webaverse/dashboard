@@ -869,6 +869,7 @@ const CardDetails = ({
   
   const openTransferMenu = () => {
     setTransferOpen(true);
+    setDropdownOpen(false);
   };
   const closeTransferMenu = () => {
     setTransferOpen(false);
@@ -1040,34 +1041,12 @@ const CardDetails = ({
                       </a>
                       
                       <div className="label">Transfer</div>
-                      {(() => {
-                        const results = [];
-                        if (!/stuck/.test(currentLocation)) {
-                          // console.log('get network', Networks, currentLocation, Networks[currentLocation]);
-                          for (const transferOptionNetworkName of Networks[currentLocation].transferOptions) {
-                            results.push(
-                              <a
-                                className="action"
-                                onClick={e => {
-                                  handleDeposit(currentLocation, transferOptionNetworkName)(e);
-                                }}
-                                key={transferOptionNetworkName}
-                              >
-                                Transfer to {transferOptionNetworkName}
-                              </a>
-                            );
-                          }
-                          /*{tokenOnMain && (
-                            <button
-                              className="assetDetailsButton"
-                              onClick={handleWithdraw}
-                            >
-                              Transfer From {otherNetworkName}
-                            </button>
-                          )} */
-                        }
-                        return results;
-                      })()}
+                      <a
+                        className="action"
+                        onClick={openTransferMenu}
+                      >
+                        Transfer to chain...
+                      </a>
                     </div>
                     {(() => {
                       const props = {

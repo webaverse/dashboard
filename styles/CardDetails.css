@@ -230,6 +230,20 @@
 .feature:not(.disabled) .helper {
   display: none;
 }
+.feature-text .text {
+  display: flex;
+  max-width: 260px;
+  height: 56px;
+  margin: 0 20px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 2px solid #333;
+  border-radius: 5px;
+  justify-content: flex-start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .window {
   position: fixed;

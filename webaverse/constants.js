@@ -68,7 +68,7 @@ export const Networks = {
   },
   mainnetsidechain: {
     displayName: 'Webaverse sidechain',
-    transferOptions: ['mainnet', 'polygon'],
+    transferOptions: ['polygon', 'mainnet'],
     iconSrc: '/webaverse.png',
   },
   polygon: {

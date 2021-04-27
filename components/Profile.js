@@ -321,6 +321,7 @@ const Profile = ({
                 </a> */}
                 <a key="manageKeysButton" className="action" onClick={() => {
                   setManageKeysOpen(true);
+                  setDropdownOpen(false);
                 }}>
                   Manage keys...
                 </a>

@@ -245,7 +245,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 </div>
               </div>
               <div className={`actions ${dropdownOpen ? 'open' : ''}`}>
-                <a key="SILKToMainnetButton" className="action" onClick={() => handleDeposit()}>
+                {/* <a key="SILKToMainnetButton" className="action" onClick={() => handleDeposit()}>
                   Transfer SILK to mainnet
                 </a>
                 <a key="SILKResubmitButton" className="action" onClick={async () => {
@@ -258,7 +258,7 @@ const Profile = ({ loadout, balance, profile, addresses }) => {
                 <a key="SILKButton" className="action" onClick={() => handleWithdraw()}>
                   Transfer SILK from mainnet
                 </a>
-                {/* <a key="nameChangeButton" className="action" onClick={() => {
+                <a key="nameChangeButton" className="action" onClick={() => {
                   const name = prompt("What is your name?", "Satoshi");
                   setName(name, globalState, handleSuccess, handleError)
                   setLoading(true);

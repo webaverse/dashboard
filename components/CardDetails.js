@@ -413,11 +413,26 @@ const TransferMenu = ({
 };
 const UnlockableMenu = () => {
   const [unlockable, setUnlockable] = useState('');
+  const [focused, setFocused] = useState(false);
+  
+  let inputEl = null;
+  const _updateInputFocus = () => {
+    if (!focused && inputEl) {
+      inputEl.focus();
+      setFocused(true);
+    }
+  };
+  useEffect(() => {
+    _updateInputFocus();
+  }, [focused]);
+  
   return (
     <div className="unlockable-menu">
       <div className="label">Set unlockable</div>
       <input type="text" value={unlockable} onChange={e => {
         setUnlockable(e.target.value);
+      }} ref={el => {
+        inputEl = el;
       }} />
       <input className="button ok" type="button" value="Update" disabled={!unlockable} onChange={e => {}} />
     </div>

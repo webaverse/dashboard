@@ -531,7 +531,7 @@ const EncryptionMenu = ({
   const [file, setFile] = useState(null);
   
   const doSetEncryption = async () => {
-    // XXX    
+    // XXX 
 
     onCancel();
   };

@@ -62,29 +62,32 @@ export const web3MainnetSidechainEndpoint = 'https://mainnetsidechain.exokit.org
 export const web3TestnetSidechainEndpoint = 'https://testnetsidechain.exokit.org';
 export const Networks = {
   mainnet: {
-    displayName: "Mainnet",
-    transferOptions: ["mainnetsidechain"],
+    displayName: 'Mainnet',
+    transferOptions: ['mainnetsidechain'],
+    iconSrc: '/ethereum.png',
   },
   mainnetsidechain: {
-    displayName: "Webaverse",
-    transferOptions: ["mainnet", "polygon"],
+    displayName: 'Webaverse',
+    transferOptions: ['mainnet', 'polygon'],
+    iconSrc: '/webaverse.png',
   },
   polygon: {
-    displayName: "Polygon",
-    transferOptions: ["mainnetsidechain"],
+    displayName: 'Polygon',
+    transferOptions: ['mainnetsidechain'],
+    iconSrc: '/polygon.png',
   },
-  testnet: {
-    displayName: "Rinkeby Testnet",
-    transferOptions: ["testnetsidechain", "testnetpolygon"],
+  /* testnet: {
+    displayName: 'Rinkeby Testnet',
+    transferOptions: ['testnetsidechain', 'testnetpolygon'],
   },
   testnetsidechain: {
-    displayName: "Webaverse Testnet",
-    transferOptions: ["testnet"],
+    displayName: 'Webaverse Testnet',
+    transferOptions: ['testnet'],
   },
   testnetpolygon: {
-    displayName: "Polygon Testnet",
-    transferOptions: ["testnetsidechain"],
-  },
+    displayName: 'Polygon Testnet',
+    transferOptions: ['testnetsidechain'],
+  }, */
 };
 export const appPreviewHost = `https://app.webaverse.com/preview.html`;
 export const cardsHost = `https://cards.webaverse.com`;

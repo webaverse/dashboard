@@ -411,7 +411,9 @@ const TransferMenu = ({
     </div>
   );
 };
-const UnlockableMenu = () => {
+const UnlockableMenu = ({
+  onCancel,
+}) => {
   const [unlockable, setUnlockable] = useState('');
   const [focused, setFocused] = useState(false);
   
@@ -426,6 +428,10 @@ const UnlockableMenu = () => {
     _updateInputFocus();
   }, [focused]);
   
+  const doSetUnlockable = async () => {
+    onCancel();
+  };
+  
   return (
     <div className="unlockable-menu">
       <div className="label">Set unlockable</div>
@@ -434,12 +440,19 @@ const UnlockableMenu = () => {
       }} ref={el => {
         inputEl = el;
       }} />
-      <input className="button ok" type="button" value="Update" disabled={!unlockable} onChange={e => {}} />
+      <input className="button ok" type="button" value="Update" disabled={!unlockable} onChange={e => {}} onClick={doSetUnlockable} />
     </div>
   );
 };
-const EncryptionMenu = () => {
+const EncryptionMenu = ({
+  onCancel,
+}) => {
   const [file, setFile] = useState(null);
+  
+  const doSetEncryption = async () => {
+    onCancel();
+  };
+  
   return (
     <div className="encryption-menu">
       <div className="label">Set encrypted content</div>
@@ -451,7 +464,7 @@ const EncryptionMenu = () => {
           setFile(null);
         }
       }} />
-      <input className="button ok" type="button" value="Update" disabled={!file} onChange={e => {}} />
+      <input className="button ok" type="button" value="Update" disabled={!file} onChange={e => {}} onClick={doSetEncryption} />
     </div>
   );
 };

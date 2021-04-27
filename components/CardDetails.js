@@ -1375,15 +1375,17 @@ const CardDetails = ({
                               return (isStuck ?
                                 <div className="warning">
                                   <img className="icon" src="/warning.svg" />
-                                  <div>This token is stuck between chains. No worries, you can re-submit the transaction to unstick.</div>
-                                  <input
-                                    type="button"
-                                    value="Retry"
-                                    onChange={e => {}}
-                                    onClick={e => {
-                                      console.log('click resubmit', e);
-                                    }}
-                                  />
+                                  <div className="warning-wrap">
+                                    <div className="text">This token is stuck between chains. No worries, you can re-submit the transaction to unstick.</div>
+                                    <input
+                                      type="button"
+                                      value="Retry"
+                                      onChange={e => {}}
+                                      onClick={e => {
+                                        console.log('click resubmit', e);
+                                      }}
+                                    />
+                                  </div>
                                 </div>
                               : null);
                             };

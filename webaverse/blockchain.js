@@ -326,19 +326,37 @@ const ensureMetamaskChain = async networkName => {
   }
 };
 
-const switchToSideChain = async () => {
+const switchToSidechain = async () => {
   await ethereum.enable();
   await ethereum.request({
       method: "wallet_addEthereumChain",
       params: [{
           chainId: "0x53A",
-          chainName: "Webaverse Sidechain",
+          chainName: "Webaverse sidechain",
           rpcUrls: ['https://mainnetsidechain.exokit.org',],
           iconUrls: ['https://app.webaverse.com/assets/logo-flat.png'],
           blockExplorerUrls: ['https://webaverse.com/activity'],
           nativeCurrency: {
             name: 'Silk',
             symbol: 'SILK',
+            decimals: 18,
+          },
+      }],
+  });
+};
+const switchToPolygon = async () => {
+  await ethereum.enable();
+  await ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+          chainId: "0x89",
+          chainName: "Matic network",
+          rpcUrls: ['https://rpc-mainnet.maticvigil.com/',],
+          iconUrls: ['https://docs.matic.network/img/logo.svg'],
+          blockExplorerUrls: ['https://explorer-mainnet.maticvigil.com'],
+          nativeCurrency: {
+            name: 'Matic',
+            symbol: 'MATIC',
             decimals: 18,
           },
       }],
@@ -354,5 +372,6 @@ export {
   loginWithMetaMask,
   blockchainChainIds,
   ensureMetamaskChain,
-  switchToSideChain,
+  switchToSidechain,
+  switchToPolygon,
 };

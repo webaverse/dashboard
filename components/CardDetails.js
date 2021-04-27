@@ -1404,8 +1404,8 @@ const CardDetails = ({
                                     >
                                       <img className="icon" src="/webaverse.png" />
                                       <div className="text">Webaverse</div>
-                                      <MaybeStuck />
                                     </div>
+                                    <MaybeStuck />
                                     {/* <MaybeTransfer /> */}
                                   </Fragment>
                                 );
@@ -1420,8 +1420,8 @@ const CardDetails = ({
                                     >
                                       <img className="icon" src="/ethereum.png" />
                                       <div className="text">Webaverse sidechain</div>
-                                      <MaybeStuck />
                                     </div>
+                                    <MaybeStuck />
                                     /* <MaybeTransfer /> */}
                                   </Fragment>
                                 );
@@ -1436,8 +1436,8 @@ const CardDetails = ({
                                     >
                                       <img className="icon" src="/polygon.png" />
                                       <div className="text">{_capitalize(currentLocation)}</div>
-                                      <MaybeStuck />
                                     </div>
+                                    <MaybeStuck />
                                     {/* <MaybeTransfer /> */}
                                   </Fragment>
                                 );

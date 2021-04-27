@@ -8,6 +8,7 @@ import AssetCard2D from "./Card2D";
 import AssetCard3D from "./Card3D";
 import AssetCardLive from "./CardLive";
 import User from "./User";
+import FileInput from "./FileInput";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import {getProfileForCreator} from "../functions/UIStateFunctions";
 import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
@@ -539,14 +540,10 @@ const EncryptionMenu = ({
   return (
     <div className="encryption-menu">
       <div className="label">Set encrypted content</div>
-      <input type="file" value={''} onChange={e => {
-        const files = Array.from(e.target.files);
-        if (files.length > 0) {
-          setFile(files[0]);
-        } else {
-          setFile(null);
-        }
-      }} />
+      <FileInput
+        file={file}
+        setFile={setFile}
+      />
       <input className="button ok" type="button" value="Update" disabled={!file} onChange={e => {}} onClick={doSetEncryption} />
     </div>
   );

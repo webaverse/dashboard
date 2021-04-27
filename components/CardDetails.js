@@ -1143,10 +1143,10 @@ const CardDetails = ({
                             <div className="label">Resolution</div>
                             <div className="value">{`500px x 700px`}</div>
                           </div>
-                          <div className="detail unlockable">
+                          {/* <div className="detail unlockable">
                             <div className="label">Unlockable</div>
                             <div className="value">{`No`}</div>
-                          </div>
+                          </div> */}
                         </ul>
                         <div
                           className="currentLocation"
@@ -1251,14 +1251,18 @@ const CardDetails = ({
                             <div className="text">Browse files</div>
                           </div>
                         </div>
-                        <div className="feature">
+                        <div
+                          className="feature disabled"
+                        >
                           <img className="icon" src="/chest.svg" />
                           <div className="feature-wrap">
                             <div className="label">Unlockable</div>
                             <div className="text">Open secret</div>
                           </div>
                         </div>
-                        <div className="feature">
+                        <div
+                          className="feature disabled"
+                        >
                           <img className="icon" src="/secret.svg" />
                           <div className="feature-wrap">
                             <div className="label">Encrypted</div>

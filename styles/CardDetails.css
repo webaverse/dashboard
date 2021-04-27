@@ -144,28 +144,53 @@
   flex-direction: column;
 }
 .feature {
+  position: relative;
   display: flex;
   margin: 0 20px;
   margin-bottom: 10px;
   padding: 10px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid currentColor;
   border-radius: 5px;
-  color: #AAA;
+  color: #aaa;
   cursor: pointer;
 }
-.feature:hover {
+.feature.disabled {
+  color: #ccc;
+  cursor: default;
+}
+.feature:not(.disabled):hover {
   border-color: currentColor;
   color: #333;
 }
-.feature:hover .icon {
+.feature:not(.disabled):hover .icon {
   opacity: 1;
+}
+.feature.disabled::before,
+.feature.disabled::after
+{
+  position: absolute;
+  top: calc(50% - 2px);
+  left: -3px;
+  right: -3px;
+  height: 2px;
+  background-color: #ccc;
+  content: '';
+}
+.feature.disabled::before {
+  transform: rotateZ(11deg);
+}
+.feature.disabled::after {
+  transform: rotateZ(-11deg);
 }
 .feature .icon {
   width: 32px;
   height: 32px;
   margin-right: 10px;
   object-fit: contain;
-  opacity: 0.15;
+  opacity: 0.3;
+}
+.feature.disabled .icon {
+  opacity: 0.2;
 }
 .feature .label {
   display: flex;

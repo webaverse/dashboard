@@ -213,6 +213,7 @@ const Asset = ({
              minterAddress={token.minterAddress}
              minterUsername={token.minter.username}
              currentOwnerAddress={token.currentOwnerAddress}
+             unlockable={token.properties.unlockable}
              globalState={globalState}
              networkName={networkName}
              currentLocation={token.currentLocation}

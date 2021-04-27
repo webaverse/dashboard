@@ -575,6 +575,7 @@ const CardDetails = ({
   currentOwnerAddress,
   buyPrice,
   storeId,
+  unlockable,
   globalState,
   assetType,
   networkName,
@@ -1402,23 +1403,25 @@ const CardDetails = ({
                       </div>
                       <div className="features">
                         <div
-                          className="feature"
+                          className="feature disabled"
                           onClick={openFileBrowser}
                         >
                           <img className="icon" src="/file.svg" />
-                          <div className="feature-wrap">
+                          <div className="feature-wrap disabled">
                             <div className="label">NFT contents</div>
                             <div className="text">Browse files</div>
+                            <div className="helper">Coming soon</div>
                           </div>
                         </div>
                         <div
-                          className="feature disabled"
+                          className={`feature ${unlockable ? '' : 'disabled'}`}
                           onClick={handleUnlock}
                         >
                           <img className="icon" src="/chest.svg" />
                           <div className="feature-wrap">
                             <div className="label">Unlockable</div>
                             <div className="text">Open secret</div>
+                            <div className="helper">Coming soon</div>
                           </div>
                         </div>
                         <div
@@ -1429,6 +1432,7 @@ const CardDetails = ({
                           <div className="feature-wrap">
                             <div className="label">Encrypted</div>
                             <div className="text">Decrypt contents</div>
+                            <div className="helper">Coming soon</div>
                           </div>
                         </div>
                       </div>

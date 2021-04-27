@@ -117,6 +117,7 @@
 .currentLocation .value {
   display: flex;
   padding: 10px;
+  /* font-family: 'MS-Gothic'; */
   align-items: center;
   cursor: pointer;
 }

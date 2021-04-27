@@ -576,6 +576,7 @@ const CardDetails = ({
   buyPrice,
   storeId,
   unlockable,
+  encrypted,
   globalState,
   assetType,
   networkName,
@@ -900,43 +901,47 @@ const CardDetails = ({
     return j;
   };
   const handleUnlock = async () => {
-    const {
-      loginToken: {
-        mnemonic,
-      },
-    } = globalState;
+    if (unlockable) {
+      const {
+        loginToken: {
+          mnemonic,
+        },
+      } = globalState;
 
-    const [
-      addressProofs,
-      sidechainSignature,
-    ] = await Promise.all([
-      (async () => {
-        const profile = await getProfileForCreator(globalState.address);
-        const addressProofs = getAddressProofs(profile);
-        return addressProofs;
-      })(),
-      _getSidechainSignature(mnemonic),
-    ])
-    const spec = await _getUnlockable(
-      addressProofs
-        .concat([
-          sidechainSignature,
-        ]),
-      id
-    );
-    // console.log('got unlockable spec', spec);
-    setUnlockableSpec(spec);
+      const [
+        addressProofs,
+        sidechainSignature,
+      ] = await Promise.all([
+        (async () => {
+          const profile = await getProfileForCreator(globalState.address);
+          const addressProofs = getAddressProofs(profile);
+          return addressProofs;
+        })(),
+        _getSidechainSignature(mnemonic),
+      ])
+      const spec = await _getUnlockable(
+        addressProofs
+          .concat([
+            sidechainSignature,
+          ]),
+        id
+      );
+      // console.log('got unlockable spec', spec);
+      setUnlockableSpec(spec);
+    }
   };
   const _getDecryption = async (signatures, id) => {
-    const res = await fetch("https://decrypt.exokit.org/", {
-      method: "POST",
-      body: JSON.stringify({
-        signatures,
-        id,
-      }),
-    });
-    const j = await res.json();
-    return j;
+    if (encrypted) {
+      const res = await fetch("https://decrypt.exokit.org/", {
+        method: "POST",
+        body: JSON.stringify({
+          signatures,
+          id,
+        }),
+      });
+      const j = await res.json();
+      return j;
+    }
   };
   const handleDecrypt = async () => {
     const {
@@ -967,7 +972,9 @@ const CardDetails = ({
     setDecryptionSpec(spec);
   };
   const openFileBrowser = () => {
-    setFileBrowserOpen(true);
+    if (false) { // locked for now
+      setFileBrowserOpen(true);
+    }
   };
   const handleLike = e => {
     setLiked(!liked);

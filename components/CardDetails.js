@@ -473,6 +473,7 @@ const TransferMenu = ({
 };
 const UnlockableMenu = ({
   id,
+  globalState,
   onCancel,
 }) => {
   const [unlockable, setUnlockable] = useState('');
@@ -524,6 +525,7 @@ const UnlockableMenu = ({
 };
 const EncryptionMenu = ({
   id,
+  globalState,
   onCancel,
 }) => {
   const [file, setFile] = useState(null);
@@ -1060,6 +1062,7 @@ const CardDetails = ({
                   <Window onBackgroundClick={closeUnlockable}>
                     <UnlockableMenu
                       id={id}
+                      globalState={globalState}
                       onCancel={closeUnlockable}
                     />
                   </Window>
@@ -1068,6 +1071,7 @@ const CardDetails = ({
                   <Window onBackgroundClick={closeEncryption}>
                     <EncryptionMenu
                       id={id}
+                      globalState={globalState}
                       onCancel={closeEncryption}
                     />
                   </Window>

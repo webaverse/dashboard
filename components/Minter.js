@@ -775,11 +775,11 @@ const Minter = ({
                   <div className="value">{(globalState.balance - 10).toLocaleString()}</div>
                 </div>
                 <div className="buttons">
-                  <input className="ok" type="button" value="Confirm" disabled={!(hash && ext && loaded)} onChange={e => {}} onClick={async e => {
+                  <input className="button ok" type="button" value="Confirm" disabled={!(hash && ext && loaded)} onChange={e => {}} onClick={async e => {
                     setMintMenuStep(3);
                     _mint();
                   }} />
-                  <input className="cancel" type="button" value="Reject" onChange={e => {}} onClick={e => {
+                  <input className="button cancel" type="button" value="Reject" onChange={e => {}} onClick={e => {
                     setMintMenuStep(1);
                     setHash('');
                     setExt('');

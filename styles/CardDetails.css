@@ -234,9 +234,11 @@
 .encryption-menu
 {
   position: relative;
+  display: flex;
   padding: 20px;
   background-color: #FFF;
   border-radius: 10px;
+  flex-direction: column;
 }
 .transfer-menu .transfer-options {
   display: flex;
@@ -304,6 +306,34 @@
 }
 .transfer-menu .buttons .button {
 }
+
+.unlockable-menu,
+.encryption-menu {
+  width: 400px;
+}
+.unlockable-menu input[type=text] {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #e0e0e0;
+  border: 0;
+  border-radius: 5px;
+  font-size: 20px;
+}
+.encryption-menu input[type=file] {
+  margin: 20px 0;
+  font-size: 13px;
+}
+/* .unlockable-menu input[type=button],
+.encryption-menu input[type=button]
+{
+  padding: 5px;
+  background: transparent;
+  border: 2px solid currentColor;
+  border-radius: 5px;
+  font-family: 'MS-Gothic';
+  font-size: 20px;
+} */
 
 .detailsSection .owners {  
   display: flex;

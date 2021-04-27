@@ -419,7 +419,7 @@ const UnlockableMenu = () => {
       <input type="text" value={unlockable} onChange={e => {
         setUnlockable(e.target.value);
       }} />
-      <input type="button" value="Update" disabled={!unlockable} onChange={e => {}} />
+      <input className="button ok" type="button" value="Update" disabled={!unlockable} onChange={e => {}} />
     </div>
   );
 };
@@ -436,7 +436,7 @@ const EncryptionMenu = () => {
           setFile(null);
         }
       }} />
-      <input type="button" value="Update" disabled={!file} onChange={e => {}} />
+      <input className="button ok" type="button" value="Update" disabled={!file} onChange={e => {}} />
     </div>
   );
 };

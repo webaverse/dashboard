@@ -950,38 +950,39 @@ a {
   display: flex;
   margin-top: 20px;
 }
-.buttons input[type=button] {
+input.button[type=button] {
   padding: 10px;
   font-size: 20px;
   flex: 1;
+  background: transparent;
   border: 2px solid currentColor;
   border-radius: 5px;
   font-family: 'MS-Gothic';
   color: #aaa;
   outline: none;
 }
-.buttons input[type=button]:not(:disabled) {
+input.button[type=button]:not(:disabled) {
   cursor: pointer;
 }
-.buttons input[type=button] + input[type=button] {
+input.button[type=button] + input[type=button] {
   margin-left: 15px;
 }
-.buttons input[type=button]:not(:disabled).ok {
+input.button[type=button]:not(:disabled).ok {
   color: #FFF;
   background-image: linear-gradient(to bottom, #654ea3, #eaafc8);
   background-repeat: no-repeat;
   border-width: 0;
   /* border-bottom-width: 2px; */
 }
-.buttons input[type=button]:not(:disabled).ok:hover {
+input.button[type=button]:not(:disabled).ok:hover {
   filter: brightness(80%);
   animation-name: gloob2;
 }
-.buttons input[type=button].cancel {
+input.button[type=button].cancel {
   border-color: currentColor;
   color: #aaa;
 }
-.buttons input[type=button].cancel:hover {
+input.button[type=button].cancel:hover {
   color: #FFF;
   background-color: #ef5350;
   border-color: transparent;

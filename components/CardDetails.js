@@ -1003,7 +1003,7 @@ const CardDetails = ({
           ]),
         id
       );
-      console.log('got decrypted blob', decryptedBlob);
+      // console.log('got decrypted blob', decryptedBlob);
       const ok = !!decryptedBlob;
       const result = decryptedBlob ? URL.createObjectURL(decryptedBlob) : null;
       const spec = {

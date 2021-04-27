@@ -13,6 +13,7 @@ import AssetCard3D from "../components/Card3D";
 // import Asset from "../components/Asset";
 import User from "../components/User";
 import ShaderToyRenderer from "../components/ShaderToyRenderer";
+import FileInput from "../components/FileInput";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {blobToFile, getExt, parseQuery, schedulePerFrame} from "../webaverse/util";
 import {useAppContext} from "../libs/contextLib";
@@ -249,23 +250,11 @@ const Form = ({
       {source === 'file' ?
         [
           (<div className="label" key="file1">File</div>),
-          (file ?
-            <div className="file" key="file2">
-              <div className="text">{file.name}</div>
-              <img className="cancel-button" src="/cancel.svg" onClick={e => {
-                setFile(null);
-              }} />
-            </div>
-          :
-            <input type="file" placeholder="File" onChange={e => {
-              const files = Array.from(e.target.files);
-              if (files.length > 0) {
-                setFile(files[0]);
-              } else {
-                setFile(null);
-              }
-            }} key="file2" />
-          ),
+          (<FileInput
+            file={file}
+            setFile={setFile}
+            key="file2"
+          />),
           (!file ?
             <div className="sublabel" key="file3">(or, drag-and-drop a file)</div>
           :

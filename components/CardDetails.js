@@ -412,13 +412,32 @@ const TransferMenu = ({
   );
 };
 const UnlockableMenu = () => {
+  const [unlockable, setUnlockable] = useState('');
   return (
-    <div className="unlockable-menu">Unlockable</div>
+    <div className="unlockable-menu">
+      <div className="label">Set unlockable</div>
+      <input type="text" value={unlockable} onChange={e => {
+        setUnlockable(e.target.value);
+      }} />
+      <input type="button" value="Update" disabled={!unlockable} onChange={e => {}} />
+    </div>
   );
 };
 const EncryptionMenu = () => {
+  const [file, setFile] = useState(null);
   return (
-    <div className="encryption-menu">Encrypted content</div>
+    <div className="encryption-menu">
+      <div className="label">Set encrypted content</div>
+      <input type="file" value={''} onChange={e => {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+          setFile(files[0]);
+        } else {
+          setFile(null);
+        }
+      }} />
+      <input type="button" value="Update" disabled={!file} onChange={e => {}} />
+    </div>
   );
 };
 

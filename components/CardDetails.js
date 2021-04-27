@@ -475,6 +475,7 @@ const CardDetails = ({
   const [imageView, setImageView] = useState('2d');
   // const [tryOn, setTryOn] = useState(false);
   const [unlockableSpec, setUnlockableSpec] = useState(null);
+  const [decryptionSpec, setDecryptionSpec] = useState(null);
   const [fileBrowserOpen, setFileBrowserOpen] = useState(false);
   const [liked, setLiked] = useState(false);
   const [editName, setEditName] = useState(false);
@@ -826,8 +827,44 @@ const CardDetails = ({
     // console.log('got unlockable spec', spec);
     setUnlockableSpec(spec);
   };
+  const _getDecryption = async (signatures, id) => {
+    const res = await fetch("https://decrypt.exokit.org/", {
+      method: "POST",
+      body: JSON.stringify({
+        signatures,
+        id,
+      }),
+    });
+    const j = await res.json();
+    return j;
+  };
   const handleDecrypt = async () => {
-    throw new Error('not implemented');
+    const {
+      loginToken: {
+        mnemonic,
+      },
+    } = globalState;
+
+    const [
+      addressProofs,
+      sidechainSignature,
+    ] = await Promise.all([
+      (async () => {
+        const profile = await getProfileForCreator(globalState.address);
+        const addressProofs = getAddressProofs(profile);
+        return addressProofs;
+      })(),
+      _getSidechainSignature(mnemonic),
+    ])
+    const spec = await _getDecryption(
+      addressProofs
+        .concat([
+          sidechainSignature,
+        ]),
+      id
+    );
+    // console.log('got unlockable spec', spec);
+    setDecryptionSpec(spec);
   };
   const openFileBrowser = () => {
     setFileBrowserOpen(true);
@@ -1201,7 +1238,7 @@ const CardDetails = ({
                                       onClick={openTransferMenu}
                                     >
                                       <img className="icon" src="/webaverse.png" />
-                                      <div className="text">Webaverse sidechain</div>
+                                      <div className="text">Webaverse</div>
                                       <MaybeStuck />
                                     </div>
                                     {/* <MaybeTransfer /> */}

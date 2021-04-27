@@ -614,7 +614,6 @@ const CardDetails = ({
   // setMainnetAddress,
   cardSvgSpec,
 }) => {
-  console.log('got encrypted', encrypted);
   /* if (!networkName) {
     throw new Error('no network name :' + networkName);
   } */

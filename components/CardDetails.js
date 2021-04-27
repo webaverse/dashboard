@@ -34,13 +34,13 @@ import {
   buyAsset,
   setNftMetadata,
 } from "../functions/AssetFunctions.js";
-import {formatError} from "../functions/Functions.js";
+import {jsonParse, formatError} from "../functions/Functions.js";
 import Loader from "./Loader";
 import bip39 from "../libs/bip39.js";
 import hdkeySpec from "../libs/hdkey.js";
 const hdkey = hdkeySpec.default;
 import wbn from '../webaverse/wbn.js';
-import {cancelEvent, base64ArrayBuffer} from "../webaverse/util";
+import {cancelEvent, base64ArrayBuffer, downloadFile} from "../webaverse/util";
 import FileBrowser from './FileBrowser';
 import AssetCardSwitch from './CardSwitch';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
@@ -1005,10 +1005,14 @@ const CardDetails = ({
       );
       // console.log('got decrypted blob', decryptedBlob);
       const ok = !!decryptedBlob;
-      const result = decryptedBlob ? URL.createObjectURL(decryptedBlob) : null;
+      if (decryptedBlob) {
+        const encryptedJson = jsonParse(encrypted);
+        decryptedBlob.name = encryptedJson?.name;
+        decryptedBlob.url = URL.createObjectURL(decryptedBlob);
+      }
       const spec = {
         ok,
-        result,
+        result: decryptedBlob,
       };
       setDecryptionSpec(spec);
     }
@@ -1509,8 +1513,15 @@ const CardDetails = ({
                         :
                           <div className="feature-text">
                             {decryptionSpec.ok ?
-                              <Link href={decryptionSpec.result}>
-                                <a className="text">{decryptionSpec.result}</a>
+                              <Link href={decryptionSpec.result?.url}>
+                                <a
+                                  className="text"
+                                  onClick={e => {
+                                    e.preventDefault();
+                                    
+                                    downloadFile(decryptionSpec.result, decryptionSpec.result.name);
+                                  }}
+                                >{decryptionSpec.result?.url}</a>
                               </Link>
                             :
                               <div className="text">Could not decrypt</div>

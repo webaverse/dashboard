@@ -915,8 +915,8 @@ const CardDetails = ({
     return signature;
   };
   const _getUnlockable = async (signatures, id) => {
-    const res = await fetch("https://unlock.exokit.org/", {
-      method: "POST",
+    const res = await fetch(`https://unlock.exokit.org/`, {
+      method: 'POST',
       body: JSON.stringify({
         signatures,
         id,
@@ -957,8 +957,12 @@ const CardDetails = ({
   };
   const _getDecryption = async (signatures, id) => {
     if (encrypted) {
-      const res = await fetch("https://decrypt.exokit.org/", {
-        method: "POST",
+      console.log('decrypt', {
+        signatures,
+        id,
+      });
+      const res = await fetch(`https://decrypt.exokit.org/`, {
+        method: 'POST',
         body: JSON.stringify({
           signatures,
           id,

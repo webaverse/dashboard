@@ -952,7 +952,7 @@ const CardDetails = ({
                       </div>
                     </div>
                     <div className={`actions ${dropdownOpen ? 'open' : ''}`}>
-                      <div className="label">View</div>
+                      {/* <div className="label">View</div> */}
                       {/* is3d && imageView != "3d" && (
                         <div
                           className="action"
@@ -1020,6 +1020,24 @@ const CardDetails = ({
                       >
                         Clear From Loadout
                       </a> */}
+                      
+                      <div className="label">Features</div>
+                      <a
+                        className="action"
+                        onClick={e => {
+                          // handleDeposit(currentLocation, transferOptionNetworkName)(e);
+                        }}
+                      >
+                        Set unlockable
+                      </a>
+                      <a
+                        className="action"
+                        onClick={e => {
+                          // handleDeposit(currentLocation, transferOptionNetworkName)(e);
+                        }}
+                      >
+                        Set encrypted content
+                      </a>
                       
                       <div className="label">Transfer</div>
                       {(() => {

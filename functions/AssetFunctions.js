@@ -815,7 +815,7 @@ export const withdrawAsset = async (tokenId, mainnetAddress, address, state, han
   return;
 }
 
-export const depositAsset = async (tokenId, sourceNetworkName, destinationNetworkName, mainnetAddress, address, state, handleSuccess, handleError) => {
+export const depositAsset = async (tokenId, sourceNetworkName, destinationNetworkName, mainnetAddress, address, state) => {
   const {web3, contracts} = await getBlockchain();
   // Deposit to mainnet
   // if (sourceNetworkName === 'mainnetsidechain') {
@@ -975,12 +975,16 @@ export const depositAsset = async (tokenId, sourceNetworkName, destinationNetwor
         };
         const receipt = await _withdraw();
 
-        handleSuccess(receipt, `/activity/${receipt.transactionHash}.NFT`);
+        // handleSuccess(receipt, `/activity/${receipt.transactionHash}.NFT`);
+        
+        return receipt;
       } catch (err) {
-        handleError(err);
+        // handleError(err);
+        console.warn(err);
+        throw err;
       }
 
-      return;
+      // return;
     } else {
       handleError('failed to parse', JSON.stringify(ethNftIdInput.value));
     }

@@ -46,7 +46,7 @@ import AssetCardSwitch from './CardSwitch';
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import procgen, {types} from '../webaverse/procgen.js';
 
-const networkNames = Object.keys(Networks);
+// const networkNames = Object.keys(Networks);
 const _capitalize = s => s[0].toUpperCase() + s.slice(1);
 const handleDeposit = async (
   id,
@@ -416,6 +416,7 @@ const TransferMenu = ({
   currentLocation,
   onCancel,
 }) => {
+  const isStuck = /\-stuck$/.test(currentLocation);
   const networkName = currentLocation.replace(/\-stuck$/, '');
   const network = Networks[networkName];
   const {displayName, transferOptions, iconSrc} = network;
@@ -1068,9 +1069,19 @@ const CardDetails = ({
   const closeTransferMenu = () => {
     setTransferOpen(false);
   };
+  const handleResubmit = async () => {
+    const metamaskAddress = await loginWithMetaMask();
+    await resubmitAsset(
+      networkName,
+      'NFT',
+      'polygon',
+      id,
+      globalState.address,
+      metamaskAddress,
+      globalState.loginToken.mnemonic
+    )
+  };
   
-  const isStuck = /stuck/.test(currentLocation);
-  const currentLocationUnstuck = currentLocation.replace(/\-stuck/, '');
   const spec = procgen(id + '')[0];
   // console.log('got spec', spec);
   let cardSceneWrapEl = null;
@@ -1382,9 +1393,7 @@ const CardDetails = ({
                                       type="button"
                                       value="Retry"
                                       onChange={e => {}}
-                                      onClick={e => {
-                                        console.log('click resubmit', e);
-                                      }}
+                                      onClick={handleResubmit}
                                     />
                                   </div>
                                 </div>

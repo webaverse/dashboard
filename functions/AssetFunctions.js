@@ -149,7 +149,7 @@ export const getStuckAsset = async (chainName, contractName, tokenId) => {
   } : null;
 }
 
-export const resubmitAsset = async (networkName, tokenName, destinationNetworkName, tokenId, address, mainnetAddress, mnemonic, handleSuccess, handleError) => {
+export const resubmitAsset = async (networkName, tokenName, destinationNetworkName, tokenId, address, mainnetAddress, mnemonic) => {
   const {
     web3,
     contracts,
@@ -230,7 +230,7 @@ export const resubmitAsset = async (networkName, tokenName, destinationNetworkNa
     }
   } catch (err) {
     console.log('failed', err);
-    handleError(err.message);
+    throw err;
   }
 }
 

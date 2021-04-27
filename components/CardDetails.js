@@ -1374,9 +1374,11 @@ const CardDetails = ({
                             const MaybeStuck = () => {
                               return (isStuck ?
                                 <div className="warning">
-                                  <img className="icon" src="/warning.svg" />
-                                  <div className="warning-wrap">
-                                    <div className="text">This token is stuck between chains. No worries, you can re-submit the transaction to unstick.</div>
+                                  <div className="row">
+                                    <img className="icon" src="/warning.svg" />
+                                    <div className="warning-wrap">
+                                      <div className="text">This token is stuck between chains. No worries, you can re-submit the transaction to unstick.</div>
+                                    </div>
                                   </div>
                                   <input
                                     className="button"

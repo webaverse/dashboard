@@ -342,6 +342,13 @@
 .transfer-menu .buttons .button {
 }
 
+.unlockable-menu input[type=text] {
+  font-family: monospace;
+}
+.unlockable-menu input[type=text]::placeholder {
+  color: #bbb;
+}
+
 .unlockable-menu,
 .encryption-menu {
   width: 400px;

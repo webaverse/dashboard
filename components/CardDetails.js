@@ -1455,7 +1455,7 @@ const CardDetails = ({
                         >
                           <img className="icon" src="/file.svg" />
                           <div className="feature-wrap disabled">
-                            <div className="label">NFT contents</div>
+                            <div className="label">File browser</div>
                             <div className="text">Browse files</div>
                             <div className="helper">Coming soon</div>
                           </div>

@@ -79,8 +79,8 @@
 .navbar .logo,
 .accountPicture {
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
 }
 .navbar .logo {
   margin-right: 10px;
@@ -108,7 +108,7 @@
 .accountPictureContainer {
   margin: auto 0;
 }
-.accountPictureContainer:active {
+.userInfoContainer:active .accountPictureContainer {
   transform: scale(1.2);
 }
 .navbarIcon {
@@ -140,7 +140,6 @@
 }
 .userInfoContainer {
   display: flex;
-  margin-right: 10px;
   padding: 5px;
   border: 2px solid transparent;
   border-radius: 10px;
@@ -164,7 +163,7 @@
 }
 .navbarSILKContainer {
   display: flex;
-  width: 150px;
+  width: 140px;
   height: 36px;
   background-image: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
   border-radius: 10px;

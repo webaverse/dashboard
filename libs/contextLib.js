@@ -14,17 +14,10 @@ export function AppWrapper({ children }) {
   const [globalState, setGlobalState] = useState(InitialStateValues);
 
   const init = async () => {
-    const storageState = await storage.get('globalState');
     const loginToken = await storage.get('loginToken');
 
-    if (storageState && loginToken) {
-      const newState = await pullUserObject({...storageState, loginToken: loginToken});
-      setGlobalState({ ...newState, init: true });
-    } else if (storageState) {
-      const newState = await pullUserObject({...storageState});
-      setGlobalState({ ...newState, init: true });
-    } else if (loginToken) {
-      const newState = await pullUserObject({...globalState, loginToken: loginToken});
+    if (loginToken) {
+      const newState = await pullUserObject({...globalState, loginToken});
       setGlobalState({ ...newState, init: true });
     } else {
       setGlobalState({ ...globalState, init: true });

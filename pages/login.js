@@ -120,7 +120,7 @@ const Login = () => {
     setLoading(false);
   }, []);
   
-  console.log('render login');
+  console.log('render login', error);
 
   return (
     <>

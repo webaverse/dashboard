@@ -87,7 +87,8 @@ const Login = () => {
     // console.log('effect 1');
 
     if (error) {
-      router.push('/');
+      // router.push('/');
+      setError(error);
     } else if (code || id || play) {
       // console.log('effect 2');
       try {
@@ -128,11 +129,6 @@ const Login = () => {
         loading && (<div key="loading">
           <Loader loading={loading} />
         </div>),
-        !loading && (<div className="container" key="buttonContainer">
-          <a className="button" href={discordOauthUrl}>
-            Login With Discord
-          </a>
-        </div>)
       ]}
     </>
   )

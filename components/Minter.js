@@ -678,6 +678,9 @@ const Minter = ({
         setSource('file');
       }}
     >
+    <div className="hero">
+      
+    </div>
     {mintMenuStep === 3 ?
       <ShaderToyRenderer
         

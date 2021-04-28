@@ -194,6 +194,21 @@
   padding: 10px;
   flex-direction: column;
 }
+.userInfoContainer .user-info-placeholder {
+  display: flex;
+  width: 120px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  align-items: center;
+
+    position: relative;
+    margin: 0 20px;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-family: 'FuturaStd-Heavy';
+    letter-spacing: 2px;
+    color: #AAA;
+}
 .userInfoContainer .username {
   flex: 1;
   font-size: 20px;

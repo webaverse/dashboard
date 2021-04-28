@@ -4,7 +4,7 @@ import {useRouter} from 'next/router';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {useAppContext} from "../libs/contextLib";
-import {getBlockchain, loginWithMetaMask} from "../webaverse/blockchain.js";
+import {getBlockchain, loginWithMetaMask, logout} from "../webaverse/blockchain.js";
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import {parseQuery, cancelEvent} from "../webaverse/util";
 import {discordOauthUrl} from '../webaverse/constants.js';
@@ -92,11 +92,6 @@ const Navbar = ({
       setSearchResults(null);
     }
   }
-  
-  const logout = async () => {
-    await blockchain.logout();
-    // setGlobalState({ ...globalState, logout: "true" });
-  };
 
   // console.log('got path', router.asPath);
 

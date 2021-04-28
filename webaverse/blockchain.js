@@ -365,6 +365,8 @@ const switchToPolygon = async () => {
 };
 const logout = async () => {
   await storage.remove('loginToken');
+  // window.storage = storage;
+  window.location.href = '/';
 };
 
 export {

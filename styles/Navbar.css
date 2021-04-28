@@ -138,13 +138,35 @@
   background-color: #333;
   color: #FFF;
 }
+.userInfoContainer {
+  display: flex;
+  margin-right: 10px;
+  padding: 5px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.userInfoContainer:hover {
+  border-color: #333;
+}
+.userInfoContainer .user-info-wrap {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+}
+.userInfoContainer .username {
+  flex: 1;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  text-align: right;
+  /* font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; */
+}
 .navbarSILKContainer {
   display: flex;
   width: 150px;
   height: 36px;
-  margin: auto 0;
-  margin-right: 10px;
-  background-color: #e0e0e0;
+  background-image: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
   border-radius: 10px;
   /* border: 2px solid #312936 !important; */
   height: 24px;
@@ -179,6 +201,8 @@
   border-radius: 0px 8px 8px 0px;
   align-items: center;
   cursor: pointer;
+  
+  display: none;
 }
 .navbarSILKPlusContainer:hover {
   background-color: #d4055a;

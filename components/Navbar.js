@@ -65,6 +65,7 @@ const Navbar = ({
   const [q, setQ] = useState('');
   const [lastQ, setLastQ] = useState('');
   const [selectedOption, setSelectedOption] = useState(0);
+  const [userContainerOpen, setUserContainerOpen] = useState(false);
   
   const router = useRouter();
   
@@ -164,7 +165,11 @@ const Navbar = ({
             />
           </div>
           <Link href={"/accounts/" + globalState.address}>
-            <a className="userInfoContainer">
+            <a className={`userInfoContainer ${userContainerOpen ? 'open' : ''}`} onClick={e => {
+              e.preventDefault();
+
+              setUserContainerOpen(!userContainerOpen);
+            }}>
               <div className="user-info-wrap">
                 <div className="username">{globalState.name}</div>
                 <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>

@@ -145,6 +145,13 @@
   border-radius: 10px;
   cursor: pointer;
 }
+.userInfoContainer.open {
+  background-color: #333;
+  color: #FFF;
+}
+.userInfoContainer.open img {
+  filter: invert(97%) sepia(66%) saturate(0%) hue-rotate(90deg) brightness(109%) contrast(100%);
+}
 .userInfoContainer:hover {
   border-color: #333;
 }
@@ -165,7 +172,7 @@
   display: flex;
   width: 140px;
   height: 36px;
-  background-image: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+  background-image: linear-gradient(to bottom, #f0f0f020, #e0e0e020);
   border-radius: 10px;
   /* border: 2px solid #312936 !important; */
   height: 24px;
@@ -187,6 +194,7 @@
 .navbarSILKAmount {
   /* color: #676370;
   max-width: 100%; */
+  color: inherit;
   text-overflow: ellipsis;
   overflow: hidden;
 }

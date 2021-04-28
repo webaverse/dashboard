@@ -1505,3 +1505,11 @@ html.hit {
   border-color: transparent;
   color: #FFF;
 }
+
+.login-placeholder {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}

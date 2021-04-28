@@ -141,6 +141,7 @@
 .userInfoContainer {
   position: relative;
   display: flex;
+  width: 210px;
   padding: 5px;
   border: 2px solid transparent;
   border-radius: 10px;
@@ -155,8 +156,8 @@
 .userInfoContainer .dropdown {
   position: fixed;
   top: 88px;
-  left: calc(100vw - 8vw - 224px);
-  width: 224px;
+  left: calc(100vw - 8vw - 210px);
+  width: 210px;
   background-color: #FFF;
   border: 2px solid #333;
   border-radius: 10px;
@@ -199,21 +200,20 @@
 }
 .userInfoContainer .user-info-placeholder {
   display: flex;
-  width: 120px;
+  width: 100px;
   border-radius: 5px;
   text-transform: uppercase;
   align-items: center;
 
-    position: relative;
-    margin: 0 20px;
-    font-size: 13px;
-    text-transform: uppercase;
-    font-family: 'FuturaStd-Heavy';
-    letter-spacing: 2px;
-    color: #AAA;
+  position: relative;
+  margin: 0 20px;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-family: 'FuturaStd-Heavy';
+  letter-spacing: 2px;
+  color: #AAA;
 }
 .userInfoContainer .username {
-  flex: 1;
   font-size: 20px;
   justify-content: center;
   align-items: center;

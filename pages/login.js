@@ -123,12 +123,13 @@ const Login = () => {
   return (
     <>
       {[
-        error && (<div key="error">
+        (error ? <div key="error">
           {error}
-        </div>),
-        loading && (<div key="loading">
-          <Loader loading={loading} />
-        </div>),
+        </div>
+        : null),
+        (!error ?
+          <div className="login-placeholder">Logging you in...</div>
+        : null),
       ]}
     </>
   )

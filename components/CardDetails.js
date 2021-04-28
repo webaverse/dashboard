@@ -1071,18 +1071,34 @@ const CardDetails = ({
     setTransferOpen(false);
   };
   const handleResubmit = async () => {
-    const networkName = currentLocation.replace(/\-stuck$/, '');
-    const metamaskAddress = await loginWithMetaMask();
-    await resubmitAsset(
-      networkName,
-      'NFT',
-      'polygon',
-      id,
-      stuckTransactionHash,
-      globalState.address,
-      metamaskAddress,
-      globalState.loginToken.mnemonic
-    )
+    addToast("Retrying NFT chain transfer...", {
+      appearance: "info",
+      autoDismiss: true,
+    });
+    
+    try {
+      const networkName = currentLocation.replace(/\-stuck$/, '');
+      const metamaskAddress = await loginWithMetaMask();
+      await resubmitAsset(
+        networkName,
+        'NFT',
+        'polygon',
+        id,
+        stuckTransactionHash,
+        globalState.address,
+        metamaskAddress,
+        globalState.loginToken.mnemonic
+      );
+      addToast("Chain transfer succeeded!", {
+        appearance: "info",
+        autoDismiss: true,
+      });
+    } catch (err) {
+      addToast("Error retrying chain transfer: " + err.message, {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
   };
   
   const spec = procgen(id + '')[0];

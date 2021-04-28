@@ -186,6 +186,9 @@
 .userInfoContainer.open .navbarSILKContainer {
   background-image: linear-gradient(to bottom, #f0f0f020, #e0e0e020);
 }
+.userInfoContainer .accountPicture:not(.loggedIn) {
+  opacity: 0.2;
+}
 .userInfoContainer:hover {
   border-color: #333;
 }

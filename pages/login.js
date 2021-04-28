@@ -125,7 +125,7 @@ const Login = () => {
   return (
     <>
       {error ?
-        <div key="error">
+        <div className="error">
           {error}
         </div>
       :

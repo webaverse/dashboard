@@ -169,21 +169,21 @@ const Navbar = ({
               e.preventDefault();
 
               setUserContainerOpen(!userContainerOpen);
-            }}>
+            }} onDragStart={cancelEvent}>
               <div className="user-info-wrap">
                 <div className="username">{globalState.name}</div>
                 <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>
-                  <a className="navbarSILKSymbol">
-                    <img src="/curve.svg" />
-                  </a>
-                  <a className="navbarSILKAmount">
-                    {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}
-                  </a>
-                  <div className={`navbarSILKPlusContainer noselect`}>
-                    <a className="navbarSILKPlus">
-                      +
-                    </a>
+                  <div className="navbarSILKSymbol">
+                    <img src="/curve.svg" onDragStart={cancelEvent} />
                   </div>
+                  <div className="navbarSILKAmount">
+                    {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}
+                  </div>
+                  {/* <div className={`navbarSILKPlusContainer noselect`}>
+                    <div className="navbarSILKPlus">
+                      +
+                    </div>
+                  </div> */}
                 </div>
               </div>
               <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>

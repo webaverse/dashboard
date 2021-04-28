@@ -198,27 +198,33 @@ const Navbar = ({
                   </Fragment>
                 }
               </div>
-              <div className="user-info-wrap">
-                <div className="username">{globalState.name}</div>
-                <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>
-                  <div className="navbarSILKSymbol">
-                    <img src="/curve.svg" onDragStart={cancelEvent} />
-                  </div>
-                  <div className="navbarSILKAmount">
-                    {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}
-                  </div>
-                  {/* <div className={`navbarSILKPlusContainer noselect`}>
-                    <div className="navbarSILKPlus">
-                      +
+              {globalState.address ?
+                <div className="user-info-wrap">
+                  <div className="username">{globalState.name}</div>
+                  <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>
+                    <div className="navbarSILKSymbol">
+                      <img src="/curve.svg" onDragStart={cancelEvent} />
                     </div>
-                  </div> */}
+                    <div className="navbarSILKAmount">
+                      {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}
+                    </div>
+                    {/* <div className={`navbarSILKPlusContainer noselect`}>
+                      <div className="navbarSILKPlus">
+                        +
+                      </div>
+                    </div> */}
+                  </div>
                 </div>
-              </div>
+              :
+                <div className="user-info-placeholder">
+                  Log in...
+                </div>
+              }
               <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
                 {globalState.address ?
-                  <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} onDragStart={cancelEvent} />
+                  <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/fox.svg"} onDragStart={cancelEvent} />
                 :
-                  <img className="accountPicture" src="/preview.png" alt="Placeholder profile picture" />
+                  <img className="accountPicture" src="/fox.svg" alt="Placeholder profile picture" />
                 }
               </div>
             </a>

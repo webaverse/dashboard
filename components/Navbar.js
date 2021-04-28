@@ -89,6 +89,10 @@ const Navbar = ({
       setSearchResults(null);
     }
   }
+  
+  const logout = () => {
+    setGlobalState({ ...globalState, logout: "true" });
+  };
 
   // console.log('got path', router.asPath);
 
@@ -170,6 +174,30 @@ const Navbar = ({
 
               setUserContainerOpen(!userContainerOpen);
             }} onDragStart={cancelEvent}>
+              <div className="dropdown">
+                {!globalState.address ? 
+                  <Fragment>
+                    <div className="dropdown-item">
+                      <div className="label">via email</div>
+                    </div>
+                    <div className="dropdown-item">
+                      <div className="label">via Discord</div>
+                    </div>
+                    <div className="dropdown-item">
+                      <div className="label">via MetaMask</div>
+                    </div>
+                  </Fragment>
+                :
+                  <Fragment>
+                    <Link className="dropdown-item" href={"/accounts/" + globalState.address}>
+                      <a className="label">Profile</a>
+                    </Link>
+                    <div className="dropdown-item">
+                      <a className="label" onClick={logout}>Log out</a>
+                    </div>
+                  </Fragment>
+                }
+              </div>
               <div className="user-info-wrap">
                 <div className="username">{globalState.name}</div>
                 <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>

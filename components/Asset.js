@@ -218,6 +218,7 @@ const Asset = ({
              globalState={globalState}
              networkName={networkName}
              currentLocation={token.currentLocation}
+             stuckTransactionHash={token.stuckTransactionHash}
              getData={async () => {
                const {
                  token,

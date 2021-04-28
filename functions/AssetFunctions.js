@@ -149,14 +149,15 @@ export const getStuckAsset = async (chainName, contractName, tokenId) => {
   } : null;
 }
 
-export const resubmitAsset = async (networkName, tokenName, destinationNetworkName, tokenId, address, mainnetAddress, mnemonic) => {
+export const resubmitAsset = async (networkName, tokenName, destinationNetworkName, tokenId, stuckTransactionHash, address, mainnetAddress, mnemonic) => {
   const {
     web3,
     contracts,
   } = await getBlockchain();
 
-  const stuckAsset = await getStuckAsset(networkName, tokenName, tokenId);
-  const transactionHash = stuckAsset && stuckAsset.transactionHash;
+  // const stuckAsset = await getStuckAsset(networkName, tokenName, tokenId);
+  // const transactionHash = stuckAsset && stuckAsset.transactionHash;
+  const transactionHash = stuckTransactionHash;
 
   const sourceAddress = networkName === 'mainnetsidechain' ? address : mainnetAddress;
   const destinationAddress = destinationNetworkName === 'mainnetsidechain' ? address : mainnetAddress;

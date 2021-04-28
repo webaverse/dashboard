@@ -617,6 +617,7 @@ const CardDetails = ({
   assetType,
   networkName,
   currentLocation,
+  stuckTransactionHash,
   addresses,
   selectedView,
   // setMainnetAddress,
@@ -1070,12 +1071,14 @@ const CardDetails = ({
     setTransferOpen(false);
   };
   const handleResubmit = async () => {
+    const networkName = currentLocation.replace(/\-stuck$/, '');
     const metamaskAddress = await loginWithMetaMask();
     await resubmitAsset(
       networkName,
       'NFT',
       'polygon',
       id,
+      stuckTransactionHash,
       globalState.address,
       metamaskAddress,
       globalState.loginToken.mnemonic

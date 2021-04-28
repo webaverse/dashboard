@@ -167,78 +167,78 @@ const Navbar = ({
               setSelectedOption={setSelectedOption}
             />
           </div>
-          <Link href={"/accounts/" + globalState.address}>
-            <a className={`userInfoContainer ${userContainerOpen ? 'open' : ''}`} onClick={e => {
-              e.preventDefault();
+          {globalState && globalState.init === true ? (
+              <div className={`userInfoContainer ${userContainerOpen ? 'open' : ''}`} onClick={e => {
+                e.preventDefault();
 
-              setUserContainerOpen(!userContainerOpen);
-            }} onDragStart={cancelEvent}>
-              <div className="dropdown">
-                {!globalState.address ? 
-                  <Fragment>
-                    <Link href="/login">                    
-                      <a className="dropdown-item">
-                        <div className="label">via email</div>
+                setUserContainerOpen(!userContainerOpen);
+              }} onDragStart={cancelEvent}>
+                <div className="dropdown">
+                  {!globalState.address ? 
+                    <Fragment>
+                      <Link href="/login">                    
+                        <a className="dropdown-item">
+                          <div className="label">via email</div>
+                        </a>
+                      </Link>
+                      <a href={discordOauthUrl} className="dropdown-item" onClick={e => {
+                        // console.log('oauth', discordOauthUrl);
+                        window.location.href = discordOauthUrl;
+                      }}>
+                        <div className="label">via Discord</div>
                       </a>
-                    </Link>
-                    <a href={discordOauthUrl} className="dropdown-item" onClick={e => {
-                      // console.log('oauth', discordOauthUrl);
-                      window.location.href = discordOauthUrl;
-                    }}>
-                      <div className="label">via Discord</div>
-                    </a>
-                    <a className="dropdown-item" onClick={async e => {
-                      const metaMaskAddress = await loginWithMetaMask();
-                      const {web3} = await getBlockchain();
-                      // console.log('sign', web3); // XXX
-                      const signature = await web3.mainnet.eth.personal.sign(proofOfAddressMessage, metaMaskAddress);
-                      // console.log('got signature', signature, proofOfAddressMessage);
-                    }}>
-                      <div className="label">via MetaMask</div>
-                    </a>
-                  </Fragment>
-                :
-                  <Fragment>
-                    <Link className="dropdown-item" href={"/accounts/" + globalState.address}>
-                      <a className="label">Profile</a>
-                    </Link>
-                    <div className="dropdown-item">
-                      <a className="label" onClick={logout}>Log out</a>
-                    </div>
-                  </Fragment>
-                }
-              </div>
-              {globalState.address ?
-                <div className="user-info-wrap">
-                  <div className="username">{globalState.name}</div>
-                  <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>
-                    <div className="navbarSILKSymbol">
-                      <img src="/curve.svg" onDragStart={cancelEvent} />
-                    </div>
-                    <div className="navbarSILKAmount">
-                      {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}
-                    </div>
-                    {/* <div className={`navbarSILKPlusContainer noselect`}>
-                      <div className="navbarSILKPlus">
-                        +
+                      <a className="dropdown-item" onClick={async e => {
+                        const metaMaskAddress = await loginWithMetaMask();
+                        const {web3} = await getBlockchain();
+                        // console.log('sign', web3); // XXX
+                        const signature = await web3.mainnet.eth.personal.sign(proofOfAddressMessage, metaMaskAddress);
+                        // console.log('got signature', signature, proofOfAddressMessage);
+                      }}>
+                        <div className="label">via MetaMask</div>
+                      </a>
+                    </Fragment>
+                  :
+                    <Fragment>
+                      <Link className="dropdown-item" href={"/accounts/" + globalState.address}>
+                        <a className="label">Profile</a>
+                      </Link>
+                      <div className="dropdown-item">
+                        <a className="label" onClick={logout}>Log out</a>
                       </div>
-                    </div> */}
-                  </div>
+                    </Fragment>
+                  }
                 </div>
-              :
-                <div className="user-info-placeholder">
-                  Log in...
-                </div>
-              }
-              <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
                 {globalState.address ?
-                  <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} onDragStart={cancelEvent} />
+                  <div className="user-info-wrap">
+                    <div className="username">{globalState.name}</div>
+                    <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>
+                      <div className="navbarSILKSymbol">
+                        <img src="/curve.svg" onDragStart={cancelEvent} />
+                      </div>
+                      <div className="navbarSILKAmount">
+                        {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}
+                      </div>
+                      {/* <div className={`navbarSILKPlusContainer noselect`}>
+                        <div className="navbarSILKPlus">
+                          +
+                        </div>
+                      </div> */}
+                    </div>
+                  </div>
                 :
-                  <img className="accountPicture" src="/preview.png" alt="Placeholder profile picture" />
+                  <div className="user-info-placeholder">
+                    Log in...
+                  </div>
                 }
+                <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
+                  {globalState.address ?
+                    <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} onDragStart={cancelEvent} />
+                  :
+                    <img className="accountPicture" src="/preview.png" alt="Placeholder profile picture" />
+                  }
+                </div>
               </div>
-            </a>
-          </Link>
+          ) : null}
           <a className="navbarIcon" onClick={() => setDropdown(!dropdown)}>
             <MenuIcon />
           </a>

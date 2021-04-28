@@ -122,15 +122,13 @@ const Login = () => {
 
   return (
     <>
-      {[
-        (error ? <div key="error">
+      {error ?
+        <div key="error">
           {error}
         </div>
-        : null),
-        (!error ?
-          <div className="login-placeholder">Logging you in...</div>
-        : null),
-      ]}
+      :
+        <div className="login-placeholder">Logging you in...</div>
+      }
     </>
   )
 }

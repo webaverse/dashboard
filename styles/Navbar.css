@@ -141,7 +141,7 @@
 .userInfoContainer {
   position: relative;
   display: flex;
-  width: 210px;
+  width: 250px;
   padding: 5px;
   border: 2px solid transparent;
   border-radius: 10px;
@@ -156,8 +156,8 @@
 .userInfoContainer .dropdown {
   position: fixed;
   top: 88px;
-  left: calc(100vw - 8vw - 210px);
-  width: 210px;
+  left: calc(100vw - 8vw - 250px);
+  width: 250px;
   background-color: #FFF;
   border: 2px solid #333;
   border-radius: 10px;
@@ -203,6 +203,7 @@
   width: 100px;
   border-radius: 5px;
   text-transform: uppercase;
+  flex: 1;
   align-items: center;
 
   position: relative;
@@ -422,7 +423,7 @@
   display: flex;
   top: 0;
   left: auto;
-  right: calc(8vw + 220px);
+  right: calc(8vw + 236px);
   width: 300px;
   height: 90px;
   border: 2px solid #e0e0e0;

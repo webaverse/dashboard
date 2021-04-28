@@ -4,7 +4,10 @@ import {useRouter} from 'next/router';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {useAppContext} from "../libs/contextLib";
+import {getBlockchain, loginWithMetaMask} from "../webaverse/blockchain.js";
+import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import {parseQuery, cancelEvent} from "../webaverse/util";
+import {discordOauthUrl} from '../webaverse/constants.js';
 
 const StreetFilters = ({
   q,
@@ -90,8 +93,9 @@ const Navbar = ({
     }
   }
   
-  const logout = () => {
-    setGlobalState({ ...globalState, logout: "true" });
+  const logout = async () => {
+    await blockchain.logout();
+    // setGlobalState({ ...globalState, logout: "true" });
   };
 
   // console.log('got path', router.asPath);
@@ -177,15 +181,26 @@ const Navbar = ({
               <div className="dropdown">
                 {!globalState.address ? 
                   <Fragment>
-                    <div className="dropdown-item">
-                      <div className="label">via email</div>
-                    </div>
-                    <div className="dropdown-item">
+                    <Link href="/login">                    
+                      <a className="dropdown-item">
+                        <div className="label">via email</div>
+                      </a>
+                    </Link>
+                    <a href={discordOauthUrl} className="dropdown-item" onClick={e => {
+                      // console.log('oauth', discordOauthUrl);
+                      window.location.href = discordOauthUrl;
+                    }}>
                       <div className="label">via Discord</div>
-                    </div>
-                    <div className="dropdown-item">
+                    </a>
+                    <a className="dropdown-item" onClick={async e => {
+                      const metaMaskAddress = await loginWithMetaMask();
+                      const {web3} = await getBlockchain();
+                      // console.log('sign', web3); // XXX
+                      const signature = await web3.mainnet.eth.personal.sign(proofOfAddressMessage, metaMaskAddress);
+                      // console.log('got signature', signature, proofOfAddressMessage);
+                    }}>
                       <div className="label">via MetaMask</div>
-                    </div>
+                    </a>
                   </Fragment>
                 :
                   <Fragment>
@@ -222,9 +237,9 @@ const Navbar = ({
               }
               <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
                 {globalState.address ?
-                  <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/fox.svg"} onDragStart={cancelEvent} />
+                  <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} onDragStart={cancelEvent} />
                 :
-                  <img className="accountPicture" src="/fox.svg" alt="Placeholder profile picture" />
+                  <img className="accountPicture" src="/preview.png" alt="Placeholder profile picture" />
                 }
               </div>
             </a>

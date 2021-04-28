@@ -76,9 +76,12 @@
 .navbar .navbarMenu .secondaryMenu {
   margin: 0;
 }
-.navbar .logo,
-.accountPicture {
+.navbar .logo {
+  width: 40px;
+  height: 40px;
   cursor: pointer;
+}
+.accountPicture {
   width: 50px;
   height: 50px;
 }

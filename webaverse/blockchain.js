@@ -4,6 +4,7 @@ import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 import ethereumJsTx from '../libs/ethereumjs-tx.js';
 import { makePromise } from './util.js';
+import storage from '../functions/Storage.js';
 import { infuraKey, polygonVigilKey } from '../constants/ApiKeys.js';
 import { storageHost, web3MainnetSidechainEndpoint, web3TestnetSidechainEndpoint, Networks } from './constants.js';
 const { Transaction, Common } = ethereumJsTx;
@@ -362,6 +363,9 @@ const switchToPolygon = async () => {
       }],
   });
 };
+const logout = async () => {
+  await storage.remove('loginToken');
+};
 
 export {
   getBlockchain,
@@ -374,4 +378,5 @@ export {
   ensureMetamaskChain,
   switchToSidechain,
   switchToPolygon,
+  logout,
 };

@@ -53,7 +53,7 @@ export const previewExt = 'png';
 export const storageHost = 'https://ipfs.exokit.org';
 export const previewHost = 'https://preview.exokit.org'
 export const worldsHost = 'https://worlds.exokit.org';
-export const accountsHost = 'https://accounts.exokit.org';
+// export const accountsHost = 'https://accounts.exokit.org';
 export const contractsHost = 'https://contracts.webaverse.com';
 export const presenceHost = 'worlds.webaverse.com';
 export const localstorageHost = 'https://localstorage.webaverse.com';
@@ -62,27 +62,35 @@ export const web3MainnetSidechainEndpoint = 'https://mainnetsidechain.exokit.org
 export const web3TestnetSidechainEndpoint = 'https://testnetsidechain.exokit.org';
 export const Networks = {
   mainnet: {
-    displayName: "Mainnet",
-    transferOptions: ["mainnetsidechain"],
+    displayName: 'Ethereum mainnet',
+    transferOptions: ['mainnetsidechain'],
+    iconSrc: '/ethereum.png',
   },
   mainnetsidechain: {
-    displayName: "Webaverse",
-    transferOptions: ["mainnet", "polygon"],
+    displayName: 'Webaverse sidechain',
+    transferOptions: ['polygon', 'mainnet'],
+    iconSrc: '/webaverse.png',
   },
   polygon: {
-    displayName: "Polygon",
-    transferOptions: ["mainnetsidechain"],
+    displayName: 'Polygon network',
+    transferOptions: ['mainnetsidechain'],
+    iconSrc: '/polygon.png',
   },
-  testnet: {
-    displayName: "Rinkeby Testnet",
-    transferOptions: ["testnetsidechain", "testnetpolygon"],
+  /* testnet: {
+    displayName: 'Rinkeby Testnet',
+    transferOptions: ['testnetsidechain', 'testnetpolygon'],
   },
   testnetsidechain: {
-    displayName: "Webaverse Testnet",
-    transferOptions: ["testnet"],
+    displayName: 'Webaverse Testnet',
+    transferOptions: ['testnet'],
   },
   testnetpolygon: {
-    displayName: "Polygon Testnet",
-    transferOptions: ["testnetsidechain"],
-  },
+    displayName: 'Polygon Testnet',
+    transferOptions: ['testnetsidechain'],
+  }, */
 };
+export const appPreviewHost = `https://app.webaverse.com/preview.html`;
+export const cardsHost = `https://cards.webaverse.com`;
+export const lockHost = `https://lock.exokit.org`;
+/* export const appPreviewHost = `https://127.0.0.1:3001/preview.html`;
+export const cardsHost = `http://127.0.0.1:3002`; */

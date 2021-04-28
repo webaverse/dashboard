@@ -1,15 +1,18 @@
-import React from "react";
+import React from 'react';
 
-const ProgressBar = ({ percentage, progress, loadingMessage }) => {
+const ProgressBar = ({
+  className,
+  style,
+  value,
+}) => {
     return (
-        <div className={`progress-button ${progress}`}>
-            <span className="loading-text">{loadingMessage}</span>
-            <button className="download-button">
-                <span className="button-text">
-                    {progress === "finished" ? "🎉 Done" : ""}
-                </span>
-            </button>
-            <span className="percentage">{percentage}%</span>
+        <div
+          className={`progress-bar ${className || ''}`}
+          style={style}
+        >
+          <div className="progress-bar-inner" style={{
+            transform: `scaleX(${value})`,
+          }} />
         </div>
     );
 };

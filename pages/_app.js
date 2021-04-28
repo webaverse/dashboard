@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { ToastProvider } from 'react-toast-notifications'
+import React, {useEffect, useState} from 'react';
+import {ToastProvider} from 'react-toast-notifications'
 import Head from 'next/head';
-import Router from 'next/router';
+import Router, {useRouter} from 'next/router';
 import NProgress from 'nprogress'; //nprogress module
 import 'nprogress/nprogress.css'; //styles of nprogress
-import { AppWrapper } from "../libs/contextLib";
+import {AppWrapper} from "../libs/contextLib";
+import {getData} from "../components/Asset";
+import {parseQuery} from "../webaverse/util";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CustomToast from "../components/CustomToast";
@@ -13,11 +15,12 @@ import '../styles/globals.css';
 import '../styles/Navbar.css';
 import '../styles/Footer.css';
 import '../styles/Card.css';
+import '../styles/CardSvg.css';
 import '../styles/CardDetails.css';
 import '../styles/CardGrid.css';
 import '../styles/LandCard.css';
-import '../styles/LandCardGrid.css';
-import '../styles/ProfileCards.css';
+// import '../styles/LandCardGrid.css';
+// import '../styles/ProfileCards.css';
 import '../styles/Profile.css';
 import '../styles/Mint.css';
 import '../styles/IFrame.css';
@@ -32,6 +35,32 @@ Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 const App = ({ Component, pageProps }) => {
+  const [selectedView, setSelectedView] = useState('cards');
+  const [searchResults, setSearchResults] = useState(null);
+  const [lastPath, setLastPath] = useState('');
+  const [token, setToken] = useState(null);
+    
+  const router = useRouter();
+
+  const qs = parseQuery(router.asPath.match(/(\?.*)$/)?.[1] || '');
+  if (router.asPath !== lastPath) {
+    setLastPath(router.asPath);
+    
+    const match = router.asPath.match(/^\/assets\/([0-9]+)$/);
+    // console.log('got match', router.asPath, match);
+    if (match) {
+      const tokenId = parseInt(match[1], 10);
+      (async () => {
+        const token = await getData(tokenId);
+        // console.log('got token', {token, tokenId});
+        setToken(token);
+      })().catch(err => {
+        console.warn(err);
+      });
+    } else {
+      setToken(null);
+    }
+  }
 
   return (
     <AppWrapper>
@@ -39,9 +68,19 @@ const App = ({ Component, pageProps }) => {
         <Head>
           <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
-        <Navbar />
+        <Navbar
+          selectedView={selectedView}
+          setSelectedView={setSelectedView}
+          setSearchResults={setSearchResults}
+        />
         <div className="appContainer">
-          <Component {...pageProps} />
+          <Component
+            {...pageProps}
+            token={token}
+            setToken={setToken}
+            selectedView={selectedView}
+            searchResults={searchResults}
+          />
         </div>
         <Footer />
       </ToastProvider>

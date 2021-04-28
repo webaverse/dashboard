@@ -422,8 +422,7 @@
 .street-filters {
   display: flex;
   top: 0;
-  left: auto;
-  right: calc(8vw + 236px);
+  left: calc(100vw - 8vw - 252px - 300px);
   width: 300px;
   height: 90px;
   border: 2px solid #e0e0e0;

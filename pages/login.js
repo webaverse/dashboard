@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import { useAppContext } from "../libs/contextLib";
-import { parseQuery } from "../functions/Functions";
+// import { parseQuery } from "../functions/Functions";
 import storage from "../functions/Storage";
 import { loginWithPrivateKey, pullUser, getBalance } from "../functions/UIStateFunctions.js";
 import { discordOauthUrl } from '../webaverse/constants.js';

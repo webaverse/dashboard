@@ -195,9 +195,9 @@ const Navbar = ({
                         });
                         const j = await res.json();
                         const {mnemonic} = j;
-                        console.log('got result', j);
+                        // console.log('got result', j);
                         await storage.set('loginToken', {mnemonic});
-                        
+                        window.location.reload();
                       }}>
                         <div className="label">via MetaMask</div>
                       </a>

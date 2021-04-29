@@ -96,7 +96,6 @@ const Login = () => {
     }
   }
 
-  let useForm;
   {
     const {
       error,
@@ -113,6 +112,8 @@ const Login = () => {
 
       if (!loading) {
         setLoading(true);
+        
+        setUseForm(!(error || error_description) && !(code || id || play));
         
         if (error || error_description) {
           // router.push('/');
@@ -149,17 +150,6 @@ const Login = () => {
         }
       }
     }, [globalState.loginToken]);
-    
-    useForm = !(error || error_description) && !(code || id || play);
-    console.log('use form', {
-      error,
-      error_description,
-      code,
-      id,
-      play,
-      useForm,
-    });
-    debugger;
   }
   
   let emailEl = null; 

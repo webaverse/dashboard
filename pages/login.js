@@ -150,7 +150,7 @@ const Login = () => {
         method: 'POST',
       });
       if (res.ok) {
-        const j = await res.json();
+        const j = await res.json(); 
         
         // console.log('got j', j);
       } else {
@@ -203,7 +203,12 @@ const Login = () => {
               }} />
             </Fragment>
           }
-          <input className="button" type="button" value="Submit" onChange={e => {}} onClick={submit} />
+          <input className="button" type="button" value="Submit" onChange={e => {}} disabled={(() => {
+            return !(
+              (loginStep === 1 && email) ||
+              (loginStep === 2 && code)
+            );
+          })()} onClick={submit} />
         </form>
       ) : (
         error ?

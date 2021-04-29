@@ -271,7 +271,7 @@ const PagesRoot = ({
                   searchResults ? (
                     <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
                       {/* <CardRowHeader name="Avatars" /> */}
-                      <CardRow name="Results" data={searchResults} selectedView={selectedView} cardSize="small" />
+                      <CardRow name="Results" data={searchResults} selectedView={selectedView} cardSize="small" onTokenClick={_handleTokenClick} />
                     </div>
                   ) : (
                     <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>

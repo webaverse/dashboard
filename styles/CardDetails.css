@@ -77,8 +77,8 @@
   height: 80vh;
 }
 .content-preview-2d.small .image {
-  max-width: 250px;
-  max-height: 250px;
+  width: 250px;
+  height: 250px;
 }
 .preview .content-preview-3d {
   width: 100%;

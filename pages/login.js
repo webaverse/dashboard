@@ -138,28 +138,38 @@ const Login = () => {
     useForm = !(error || error_description) && !(code || id || play);
   }
   
+  let emailEl = null; 
+  let codeEl = null; 
   const submit = async () => {
     console.log('got form submit', {loginStep, name, code});
           
-    if (loginStep === 1 && email) {
+    if (loginStep === 1 && emailEl && emailEl.checkValidity()) {
       setLoginStep(loginStep + 1);
       
       const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}`, {
         method: 'POST',
       });
-      const j = await res.json();
-      
-      // console.log('got j', j);
-    } else if (loginStep === 2 && code) {
+      if (res.ok) {
+        const j = await res.json();
+        
+        // console.log('got j', j);
+      } else {
+        console.warn('failed to request code');
+      }
+    } else if (loginStep === 2 && codeEl && codeEl.checkValidity()) {
       const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`, {
         method: 'POST',
       });
-      const j = await res.json();
-      const {mnemonic} = j;
-      
-      // console.log('got result', j);
-      
-      await loginWithKey(mnemonic, false, null);
+      if (res.ok) {
+        const j = await res.json();
+        const {mnemonic} = j;
+        
+        // console.log('got result', j);
+        
+        await loginWithKey(mnemonic, false, null);
+      } else {
+        console.warn('failed to log in with code');
+      }
     } else {
       console.warn('unknown login step');
     }
@@ -177,15 +187,19 @@ const Login = () => {
           {loginStep === 1 ?
             <Fragment>
               <div className="label">Email</div>
-              <input type="email" value={email} placeholder="your@email.com" onChange={e => {
+              <input type="email" value={email} placeholder="your@email.com" required={true} onChange={e => {
                 setEmail(e.target.value);
+              }} ref={el => {
+                emailEl = el;
               }} />
             </Fragment>
           :
             <Fragment>
               <div className="label">Verification code</div>
-              <input type="password" value={code} placeholder="(check your email)" onChange={e => {
+              <input type="password" value={code} placeholder="(check your email)" required={true} onChange={e => {
                 setCode(e.target.value);
+              }} ref={el => {
+                codeEl = el;
               }} />
             </Fragment>
           }

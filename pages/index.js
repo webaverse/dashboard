@@ -64,6 +64,7 @@ const PagesRoot = ({
     const [selectedTab, setSelectedTab] = useState('');
     const [selectedPage, setSelectedPage] = useState(0);
     const [loadingMessge, setLoadingMessage] = useState('');
+    const [assetSelectedView, setAssetSelectedView] = useState('cards');
     const [previewId, setPreviewId] = useState('');
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
     const [mintMenuStep, setMintMenuStep] = useState(1);

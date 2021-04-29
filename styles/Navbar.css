@@ -220,6 +220,7 @@
 .userInfoContainer .username {
   width: 100%;
   font-size: 20px;
+  text-align: left;
   /* font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; */
 }
 .navbarSILKContainer {

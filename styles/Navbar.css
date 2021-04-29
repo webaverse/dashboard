@@ -205,16 +205,16 @@
   display: flex;
   margin: 15px auto;
   padding: 10px;
-  border-radius: 5px;
   text-transform: uppercase;
   align-items: center;
 
-  background-color: #333;
+  /* background-color: #333;
+  border-radius: 5px; */
   font-size: 13px;
   text-transform: uppercase;
   font-family: 'FuturaStd-Heavy';
   letter-spacing: 2px;
-  color: #FFF;
+  color: #aaa;
 }
 .userInfoContainer .username {
   font-size: 20px;

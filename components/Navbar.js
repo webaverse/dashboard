@@ -66,6 +66,7 @@ const Navbar = ({
   const [lastQ, setLastQ] = useState('');
   const [selectedOption, setSelectedOption] = useState(0);
   const [userContainerOpen, setUserContainerOpen] = useState(false);
+  const [manageKeysOpen, setManageKeysOpen] = useState(false);
   
   const router = useRouter();
   
@@ -207,6 +208,11 @@ const Navbar = ({
                       <Link className="dropdown-item" href={"/accounts/" + globalState.address}>
                         <a className="label">Profile</a>
                       </Link>
+                      <div className="dropdown-item">
+                        <a className="label" onClick={e => {
+                        setManageKeysOpen(!manageKeysOpen);
+                      }}>Manage keys</a>
+                      </div>
                       <div className="dropdown-item">
                         <a className="label" onClick={logout}>Log out</a>
                       </div>

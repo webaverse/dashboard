@@ -24,29 +24,6 @@ export function AppWrapper({ children }) {
     }
   }
 
-  const updateLocalStorage = async (globalState) => {
-    if (globalState.login === "true") {
-      await storage.set('globalState', globalState);
-      if (globalState.loginToken) {
-        await storage.set('loginToken', globalState.loginToken);
-      }
-      setGlobalState({ ...globalState, login: "false" });
-    } else if (globalState.logout === "true") {
-      await storage.remove("globalState");
-      await storage.remove("loginToken");
-      setGlobalState(InitialStateValues);
-      window.location.href = "/browse";
-    } else if (globalState.refresh === "true") {
-      init();
-    } else if (globalState.address) {
-      await storage.set('globalState', globalState);
-    }
-  }
-
-  useEffect(() => {
-    updateLocalStorage(globalState);
-  }, [globalState]);
-
   useEffect(() => {
     init();
   }, []);

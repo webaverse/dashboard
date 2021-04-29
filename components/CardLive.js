@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-// import procgen, {types} from '../webaverse/procgen.js';
 
 const Card3D = ({
     id,
@@ -18,6 +17,7 @@ const Card3D = ({
     glow,
     imageView,
     // cardSvgSource,
+    onClick,
 }) => {
     const [perspective, setPerspective] = useState([false, false]);
     const [flip, setFlip] = useState(false);
@@ -77,7 +77,7 @@ const Card3D = ({
 
     return (
       <iframe
-        className="content-preview-live"
+        className={`content-preview-live ${onClick ? 'clickable' : ''}`}
         src={"https://app.webaverse.com/?t=" + id}
       />
     );

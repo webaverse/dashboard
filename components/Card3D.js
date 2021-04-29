@@ -27,7 +27,7 @@ const Card3D = ({
     }
   }
   return (
-    <div className="content-preview-3d">
+    <div className={`content-preview-3d ${onClick ? 'clickable' : ''}`}>
       <iframe
         className={`iframe ${loaded ? 'loaded' : ''}`}
         src={src}

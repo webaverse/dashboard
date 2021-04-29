@@ -16,7 +16,6 @@ class Input extends Component {
     return(
       <input 
         ref={input => { this.input = input; }} 
-        defaultValue="will focus"
         {...this.props}
       />
     );

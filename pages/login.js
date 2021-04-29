@@ -124,12 +124,13 @@ const Login = () => {
           console.warn(err);
           setError(err);
         }
+      } else if (globalState.loginToken) {
+        router.push('/');
       } else {
-        // router.push('/');
         setLoginStep(1);
       }
       setLoading(false);
-    }, []);
+    }, [globalState.loginToken]);
     
     useForm = !(error || error_description) && !(code || id || play);
   }

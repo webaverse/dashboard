@@ -75,7 +75,7 @@ const Navbar = ({
   const qs = parseQuery(router.asPath.match(/(\?.*)$/)?.[1] || '');
   const {q: currentQ = ''} = qs;
   
-  if (currentQ !== lastQ) {
+  if (currentQ && currentQ !== lastQ) {
     setLastQ(currentQ);
 
     if (currentQ) {

@@ -9,6 +9,7 @@ import AssetCard3D from "./Card3D";
 import AssetCardLive from "./CardLive";
 import User from "./User";
 import FileInput from "./FileInput";
+import ViewSwitch from "./ViewSwitch";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import {getProfileForCreator} from "../functions/UIStateFunctions";
 import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
@@ -620,6 +621,7 @@ const CardDetails = ({
   stuckTransactionHash,
   addresses,
   selectedView,
+  setSelectedView,
   // setMainnetAddress,
   cardSvgSpec,
 }) => {
@@ -1166,6 +1168,10 @@ const CardDetails = ({
                     cardSceneWrapEl = el;
                   }}
                 >
+                  <ViewSwitch
+                    selectedView={selectedView}
+                    setSelectedView={setSelectedView}
+                  />
                   <div
                     className="assetDetailsBackground"
                     /* style={{

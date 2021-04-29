@@ -128,6 +128,7 @@ const _computeSvgSpec = async s => {
 const Asset = ({
   data,
   selectedView,
+  setSelectedView,
 }) => {
   // console.log('got data', {selectedView});
   // const {cardSvgSource} = data;
@@ -233,6 +234,7 @@ const Asset = ({
              }}
              addresses={addresses}
              selectedView={selectedView}
+             setSelectedView={setSelectedView}
              cardSvgSpec={cardSvgSpec}
              tilt={true}
            />

@@ -988,3 +988,9 @@
 .fileBrowser .wrap ul li input[type="text"] {
   font: inherit;
 }
+
+.assetDetailsLeftColumn .navbarSwitch {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}

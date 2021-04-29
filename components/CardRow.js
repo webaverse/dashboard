@@ -5,7 +5,7 @@ import {useRouter} from "next/router";
 import AssetCardSwitch from "./CardSwitch";
 import Asset from "./Asset";
 
-const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt, onTokenClick }) => {
+const CardRow = ({ data, name, cardSize, selectedView, setSelectedView, /* cardSvgSource, */ tilt, onTokenClick }) => {
     // <div>Have token: {JSON.stringify(token)}</div>
 
     return (
@@ -70,7 +70,11 @@ const CardRow = ({ data, name, cardSize, selectedView, /* cardSvgSource, */ tilt
                       },
                     };
                     return (
-                      <AssetCardSwitch {...props} selectedView={selectedView} />
+                      <AssetCardSwitch
+                        {...props}
+                        selectedView={selectedView}
+                        setSelectedView={setSelectedView}
+                      />
                     );
                 })}
         </div>

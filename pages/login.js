@@ -30,6 +30,7 @@ const Login = () => {
   const [loginStep, setLoginStep] = useState(0);
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
+  const [useForm, setUseForm] = useState(false);
 
   const loginWithKey = (key, play, realmId) => {
     // console.log('loginWithKey 1');

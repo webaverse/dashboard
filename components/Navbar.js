@@ -21,6 +21,7 @@ const ManageKeysMenu = ({
         setManageKeysOpen(false);
       }} />
       <div className="menu-wrap">
+        <div className="h1">Manage keys</div>
         <div className="label">Mnemonic</div>
         <input type="button" value="Download mnemonic file" onChange={e => {}} />
         <div className="label">Private key</div>

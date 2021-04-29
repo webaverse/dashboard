@@ -186,7 +186,6 @@ const Navbar = ({
                       <a className="dropdown-item" onClick={async e => {
                         const metaMaskAddress = await loginWithMetaMask();
                         const {web3} = await getBlockchain();
-                        // console.log('sign', web3); // XXX
                         const nonce = crypto.getRandomValues(new Uint32Array(1))[0];
                         const signature = await web3.mainnet.eth.personal.sign(proofOfAddressMessage + ' Nonce: ' + nonce, metaMaskAddress);
                         

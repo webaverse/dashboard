@@ -59,7 +59,7 @@ const Card2D = ({
       {cardSize === 'small' ?
         <div className="card-sub-wrap">
           <User
-            label="creator"
+            label="minter"
             userName={minterUsername}
             address={minterAddress}
             avatarPreview={minterAvatarPreview}

@@ -97,6 +97,12 @@
 .asset-page .content-preview-3d .iframe {
   padding: 0 8vw;
 }
+.content-preview-2d,
+.content-preview-2d.small .image,
+.card-sub-wrap
+{
+  width: 250px;
+}
 .detailsBlock {
   display: flex;
   align-items: flex-start;

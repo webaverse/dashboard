@@ -8,10 +8,11 @@ import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import Asset from "../components/Asset";
 import Minter from "../components/Minter";
-import Loader from "../components/Loader";
+// import Loader from "../components/Loader";
+import ProgressBar from "../components/ProgressBar";
 // import {FileDrop} from "react-file-drop";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
-import {blobToFile, getExt, parseQuery} from "../webaverse/util";
+import {blobToFile, getExt, parseQuery, schedulePerFrame} from "../webaverse/util";
 import {storageHost} from "../webaverse/constants";
 import JSZip from '../webaverse/jszip.js';
 
@@ -65,6 +66,7 @@ const PagesRoot = ({
     const [previewId, setPreviewId] = useState('');
     const [mintMenuOpen, setMintMenuOpen] = useState(false);
     const [mintMenuStep, setMintMenuStep] = useState(1);
+    const [mintProgress, setMintProgress] = useState(0);
     
     const router = useRouter();
 
@@ -214,6 +216,26 @@ const PagesRoot = ({
         scroll: false,
       });
     };
+    
+    const _updateMintProgress = () => {
+      let frame = null;
+      const _scheduleFrame = () => {
+        frame = requestAnimationFrame(_recurse);
+      };
+      const _recurse = () => {
+        _scheduleFrame();
+        // if (mintMenuStep === 3) {
+          setMintProgress(Date.now() % 1000 / 1000);
+        // }
+      };
+      schedulePerFrame(() => {
+        _scheduleFrame();
+      }, () => {
+        frame && cancelAnimationFrame(frame);
+        frame = null;
+      });
+    };
+    _updateMintProgress();
 
     return (
         <Fragment>
@@ -221,7 +243,7 @@ const PagesRoot = ({
                 <title>Webaverse</title>
                 <meta
                     name="description"
-                    content={"The virtual world built with NFTs."}
+                    content={"Virtual world built with NFTs."}
                 />
                 <meta property="og:title" content={"Webaverse"} />
                 <meta
@@ -266,7 +288,11 @@ const PagesRoot = ({
                   setLoading={setLoading}
                 />
                 {(loading && !mintMenuOpen) ? (
-                  <Loader loading={loading} />
+                  <div className="progress-bar-wrap">
+                    <ProgressBar
+                      value={mintProgress}
+                    />
+                  </div>
                 ) : (
                   searchResults ? (
                     <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>

@@ -43,3 +43,10 @@
   border-radius: 100px;
   transform-origin: 0 50%;
 }
+
+.progress-bar-wrap {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}

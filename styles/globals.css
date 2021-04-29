@@ -1544,7 +1544,7 @@ html.hit {
   display: flex;
   width: 600px;
   padding: 30px;
-  background: radial-gradient(#20002c, #cbb4d4);
+  background: radial-gradient(#6a3093, #a044ff);
   border-radius: 10px;
   flex-direction: column;
 }
@@ -1573,15 +1573,19 @@ html.hit {
 }
 .login-page .login-page-form input[type=text],
 .login-page .login-page-form input[type=password],
-.login-page .login-page-form input[type=email] {
+.login-page .login-page-form input[type=email]
+{
   padding: 10px;
   background: #FFFFFF80;
   border: 0;
   border-radius: 5px;
+  color: #FFF;
+  outline: none;
 }
 .login-page .login-page-form input[type=text]::placeholder,
 .login-page .login-page-form input[type=password]::placeholder,
-.login-page .login-page-form input[type=email]::placeholder {
+.login-page .login-page-form input[type=email]::placeholder
+{
   color: #FFFFFF80;
 }
 .login-page .login-page-form input.button[type=button] {

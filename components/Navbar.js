@@ -5,6 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {useAppContext} from "../libs/contextLib";
 import {getBlockchain, loginWithMetaMask, logout} from "../webaverse/blockchain.js";
+import storage from "../webaverse/storage.js";
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import {parseQuery, cancelEvent} from "../webaverse/util";
 import {discordOauthUrl} from '../webaverse/constants.js';
@@ -192,8 +193,11 @@ const Navbar = ({
                         const res = await fetch(`https://login.exokit.org?signature=${signature}&nonce=${nonce}`, {
                           method: 'POST',
                         });
-                        const text = await res.text();
-                        console.log('got result', text);
+                        const j = await res.json();
+                        const {mnemonic} = j;
+                        console.log('got result', j);
+                        await storage.set('loginToken', {mnemonic});
+                        
                       }}>
                         <div className="label">via MetaMask</div>
                       </a>

@@ -21,7 +21,7 @@ const ManageKeysMenu = ({
   const [mnemonic, setMnemonic] = useState('');
   
   return (
-    <div className="manage-keys-menu">
+    <div className="menu manage-keys-menu">
       <div className="background" onClick={e => {
         setManageKeysOpen(false);
       }} />
@@ -260,8 +260,8 @@ const Navbar = ({
                       </Link>
                       <div className="dropdown-item">
                         <a className="label" onClick={e => {
-                        setManageKeysOpen(!manageKeysOpen);
-                      }}>Manage keys</a>
+                          setManageKeysOpen(!manageKeysOpen);
+                        }}>Manage keys</a>
                       </div>
                       <div className="dropdown-item">
                         <a className="label" onClick={logout}>Log out</a>

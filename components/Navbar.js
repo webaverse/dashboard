@@ -113,14 +113,14 @@ const Navbar = ({
   setSearchResults,
 }) => {
   const { globalState, setGlobalState } = useAppContext();
+  const router = useRouter();
   const [dropdown, setDropdown] = useState(false);
   const [q, setQ] = useState('');
   const [lastQ, setLastQ] = useState('');
   const [selectedOption, setSelectedOption] = useState(0);
   const [userContainerOpen, setUserContainerOpen] = useState(false);
   const [manageKeysOpen, setManageKeysOpen] = useState(false);
-  
-  const router = useRouter();
+  const [viewSwitchOpen, setViewSwitchOpen] = useState(router.asPath === '/');
   
   const qs = parseQuery(router.asPath.match(/(\?.*)$/)?.[1] || '');
   const {q: currentQ} = qs;
@@ -142,6 +142,14 @@ const Navbar = ({
       setSearchResults(null);
     }
   }
+  
+  useEffect(() => {
+    if (router.asPath === '/' && !viewSwitchOpen) {
+      setViewSwitchOpen(true);
+    } else if (router.asPath !== '/' && viewSwitchOpen) {
+      setViewSwitchOpen(false);
+    }
+  }, [viewSwitchOpen, router.asPath]);
 
   // console.log('got path', router.asPath);
 
@@ -193,10 +201,12 @@ const Navbar = ({
                 <Link href="https://app.webaverse.com/"><a className={`item ${router.asPath === '/play' ? 'selected' : ''}`}>Play</a></Link>
                 <Link href="https://docs.webaverse.com/"><a className={`item ${router.asPath === '/docs' ? 'selected' : ''}`}>Docs</a></Link>
               </div>
-              <ViewSwitch
-                selectedView={selectedView}
-                setSelectedView={setSelectedView}
-              />
+              {viewSwitchOpen ?
+                <ViewSwitch
+                  selectedView={selectedView}
+                  setSelectedView={setSelectedView}
+                />
+              : null}
             </section>
             <StreetFilters
               q={q}

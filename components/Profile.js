@@ -114,8 +114,8 @@ const Profile = ({
                               onClick={async e => {
                                 const {web3} = await getBlockchain();
                                 
-                                let addressProofs = getAddressProofs(profile);
-                                let addresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
+                                // let addressProofs = getAddressProofs(profile);
+                                // let addresses = await getAddressesFromProofs(addressProofs, web3, proofOfAddressMessage);
                                 
                                 const localAddresses = addresses.slice();
                                 const localAddressProofs = addressProofs.slice();

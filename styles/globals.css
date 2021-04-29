@@ -1514,6 +1514,12 @@ html.hit {
   padding-top: 90px;
   flex-direction: column;
 }
+.login-page .login-page-error,
+.login-page .login-page-placeholder
+{
+  font-family: 'MS-Gothic';
+  font-size: 20px;
+}
 .login-page .login-page-error {
 }
 .login-page .login-page-placeholder {

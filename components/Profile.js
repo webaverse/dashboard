@@ -294,31 +294,8 @@ const Profile = ({
                 <div className="card-button help">
                   <img src="/help.svg" onDragStart={cancelEvent} />
                 </div>
-                <div className={`card-button dropdown ${dropdownOpen ? 'open' : ''}`} onClick={handleDropdownOpen}>
-                  <img src="/dots.svg" onDragStart={cancelEvent} />
-                </div>
               </div>
               <div className={`actions ${dropdownOpen ? 'open' : ''}`}>
-                {/* <a key="SILKToMainnetButton" className="action" onClick={() => handleDeposit()}>
-                  Transfer SILK to mainnet
-                </a>
-                <a key="SILKResubmitButton" className="action" onClick={async () => {
-                  setLoading(true);
-                  await resubmitSILK("FT", null, globalState, handleSuccess, handleError);
-                  handleSuccess();
-                }}>
-                  Resubmit SILK transfer
-                </a>
-                <a key="SILKButton" className="action" onClick={() => handleWithdraw()}>
-                  Transfer SILK from mainnet
-                </a>
-                <a key="nameChangeButton" className="action" onClick={() => {
-                  const name = prompt("What is your name?", "Satoshi");
-                  setName(name, globalState, handleSuccess, handleError)
-                  setLoading(true);
-                }}>
-                  Change Name
-                </a> */}
                 <a key="manageKeysButton" className="action" onClick={() => {
                   setManageKeysOpen(true);
                   setDropdownOpen(false);

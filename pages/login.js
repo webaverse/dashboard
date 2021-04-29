@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import { useAppContext } from "../libs/contextLib";
 import storage from "../functions/Storage";
+import {parseQuery} from "../webaverse/util";
 import { loginWithPrivateKey, pullUser, getBalance } from "../functions/UIStateFunctions.js";
 import { discordOauthUrl } from '../webaverse/constants.js';
 import bip39 from '../libs/bip39.js';
@@ -80,57 +81,62 @@ const Login = () => {
     }
   }
 
-  useEffect(async () => {
-    const error = new URLSearchParams(window.location.search).get("error") || "";
-    const error_description = new URLSearchParams(window.location.search).get("error_description") || "";
-    const code = new URLSearchParams(window.location.search).get("code") || "";
-    const id = new URLSearchParams(window.location.search).get("id") || "";
-    const play = new URLSearchParams(window.location.search).get("play") || false;
-    const realmId = new URLSearchParams(window.location.search).get("realmId") || "";
-    const arrivingFromTwitter = new URLSearchParams(window.location.search).get("twitter") || false;
+  let useForm;
+  {
+    const {
+      error,
+      error_description,
+      code,
+      id,
+      play,
+      realmId,
+      twitter: arrivingFromTwitter,
+    } = typeof window !== 'undefined' ? parseQuery(window.location.search) : {};
 
-    // console.log('effect 1');
+    useEffect(async () => {
+      // console.log('effect 1');
 
-    if (error || error_description) {
-      // router.push('/');
-      setError(error + '\n' + error_description);
-    } else if (code || id || play) {
-      // console.log('effect 2');
-      try {
-        const res = await fetch(
-          arrivingFromTwitter ?
-          `https://login.exokit.org/?twittercode=${code}&twitterid=${id}` :
-          `https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
-        // console.log('effect 3');
-        if (res.status !== 200) {
-          throw "Login did not work, got response: " + res.status;
+      if (error || error_description) {
+        // router.push('/');
+        setError(error + '\n' + error_description);
+      } else if (code || id || play) {
+        // console.log('effect 2');
+        try {
+          const res = await fetch(
+            arrivingFromTwitter ?
+            `https://login.exokit.org/?twittercode=${code}&twitterid=${id}` :
+            `https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
+          // console.log('effect 3');
+          if (res.status !== 200) {
+            throw "Login did not work, got response: " + res.status;
+          }
+          // console.log('effect 4');
+          const j = await res.json();
+          // console.log('effect 5');
+          const {mnemonic} = j;
+          if (mnemonic) {
+            // console.log('effect 6');
+            loginWithKey(mnemonic, play, realmId);
+          } else {
+            console.warn('no mnemonic returned from api');
+          }
+        } catch (err) {
+          console.warn(err);
+          setError(err);
         }
-        // console.log('effect 4');
-        const j = await res.json();
-        // console.log('effect 5');
-        const {mnemonic} = j;
-        if (mnemonic) {
-          // console.log('effect 6');
-          loginWithKey(mnemonic, play, realmId);
-        } else {
-          console.warn('no mnemonic returned from api');
-        }
-      } catch (err) {
-        console.warn(err);
-        setError(err);
+      } else {
+        // router.push('/');
+        setLoginStep(1);
       }
-    } else {
-      // router.push('/');
-      setLoginStep(1);
-    }
-    setLoading(false);
-  }, []);
-  
-  // console.log('render login', error);
+      setLoading(false);
+    }, []);
+    
+    useForm = !(error || error_description) && !(code || id || play);
+  }
 
   return (
     <div className="login-page">
-      {loginStep ? (
+      {useForm ? (
         <form className="login-page-form" onSubmit={async e => {
           e.preventDefault();
           

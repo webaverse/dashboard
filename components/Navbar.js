@@ -296,6 +296,9 @@ const Navbar = ({
                         {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}
                       </div>
                     </div>
+                    <div className="address">
+                      {globalState.address}
+                    </div>
                   </div>
                 :
                   <div className="user-info-placeholder">

@@ -201,6 +201,15 @@
   justify-content: center;
   align-items: center;
 }
+.userInfoContainer .user-info-wrap .address {
+  font-size: 11px;
+  padding: 3px;
+  bottom: 0px;
+  position: absolute;
+  left: 0;
+  font-family: 'MS-Gothic';
+  color: #aaa;
+}
 .userInfoContainer .user-info-placeholder {
   display: flex;
   margin: 15px auto;

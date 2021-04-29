@@ -6,6 +6,7 @@ const Card3D = ({
   hash,
   ext,
   loaded,
+  onClick,
 }) => {
   // `{storageHost}/ipfs/${hash}`
   const qs = {

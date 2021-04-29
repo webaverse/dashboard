@@ -69,7 +69,7 @@ const Login = () => {
       
       // console.log('setInitialState 5');
 
-      setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
+      setGlobalState({ balance, loaded: true, ...newState });
       // console.log('setInitialState 6');
       router.push("/accounts/" + state.address);
       // console.log('setInitialState 7');

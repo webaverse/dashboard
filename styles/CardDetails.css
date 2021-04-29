@@ -53,9 +53,23 @@
 .content-preview-3d,
 .content-preview-live {
   position: relative;
-  margin: 70px;
   object-fit: contain;
   /* background-color: #FFF; */
+}
+.content-preview-2d.small,
+.content-preview-3d.small,
+.content-preview-live.small {
+  margin: 10px;
+}
+.content-preview-2d.large,
+.content-preview-3d.large,
+.content-preview-live.large {
+  margin: 70px;
+}
+.content-preview-2d.clickable,
+.content-preview-3d.clickable,
+.content-preview-live.clickable {
+  cursor: pointer;
 }
 .content-preview-3d,
 .content-preview-live {
@@ -63,8 +77,8 @@
   height: 80vh;
 }
 .content-preview-2d.small .image {
-  width: 300px;
-  height: 300px;
+  max-width: 250px;
+  max-height: 250px;
 }
 .preview .content-preview-3d {
   width: 100%;
@@ -665,6 +679,7 @@
 .content-preview-2d.small .assetDetailsOwnedBy {
   position: relative;
   margin-top: -20px;
+  padding: 0;
 }
 .content-preview-2d.small .assetDetailsOwnedBy .creatorIcon {
   width: 40px;
@@ -672,7 +687,8 @@
 }
 .content-preview-2d.small .assetDetailsOwnedBy .creatorDetails {
   min-width: 100px;
-  margin-left: -26px
+  margin-left: -26px;
+  padding-right: 10px;
 }
 
 .card-sub {
@@ -700,8 +716,6 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  justify-content: center;
-  align-items: center;
   z-index: 1;
 }
 .assetDetailsOwnedBy .creatorIcon {
@@ -714,7 +728,7 @@
   display: flex;
   padding-left: 30px;
   background-color: #FFF;
-  border-radius: 10px;
+  border-radius: 5px;
   flex-direction: column;
   align-items: flex-start;
   font-family: 'FuturaStd-Heavy';

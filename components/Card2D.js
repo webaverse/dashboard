@@ -55,25 +55,6 @@ const Card2D = ({
         onDoubleClick={e => {
           e.target.requestFullscreen();
         }}
-        ref={async el => {
-          if (el) {
-            if (!el.complete) {
-              await new Promise((accept, reject) => {
-                el.addEventListener('load', e => {
-                  accept();
-                });
-                el.addEventListener('error', err => {
-                  reject(err);
-                });
-              });
-            }
-            _loadDimensions(el);
-          }
-        }}
-        style={dimensions ? {
-          maxWidth: dimensions[0],
-          maxHeight: dimensions[1],
-        } : null}
       />
       {cardSize === 'small' ?
         <Fragment>

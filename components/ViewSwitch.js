@@ -29,3 +29,4 @@ const ViewSwitch = ({
     </div>
   );
 };
+export default ViewSwitch;

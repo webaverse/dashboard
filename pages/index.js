@@ -50,6 +50,7 @@ class AssetOverlayBackground extends Component {
 const PagesRoot = ({
   data,
   selectedView,
+  setSelectedView,
   token,
   setToken,
   searchResults,
@@ -324,7 +325,8 @@ const PagesRoot = ({
                 <div className="asset-overlay-foreground">
                   <Asset
                     data={token}
-                    selectedView={selectedView}
+                    selectedView={assetSelectedView}
+                    setSelectedView={setAssetSelectedView}
                   />
                 </div>
               </div>

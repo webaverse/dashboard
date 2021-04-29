@@ -18,9 +18,9 @@ export function AppWrapper({ children }) {
 
     if (loginToken) {
       const newState = await pullUserObject({...globalState, loginToken});
-      setGlobalState({ ...newState, init: true });
+      setGlobalState({ ...newState, loaded: true });
     } else {
-      setGlobalState({ ...globalState, init: true });
+      setGlobalState({ ...globalState, loaded: true });
     }
   }
 

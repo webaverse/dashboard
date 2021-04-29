@@ -71,7 +71,7 @@ const CardRow = ({
                       minterUsername: minter.username,
                       minterAddress: minter.address,
                       cardSize,
-                      networkType: 'sidechain',
+                      // networkType: 'sidechain',
                       tilt: true,
                       onClick: e => {
                         onTokenClick && onTokenClick(asset.id)(e);

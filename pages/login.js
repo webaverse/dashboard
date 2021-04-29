@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react'
+import React, {Fragment, Component, useEffect, useState} from 'react'
 import { useRouter } from 'next/router';
 import { useAppContext } from "../libs/contextLib";
 import storage from "../functions/Storage";
@@ -7,6 +7,21 @@ import { loginWithPrivateKey, pullUser, getBalance } from "../functions/UIStateF
 import { discordOauthUrl } from '../webaverse/constants.js';
 import bip39 from '../libs/bip39.js';
 import Loader from "../components/Loader";
+
+class Input extends Component {
+  componentDidMount(){
+    this.input.focus();
+  }
+  render() {
+    return(
+      <input 
+        ref={input => { this.input = input; }} 
+        defaultValue="will focus"
+        {...this.props}
+      />
+    );
+  }
+}
 
 const Login = () => {
   const {globalState, setGlobalState} = useAppContext();
@@ -183,11 +198,11 @@ const Login = () => {
           
           submit();
         }} >
-          <div className="h1">Log in</div>
           {loginStep === 1 ?
             <Fragment>
+              <div className="h1">Log in</div>
               <div className="label">Email</div>
-              <input type="email" value={email} placeholder="your@email.com" required={true} onChange={e => {
+              <Input type="email" value={email} placeholder="your@email.com" required={true} onChange={e => {
                 setEmail(e.target.value);
               }} ref={el => {
                 emailEl = el;
@@ -195,8 +210,9 @@ const Login = () => {
             </Fragment>
           :
             <Fragment>
+              <div className="h1">Check your email</div>
               <div className="label">Verification code</div>
-              <input type="password" value={code} placeholder="(check your email)" required={true} onChange={e => {
+              <Input type="password" value={code} placeholder="123456" required={true} onChange={e => {
                 setCode(e.target.value);
               }} ref={el => {
                 codeEl = el;

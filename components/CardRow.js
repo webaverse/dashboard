@@ -5,7 +5,15 @@ import {useRouter} from "next/router";
 import AssetCardSwitch from "./CardSwitch";
 import Asset from "./Asset";
 
-const CardRow = ({ data, name, cardSize, selectedView, setSelectedView, /* cardSvgSource, */ tilt, onTokenClick }) => {
+const CardRow = ({
+  data,
+  name,
+  cardSize,
+  selectedView,
+  setSelectedView,
+  tilt,
+  onTokenClick,
+}) => {
     // <div>Have token: {JSON.stringify(token)}</div>
 
     return (

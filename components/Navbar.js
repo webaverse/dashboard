@@ -3,6 +3,7 @@ import Link from 'next/link'
 import {useRouter} from 'next/router';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ViewSwitch from "./ViewSwitch";
 import {useAppContext} from "../libs/contextLib";
 import {getBlockchain, loginWithMetaMask, logout} from "../webaverse/blockchain.js";
 import storage from "../webaverse/storage.js";
@@ -100,38 +101,6 @@ const StreetFilters = ({
           <div className={`option ${selectedOption === 'avatar' ? 'selected' : ''}`} onClick={e => setSelectedOption('avatar')}>
             <img className="option-image" src="/avatar.svg" />
           </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ViewSwitch = ({
-  selectedView,
-  setSelectedView,
-}) => {
-  return (
-    <div className="navbarSwitchWrap">
-      <div className="navbarSwitch">
-        <div className={`option ${selectedView === 'cards' ? 'selected' : ''}`} onClick={e => {
-          setSelectedView('cards');
-        }}>
-          Cards
-        </div>
-        <div className={`option ${selectedView === '2d' ? 'selected' : ''}`} onClick={e => {
-          setSelectedView('2d');
-        }}>
-          2D
-        </div>
-        <div className={`option ${selectedView === '3d' ? 'selected' : ''}`} onClick={e => {
-          setSelectedView('3d');
-        }}>
-          3D
-        </div>
-        <div className={`option ${selectedView === 'live' ? 'selected' : ''}`} onClick={e => {
-          setSelectedView('live');
-        }}>
-          Live
         </div>
       </div>
     </div>

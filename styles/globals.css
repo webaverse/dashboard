@@ -1544,7 +1544,7 @@ html.hit {
   display: flex;
   width: 600px;
   padding: 30px;
-  background: radial-gradient(#6a3093, #a044ff);
+  background: radial-gradient(#ad5389, #3c1053);
   border-radius: 10px;
   flex-direction: column;
 }

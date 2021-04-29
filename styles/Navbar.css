@@ -218,6 +218,7 @@
 }
 .userInfoContainer .username {
   font-size: 20px;
+  flex: 1;
   justify-content: center;
   align-items: center;
   text-align: right;

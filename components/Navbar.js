@@ -234,7 +234,7 @@ const Navbar = ({
                   {globalState.address ?
                     <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} onDragStart={cancelEvent} />
                   :
-                    <img className="accountPicture" src="/preview.png" alt="Placeholder profile picture" />
+                    <img className="accountPicture account-picture-placeholder" src="/preview.png" alt="Placeholder profile picture" />
                   }
                 </div>
               </div>

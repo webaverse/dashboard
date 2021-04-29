@@ -182,7 +182,7 @@
 .userInfoContainer:not(.open) .dropdown {
   display: none;
 }
-.userInfoContainer.open img {
+.userInfoContainer.open img:not(.account-picture-placeholder) {
   filter: invert(97%) sepia(66%) saturate(0%) hue-rotate(90deg) brightness(109%) contrast(100%);
 }
 .userInfoContainer.open .navbarSILKContainer {
@@ -198,22 +198,23 @@
   display: flex;
   padding: 10px;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .userInfoContainer .user-info-placeholder {
   display: flex;
-  width: 100px;
+  margin: 15px auto;
+  padding: 10px;
   border-radius: 5px;
   text-transform: uppercase;
-  flex: 1;
   align-items: center;
 
-  position: relative;
-  margin: 0 20px;
+  background-color: #333;
   font-size: 13px;
   text-transform: uppercase;
   font-family: 'FuturaStd-Heavy';
   letter-spacing: 2px;
-  color: #AAA;
+  color: #FFF;
 }
 .userInfoContainer .username {
   font-size: 20px;

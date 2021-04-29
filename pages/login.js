@@ -151,6 +151,15 @@ const Login = () => {
     }, [globalState.loginToken]);
     
     useForm = !(error || error_description) && !(code || id || play);
+    console.log('use form', {
+      error,
+      error_description,
+      code,
+      id,
+      play,
+      useForm,
+    });
+    debugger;
   }
   
   let emailEl = null; 

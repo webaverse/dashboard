@@ -29,11 +29,7 @@ const StreetFilters = ({
           }}
           onKeyDown={e => {
             if (e.which === 13) {
-              if (q) {
-                router.push(`/?q=${q}`);
-              } else {
-                router.push('/');
-              }
+              router.push(`/?q=${q}`);
             }
           }}
         />
@@ -73,9 +69,9 @@ const Navbar = ({
   const router = useRouter();
   
   const qs = parseQuery(router.asPath.match(/(\?.*)$/)?.[1] || '');
-  const {q: currentQ = ''} = qs;
+  const {q: currentQ} = qs;
   
-  if (currentQ && currentQ !== lastQ) {
+  if (currentQ !== undefined && currentQ !== lastQ) {
     setLastQ(currentQ);
 
     if (currentQ) {

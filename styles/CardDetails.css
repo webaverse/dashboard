@@ -674,6 +674,7 @@
 .assetDetailsOwnedBy .creatorDetails {
   min-width: 250px;
   margin-left: -26px;
+  padding: 10px;
   background-color: #FFF;
 }
 

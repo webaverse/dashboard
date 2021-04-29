@@ -213,6 +213,13 @@ const Navbar = ({
                     </Fragment>
                   }
                 </div>
+                <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
+                  {globalState.address ?
+                    <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} onDragStart={cancelEvent} />
+                  :
+                    <img className="accountPicture account-picture-placeholder" src="/preview.png" alt="Placeholder profile picture" />
+                  }
+                </div>
                 {globalState.address ?
                   <div className="user-info-wrap">
                     <div className="username">{globalState.name || 'Anonymous'}</div>
@@ -223,11 +230,6 @@ const Navbar = ({
                       <div className="navbarSILKAmount">
                         {globalState && globalState.balance ? Number(globalState.balance).toLocaleString() : "0"}
                       </div>
-                      {/* <div className={`navbarSILKPlusContainer noselect`}>
-                        <div className="navbarSILKPlus">
-                          +
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                 :
@@ -235,13 +237,6 @@ const Navbar = ({
                     Log in...
                   </div>
                 }
-                <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
-                  {globalState.address ?
-                    <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} onDragStart={cancelEvent} />
-                  :
-                    <img className="accountPicture account-picture-placeholder" src="/preview.png" alt="Placeholder profile picture" />
-                  }
-                </div>
               </div>
           ) : null}
           <a className="navbarIcon" onClick={() => setDropdown(!dropdown)}>

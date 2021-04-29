@@ -20,6 +20,7 @@ const Card2D = ({
   glow,
   imageView,
   // cardSvgSource,
+  onClick,
 }) => {
   const [perspective, setPerspective] = useState([false, false]);
   const [flip, setFlip] = useState(false);
@@ -41,7 +42,12 @@ const Card2D = ({
   image = image.replace(/\.gif\/preview\.png$/, '.gif/preview.gif');
   
   return (
-    <div className={`content-preview-2d ${cardSize}`}>
+    <div
+      className={`content-preview-2d ${cardSize}`}
+      onClick={e => {
+          onClick && onClick(e);
+        }}
+    >
       <img
         className="image"
         src={image}
@@ -77,8 +83,10 @@ const Card2D = ({
             address={minterAddress}
             avatarPreview={minterAvatarPreview}
           />
-          <div className="filename">{assetName}</div>
-          <div className="ext">{ext}</div>
+          <div className="card-sub">
+            <div className="filename">{assetName}</div>
+            <div className="ext">{ext}</div>
+          </div>
         </Fragment>
       : null}
     </div>

@@ -204,6 +204,7 @@
 .userInfoContainer .user-info-placeholder {
   display: flex;
   margin: 15px auto;
+  margin-left: 30px;
   padding: 10px;
   text-transform: uppercase;
   align-items: center;

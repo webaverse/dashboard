@@ -78,6 +78,7 @@ const Login = () => {
 
   useEffect(async () => {
     const error = new URLSearchParams(window.location.search).get("error") || "";
+    const error_description = new URLSearchParams(window.location.search).get("error_description") || "";
     const code = new URLSearchParams(window.location.search).get("code") || "";
     const id = new URLSearchParams(window.location.search).get("id") || "";
     const play = new URLSearchParams(window.location.search).get("play") || false;
@@ -86,9 +87,9 @@ const Login = () => {
 
     // console.log('effect 1');
 
-    if (error) {
+    if (error || error_description) {
       // router.push('/');
-      setError(error);
+      setError(error + '\n' + error_description);
     } else if (code || id || play) {
       // console.log('effect 2');
       try {

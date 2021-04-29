@@ -547,7 +547,9 @@ a {
   margin-bottom: 20px;
   font-size: 26px;
 }
-.iframe-placeholder .progress-bar {
+.iframe-placeholder .progress-bar,
+.progress-bar-wrap .progress-bar
+{
   border-color: #CCC;
 }
 .slider .contents .wrap-slider .step-1-only,

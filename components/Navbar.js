@@ -10,6 +10,31 @@ import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
 import {parseQuery, cancelEvent} from "../webaverse/util";
 import {discordOauthUrl} from '../webaverse/constants.js';
 
+const ManageKeysMenu = ({
+  setManageKeysOpen,
+}) => {
+  const [mnemonic, setMnemonic] = useState('');
+  
+  return (
+    <div className="manage-keys-menu">
+      <div className="background" onClick={e => {
+        setManageKeysOpen(false);
+      }} />
+      <div className="menu-wrap">
+        <div className="label">Mnemonic</div>
+        <input type="button" value="Download mnemonic file" onChange={e => {}} />
+        <div className="label">Private key</div>
+        <input type="button" value="Download private key" onChange={e => {}} />
+        <div className="label">Update key</div>
+        <input type="text" value={mnemonic} placeholder="enter mnemonic" onChange={e => {
+          setMnemonic(e.target.value);
+        }} />
+        <input className="button" type="button" value="Update mnemonic" onChange={e => {}} />
+      </div>
+    </div>
+  );
+};
+
 const StreetFilters = ({
   q,
   setQ,
@@ -124,6 +149,14 @@ const Navbar = ({
             <a className={`item`} target="_blank" href="https://discord.gg/3byWubumSa">Discord</a>
           </div>
 */}
+          {manageKeysOpen ?
+            <ManageKeysMenu
+              setManageKeysOpen={setManageKeysOpen}
+            />
+          :
+            null
+          }
+
           <div onClick={() => setDropdown(false)} className={`rightMenuContainer ${dropdown ? "responsive" : ""}`}>
             <section className="navbarSection">
               <div className="navbar-buttons">

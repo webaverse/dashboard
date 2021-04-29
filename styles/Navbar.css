@@ -497,3 +497,30 @@
 .navbarSwitchWrap {
   display: flex;
 }
+
+.manage-keys-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+.manage-keys-menu .background {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #00000040;
+}
+.manage-keys-menu .menu-wrap {
+  position: relative;
+  min-width: 600px;
+  padding: 30px;
+  background-color: #FFF;
+  border-radius: 10px;
+}

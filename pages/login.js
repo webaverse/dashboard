@@ -123,15 +123,15 @@ const Login = () => {
   console.log('render login', error);
 
   return (
-    <>
+    <div className="login-page">
       {error ?
         <div className="error">
           {error}
         </div>
       :
-        <div className="login-placeholder">Logging you in...</div>
+        <div className="placeholder">Logging you in...</div>
       }
-    </>
+    </div>
   )
 }
 export default Login;

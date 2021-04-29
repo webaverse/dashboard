@@ -1506,7 +1506,17 @@ html.hit {
   color: #FFF;
 }
 
-.login-placeholder {
+.login-page {
+  display: flex;
+  min-width: 100vw;
+  min-height: 100vh;
+  padding: 0 8vw;
+  padding-top: 90px;
+  flex-direction: column;
+}
+.login-page .error {
+}
+.login-page .placeholder {
   display: flex;
   flex: 1;
   width: 100%;

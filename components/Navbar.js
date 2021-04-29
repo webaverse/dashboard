@@ -167,7 +167,7 @@ const Navbar = ({
               setSelectedOption={setSelectedOption}
             />
           </div>
-          {globalState && globalState.init === true ? (
+          {(
               <div className={`userInfoContainer ${userContainerOpen ? 'open' : ''}`} onClick={e => {
                 e.preventDefault();
 
@@ -238,7 +238,7 @@ const Navbar = ({
                   }
                 </div>
               </div>
-          ) : null}
+          )}
           <a className="navbarIcon" onClick={() => setDropdown(!dropdown)}>
             <MenuIcon />
           </a>

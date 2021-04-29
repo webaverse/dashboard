@@ -1564,17 +1564,26 @@ html.hit {
   text-align: left;
 }
 .login-page .login-page-form .label,
+.login-page .login-page-form input[type=text],
+.login-page .login-page-form input[type=password],
 .login-page .login-page-form input[type=email],
 .login-page .login-page-form input[type=button]
 {
   margin-bottom: 10px;
 }
+.login-page .login-page-form input[type=text],
+.login-page .login-page-form input[type=password],
 .login-page .login-page-form input[type=email] {
   padding: 10px;
   background: #FFFFFF80;
   border: 0;
   border-radius: 5px;
 }
+.login-page .login-page-form input[type=text]::placeholder,
+.login-page .login-page-form input[type=password]::placeholder,
 .login-page .login-page-form input[type=email]::placeholder {
+  color: #FFFFFF80;
+}
+.login-page .login-page-form input.button[type=button] {
   color: #FFFFFF80;
 }

@@ -106,6 +106,38 @@ const StreetFilters = ({
   );
 };
 
+const ViewSwitch = ({
+  selectedView,
+  setSelectedView,
+}) => {
+  return (
+    <div className="navbarSwitchWrap">
+      <div className="navbarSwitch">
+        <div className={`option ${selectedView === 'cards' ? 'selected' : ''}`} onClick={e => {
+          setSelectedView('cards');
+        }}>
+          Cards
+        </div>
+        <div className={`option ${selectedView === '2d' ? 'selected' : ''}`} onClick={e => {
+          setSelectedView('2d');
+        }}>
+          2D
+        </div>
+        <div className={`option ${selectedView === '3d' ? 'selected' : ''}`} onClick={e => {
+          setSelectedView('3d');
+        }}>
+          3D
+        </div>
+        <div className={`option ${selectedView === 'live' ? 'selected' : ''}`} onClick={e => {
+          setSelectedView('live');
+        }}>
+          Live
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Navbar = ({
   selectedView,
   setSelectedView,
@@ -192,30 +224,10 @@ const Navbar = ({
                 <Link href="https://app.webaverse.com/"><a className={`item ${router.asPath === '/play' ? 'selected' : ''}`}>Play</a></Link>
                 <Link href="https://docs.webaverse.com/"><a className={`item ${router.asPath === '/docs' ? 'selected' : ''}`}>Docs</a></Link>
               </div>
-              <div className="navbarSwitchWrap">
-                <div className="navbarSwitch">
-                  <div className={`option ${selectedView === 'cards' ? 'selected' : ''}`} onClick={e => {
-                    setSelectedView('cards');
-                  }}>
-                    Cards
-                  </div>
-                  <div className={`option ${selectedView === '2d' ? 'selected' : ''}`} onClick={e => {
-                    setSelectedView('2d');
-                  }}>
-                    2D
-                  </div>
-                  <div className={`option ${selectedView === '3d' ? 'selected' : ''}`} onClick={e => {
-                    setSelectedView('3d');
-                  }}>
-                    3D
-                  </div>
-                  <div className={`option ${selectedView === 'live' ? 'selected' : ''}`} onClick={e => {
-                    setSelectedView('live');
-                  }}>
-                    Live
-                  </div>
-                </div>
-              </div>
+              <ViewSwitch
+                selectedView={selectedView}
+                setSelectedView={setSelectedView}
+              />
             </section>
             <StreetFilters
               q={q}

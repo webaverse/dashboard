@@ -295,7 +295,7 @@ const Profile = ({
                   <img src="/help.svg" onDragStart={cancelEvent} />
                 </div>
               </div>
-              <div className={`actions ${dropdownOpen ? 'open' : ''}`}>
+              {/* <div className={`actions ${dropdownOpen ? 'open' : ''}`}>
                 <a key="manageKeysButton" className="action" onClick={() => {
                   setManageKeysOpen(true);
                   setDropdownOpen(false);
@@ -305,7 +305,7 @@ const Profile = ({
                 <a className="action" onClick={() => logout()}>
                   Logout
                 </a>
-              </div>
+              </div> */}
             </div>
         </div>
     );

@@ -1518,10 +1518,13 @@ html.hit {
 .login-page .login-page-error,
 .login-page .login-page-placeholder
 {
+  max-width: 600px;
   margin-top: 200px;
   padding: 30px;
   font-family: 'MS-Gothic';
   font-size: 20px;
+  white-space: pre-wrap;
+  text-align: left;
 }
 .login-page .login-page-error {
 }

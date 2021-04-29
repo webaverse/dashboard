@@ -187,7 +187,7 @@ const Navbar = ({
                         const metaMaskAddress = await loginWithMetaMask();
                         const {web3} = await getBlockchain();
                         // console.log('sign', web3); // XXX
-                        const nonce = 3;
+                        const nonce = crypto.getRandomValues(new Uint32Array(1))[0];
                         const signature = await web3.mainnet.eth.personal.sign(proofOfAddressMessage + ' Nonce: ' + nonce, metaMaskAddress);
                         
                         const res = await fetch(`https://login.exokit.org?signature=${signature}&nonce=${nonce}`, {

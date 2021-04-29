@@ -217,9 +217,6 @@
   padding: 10px;
   text-transform: uppercase;
   align-items: center;
-
-  /* background-color: #333;
-  border-radius: 5px; */
   font-size: 13px;
   text-transform: uppercase;
   font-family: 'FuturaStd-Heavy';
@@ -228,8 +225,10 @@
 }
 .userInfoContainer .username {
   width: 100%;
-  font-size: 20px;
-  line-height: 1.4;
+  margin-top: -2px;
+  margin-bottom: 2px;
+  font-size: 22px;
+  line-height: 1;
   text-align: left;
   font-family: 'MS-Gothic';
 }

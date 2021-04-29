@@ -101,7 +101,7 @@
 .content-preview-2d.small .image,
 .card-sub-wrap
 {
-  --size: 250px;
+  --size: 300px;
   width: var(--size);
 }
 .detailsBlock {
@@ -712,6 +712,8 @@
 }
 .card-sub {
   display: flex;
+  margin-right: 10px;
+  margin-left: auto;
   font-family: 'MS-Gothic';
 }
 .card-sub .filename,
@@ -722,7 +724,7 @@
 .card-sub .filename {
 }
 .card-sub .ext {
-  background-color: #e0e0e0;
+  background-color: #fff;
 }
 
 .assetDetailsLeftColumn .navbarSwitch {

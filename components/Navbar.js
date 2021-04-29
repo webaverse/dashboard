@@ -187,8 +187,14 @@ const Navbar = ({
                         const metaMaskAddress = await loginWithMetaMask();
                         const {web3} = await getBlockchain();
                         // console.log('sign', web3); // XXX
-                        const signature = await web3.mainnet.eth.personal.sign(proofOfAddressMessage, metaMaskAddress);
-                        // console.log('got signature', signature, proofOfAddressMessage);
+                        const nonce = 3;
+                        const signature = await web3.mainnet.eth.personal.sign(proofOfAddressMessage + ' Nonce: ' + nonce, metaMaskAddress);
+                        
+                        const res = await fetch(`https://login.exokit.org?signature=${signature}&nonce=${nonce}`, {
+                          method: 'POST',
+                        });
+                        const text = await res.text();
+                        console.log('got result', text);
                       }}>
                         <div className="label">via MetaMask</div>
                       </a>

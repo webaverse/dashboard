@@ -7,12 +7,16 @@ import {useAppContext} from "../libs/contextLib";
 import {getBlockchain, loginWithMetaMask, logout} from "../webaverse/blockchain.js";
 import storage from "../webaverse/storage.js";
 import {proofOfAddressMessage} from '../constants/UnlockConstants.js';
-import {parseQuery, cancelEvent} from "../webaverse/util";
+import {parseQuery, downloadFile, cancelEvent} from "../webaverse/util";
 import {discordOauthUrl} from '../webaverse/constants.js';
+import bip39 from '../libs/bip39.js';
+import hdkeySpec from '../libs/hdkey.js';
+const hdkey = hdkeySpec.default;
 
 const ManageKeysMenu = ({
   setManageKeysOpen,
 }) => {
+  const {globalState, setGlobalState} = useAppContext();
   const [mnemonic, setMnemonic] = useState('');
   
   return (
@@ -23,9 +27,30 @@ const ManageKeysMenu = ({
       <div className="menu-wrap">
         <div className="h1">Manage keys</div>
         <div className="label">Mnemonic</div>
-        <input type="button" value="Download mnemonic file" onChange={e => {}} />
+        <input type="button" value="Download mnemonic file" onChange={e => {}} onClick={e => {
+          const file = new Blob([
+            globalState.loginToken.mnemonic,
+          ], {
+            type: 'text/plain',
+          });
+          const filename = 'mnemonic.txt';
+          downloadFile(file, filename);
+        }} />
         <div className="label">Private key</div>
-        <input type="button" value="Download private key" onChange={e => {}} />
+        <input type="button" value="Download private key" onChange={e => {}} onClick={e => {
+          // const { web3, contracts, common } = await getBlockchain();
+          const wallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(mnemonic)).derivePath(`m/44'/60'/0'/0/0`).getWallet();
+          const address = wallet.getAddressString();
+          const privateKey = wallet.getPrivateKeyString();
+          
+          const file = new Blob([
+            privateKey,
+          ], {
+            type: 'text/plain',
+          });
+          const filename = 'private-key.txt';
+          downloadFile(file, filename);
+        }} />
         <div className="label">Update key</div>
         <input type="text" value={mnemonic} placeholder="enter mnemonic" onChange={e => {
           setMnemonic(e.target.value);

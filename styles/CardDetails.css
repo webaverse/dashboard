@@ -52,11 +52,14 @@
 .content-preview-2d,
 .content-preview-3d,
 .content-preview-live {
+  margin: 70px;
+  object-fit: contain;
+  /* background-color: #FFF; */
+}
+.content-preview-3d,
+.content-preview-live {
   width: 100vw;
   height: 80vh;
-  margin: 70px;
-  /* background-color: #FFF; */
-  object-fit: contain;
 }
 .preview .content-preview-3d {
   width: 100%;

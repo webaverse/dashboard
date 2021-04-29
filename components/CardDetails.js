@@ -1327,7 +1327,11 @@ const CardDetails = ({
                         tilt: false,
                       };
                       return (
-                        <AssetCardSwitch {...props} selectedView={selectedView} />
+                        <AssetCardSwitch
+                          {...props}
+                          selectedView={selectedView}
+                          setSelectedView={setSelectedView}
+                        />
                       );
                     })()}
                   </div>

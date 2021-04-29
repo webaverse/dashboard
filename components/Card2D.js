@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, {Fragment, useState} from "react";
 // import procgen, {types} from '../webaverse/procgen.js';
+import User from './User';
 
 const Card2D = ({
   id,
@@ -12,6 +13,7 @@ const Card2D = ({
   totalSupply,
   minterAvatarPreview,
   minterUsername,
+  minterAddress,
   cardSize,
   isMainnet,
   isPolygon,
@@ -39,33 +41,47 @@ const Card2D = ({
   image = image.replace(/\.gif\/preview\.png$/, '.gif/preview.gif');
   
   return (
-    <img
-      src={image}
-      className="content-preview-2d"
-      onDragStart={_cancelDragStart}
-      onDoubleClick={e => {
-        e.target.requestFullscreen();
-      }}
-      ref={async el => {
-        if (el) {
-          if (!el.complete) {
-            await new Promise((accept, reject) => {
-              el.addEventListener('load', e => {
-                accept();
+    <div className={`content-preview-2d ${cardSize}`}>
+      <img
+        className="image"
+        src={image}
+        onDragStart={_cancelDragStart}
+        onDoubleClick={e => {
+          e.target.requestFullscreen();
+        }}
+        ref={async el => {
+          if (el) {
+            if (!el.complete) {
+              await new Promise((accept, reject) => {
+                el.addEventListener('load', e => {
+                  accept();
+                });
+                el.addEventListener('error', err => {
+                  reject(err);
+                });
               });
-              el.addEventListener('error', err => {
-                reject(err);
-              });
-            });
+            }
+            _loadDimensions(el);
           }
-          _loadDimensions(el);
-        }
-      }}
-      style={dimensions ? {
-        maxWidth: dimensions[0],
-        maxHeight: dimensions[1],
-      } : null}
-    />
+        }}
+        style={dimensions ? {
+          maxWidth: dimensions[0],
+          maxHeight: dimensions[1],
+        } : null}
+      />
+      {cardSize === 'small' ?
+        <Fragment>
+          <User
+            label="creator"
+            userName={minterUsername}
+            address={minterAddress}
+            avatarPreview={minterAvatarPreview}
+          />
+          <div className="filename">{assetName}</div>
+          <div className="ext">{ext}</div>
+        </Fragment>
+      : null}
+    </div>
   );
 };
 export default Card2D;

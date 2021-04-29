@@ -645,17 +645,19 @@
     background-color: black;
     filter: drop-shadow(2px 5px 4px black);
 }
+.assetDetailsRightColumn .assetDetailsOwnedBy {
+  position: absolute;
+  right: 0;
+  margin-top: -60px;
+}
 .assetDetailsOwnedBy {
-    position: absolute;
-    right: 0;
-    margin-top: -60px;
-    display: flex;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
+  display: flex;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
 }
 .assetDetailsOwnedBy .creatorIcon {
   width: 80px;
@@ -999,5 +1001,5 @@
 .assetDetailsLeftColumn .navbarSwitch {
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 8vw;
 }

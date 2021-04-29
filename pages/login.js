@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import { useAppContext } from "../libs/contextLib";
-// import { parseQuery } from "../functions/Functions";
 import storage from "../functions/Storage";
 import { loginWithPrivateKey, pullUser, getBalance } from "../functions/UIStateFunctions.js";
 import { discordOauthUrl } from '../webaverse/constants.js';
@@ -13,6 +12,9 @@ const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [loginStep, setLoginStep] = useState(0);
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
 
   const loginWithKey = (key, play, realmId) => {
     // console.log('loginWithKey 1');
@@ -50,7 +52,9 @@ const Login = () => {
         }
       }
 
-      await storage.set("loginToken", { mnemonic: key });
+      await storage.set('loginToken', {
+        mnemonic: key,
+      });
       if (realmId != "") {
         window.location.href = "https://app.webaverse.com/?r=room-" + realmId;
       } else {
@@ -117,21 +121,63 @@ const Login = () => {
       }
     } else {
       // router.push('/');
+      setLoginStep(1);
     }
     setLoading(false);
   }, []);
   
-  console.log('render login', error);
+  // console.log('render login', error);
 
   return (
     <div className="login-page">
-      {error ?
-        <div className="login-page-error">
-          {error}
-        </div>
-      :
-        <div className="login-page-placeholder">Logging you in...</div>
-      }
+      {loginStep ? (
+        <form className="login-page-form" onSubmit={async e => {
+          e.preventDefault();
+          
+          console.log('got form submit', {loginStep, name, code});
+          
+          if (loginStep === 1 && email) {
+            setLoginStep(loginStep + 1);
+            
+            const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}`, {
+              method: 'POST',
+            });
+            const j = await res.json();
+            
+            // console.log('got j', j);
+          } else if (loginStep === 2 && code) {
+            const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`, {
+              method: 'POST',
+            });
+            const j = await res.json();
+            const {mnemonic} = j;
+            
+            // console.log('got result', j);
+            
+            await loginWithKey(mnemonic, false, null);
+          } else {
+            console.warn('unknown login step');
+          }
+        }} >
+          {loginStep === 1 ?
+            <input type="email" value={email} placeholder="your@email.com" onChange={e => {
+              setEmail(e.target.value);
+            }} />
+          :
+            <input type="password" value={code} placeholder="Verification code (check your email)" onChange={e => {
+              setCode(e.target.value);
+            }} />
+          }
+          <input type="submit" value="Submit" />
+        </form>
+      ) : (
+        error ?
+          <div className="login-page-error">
+            {error}
+          </div>
+        :
+          <div className="login-page-placeholder">Logging you in...</div>
+      )}
     </div>
   )
 }

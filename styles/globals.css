@@ -1534,3 +1534,47 @@ html.hit {
   justify-content: center;
   align-items: center;
 }
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-page .login-page-form {
+  display: flex;
+  width: 600px;
+  padding: 30px;
+  background: radial-gradient(#20002c, #cbb4d4);
+  border-radius: 10px;
+  flex-direction: column;
+}
+.login-page .login-page-form .h1 {
+  margin-bottom: 10px;
+  color: #FFF;
+  font-size: 30px;
+  text-align: left;
+}
+.login-page .login-page-form .label {
+  position: relative;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-family: 'FuturaStd-Heavy';
+  letter-spacing: 1px;
+  color: #FFF;
+  text-align: left;
+}
+.login-page .login-page-form .label,
+.login-page .login-page-form input[type=email],
+.login-page .login-page-form input[type=button]
+{
+  margin-bottom: 10px;
+}
+.login-page .login-page-form input[type=email] {
+  padding: 10px;
+  background: #FFFFFF80;
+  border: 0;
+  border-radius: 5px;
+}
+.login-page .login-page-form input[type=email]::placeholder {
+  color: #FFFFFF80;
+}

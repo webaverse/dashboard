@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {Fragment, useEffect, useState} from 'react'
 import { useRouter } from 'next/router';
 import { useAppContext } from "../libs/contextLib";
 import storage from "../functions/Storage";
@@ -137,6 +137,33 @@ const Login = () => {
     
     useForm = !(error || error_description) && !(code || id || play);
   }
+  
+  const submit = async () => {
+    console.log('got form submit', {loginStep, name, code});
+          
+    if (loginStep === 1 && email) {
+      setLoginStep(loginStep + 1);
+      
+      const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}`, {
+        method: 'POST',
+      });
+      const j = await res.json();
+      
+      // console.log('got j', j);
+    } else if (loginStep === 2 && code) {
+      const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`, {
+        method: 'POST',
+      });
+      const j = await res.json();
+      const {mnemonic} = j;
+      
+      // console.log('got result', j);
+      
+      await loginWithKey(mnemonic, false, null);
+    } else {
+      console.warn('unknown login step');
+    }
+  };
 
   return (
     <div className="login-page">
@@ -144,41 +171,25 @@ const Login = () => {
         <form className="login-page-form" onSubmit={async e => {
           e.preventDefault();
           
-          console.log('got form submit', {loginStep, name, code});
-          
-          if (loginStep === 1 && email) {
-            setLoginStep(loginStep + 1);
-            
-            const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}`, {
-              method: 'POST',
-            });
-            const j = await res.json();
-            
-            // console.log('got j', j);
-          } else if (loginStep === 2 && code) {
-            const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`, {
-              method: 'POST',
-            });
-            const j = await res.json();
-            const {mnemonic} = j;
-            
-            // console.log('got result', j);
-            
-            await loginWithKey(mnemonic, false, null);
-          } else {
-            console.warn('unknown login step');
-          }
+          submit();
         }} >
+          <div className="h1">Log in</div>
           {loginStep === 1 ?
-            <input type="email" value={email} placeholder="your@email.com" onChange={e => {
-              setEmail(e.target.value);
-            }} />
+            <Fragment>
+              <div className="label">Email</div>
+              <input type="email" value={email} placeholder="your@email.com" onChange={e => {
+                setEmail(e.target.value);
+              }} />
+            </Fragment>
           :
-            <input type="password" value={code} placeholder="Verification code (check your email)" onChange={e => {
-              setCode(e.target.value);
-            }} />
+            <Fragment>
+              <div className="label">Verification code</div>
+              <input type="password" value={code} placeholder="(check your email)" onChange={e => {
+                setCode(e.target.value);
+              }} />
+            </Fragment>
           }
-          <input type="submit" value="Submit" />
+          <input className="button" type="button" value="Submit" onChange={e => {}} onClick={submit} />
         </form>
       ) : (
         error ?

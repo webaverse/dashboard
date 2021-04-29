@@ -1514,9 +1514,9 @@ html.hit {
   padding-top: 90px;
   flex-direction: column;
 }
-.login-page .error {
+.login-page .login-page-error {
 }
-.login-page .placeholder {
+.login-page .login-page-placeholder {
   display: flex;
   flex: 1;
   width: 100%;

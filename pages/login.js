@@ -125,11 +125,11 @@ const Login = () => {
   return (
     <div className="login-page">
       {error ?
-        <div className="error">
+        <div className="login-page-error">
           {error}
         </div>
       :
-        <div className="placeholder">Logging you in...</div>
+        <div className="login-page-placeholder">Logging you in...</div>
       }
     </div>
   )

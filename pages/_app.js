@@ -39,6 +39,7 @@ const App = ({ Component, pageProps }) => {
   const [searchResults, setSearchResults] = useState(null);
   const [lastPath, setLastPath] = useState('');
   const [token, setToken] = useState(null);
+  const [manageKeysOpen, setManageKeysOpen] = useState(false);
     
   const router = useRouter();
 
@@ -72,6 +73,8 @@ const App = ({ Component, pageProps }) => {
           selectedView={selectedView}
           setSelectedView={setSelectedView}
           setSearchResults={setSearchResults}
+          manageKeysOpen={manageKeysOpen}
+          setManageKeysOpen={setManageKeysOpen}
         />
         <div className="appContainer">
           <Component

@@ -111,6 +111,8 @@ const Navbar = ({
   selectedView,
   setSelectedView,
   setSearchResults,
+  manageKeysOpen,
+  setManageKeysOpen,
 }) => {
   const { globalState, setGlobalState } = useAppContext();
   const router = useRouter();
@@ -119,7 +121,6 @@ const Navbar = ({
   const [lastQ, setLastQ] = useState('');
   const [selectedOption, setSelectedOption] = useState(0);
   const [userContainerOpen, setUserContainerOpen] = useState(false);
-  const [manageKeysOpen, setManageKeysOpen] = useState(false);
   const [viewSwitchOpen, setViewSwitchOpen] = useState(router.asPath === '/');
   
   const qs = parseQuery(router.asPath.match(/(\?.*)$/)?.[1] || '');

@@ -11,7 +11,7 @@ import Loader from "../components/Loader";
 const Login = () => {
   const {globalState, setGlobalState} = useAppContext();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [loginStep, setLoginStep] = useState(0);
   const [email, setEmail] = useState('');
@@ -96,40 +96,43 @@ const Login = () => {
     useEffect(async () => {
       // console.log('effect 1');
 
-      if (error || error_description) {
-        // router.push('/');
-        setError(error + '\n' + error_description);
-      } else if (code || id || play) {
-        // console.log('effect 2');
-        try {
-          const res = await fetch(
-            arrivingFromTwitter ?
-            `https://login.exokit.org/?twittercode=${code}&twitterid=${id}` :
-            `https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
-          // console.log('effect 3');
-          if (res.status !== 200) {
-            throw "Login did not work, got response: " + res.status;
+      if (!loading) {
+        setLoading(true);
+        
+        if (error || error_description) {
+          // router.push('/');
+          setError(error + '\n' + error_description);
+        } else if (code || id || play) {
+          // console.log('effect 2');
+          try {
+            const res = await fetch(
+              arrivingFromTwitter ?
+              `https://login.exokit.org/?twittercode=${code}&twitterid=${id}` :
+              `https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
+            // console.log('effect 3');
+            if (res.status !== 200) {
+              throw "Login did not work, got response: " + res.status;
+            }
+            // console.log('effect 4');
+            const j = await res.json();
+            // console.log('effect 5');
+            const {mnemonic} = j;
+            if (mnemonic) {
+              // console.log('effect 6');
+              loginWithKey(mnemonic, play, realmId);
+            } else {
+              console.warn('no mnemonic returned from api');
+            }
+          } catch (err) {
+            console.warn(err);
+            setError(err);
           }
-          // console.log('effect 4');
-          const j = await res.json();
-          // console.log('effect 5');
-          const {mnemonic} = j;
-          if (mnemonic) {
-            // console.log('effect 6');
-            loginWithKey(mnemonic, play, realmId);
-          } else {
-            console.warn('no mnemonic returned from api');
-          }
-        } catch (err) {
-          console.warn(err);
-          setError(err);
+        } else if (globalState.loginToken) {
+          router.push('/');
+        } else {
+          setLoginStep(1);
         }
-      } else if (globalState.loginToken) {
-        router.push('/');
-      } else {
-        setLoginStep(1);
       }
-      setLoading(false);
     }, [globalState.loginToken]);
     
     useForm = !(error || error_description) && !(code || id || play);

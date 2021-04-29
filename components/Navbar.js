@@ -215,7 +215,7 @@ const Navbar = ({
                 </div>
                 <div onClick={() => setDropdown(false)} className={`accountPictureContainer ${dropdown ? "responsive" : ""}`}>
                   {globalState.address ?
-                    <img className={`accountPicture loggedIn ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} onDragStart={cancelEvent} />
+                    <img className={`accountPicture ${globalState.avatarPreview ? '' : 'account-picture-placeholder'} ${dropdown ? "responsive" : ""}`} src={globalState.avatarPreview ? globalState.avatarPreview.replace(/\.[^.]*$/, '.png') : "/preview.png"} onDragStart={cancelEvent} />
                   :
                     <img className="accountPicture account-picture-placeholder" src="/preview.png" alt="Placeholder profile picture" />
                   }

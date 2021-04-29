@@ -215,7 +215,7 @@ const Navbar = ({
                 </div>
                 {globalState.address ?
                   <div className="user-info-wrap">
-                    <div className="username">{globalState.name}</div>
+                    <div className="username">{globalState.name || 'Anonymous'}</div>
                     <div onClick={() => setDropdown(false)} className={`navbarSILKContainer desktop`}>
                       <div className="navbarSILKSymbol">
                         <img src="/curve.svg" onDragStart={cancelEvent} />

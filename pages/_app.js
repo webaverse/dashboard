@@ -79,6 +79,7 @@ const App = ({ Component, pageProps }) => {
             token={token}
             setToken={setToken}
             selectedView={selectedView}
+            setSelectedView={setSelectedView}
             searchResults={searchResults}
           />
         </div>

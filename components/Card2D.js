@@ -57,7 +57,7 @@ const Card2D = ({
         }}
       />
       {cardSize === 'small' ?
-        <Fragment>
+        <div className="card-sub-wrap">
           <User
             label="creator"
             userName={minterUsername}
@@ -68,7 +68,7 @@ const Card2D = ({
             <div className="filename">{assetName}</div>
             <div className="ext">{ext}</div>
           </div>
-        </Fragment>
+        </div>
       : null}
     </div>
   );

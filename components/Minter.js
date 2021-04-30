@@ -379,12 +379,13 @@ const CardIframe = ({
 };
 
 const Minter = ({
-  mintMenuOpen,
-  setMintMenuOpen,
+  // mintMenuOpen,
+  // setMintMenuOpen,
   selectedTab,
   setSelectedTab,
   loading,
   setLoading,
+  animate,
 }) => {
   const {globalState, setGlobalState} = useAppContext();
   const [helpOpen, setHelpOpen] = useState(false);
@@ -404,7 +405,16 @@ const Minter = ({
   const [mintedTokenId, setMintedTokenId] = useState(0);
   const [previewError, setPreviewError] = useState('');
   const [mintError, setMintError] = useState('');
+  const [mintMenuOpen, setMintMenuOpen] = useState(!animate);
   const [mintMenuStep, setMintMenuStep] = useState(1);
+  
+  useEffect(() => {
+    if (animate) {
+      requestAnimationFrame(() => {
+        setMintMenuOpen(true);
+      });
+    }
+  }, [useEffect]);
   
   const handleLoadFile = async file => {
     console.log('load file name', file);
@@ -667,7 +677,7 @@ const Minter = ({
   
   return (
     <DragNDrop
-      className="slider"
+      className={`slider ${mintMenuOpen ? 'open' : ''}`}
       onDrop={files => {
         if (files.length > 0) {
           setFile(files[0]);

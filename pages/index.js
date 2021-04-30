@@ -235,14 +235,17 @@ const PagesRoot = ({
                 <div className="streetchain">
                   <div className="bar" />
                 </div>
-                <Minter
-                  mintMenuOpen={mintMenuOpen}
-                  setMintMenuOpen={setMintMenuOpen}
-                  selectedTab={selectedTab}
-                  setSelectedTab={setSelectedTab}
-                  loading={loading}
-                  setLoading={setLoading}
-                />
+                {mintMenuOpen ?
+                  <Minter
+                    mintMenuOpen={mintMenuOpen}
+                    setMintMenuOpen={setMintMenuOpen}
+                    selectedTab={selectedTab}
+                    setSelectedTab={setSelectedTab}
+                    loading={loading}
+                    setLoading={setLoading}
+                    animate={true}
+                  />
+                : null}
                 <Masonry
                   selectedView={selectedView}
                   loading={loading}

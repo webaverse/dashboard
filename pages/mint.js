@@ -42,6 +42,7 @@ const Mint = ({
         setSelectedTab={setSelectedTab}
         loading={loading}
         setLoading={setLoading}
+        animate={false}
       />
     </div>
   );

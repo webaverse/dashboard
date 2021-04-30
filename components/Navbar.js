@@ -308,11 +308,11 @@ const Navbar = ({
           </a>
         </div>
           <div className={`mint-button ${mintMenuOpen ? 'open' : ''} ${token ? 'below' : ''}`} onClick={e => {
-            const newMintMenuOpen = !mintMenuOpen;
-            setMintMenuOpen(newMintMenuOpen);
-            /* if (!newMintMenuOpen) {
-              _reset();
-            } */
+            if (mintMenuOpen) {
+              router.push('/');
+            } else {
+              router.push('/', '/mint');
+            }
           }}
         >
           <img src="/mint.svg" onDragStart={cancelEvent}/>

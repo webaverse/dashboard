@@ -40,7 +40,7 @@ const App = ({ Component, pageProps }) => {
   const [lastPath, setLastPath] = useState('');
   const [token, setToken] = useState(null);
   const [manageKeysOpen, setManageKeysOpen] = useState(false);
-  const [mintMenuOpen, setMintMenuOpen] = useState(false);
+  // const [mintMenuOpen, setMintMenuOpen] = useState(false);
   const [mintMenuStep, setMintMenuStep] = useState(1);
     
   const router = useRouter();
@@ -64,6 +64,8 @@ const App = ({ Component, pageProps }) => {
       setToken(null);
     }
   }
+  
+  const mintMenuOpen = router.asPath === '/mint';
 
   return (
     <AppWrapper>
@@ -75,7 +77,6 @@ const App = ({ Component, pageProps }) => {
           token={token}
           setToken={setToken}
           mintMenuOpen={mintMenuOpen}
-          setMintMenuOpen={setMintMenuOpen}
           selectedView={selectedView}
           setSelectedView={setSelectedView}
           setSearchResults={setSearchResults}
@@ -88,7 +89,6 @@ const App = ({ Component, pageProps }) => {
             token={token}
             setToken={setToken}
             mintMenuOpen={mintMenuOpen}
-            setMintMenuOpen={setMintMenuOpen}
             selectedView={selectedView}
             setSelectedView={setSelectedView}
             searchResults={searchResults}

@@ -1279,6 +1279,9 @@ input.button[type=button].cancel:hover {
 .asset-page .card-buttons .card-button.expand {
   display: none;
 }
+.asset-page .navbarSwitch {
+  left: 8vw !important;
+}
 
 .card-buttons {
   display: flex;

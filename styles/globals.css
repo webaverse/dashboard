@@ -978,7 +978,7 @@ input.button[type=button]:not(:disabled).ok {
 }
 input.button[type=button]:not(:disabled).ok:hover {
   filter: brightness(80%);
-  animation-name: gloob2;
+  animation-name: gloob2 !important;
 }
 input.button[type=button].cancel {
   border-color: currentColor;

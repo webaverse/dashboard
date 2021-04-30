@@ -13,7 +13,7 @@ import Masonry from "../components/Masonry";
 import ProgressBar from "../components/ProgressBar";
 // import {FileDrop} from "react-file-drop";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
-import {getExt, schedulePerFrame} from "../webaverse/util";
+import {getExt, schedulePerFrame, cancelEvent} from "../webaverse/util";
 import {storageHost} from "../webaverse/constants";
 import JSZip from '../webaverse/jszip.js';
 
@@ -248,9 +248,7 @@ const PagesRoot = ({
                     _reset();
                   }
                 }}>
-                  <img src="/mint.svg" onDragStart={e => {
-                    e.preventDefault();
-                  }}/>
+                  <img src="/mint.svg" onDragStart={cancelEvent}/>
                 </div>
                 {/* <div className="blocker" /> */}
                 {/* <div className="mint-menu-bar" /> */}

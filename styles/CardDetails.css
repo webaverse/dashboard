@@ -106,6 +106,9 @@
   --size: 300px;
   width: var(--size);
 }
+.content-preview-2d .image {
+  min-height: 424px;
+}
 .detailsBlock {
   display: flex;
   align-items: flex-start;

@@ -56,6 +56,7 @@ const AssetPage = ({
         <Asset
           data={data}
           selectedView={selectedView}
+          setSelectedView={setSelectedView}
         />
       </div>
     </Fragment>

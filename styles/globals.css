@@ -297,7 +297,7 @@ a {
   width: 2px;
 }
 
-.container:not(.open) .slider,
+.slider:not(.open),
 .container.open > .wrap,
 .container.open .streetchain,
 .mint-placeholder.open
@@ -309,17 +309,17 @@ a {
   max-height: calc(100vh - 130px);
   overflow: hidden;
 }
-.container .slider,
+.slider,
 .container .streetchain,
 .mint-placeholder,
 .container .wrap
 {
   transition: transform 0.5s cubic-bezier(0, 1, 0, 1), opacity 1s cubic-bezier(0, 1, 0, 1);
 }
-.container .slider {
+.slider {
   transform: translateY(100px);
 }
-.container.open .slider {
+.slider.open {
   transform: translateY(0);
 }
 .container > .wrap {

@@ -84,7 +84,7 @@ const urlToRepoZipUrl = url => {
   // console.log('check url', url);
   const u = new URL(url, window.location.href);
   const match = u.pathname.match(/^\/(.+?)\/(.+?)\/tree\/(.+)(\/.*)?$/);
-  console.log('match pathname', [url, u.pathname, match]);
+  // console.log('match pathname', [url, u.pathname, match]);
   if (match) {
     const username = match[1]; 
     const reponame = match[2];
@@ -503,14 +503,14 @@ const Minter = ({
     setHash('');
     setExt('');
     
-    console.log('load url 1', url);
+    // console.log('load url 1', url);
     
     const repoZipUrl = urlToRepoZipUrl(url);
     if (repoZipUrl) {
-      console.log('load url 2', url);
+      // console.log('load url 2', url);
       await handleLoadUrl(repoZipUrl);
     } else {
-      console.log('load url 3', url);
+      // console.log('load url 3', url);
       const res = await fetch(url);
       const b = await res.blob();
       b.name = url;

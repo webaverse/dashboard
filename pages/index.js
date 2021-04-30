@@ -170,7 +170,9 @@ const PagesRoot = ({
                 <AssetOverlayBackground
                   router={router}
                   onEscape={e => {
-                    setToken(null);
+                    router.push('/', undefined, {
+                      scroll: false,
+                    });
                   }}
                 />
                 <div className="asset-overlay-foreground">

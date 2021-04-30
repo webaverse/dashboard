@@ -268,7 +268,8 @@ a {
   animation-name: none;
 }
 .mint-button.below {
-  z-index: 3;
+  display: none;
+  /* z-index: 3; */
 }
 .mint-button img {
   width: 24px;

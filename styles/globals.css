@@ -308,17 +308,17 @@ a {
   max-height: calc(100vh - 130px);
   overflow: hidden;
 }
-.slider,
+.container .slider,
 .container .streetchain,
 .mint-placeholder,
 .container .wrap
 {
   transition: transform 0.5s cubic-bezier(0, 1, 0, 1), opacity 1s cubic-bezier(0, 1, 0, 1);
 }
-.slider {
+.container .slider {
   transform: translateY(100px);
 }
-.slider.open {
+.container.open .slider {
   transform: translateY(0);
 }
 .container > .wrap {

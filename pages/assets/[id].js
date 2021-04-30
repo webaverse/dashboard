@@ -5,6 +5,7 @@ import Asset, {getServerSideProps} from "../../components/Asset.js";
 const AssetPage = ({
   data,
   selectedView,
+  setSelectedView,
 }) => {
   // console.log('got data', {selectedView});
   // const {cardSvgSource} = data;

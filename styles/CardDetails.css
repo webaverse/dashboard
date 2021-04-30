@@ -106,7 +106,8 @@
   --size: 300px;
   width: var(--size);
 }
-.content-preview-2d .image {
+.asset-page .content-preview-2d .image,
+.asset-overlay .content-preview-2d .image {
   min-height: 424px;
 }
 .detailsBlock {

@@ -381,8 +381,6 @@ const CardIframe = ({
 const Minter = ({
   mintMenuOpen,
   setMintMenuOpen,
-  mintMenuStep,
-  setMintMenuStep,
   selectedTab,
   setSelectedTab,
   loading,
@@ -406,6 +404,7 @@ const Minter = ({
   const [mintedTokenId, setMintedTokenId] = useState(0);
   const [previewError, setPreviewError] = useState('');
   const [mintError, setMintError] = useState('');
+  const [mintMenuStep, setMintMenuStep] = useState(1);
   
   const handleLoadFile = async file => {
     console.log('load file name', file);

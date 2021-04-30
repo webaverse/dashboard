@@ -257,13 +257,13 @@ a {
   animation-timing-function: ease-in;
 }
 .mint-button:hover,
-.container.open .mint-button {
+.mint-button.open {
   background-color: #333;
   border-color: rgba(255, 255, 255, 0.1);
   color: #FFF;
 }
 .mint-button:hover img,
-.container.open .mint-button img {
+.mint-button.open img {
   filter: none;
   animation-name: none;
 }
@@ -275,7 +275,7 @@ a {
   height: 24px;
 }
 .mint-button:hover img,
-.container.open .mint-button img
+.mint-button.open img
 {
   filter: invert(100%);
 }

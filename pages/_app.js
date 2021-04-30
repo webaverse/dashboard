@@ -40,6 +40,8 @@ const App = ({ Component, pageProps }) => {
   const [lastPath, setLastPath] = useState('');
   const [token, setToken] = useState(null);
   const [manageKeysOpen, setManageKeysOpen] = useState(false);
+  const [mintMenuOpen, setMintMenuOpen] = useState(false);
+  const [mintMenuStep, setMintMenuStep] = useState(1);
     
   const router = useRouter();
 
@@ -70,6 +72,10 @@ const App = ({ Component, pageProps }) => {
           <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
         <Navbar
+          token={token}
+          setToken={setToken}
+          mintMenuOpen={mintMenuOpen}
+          setMintMenuOpen={setMintMenuOpen}
           selectedView={selectedView}
           setSelectedView={setSelectedView}
           setSearchResults={setSearchResults}
@@ -81,6 +87,8 @@ const App = ({ Component, pageProps }) => {
             {...pageProps}
             token={token}
             setToken={setToken}
+            mintMenuOpen={mintMenuOpen}
+            setMintMenuOpen={setMintMenuOpen}
             selectedView={selectedView}
             setSelectedView={setSelectedView}
             searchResults={searchResults}

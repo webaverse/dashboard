@@ -54,6 +54,8 @@ const PagesRoot = ({
   setSelectedView,
   token,
   setToken,
+  mintMenuOpen,
+  setMintMenuOpen,
   searchResults,
   setSearchResults,
 }) => {
@@ -67,8 +69,6 @@ const PagesRoot = ({
     const [loadingMessge, setLoadingMessage] = useState('');
     const [assetSelectedView, setAssetSelectedView] = useState('cards');
     const [previewId, setPreviewId] = useState('');
-    const [mintMenuOpen, setMintMenuOpen] = useState(false);
-    const [mintMenuStep, setMintMenuStep] = useState(1);
     
     const router = useRouter();
 
@@ -98,12 +98,6 @@ const PagesRoot = ({
     }, []);
     const mintMenuLarge = selectedPage === 3;
 
-    const _reset = () => {
-      // setSelectedPage(0);
-      setSelectedTab('');
-      setLoadingMessage('');
-      setMintMenuStep(1);
-    };
     const handleFilesMagically = async (files = []) => {
       // setLoading(true);
       if (files.length > 1) {
@@ -241,22 +235,9 @@ const PagesRoot = ({
                 <div className="streetchain">
                   <div className="bar" />
                 </div>
-                <div className={`mint-button ${token ? 'below' : ''}`} onClick={e => {
-                  const newMintMenuOpen = !mintMenuOpen;
-                  setMintMenuOpen(newMintMenuOpen);
-                  if (!newMintMenuOpen) {
-                    _reset();
-                  }
-                }}>
-                  <img src="/mint.svg" onDragStart={cancelEvent}/>
-                </div>
-                {/* <div className="blocker" /> */}
-                {/* <div className="mint-menu-bar" /> */}
                 <Minter
                   mintMenuOpen={mintMenuOpen}
                   setMintMenuOpen={setMintMenuOpen}
-                  mintMenuStep={mintMenuStep}
-                  setMintMenuStep={setMintMenuStep}
                   selectedTab={selectedTab}
                   setSelectedTab={setSelectedTab}
                   loading={loading}
@@ -266,6 +247,7 @@ const PagesRoot = ({
                   selectedView={selectedView}
                   loading={loading}
                   mintMenuOpen={mintMenuOpen}
+                  setMintMenuOpen={setMintMenuOpen}
                   avatars={avatars}
                   art={art}
                   models={models}

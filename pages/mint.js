@@ -17,8 +17,8 @@ import { makeWbn, makeBin, makePhysicsBake } from "../webaverse/build";
 import { blobToFile, getExt } from "../webaverse/util";
 
 const Mint = ({
-  /* mintMenuOpen,
-  setMintMenuOpen, */
+  mintMenuOpen,
+  setMintMenuOpen,
   /* mintMenuStep,
   setMintMenuStep, */
   /* selectedTab,
@@ -29,8 +29,7 @@ const Mint = ({
   // const [previewId, setPreviewId] = useState('');
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState('');
-  const [mintMenuOpen, setMintMenuOpen] = useState(true);
-  const [mintMenuStep, setMintMenuStep] = useState(1);
+  // const [mintMenuOpen, setMintMenuOpen] = useState(true);
   
   // const mintMenuOpen = true;
   const mintMenuLarge = true;
@@ -39,8 +38,6 @@ const Mint = ({
     <div className={`container ${mintMenuOpen ? 'open' : ''} ${mintMenuLarge ? 'large' : ''}`}>
       <Minter
         mintMenuOpen={mintMenuOpen}
-        mintMenuStep={mintMenuStep}
-        setMintMenuStep={setMintMenuStep}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
         loading={loading}

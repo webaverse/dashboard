@@ -108,6 +108,10 @@ const StreetFilters = ({
 };
 
 const Navbar = ({
+  token,
+  setToken,
+  mintMenuOpen,
+  setMintMenuOpen,
   selectedView,
   setSelectedView,
   setSearchResults,
@@ -118,7 +122,7 @@ const Navbar = ({
   const router = useRouter();
   const [dropdown, setDropdown] = useState(false);
   const [q, setQ] = useState('');
-  const [lastQ, setLastQ] = useState('');
+   const [lastQ, setLastQ] = useState('');
   const [selectedOption, setSelectedOption] = useState(0);
   const [userContainerOpen, setUserContainerOpen] = useState(false);
   const [viewSwitchOpen, setViewSwitchOpen] = useState(router.asPath === '/');
@@ -302,6 +306,16 @@ const Navbar = ({
           <a className="navbarIcon" onClick={() => setDropdown(!dropdown)}>
             <MenuIcon />
           </a>
+        </div>
+          <div className={`mint-button ${mintMenuOpen ? 'open' : ''} ${token ? 'below' : ''}`} onClick={e => {
+            const newMintMenuOpen = !mintMenuOpen;
+            setMintMenuOpen(newMintMenuOpen);
+            /* if (!newMintMenuOpen) {
+              _reset();
+            } */
+          }}
+        >
+          <img src="/mint.svg" onDragStart={cancelEvent}/>
         </div>
       </div>
     </div>

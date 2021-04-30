@@ -20,11 +20,11 @@ const ViewSwitch = ({
         }}>
           3D
         </div>
-        <div className={`option ${selectedView === 'live' ? 'selected' : ''}`} onClick={e => {
+        {/* <div className={`option ${selectedView === 'live' ? 'selected' : ''}`} onClick={e => {
           setSelectedView('live');
         }}>
           Live
-        </div>
+        </div> */}
       </div>
     </div>
   );

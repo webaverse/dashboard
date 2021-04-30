@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {appPreviewHost} from '../webaverse/constants';
 
 const Card3D = ({
@@ -27,12 +27,24 @@ const Card3D = ({
       src += `${k}=${v}`;
     }
   }
+  
+  const onWheel = e => {
+    console.log('got wheel event', e);
+  };
+  useEffect(() => {
+    window.addEventListener('wheel', onWheel);
+    return () => {
+      window.removeEventListener('wheel', onWheel);
+    };
+  });
+  
   return (
     <div className={`content-preview-3d ${onClick ? 'clickable' : ''}`}>
-      <iframe
+      <div className="iframe-placeholder" />
+      {/* <iframe
         className={`iframe ${loaded ? 'loaded' : ''}`}
         src={src}
-      />
+      /> */}
     </div>
   );
 };

@@ -117,7 +117,6 @@ a {
   padding-bottom: 74px;
   margin-bottom: -74px;
   --mint-menu-size: 300px;
-  overflow: hidden;
 }
 .container.background {
   overflow: hidden;
@@ -323,6 +322,8 @@ a {
   transform: translateY(0);
 }
 .container > .wrap {
+  display: flex;
+  flex-direction: column;
   transform: translateY(0);
 }
 .container.open > .wrap {

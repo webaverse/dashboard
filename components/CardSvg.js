@@ -165,11 +165,9 @@ const CardSvg = ({
               }}
               onMouseMove={_handleMouseMove}
               onMouseOut={_handleMouseOut}
-              ref={cardSize === 'small' ?
-                newEl => {
-                  el = newEl;
-                }
-              : null}
+              ref={newEl => {
+                el = newEl;
+              }}
             >
               {cardSpecHighlight ?
                 <div

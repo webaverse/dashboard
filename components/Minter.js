@@ -541,25 +541,6 @@ const Minter = ({
 
   const _updateMintProgress = () => {
     let frame = null;
-    const _scheduleFrame = () => {
-      frame = requestAnimationFrame(_recurse);
-    };
-    const _recurse = () => {
-      _scheduleFrame();
-      if (mintMenuStep === 3) {
-        setMintProgress(Date.now() % 1000 / 1000);
-      }
-    };
-    schedulePerFrame(() => {
-      _scheduleFrame();
-    }, () => {
-      frame && cancelAnimationFrame(frame);
-      frame = null;
-    });
-  };
-  _updateMintProgress();
-  const _updateMintJitter = () => {
-    let frame = null;
     let startTime = 0;
     const _scheduleFrame = () => {
       frame = requestAnimationFrame(_recurse);
@@ -576,6 +557,7 @@ const Minter = ({
           _makeValue(),
           _makeValue(),
         ]);
+        setMintProgress(Date.now() % 1000 / 1000);
       }
     };
     schedulePerFrame(() => {
@@ -586,7 +568,7 @@ const Minter = ({
       frame = null;
     });
   };
-  _updateMintJitter();
+  _updateMintProgress();
   const _delayFrames = (fn, numFrames) => {
     let frame = 0;
     const _recurse = () => {

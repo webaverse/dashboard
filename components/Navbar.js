@@ -228,6 +228,7 @@ const Navbar = ({
                 setUserContainerOpen(!userContainerOpen);
               }} onDragStart={cancelEvent}>
                 <div className="dropdown">
+                  <div className="dropdown-background" />
                   {!globalState.address ? 
                     <Fragment>
                       <Link href="/login">                    

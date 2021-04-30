@@ -546,9 +546,9 @@ const Minter = ({
     };
     const _recurse = () => {
       _scheduleFrame();
-      // if (mintMenuStep === 3) {
+      if (mintMenuStep === 3) {
         setMintProgress(Date.now() % 1000 / 1000);
-      // }
+      }
     };
     schedulePerFrame(() => {
       _scheduleFrame();

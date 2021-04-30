@@ -82,8 +82,12 @@ const CardSvg = ({
     const cardSvgSource = 'HACK'; // XXX
     if (cardSvgSource) {
       let el = null;
-      
       const _handleMouseMove = e => {
+        let el;
+        for (el = e.target; el && !el.matches('.card-wrap'); el = el.parentNode) {}
+        if (!el) {
+          console.warn('could not card wrap element', e.target);
+        }
         if (el && !transitioning) {
           const {clientX, clientY} = e;
           const boundingBox = el.getBoundingClientRect();
@@ -165,9 +169,6 @@ const CardSvg = ({
               }}
               onMouseMove={_handleMouseMove}
               onMouseOut={_handleMouseOut}
-              ref={newEl => {
-                el = newEl;
-              }}
             >
               {cardSpecHighlight ?
                 <div

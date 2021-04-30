@@ -155,6 +155,7 @@ const Navbar = ({
       setViewSwitchOpen(false);
     }
   }, [viewSwitchOpen, router.asPath]);
+  const showMintButton = router.asPath === '/' || router.asPath === '/mint';
 
   // console.log('got path', router.asPath);
 
@@ -307,16 +308,18 @@ const Navbar = ({
             <MenuIcon />
           </a>
         </div>
+        {showMintButton ?
           <div className={`mint-button ${mintMenuOpen ? 'open' : ''} ${token ? 'below' : ''}`} onClick={e => {
-            if (mintMenuOpen) {
-              router.push('/');
-            } else {
-              router.push('/', '/mint');
-            }
-          }}
-        >
-          <img src="/mint.svg" onDragStart={cancelEvent}/>
-        </div>
+              if (mintMenuOpen) {
+                router.push('/');
+              } else {
+                router.push('/', '/mint');
+              }
+            }}
+          >
+            <img src="/mint.svg" onDragStart={cancelEvent}/>
+          </div>
+        : null}
       </div>
     </div>
   )

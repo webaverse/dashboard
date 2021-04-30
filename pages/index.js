@@ -69,6 +69,8 @@ const PagesRoot = ({
     const [loadingMessge, setLoadingMessage] = useState('');
     const [assetSelectedView, setAssetSelectedView] = useState('cards');
     const [previewId, setPreviewId] = useState('');
+    const [masonryOpen, setMasonryOpen] = useState(true);
+    const [masonryOpening, setMasonryOpening] = useState(false);
     
     const router = useRouter();
 
@@ -96,7 +98,21 @@ const PagesRoot = ({
             setLoading(false);
         })();
     }, []);
+    useEffect(() => {
+      if (mintMenuOpen && masonryOpen && !masonryOpening) {
+        setTimeout(() => {
+          setMasonryOpen(false);
+          setMasonryOpening(false);
+        }, 500);
+        setMasonryOpening(true);
+      } else if (!mintMenuOpen && !masonryOpen) {
+        setMasonryOpen(true);
+        setMasonryOpening(false);
+      }
+    }, [mintMenuOpen, masonryOpening]);
     const mintMenuLarge = selectedPage === 3;
+
+    // console.log('masonry open', {mintMenuOpen, masonryOpen, masonryOpening});
 
     return (
         <Fragment>
@@ -136,16 +152,18 @@ const PagesRoot = ({
                     animate={true}
                   />
                 : null}
-                <Masonry
-                  selectedView={selectedView}
-                  loading={loading}
-                  mintMenuOpen={mintMenuOpen}
-                  setMintMenuOpen={setMintMenuOpen}
-                  avatars={avatars}
-                  art={art}
-                  models={models}
-                  searchResults={searchResults}
-                />
+                {masonryOpen ?
+                  <Masonry
+                    selectedView={selectedView}
+                    loading={loading}
+                    mintMenuOpen={mintMenuOpen}
+                    setMintMenuOpen={setMintMenuOpen}
+                    avatars={avatars}
+                    art={art}
+                    models={models}
+                    searchResults={searchResults}
+                  />
+                : null}
             </div>
             {token ?
               <div className="asset-overlay">

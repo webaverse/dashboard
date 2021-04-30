@@ -409,12 +409,12 @@ const Minter = ({
   const [mintMenuStep, setMintMenuStep] = useState(1);
   
   useEffect(() => {
-    if (animate) {
+    if (animate && !mintMenuOpen) {
       requestAnimationFrame(() => {
         setMintMenuOpen(true);
       });
     }
-  }, [useEffect]);
+  }, [animate, mintMenuOpen]);
   
   const handleLoadFile = async file => {
     console.log('load file name', file);

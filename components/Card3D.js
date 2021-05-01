@@ -45,25 +45,25 @@ const Card3D = props => {
     };
   }); */
   
-  const MainIframe = () => <iframe
-    className={`iframe ${loaded ? 'loaded' : ''} ${locked ? 'locked' : ''}`}
-    src={src}
-  />;
-  
   return (cardSize === 'small' ?
-    <div className={`content-preview-3d ${onClick ? 'clickable' : ''}`} onClick={e => {
-      if (!open) {
-        setOpen(true);
-      } else if (locked) {
-        setLocked(false);
-      }
-    }} >
+    <div className={`content-preview-3d`}>
       {!open ?
         <div
           className="iframe-placeholder"
+          onClick={e => {
+            if (!open) {
+              setOpen(true);
+              setLocked(false);
+            } /* else if (locked) {
+              setLocked(false);
+            } */
+          }}
         />
       : 
-        <MainIframe />
+        <iframe
+          className={`iframe ${loaded ? 'loaded' : ''} ${(open && locked) ? 'locked' : ''}`}
+          src={src}
+        />
       }
       <div className="card-sub-wrap">
         <div className="top">
@@ -77,7 +77,10 @@ const Card3D = props => {
       </div>
     </div>
   :
-    <MainIframe />
+    <iframe
+      className={`iframe ${loaded ? 'loaded' : ''} ${(open && locked) ? 'locked' : ''}`}
+      src={src}
+    />
   );
 };
 export default Card3D;

@@ -24,6 +24,7 @@ const Masonry = ({
   const [dragStart, setDragStart] = useState(null);
   const [dragStartScroll, setDragStartScroll] = useState(0);
   const [dragMoved, setDragMoved] = useState(false);
+  const [nonce, setNonce] = useState(undefined);
   
   {
     let frame = null;
@@ -48,6 +49,16 @@ const Masonry = ({
       scroll: false,
     });
   };
+  
+  const _resize = e => {
+    setNonce(Math.floor(Math.random() * 0xFFFFFF));
+  };
+  useEffect(() => {
+    window.addEventListener('resize', _resize);
+    return () => {
+      window.removeEventListener('resize', _resize);
+    };
+  }, []);
   
   const _wheel = e => {
     setScroll(Math.min(Math.max(scroll - e.deltaY, -Infinity), 0));
@@ -195,10 +206,9 @@ const Masonry = ({
                 minterUsername: minter.username,
                 minterAddress: minter.address,
                 cardSize,
-                // networkType: 'sidechain',
                 tilt: true,
-                open: true,// focusTokenIndex === i,
-                // onClick: _handleTokenClick,
+                open: true,
+                nonce,
                 selectedView,
                 setSelectedView,
                 // onClick: _handleTokenClick(id),
@@ -270,7 +280,7 @@ const Masonry = ({
                   cardSize,
                   // networkType: 'sidechain',
                   tilt: true,
-                  open: i === loadTokenIndex,// focusTokenIndex === i,
+                  open: i === loadTokenIndex,
                   // onClick: _handleTokenClick,
                   selectedView,
                   setSelectedView,

@@ -10,6 +10,7 @@ import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import ProgressBar from "../components/ProgressBar";
 import AssetCard3D from "../components/Card3D";
+import ViewSwitch from "../components/ViewSwitch";
 // import Asset from "../components/Asset";
 import User from "../components/User";
 import ShaderToyRenderer from "../components/ShaderToyRenderer";
@@ -374,6 +375,7 @@ const Minter = ({
   const [mintError, setMintError] = useState('');
   const [mintMenuOpen, setMintMenuOpen] = useState(!animate);
   const [mintMenuStep, setMintMenuStep] = useState(1);
+  const [selectedView, setSelectedView] = useState('');
   
   useEffect(() => {
     if (animate && !mintMenuOpen) {
@@ -655,25 +657,12 @@ const Minter = ({
             <div className="preview">
               <div className="border">
                 <div className="label">Preview</div>
-              
-                {/* <div className="preview-header-wrap">
-                  <div className="preview-header">
-                    <FakeCard
-                      onClick={e => {
-                        setMintMenuStep(2);
-                      }}
-                      animate={true}
-                      animationSize="small"
-                    />
-                    <div>Your NFT called </div>
-                    <div className="bold">{name || '[blank]'}</div>
-                    <div> will be minted as an edition of </div>
-                    <div className="bold">{quantity || 1}</div>
-                    <div> and the content will be </div>
-                    <input type="text" value={frontendUrl} onChange={e => {}} />
-                    <div>. Here's a preview:</div>
-                  </div>
-                </div> */}
+
+                <ViewSwitch
+                  selectedView={selectedView}
+                  setSelectedView={setSelectedView}
+                />
+
                 {(hash && ext) ?
                   <AssetCard3D
                     hash={hash}

@@ -22,13 +22,33 @@ const CardSvg = ({
     cardSvgSpec,
     tilt,
     open,
+    nonce,
     onClick,
 }) => {
     const [perspective, setPerspective] = useState([0, 0]);
     const [flip, setFlip] = useState(false);
     const [transitioning, setTransitioning] = useState(false);
     const [cardSpecHighlight, setCardSpecHighlight] = useState(null);
-  
+
+    const qs = {
+      w: 500,
+      ext: 'jpg',
+      nonce,
+    };
+    let src = `https://card-preview.exokit.org/${id}?`;
+    let first = true;
+    for (const k in qs) {
+      const v = qs[k];
+      if (v !== undefined) {
+        if (first) {
+          first = false;
+        } else {
+          src += '&';
+        }
+        src += `${k}=${v}`;
+      }
+    }
+
     /* let video = false;
     if (["webm", "mp4"].indexOf(ext) >= 0) {
         image = animation_url;
@@ -185,7 +205,7 @@ const CardSvg = ({
                 }}
               >
                 <img
-                  src={`https://card-preview.exokit.org/${id}?w=${500}$ext=${'jpg'}`}
+                  src={src}
                   className={`card-svg-inner ${cardSize}`}
                   onDragStart={_cancelDragStart}
                 />

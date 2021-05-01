@@ -10,7 +10,7 @@ import Asset from "../components/Asset";
 import Minter from "../components/Minter";
 // import Loader from "../components/Loader";
 import Masonry from "../components/Masonry";
-import ProgressBar from "../components/ProgressBar";
+// import ProgressBar from "../components/ProgressBar";
 // import {FileDrop} from "react-file-drop";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {getExt, schedulePerFrame, cancelEvent} from "../webaverse/util";

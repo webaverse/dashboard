@@ -20,6 +20,7 @@ const Card2D = ({
   glow,
   imageView,
   // cardSvgSource,
+  nonce,
   onClick,
 }) => {
   const [perspective, setPerspective] = useState([false, false]);
@@ -38,8 +39,23 @@ const Card2D = ({
     e.preventDefault();
   };
   
+  const qs = {
+    nonce,
+  };
   // render gifs as gifs
-  image = image.replace(/\.gif\/preview\.png$/, '.gif/preview.gif');
+  let src = image.replace(/\.gif\/preview\.png$/, '.gif/preview.gif');
+  let first = true;
+  for (const k in qs) {
+    const v = qs[k];
+    if (v !== undefined) {
+      if (first) {
+        first = false;
+      } else {
+        src += '&';
+      }
+      src += `${k}=${v}`;
+    }
+  }
   
   return (
     <div
@@ -50,7 +66,7 @@ const Card2D = ({
     >
       <img
         className="image"
-        src={image}
+        src={src}
         onDragStart={_cancelDragStart}
         onDoubleClick={e => {
           e.target.requestFullscreen();

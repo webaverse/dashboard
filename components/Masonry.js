@@ -44,15 +44,15 @@ const Masonry = ({
   };
   
   let listEl = null;
-  const onWheel = e => {
+  const onScroll = e => {
     if (listEl) {
-      const centerY = window.innerWidth / 2;
+      const centerY = 0;
       const cardEls = Array.from(listEl.querySelectorAll('.content-preview-3d'));
       const boundingBoxes = cardEls.map(cardEl => {
         return cardEl.getBoundingClientRect();
       });
       const distanceSpecs = boundingBoxes.map((boundingBox, index) => {
-        const localCenterY = boundingBox.y + boundingBox.height / 2;
+        const localCenterY = boundingBox.y;
         const distance = Math.abs(localCenterY - centerY);
         return {
           index,
@@ -66,9 +66,9 @@ const Masonry = ({
     }
   };
   useEffect(() => {
-    window.addEventListener('wheel', onWheel);
+    window.addEventListener('scroll', onScroll);
     return () => {
-      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('scroll', onScroll);
     };
   });
   

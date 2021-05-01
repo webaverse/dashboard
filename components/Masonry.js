@@ -97,35 +97,6 @@ const Masonry = ({
     };
   }, [dragStart]);
   
-  /* let listEl = null;
-  const onScroll = e => {
-    if (listEl) {
-      const centerY = 0;
-      const cardEls = Array.from(listEl.querySelectorAll('.content-preview-3d'));
-      const boundingBoxes = cardEls.map(cardEl => {
-        return cardEl.getBoundingClientRect();
-      });
-      const distanceSpecs = boundingBoxes.map((boundingBox, index) => {
-        const localCenterY = boundingBox.y;
-        const distance = Math.abs(localCenterY - centerY);
-        return {
-          index,
-          distance,
-        };
-      });
-      distanceSpecs.sort((a, b) => a.distance - b.distance);
-      // const closestIndex = distanceSpecs[0].index;
-      setFocusTokenIndex(distanceSpecs[0] ? distanceSpecs[0].index : -1);
-      // console.log('got wheel event', e, cardEls, centerY, distanceSpecs[0] ? distanceSpecs[0].index : -1);
-    }
-  };
-  useEffect(() => {
-    window.addEventListener('scroll', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-    };
-  }); */
-  
   const allTokens = (avatars || [])
     .concat(art || [])
     .concat(models || []);

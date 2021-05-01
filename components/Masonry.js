@@ -1,8 +1,9 @@
-import {useState, useEffect} from 'react';
+import {Fragment, useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import {schedulePerFrame} from "../webaverse/util";
 import CardRow from './CardRow';
 import ProgressBar from './ProgressBar';
+import AssetCardSvg from './CardSvg';
 import AssetCardSwitch from './CardSwitch';
 
 const Masonry = ({
@@ -18,6 +19,7 @@ const Masonry = ({
   const router = useRouter();
   const [mintProgress, setMintProgress] = useState(0);
   const [focusTokenIndex, setFocusTokenIndex] = useState(0);
+  const [loadTokenIndex, setLoadTokenIndex] = useState(0);
   
   {
     let frame = null;
@@ -43,7 +45,7 @@ const Masonry = ({
     });
   };
   
-  let listEl = null;
+  /* let listEl = null;
   const onScroll = e => {
     if (listEl) {
       const centerY = 0;
@@ -70,7 +72,7 @@ const Masonry = ({
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  });
+  }); */
   
   const allTokens = (avatars || [])
     .concat(art || [])
@@ -101,73 +103,137 @@ const Masonry = ({
           <CardRow name="Models" data={models} selectedView={selectedView} cardSize="small" onTokenClick={_handleTokenClick} />
         </div>
       ) : (
-        <div className={`wrap ${mintMenuOpen ? 'open' : ''}`} ref={el => {
-          listEl = el;
-        }}>
-          {allTokens.map((asset, i) => {
-            if (asset.totalSupply === 0) {
-              return;
-            }
-            const {
-              id,
-              isMainnet,
-              isPolygon,
-              name,
-              description,
-              image,
-              properties: {
+        <Fragment>
+          <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
+            {(() => {
+              const asset = allTokens[loadTokenIndex];
+              if (asset.totalSupply === 0) {
+                return;
+              }
+              const {
+                id,
+                isMainnet,
+                isPolygon,
+                name,
+                description,
+                image,
+                properties: {
+                  hash,
+                  filename,
+                  ext,
+                },
+                external_url,
+                totalSupply,
+                balance,
+                buyPrice,
+                storeId,
+                owner,
+                minter,
+              } = asset;
+              const cardSize = 'small';
+              const props = {
+                key: id,
+                id,
+                isMainnet,
+                isPolygon,
+                assetName: name,
+                description,
+                image,
                 hash,
+                external_url,
                 filename,
                 ext,
-              },
-              external_url,
-              totalSupply,
-              balance,
-              buyPrice,
-              storeId,
-              owner,
-              minter,
-            } = asset;
-            const cardSize = 'small';
-            const props = {
-              key: id,
-              id,
-              isMainnet,
-              isPolygon,
-              assetName: name,
-              description,
-              image,
-              hash,
-              external_url,
-              filename,
-              ext,
-              totalSupply,
-              balance,
-              buyPrice,
-              storeId,
-              ownerAvatarPreview: owner.avatarPreview,
-              ownerUsername: owner.username,
-              ownerAddress: owner.address,
-              minterAvatarPreview: minter.avatarPreview,
-              minterUsername: minter.username,
-              minterAddress: minter.address,
-              cardSize,
-              // networkType: 'sidechain',
-              tilt: true,
-              open: focusTokenIndex === i,
-              // onClick: _handleTokenClick,
-              selectedView,
-              setSelectedView,
-              onClick: _handleTokenClick(id),
-            };
-            return (
-              <AssetCardSwitch
-                {...props}
-              />
-            );
-          })
-        }
-        </div>
+                totalSupply,
+                balance,
+                buyPrice,
+                storeId,
+                ownerAvatarPreview: owner.avatarPreview,
+                ownerUsername: owner.username,
+                ownerAddress: owner.address,
+                minterAvatarPreview: minter.avatarPreview,
+                minterUsername: minter.username,
+                minterAddress: minter.address,
+                cardSize,
+                // networkType: 'sidechain',
+                tilt: true,
+                open: true,// focusTokenIndex === i,
+                // onClick: _handleTokenClick,
+                selectedView,
+                setSelectedView,
+                // onClick: _handleTokenClick(id),
+              };
+              return (
+                <AssetCardSwitch
+                  {...props}
+                />
+              );
+            })()}
+          </div>
+          <div className="cards-scroll">
+            {allTokens.map((asset, i) => {
+              if (asset.totalSupply === 0) {
+                return;
+              }
+              const {
+                id,
+                isMainnet,
+                isPolygon,
+                name,
+                description,
+                image,
+                properties: {
+                  hash,
+                  filename,
+                  ext,
+                },
+                external_url,
+                totalSupply,
+                balance,
+                buyPrice,
+                storeId,
+                owner,
+                minter,
+              } = asset;
+              const cardSize = 'small';
+              const props = {
+                key: id,
+                id,
+                isMainnet,
+                isPolygon,
+                assetName: name,
+                description,
+                image,
+                hash,
+                external_url,
+                filename,
+                ext,
+                totalSupply,
+                balance,
+                buyPrice,
+                storeId,
+                ownerAvatarPreview: owner.avatarPreview,
+                ownerUsername: owner.username,
+                ownerAddress: owner.address,
+                minterAvatarPreview: minter.avatarPreview,
+                minterUsername: minter.username,
+                minterAddress: minter.address,
+                cardSize,
+                // networkType: 'sidechain',
+                tilt: true,
+                open: i === loadTokenIndex,// focusTokenIndex === i,
+                // onClick: _handleTokenClick,
+                selectedView,
+                setSelectedView,
+                // onClick: _handleTokenClick(id),
+              };
+              return (
+                <AssetCardSvg
+                  {...props}
+                />
+              );
+            })}
+          </div>
+        </Fragment>
       )
     )
   );

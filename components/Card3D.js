@@ -43,6 +43,7 @@ const Card3D = props => {
     // loaded,
     cardSize,
     open,
+    nonce,
     onClick,
   } = props;
   
@@ -54,6 +55,7 @@ const Card3D = props => {
     id,
     hash,
     ext,
+    nonce,
   };
   let src = `${appPreviewHost}?`;
   let first = true;

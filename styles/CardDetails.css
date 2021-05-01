@@ -129,11 +129,15 @@
 }
 .content-preview-3d .iframe {
   width: 100%;
-  height: calc(100% - 70px * 2);
-  margin: 70px;
+  height: 100%;
+}
+.asset-page .content-preview-3d,
+.asset-overlay .content-preview-3d {
+  margin: 70px 0;
+  border: 0;
 }
 .asset-page .content-preview-3d .iframe {
-  padding: 0 8vw;
+  /* padding: 0 8vw; */
 }
 .content-preview-3d {
   padding: 2px;

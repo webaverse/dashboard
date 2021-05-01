@@ -653,6 +653,7 @@ const CardDetails = ({
   const [unlockableOpen, setUnlockableOpen] = useState(false);
   const [encryptionOpen, setEncryptionOpen] = useState(false);
   const [transferOpen, setTransferOpen] = useState(false);
+  const [nonce, setNonce] = useState(undefined);
 
   let userOwnsThisAsset, userCreatedThisAsset;
   const allAddresses = (globalState.address ? [globalState.address] : []).concat(addresses);
@@ -1031,6 +1032,7 @@ const CardDetails = ({
       method: 'DELETE',
     });
     await res.json();
+    setNonce(Math.floor(Math.random() * 0xFFFFFF));
   };
   const handleLike = e => {
     setLiked(!liked);
@@ -1337,6 +1339,7 @@ const CardDetails = ({
                         setSelectedView,
                         tilt: false,
                         open: true,
+                        nonce,
                       };
                       return (
                         <AssetCardSwitch

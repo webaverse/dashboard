@@ -53,6 +53,7 @@
   position: relative;
   object-fit: contain;
   /* background-color: #FFF; */
+  overflow: hidden;
 }
 .content-preview-2d.small,
 .content-preview-3d.small,

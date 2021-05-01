@@ -92,47 +92,49 @@ const Card3D = props => {
     console.log('got prop', props);
   } */
 
-  return (cardSize === 'small' ?
-    <div
-      className={`content-preview-3d`}
-      onClick={e => {
-        if (locked) {
-          setLocked(false);
-        }
-      }}
-    >
-      {!open ?
-        <div
-          className="iframe-placeholder"
-          onClick={e => {
-            if (locked) {
-              setLocked(false);
-            }
-          }}
-        >Scroll to load</div>
-      : (
-        <Fragment>
-          {!loaded ?
-            <div className="progress-bar-wrap">
-              <ProgressBar />
-            </div>
-          : null}
-          {makeIframe()}
-        </Fragment>
-      )}
-      <div className="card-sub-wrap">
-        <div className="top">
-          <AssetCardSvg
-            {...props}
-            tilt={false}
-          />
+  return <div
+    className={`content-preview-3d`}
+    onClick={e => {
+      if (locked) {
+        setLocked(false);
+      }
+    }}
+  >
+    {cardSize === 'small' ? (
+      <Fragment>
+        {!open ? (
+          <div
+            className="iframe-placeholder"
+            onClick={e => {
+              if (locked) {
+                setLocked(false);
+              }
+            }}
+          >Scroll to load</div>
+        ) : (
+          <Fragment>
+            {!loaded ?
+              <div className="progress-bar-wrap">
+                <ProgressBar />
+              </div>
+            : null}
+            {makeIframe()}
+          </Fragment>
+        )}
+        <div className="card-sub-wrap">
+          <div className="top">
+            <AssetCardSvg
+              {...props}
+              tilt={false}
+            />
+          </div>
+          <div className="bottom">
+          </div>
         </div>
-        <div className="bottom">
-        </div>
-      </div>
-    </div>
-  :
-    makeIframe()
-  );
+      </Fragment>
+    ) : (
+      makeIframe()
+    )}
+  </div>
 };
 export default Card3D;

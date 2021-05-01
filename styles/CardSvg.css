@@ -9,6 +9,11 @@
   width: var(--size);
   height: calc(var(--size) * 3.5 / 2.5);
 }
+.card-svg-inner.tiny {
+  --size: 100px;
+  width: var(--size);
+  height: calc(var(--size) * 3.5 / 2.5);
+}
 .card-wrap {
   position: relative;
   margin: 15px;

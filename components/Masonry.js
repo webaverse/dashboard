@@ -194,7 +194,7 @@ const Masonry = ({
                 owner,
                 minter,
               } = asset;
-              const cardSize = 'small';
+              const cardSize = 'tiny';
               const props = {
                 key: id,
                 id,

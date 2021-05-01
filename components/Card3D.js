@@ -121,7 +121,7 @@ const Card3D = props => {
             {makeIframe()}
           </Fragment>
         )}
-        <div className="card-sub-wrap">
+        {/* <div className="card-sub-wrap">
           <div className="top">
             <AssetCardSvg
               {...props}
@@ -130,7 +130,7 @@ const Card3D = props => {
           </div>
           <div className="bottom">
           </div>
-        </div>
+        </div> */}
       </Fragment>
     ) : (
       makeIframe()

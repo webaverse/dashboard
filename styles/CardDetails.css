@@ -79,9 +79,16 @@
   position: relative;
   display: flex;
   width: calc(100vw - 16vw - 19px);
-  height: 100vh;
+  height: calc(100vh - 300px);
   margin-left: -50px;
   margin-bottom: 10px;
+}
+.cards-scroll {
+  position: absolute;
+  display: flex;
+  height: 100px;
+  left: calc(8vw + 30px);
+  bottom: -90px;
 }
 .content-preview-3d .iframe-placeholder {
   position: relative;
@@ -121,6 +128,7 @@
   width: 100%;
   height: 100%;
   margin: 0;
+  border: 0;
 }
 .content-preview-3d .iframe,
 .content-preview-live {

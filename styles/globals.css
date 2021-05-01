@@ -443,6 +443,8 @@ a {
 }
 .slider .preview .border {
   --color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
   position: relative;
   display: flex;
   flex: 1;

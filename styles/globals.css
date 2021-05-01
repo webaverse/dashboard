@@ -113,7 +113,7 @@ a {
   min-height: 100vh;
   padding: 0 8%;
   padding-left: calc(8% + 70px);
-  padding-top: 130px;
+  padding-top: 120px;
   padding-bottom: 74px;
   /* margin-bottom: -74px; */
   --mint-menu-size: 300px;

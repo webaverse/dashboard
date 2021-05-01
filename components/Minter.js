@@ -47,39 +47,6 @@ const templates = [
   ['vehicle', '/scooter.svg', null],
 ];
 
-const Card3D = ({
-  id,
-  hash,
-  ext,
-  loaded,
-}) => {
-  // `{storageHost}/ipfs/${hash}`
-  const qs = {
-    id,
-    hash,
-    ext,
-  };
-  let src = `${appPreviewHost}?`;
-  let first = true;
-  for (const k in qs) {
-    const v = qs[k];
-    if (v !== undefined) {
-      if (first) {
-        first = false;
-      } else {
-        src += '&';
-      }
-      src += `${k}=${v}`;
-    }
-  }
-  return (
-    <iframe
-      className={`iframe ${loaded ? 'loaded' : ''}`}
-      src={src}
-    />
-  );
-};
-
 const urlToRepoZipUrl = url => {
   // console.log('check url', url);
   const u = new URL(url, window.location.href);
@@ -711,14 +678,13 @@ const Minter = ({
                   <AssetCard3D
                     hash={hash}
                     ext={ext}
-                    loaded={loaded}
+                    open={true}
+                    cardSize="large"
                   />
                 : null}
                 <div className={`iframe-placeholder ${loaded ? 'loaded' : ''}`}>
                   <div className="h1">Loading preview...</div>
-                  <ProgressBar
-                    value={mintProgress}
-                  />
+                  <ProgressBar />
                 </div>
                 {(loaded && previewError) ?
                   <div className={`iframe-placeholder`}>

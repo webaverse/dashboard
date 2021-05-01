@@ -1,14 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {appPreviewHost} from '../webaverse/constants';
+import AssetCardSvg from './CardSvg.js';
 
-const Card3D = ({
-  id,
-  hash,
-  ext,
-  loaded,
-  cardSize,
-  onClick,
-}) => {
+const Card3D = props => {
+  const {
+    id,
+    hash,
+    ext,
+    loaded,
+    cardSize,
+    onClick,
+  } = props;
+  
   const [open, setOpen] = useState(false);
   const [locked, setLocked] = useState(true);
   
@@ -42,7 +45,7 @@ const Card3D = ({
     };
   }); */
   
-  const o = <iframe
+  const MainIframe = () => <iframe
     className={`iframe ${loaded ? 'loaded' : ''} ${locked ? 'locked' : ''}`}
     src={src}
   />;
@@ -60,11 +63,21 @@ const Card3D = ({
           className="iframe-placeholder"
         />
       : 
-        o
+        <MainIframe />
       }
+      <div className="card-sub-wrap">
+        <div className="top">
+          <AssetCardSvg
+            {...props}
+            tilt={false}
+          />
+        </div>
+        <div className="bottom">
+        </div>
+      </div>
     </div>
   :
-    o
+    <MainIframe />
   );
 };
 export default Card3D;

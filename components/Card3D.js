@@ -9,10 +9,11 @@ const Card3D = props => {
     ext,
     loaded,
     cardSize,
+    open,
     onClick,
   } = props;
   
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [locked, setLocked] = useState(true);
   
   // `{storageHost}/ipfs/${hash}`
@@ -35,16 +36,6 @@ const Card3D = props => {
     }
   }
   
-  /* const onWheel = e => {
-    console.log('got wheel event', e);
-  };
-  useEffect(() => {
-    window.addEventListener('wheel', onWheel);
-    return () => {
-      window.removeEventListener('wheel', onWheel);
-    };
-  }); */
-  
   const makeIframe = () => (<iframe
     className={`iframe ${loaded ? 'loaded' : ''} ${(open && locked) ? 'locked' : ''}`}
     src={src}
@@ -56,12 +47,9 @@ const Card3D = props => {
         <div
           className="iframe-placeholder"
           onClick={e => {
-            if (!open) {
-              setOpen(true);
+            if (locked) {
               setLocked(false);
-            } /* else if (locked) {
-              setLocked(false);
-            } */
+            }
           }}
         />
       : 

@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import {schedulePerFrame} from "../webaverse/util";
 import CardRow from './CardRow';
@@ -17,6 +17,7 @@ const Masonry = ({
 }) => {
   const router = useRouter();
   const [mintProgress, setMintProgress] = useState(0);
+  const [focusTokenIndex, setFocusTokenIndex] = useState(0);
   
   {
     let frame = null;
@@ -36,12 +37,41 @@ const Masonry = ({
       frame = null;
     });
   }
-  
   const _handleTokenClick = tokenId => e => {
     router.push('/', '/assets/' + tokenId, {
       scroll: false,
     });
   };
+  
+  let listEl = null;
+  const onWheel = e => {
+    if (listEl) {
+      const centerY = window.innerWidth / 2;
+      const cardEls = Array.from(listEl.querySelectorAll('.content-preview-3d'));
+      const boundingBoxes = cardEls.map(cardEl => {
+        return cardEl.getBoundingClientRect();
+      });
+      const distanceSpecs = boundingBoxes.map((boundingBox, index) => {
+        const localCenterY = boundingBox.y + boundingBox.height / 2;
+        const distance = Math.abs(localCenterY - centerY);
+        return {
+          index,
+          distance,
+        };
+      });
+      distanceSpecs.sort((a, b) => a.distance - b.distance);
+      // const closestIndex = distanceSpecs[0].index;
+      setFocusTokenIndex(distanceSpecs[0] ? distanceSpecs[0].index : -1);
+      // console.log('got wheel event', e, cardEls, centerY, distanceSpecs[0] ? distanceSpecs[0].index : -1);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener('wheel', onWheel);
+    return () => {
+      window.removeEventListener('wheel', onWheel);
+    };
+  });
+  
   const allTokens = (avatars || [])
     .concat(art || [])
     .concat(models || []);
@@ -71,8 +101,10 @@ const Masonry = ({
           <CardRow name="Models" data={models} selectedView={selectedView} cardSize="small" onTokenClick={_handleTokenClick} />
         </div>
       ) : (
-        <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
-          {allTokens.map((asset) => {
+        <div className={`wrap ${mintMenuOpen ? 'open' : ''}`} ref={el => {
+          listEl = el;
+        }}>
+          {allTokens.map((asset, i) => {
             if (asset.totalSupply === 0) {
               return;
             }
@@ -122,6 +154,7 @@ const Masonry = ({
               cardSize,
               // networkType: 'sidechain',
               tilt: true,
+              open: focusTokenIndex === i,
               // onClick: _handleTokenClick,
             };
             return (

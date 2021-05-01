@@ -457,6 +457,7 @@ const TransferMenu = ({
               onClick={e => {
                 setTransferOption(n);
               }}
+              key={i}
             >
               <img className="transfer-icon" src="/chevron-down.svg" onDragStart={cancelEvent} />
               <div className="network">

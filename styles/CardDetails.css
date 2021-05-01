@@ -77,7 +77,7 @@
 .content-preview-3d {
   position: relative;
   display: flex;
-  width: calc(100vw - 8vw - 100px + 2px);
+  width: calc(100vw - 16vw - 19px);
   height: 100vh;
   margin-left: -50px;
   margin-bottom: 10px;

@@ -156,12 +156,13 @@ const Masonry = ({
               tilt: true,
               open: focusTokenIndex === i,
               // onClick: _handleTokenClick,
+              selectedView,
+              setSelectedView,
+              onClick: _handleTokenClick(id),
             };
             return (
               <AssetCardSwitch
                 {...props}
-                selectedView={selectedView}
-                setSelectedView={setSelectedView}
               />
             );
           })

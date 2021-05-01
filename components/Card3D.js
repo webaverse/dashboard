@@ -88,6 +88,10 @@ const Card3D = props => {
     }}
   />);
   
+  /* if (open) {
+    console.log('got prop', props);
+  } */
+
   return (cardSize === 'small' ?
     <div
       className={`content-preview-3d`}

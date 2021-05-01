@@ -224,7 +224,9 @@ const Masonry = ({
                 // onClick: _handleTokenClick,
                 selectedView,
                 setSelectedView,
-                // onClick: _handleTokenClick(id),
+                onClick: () => {
+                  setLoadTokenIndex(i);
+                },
               };
               return (
                 <AssetCardSvg

@@ -79,8 +79,8 @@ const CardSvg = ({
         rarity = "common";
     } */
     
-    const cardSvgSource = 'HACK'; // XXX
-    if (cardSvgSource) {
+    // const cardSvgSource = 'HACK'; // XXX
+    // if (cardSvgSource) {
       let el = null;
       const _handleMouseMove = e => {
         let el;
@@ -252,7 +252,7 @@ const CardSvg = ({
           </div>
         </div>
       );
-    } else {
+    /* } else {
     return (
         <div
             className={`card cardItem ${
@@ -360,6 +360,6 @@ const CardSvg = ({
             </div>
         </div>
     );
-    }
+    } */
 };
 export default CardSvg;

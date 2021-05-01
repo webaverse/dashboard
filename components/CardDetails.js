@@ -1333,14 +1333,14 @@ const CardDetails = ({
                         // glow: false,
                         imageView,
                         cardSvgSpec,
+                        selectedView,
+                        setSelectedView,
                         tilt: false,
                         open: true,
                       };
                       return (
                         <AssetCardSwitch
                           {...props}
-                          selectedView={selectedView}
-                          setSelectedView={setSelectedView}
                         />
                       );
                     })()}

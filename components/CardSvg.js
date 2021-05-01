@@ -21,6 +21,7 @@ const CardSvg = ({
     imageView,
     cardSvgSpec,
     tilt,
+    open,
     onClick,
 }) => {
     const [perspective, setPerspective] = useState([0, 0]);
@@ -155,7 +156,7 @@ const CardSvg = ({
           <div className="card-outer-flip">
             {/* <div className='card-glossy' /> */}
             <div
-              className={`card-wrap ${transitioning ? 'transitioning' : ''}`}
+              className={`card-wrap ${open ? 'open' : ''} ${transitioning ? 'transitioning' : ''}`}
               onClick={e => {
                 if (cardSize === 'large') {
                   const newFlip = !flip;

@@ -87,8 +87,8 @@
   position: absolute;
   display: flex;
   height: 100px;
-  left: calc(8vw + 30px);
-  bottom: 66px;
+  left: -40px;
+  bottom: -8px;
 }
 .cards-scroll .card-wrap {
   margin: 0;

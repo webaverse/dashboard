@@ -179,77 +179,77 @@ const Masonry = ({
                 />
               );
             })()}
-          </div>
-          <div
-            className="cards-scroll"
-            style={{
-              transform: `translateX(${scroll}px)`,
-            }}
-          >
-            {allTokens.map((asset, i) => {
-              if (asset.totalSupply === 0) {
-                return;
-              }
-              const {
-                id,
-                isMainnet,
-                isPolygon,
-                name,
-                description,
-                image,
-                properties: {
+            <div
+              className="cards-scroll"
+              style={{
+                transform: `translateX(${scroll}px)`,
+              }}
+            >
+              {allTokens.map((asset, i) => {
+                if (asset.totalSupply === 0) {
+                  return;
+                }
+                const {
+                  id,
+                  isMainnet,
+                  isPolygon,
+                  name,
+                  description,
+                  image,
+                  properties: {
+                    hash,
+                    filename,
+                    ext,
+                  },
+                  external_url,
+                  totalSupply,
+                  balance,
+                  buyPrice,
+                  storeId,
+                  owner,
+                  minter,
+                } = asset;
+                const cardSize = 'tiny';
+                const props = {
+                  key: id,
+                  id,
+                  isMainnet,
+                  isPolygon,
+                  assetName: name,
+                  description,
+                  image,
                   hash,
+                  external_url,
                   filename,
                   ext,
-                },
-                external_url,
-                totalSupply,
-                balance,
-                buyPrice,
-                storeId,
-                owner,
-                minter,
-              } = asset;
-              const cardSize = 'tiny';
-              const props = {
-                key: id,
-                id,
-                isMainnet,
-                isPolygon,
-                assetName: name,
-                description,
-                image,
-                hash,
-                external_url,
-                filename,
-                ext,
-                totalSupply,
-                balance,
-                buyPrice,
-                storeId,
-                ownerAvatarPreview: owner.avatarPreview,
-                ownerUsername: owner.username,
-                ownerAddress: owner.address,
-                minterAvatarPreview: minter.avatarPreview,
-                minterUsername: minter.username,
-                minterAddress: minter.address,
-                cardSize,
-                // networkType: 'sidechain',
-                tilt: true,
-                open: i === loadTokenIndex,// focusTokenIndex === i,
-                // onClick: _handleTokenClick,
-                selectedView,
-                setSelectedView,
-                onClick: () => {
-                  setLoadTokenIndex(i);
-                },
-              };
-              return (
-                <AssetCardSvg
-                  {...props}
-                />
-              );
-            })}
+                  totalSupply,
+                  balance,
+                  buyPrice,
+                  storeId,
+                  ownerAvatarPreview: owner.avatarPreview,
+                  ownerUsername: owner.username,
+                  ownerAddress: owner.address,
+                  minterAvatarPreview: minter.avatarPreview,
+                  minterUsername: minter.username,
+                  minterAddress: minter.address,
+                  cardSize,
+                  // networkType: 'sidechain',
+                  tilt: true,
+                  open: i === loadTokenIndex,// focusTokenIndex === i,
+                  // onClick: _handleTokenClick,
+                  selectedView,
+                  setSelectedView,
+                  onClick: () => {
+                    setLoadTokenIndex(i);
+                  },
+                };
+                return (
+                  <AssetCardSvg
+                    {...props}
+                  />
+                );
+              })}
+            </div>
           </div>
         </Fragment>
       )

@@ -88,7 +88,11 @@
   display: flex;
   height: 100px;
   left: calc(8vw + 30px);
-  bottom: 72px;
+  bottom: 66px;
+}
+.cards-scroll .card-wrap {
+  margin: 0;
+  padding: 10px;
 }
 .content-preview-3d .iframe-placeholder {
   position: relative;
@@ -843,15 +847,15 @@
   cursor: pointer;
 }
 .card-sub-wrap .spawn-button .video {
-  width: 120px;
-  height: 200px;
+  width: 80px;
+  height: 110px;
   border-radius: 10px;
   object-fit: cover;
 }
 .card-sub-wrap .spawn-button .label {
   padding: 5px;
   font-family: 'FuturaStd-Heavy';
-  font-size: 13px;
+  font-size: 10px;
   letter-spacing: 1px;
   text-align: left;
   text-transform: uppercase;

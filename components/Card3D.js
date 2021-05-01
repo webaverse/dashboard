@@ -6,8 +6,12 @@ const Card3D = ({
   hash,
   ext,
   loaded,
+  cardSize,
   onClick,
 }) => {
+  const [open, setOpen] = useState(false);
+  const [locked, setLocked] = useState(true);
+  
   // `{storageHost}/ipfs/${hash}`
   const qs = {
     id,
@@ -28,7 +32,7 @@ const Card3D = ({
     }
   }
   
-  const onWheel = e => {
+  /* const onWheel = e => {
     console.log('got wheel event', e);
   };
   useEffect(() => {
@@ -36,16 +40,31 @@ const Card3D = ({
     return () => {
       window.removeEventListener('wheel', onWheel);
     };
-  });
+  }); */
   
-  return (
-    <div className={`content-preview-3d ${onClick ? 'clickable' : ''}`}>
-      <div className="iframe-placeholder" />
-      {/* <iframe
-        className={`iframe ${loaded ? 'loaded' : ''}`}
-        src={src}
-      /> */}
+  const o = <iframe
+    className={`iframe ${loaded ? 'loaded' : ''} ${locked ? 'locked' : ''}`}
+    src={src}
+  />;
+  
+  return (cardSize === 'small' ?
+    <div className={`content-preview-3d ${onClick ? 'clickable' : ''}`} onClick={e => {
+      if (!open) {
+        setOpen(true);
+      } else if (locked) {
+        setLocked(false);
+      }
+    }} >
+      {!open ?
+        <div
+          className="iframe-placeholder"
+        />
+      : 
+        o
+      }
     </div>
+  :
+    o
   );
 };
 export default Card3D;

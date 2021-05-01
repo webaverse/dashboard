@@ -138,9 +138,11 @@ const PagesRoot = ({
                 ctaUrl="https://app.webaverse.com"
             /> */}
             <div className={`container ${mintMenuOpen ? 'open' : ''} ${mintMenuLarge ? 'large' : ''} ${token ? 'background' : ''}`}>
-                <div className="streetchain">
-                  <div className="bar" />
-                </div>
+                {selectedView !== '3d' ?
+                  <div className="streetchain">
+                    <div className="bar" />
+                  </div>
+                : null}
                 {mintMenuOpen ?
                   <Minter
                     mintMenuOpen={mintMenuOpen}

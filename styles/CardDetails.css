@@ -82,9 +82,10 @@
   margin-bottom: 10px;
 }
 .content-preview-3d .iframe-placeholder {
-  background-color: #300;
+  background-color: #e0e0e0;
 }
-.content-preview-3d .iframe-placeholder {
+.content-preview-3d .iframe.locked {
+  pointer-events: none;
 }
 .preview .content-preview-3d {
   width: 100%;

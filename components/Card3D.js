@@ -48,7 +48,7 @@ const Card3D = props => {
   
   // const [open, setOpen] = useState(false);
   const [locked, setLocked] = useState(true);
-  const [loaded, setLoaded] = useState(cardSize === 'large');
+  const [loaded, setLoaded] = useState(false);
 
   // `{storageHost}/ipfs/${hash}`
   const qs = {

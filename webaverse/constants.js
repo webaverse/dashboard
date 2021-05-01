@@ -91,6 +91,7 @@ export const Networks = {
 };
 export const appPreviewHost = `https://app.webaverse.com/preview.html`;
 export const cardsHost = `https://cards.webaverse.com`;
+export const cardPreviewHost = `https://card-preview.exokit.org`;
 export const lockHost = `https://lock.exokit.org`;
 /* export const appPreviewHost = `https://127.0.0.1:3001/preview.html`;
 export const cardsHost = `http://127.0.0.1:3002`; */

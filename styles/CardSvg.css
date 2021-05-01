@@ -18,6 +18,9 @@
   position: relative;
   margin: 15px;
 }
+.card-wrap.open .card-svg {
+  transform: translateY(-20px) !important;
+}
 .card-svg,
 .card-outer .back
 {

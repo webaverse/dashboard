@@ -130,6 +130,9 @@
   margin: 0;
   border: 0;
 }
+.content-preview-3d {
+  user-select: none;
+}
 .content-preview-3d .iframe,
 .content-preview-live {
   border: 0;

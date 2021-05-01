@@ -277,7 +277,7 @@ const Account = ({ data, selectedView }) => {
             <CardGrid key="storeCards" data={store} globalState={globalState} selectedView={selectedView} cardSize="small"onTokenClick={_handleTokenClick} />
           ) */}
           {(inventory && inventory.length > 0) ?
-            <CardGrid key="inventoryCards" data={inventory} globalState={globalState} selectedView={selectedView}cardSize="small" onTokenClick={_handleTokenClick} />
+            <CardGrid key="inventoryCards" data={inventory} globalState={globalState} selectedView="cards" cardSize="small" onTokenClick={_handleTokenClick} />
           :
             <div className="placeholder">
               <img src="/info.svg" />

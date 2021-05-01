@@ -81,6 +81,11 @@ const Card3D = props => {
     }
   }, [open, locked, loaded]);
   
+  const makeLoaded = () => !loaded ? (
+    <div className="progress-bar-wrap">
+      <ProgressBar />
+    </div>
+  ) : null;
   const makeIframe = () => (<iframe
     className={`iframe ${loaded ? 'loaded' : ''} ${(open && locked) ? 'locked' : ''}`}
     src={src}
@@ -119,11 +124,7 @@ const Card3D = props => {
           >Scroll to load</div>
         ) : (
           <Fragment>
-            {!loaded ?
-              <div className="progress-bar-wrap">
-                <ProgressBar />
-              </div>
-            : null}
+            {makeLoaded()}
             {makeIframe()}
           </Fragment>
         )}
@@ -151,7 +152,10 @@ const Card3D = props => {
         </div>
       </Fragment>
     ) : (
-      makeIframe()
+      <Fragment>
+        {makeLoaded()}
+        {makeIframe()}
+      </Fragment>
     )}
   </div>
 };

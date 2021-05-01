@@ -47,8 +47,6 @@ const Masonry = ({
   };
   
   const _wheel = e => {
-    // e.preventDefault();
-    console.log('got wheel', scroll, e.deltaY, scroll - e.deltaY);
     setScroll(Math.min(Math.max(scroll - e.deltaY, -Infinity), 0));
   };
   useEffect(() => {

@@ -21,6 +21,9 @@ const Masonry = ({
   const [focusTokenIndex, setFocusTokenIndex] = useState(0);
   const [loadTokenIndex, setLoadTokenIndex] = useState(0);
   const [scroll, setScroll] = useState(0);
+  const [dragStart, setDragStart] = useState(null);
+  const [dragStartScroll, setDragStartScroll] = useState(0);
+  const [dragMoved, setDragMoved] = useState(false);
   
   {
     let frame = null;
@@ -55,6 +58,33 @@ const Masonry = ({
       window.removeEventListener('wheel', _wheel);
     };
   }, [scroll]);
+  
+  const _mousemove = e => {
+    if (dragStart) {
+      const {clientX, clientY} = e;
+      const d = clientX - dragStart[0];
+      setScroll(dragStartScroll + d);
+      if (!dragMoved && Math.abs(d) >= 3) {
+        setDragMoved(true);
+      }
+    }
+  };
+  const _mouseup = e => {
+    if (dragStart) {
+      setDragStart(null);
+      setTimeout(() => {
+        setDragMoved(false);
+      });
+    }
+  };
+  useEffect(() => {
+    window.addEventListener('mousemove', _mousemove);
+    window.addEventListener('mouseup', _mouseup);
+    return () => {
+      window.removeEventListener('mousemove', _mousemove);
+      window.removeEventListener('mouseup', _mouseup);
+    };
+  }, [dragStart]);
   
   /* let listEl = null;
   const onScroll = e => {
@@ -184,6 +214,11 @@ const Masonry = ({
               style={{
                 transform: `translateX(${scroll}px)`,
               }}
+              onMouseDown={e => {
+                const {clientX, clientY} = e;
+                setDragStart([clientX, clientY]);
+                setDragStartScroll(scroll);
+              }}
             >
               {allTokens.map((asset, i) => {
                 if (asset.totalSupply === 0) {
@@ -240,7 +275,9 @@ const Masonry = ({
                   selectedView,
                   setSelectedView,
                   onClick: () => {
-                    setLoadTokenIndex(i);
+                    if (!dragMoved) {
+                      setLoadTokenIndex(i);
+                    }
                   },
                 };
                 return (

@@ -1322,7 +1322,7 @@ const CardDetails = ({
                         minterUsername,
                         minterAddress,
                         cardSize: 'large',
-                        glow: false,
+                        // glow: false,
                         imageView,
                         cardSvgSpec,
                         tilt: false,

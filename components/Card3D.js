@@ -50,7 +50,6 @@ const Card3D = props => {
   const [locked, setLocked] = useState(true);
   const [loaded, setLoaded] = useState(false);
 
-  // `{storageHost}/ipfs/${hash}`
   const qs = {
     id,
     hash,

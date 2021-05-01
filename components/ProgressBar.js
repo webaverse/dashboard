@@ -7,7 +7,7 @@ const ProgressBar = ({
   value: initialValue,
 }) => {
   const [value, setValue] = useState(initialValue);
-  
+
   const _updateMintProgress = () => {
     if (typeof initialValue === 'number') {
       let frame = null;

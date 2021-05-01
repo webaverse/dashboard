@@ -1368,10 +1368,11 @@ const CardDetails = ({
                             <input type="text" className="name-input" value={editedName} onChange={e => {
                               setEditedName(e.target.value);
                             }} onKeyDown={e => {
-                              console.log('got code', e.which);
                               if (e.which === 13) {
+                                e.stopPropagation();
                                 _saveName();
                               } else if (e.which === 27) {
+                                e.stopPropagation();
                                 setEditName(false);
                               }
                             }} ref={el => {
@@ -1605,8 +1606,10 @@ const CardDetails = ({
                             setEditedDescription(e.target.value);
                           }} onKeyDown={e => {
                             if (e.which === 13) {
+                              e.stopPropagation();
                               _saveDescription();
                             } else if (e.which === 27) {
+                              e.stopPropagation();
                               setEditDescription(false);
                             }
                           }} ref={el => {

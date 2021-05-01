@@ -1269,6 +1269,9 @@ input.button[type=button].cancel:hover {
 .asset-page {
   padding-top: 90px;
 }
+.asset-page .card-wrap {
+  margin: 70px;
+}
 .asset-page .assetDetailsRightColumn {
   width: calc(100vw - 16vw);
   margin: 0 auto;

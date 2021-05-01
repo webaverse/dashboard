@@ -42,7 +42,14 @@ const Card3D = props => {
   />);
   
   return (cardSize === 'small' ?
-    <div className={`content-preview-3d`}>
+    <div
+      className={`content-preview-3d`}
+      onClick={e => {
+        if (locked) {
+          setLocked(false);
+        }
+      }}
+    >
       {!open ?
         <div
           className="iframe-placeholder"

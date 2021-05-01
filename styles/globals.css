@@ -115,7 +115,7 @@ a {
   padding-left: calc(8% + 70px);
   padding-top: 130px;
   padding-bottom: 74px;
-  margin-bottom: -74px;
+  /* margin-bottom: -74px; */
   --mint-menu-size: 300px;
 }
 .container.background {

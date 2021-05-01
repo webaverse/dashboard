@@ -2,6 +2,7 @@ import React, {Fragment, useState, useEffect} from 'react';
 // import { createPortal } from 'react-dom'
 import {appPreviewHost} from '../webaverse/constants';
 import AssetCardSvg from './CardSvg.js';
+import User from './User.js';
 import ProgressBar from './ProgressBar.js';
 
 /* export const IFrame = ({
@@ -32,8 +33,13 @@ import ProgressBar from './ProgressBar.js';
 const Card3D = props => {
   const {
     id,
+    assetName,
+    description,
     hash,
     ext,
+    ownerUsername,
+    ownerAddress,
+    ownerAvatarPreview,
     // loaded,
     cardSize,
     open,
@@ -121,16 +127,24 @@ const Card3D = props => {
             {makeIframe()}
           </Fragment>
         )}
-        {/* <div className="card-sub-wrap">
+        <div className="card-sub-wrap">
           <div className="top">
-            <AssetCardSvg
+            <div className="name">{assetName}</div>
+            <div className="description">{description}</div>
+            <User
+              label="owner"
+              userName={ownerUsername}
+              address={ownerAddress}
+              avatarPreview={ownerAvatarPreview}
+            />
+            {/* <AssetCardSvg
               {...props}
               tilt={false}
-            />
+            /> */}
           </div>
           <div className="bottom">
           </div>
-        </div> */}
+        </div>
       </Fragment>
     ) : (
       makeIframe()

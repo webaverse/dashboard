@@ -682,10 +682,10 @@ const Minter = ({
                     cardSize="large"
                   />
                 : null}
-                <div className={`iframe-placeholder ${loaded ? 'loaded' : ''}`}>
+                {/* <div className={`iframe-placeholder ${loaded ? 'loaded' : ''}`}>
                   <div className="h1">Loading preview...</div>
                   <ProgressBar />
-                </div>
+                </div> */}
                 {(loaded && previewError) ?
                   <div className={`iframe-placeholder`}>
                     <div className="h1">No preview available :'(</div>

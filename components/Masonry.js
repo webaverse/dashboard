@@ -63,7 +63,7 @@ const Masonry = ({
     if (dragStart) {
       const {clientX, clientY} = e;
       const d = clientX - dragStart[0];
-      setScroll(dragStartScroll + d);
+      setScroll(Math.min(Math.max(dragStartScroll + d, -Infinity), 0));
       if (!dragMoved && Math.abs(d) >= 3) {
         setDragMoved(true);
       }

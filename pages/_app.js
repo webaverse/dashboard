@@ -94,7 +94,7 @@ const App = ({ Component, pageProps }) => {
             searchResults={searchResults}
           />
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </ToastProvider>
     </AppWrapper>
   )

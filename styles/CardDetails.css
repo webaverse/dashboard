@@ -95,11 +95,26 @@
   padding: 10px;
   flex-direction: column;
 }
+.content-preview-3d .iframe,
+.content-preview-3d .iframe-placeholder {
+  border-radius: 10px;
+}
 .content-preview-3d .iframe-placeholder {
   background-color: #e0e0e0;
 }
 .content-preview-3d .iframe.locked {
   pointer-events: none;
+}
+.content-preview-3d .progress-bar-wrap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .preview .content-preview-3d {
   width: 100%;
@@ -118,6 +133,11 @@
 }
 .asset-page .content-preview-3d .iframe {
   padding: 0 8vw;
+}
+.content-preview-3d {
+  padding: 2px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
 }
 .content-preview-2d,
 .content-preview-2d.small .image,

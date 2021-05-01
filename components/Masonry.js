@@ -122,9 +122,7 @@ const Masonry = ({
               cardSize,
               // networkType: 'sidechain',
               tilt: true,
-              onClick: e => {
-                onTokenClick && onTokenClick(asset.id)(e);
-              },
+              // onClick: _handleTokenClick,
             };
             return (
               <AssetCardSwitch

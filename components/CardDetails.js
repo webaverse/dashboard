@@ -1326,6 +1326,7 @@ const CardDetails = ({
                         imageView,
                         cardSvgSpec,
                         tilt: false,
+                        open: true,
                       };
                       return (
                         <AssetCardSwitch

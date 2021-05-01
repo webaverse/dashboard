@@ -13,11 +13,10 @@ import ViewSwitch from "./ViewSwitch";
 import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
 import {getProfileForCreator} from "../functions/UIStateFunctions";
 import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
-import {Networks} from "../webaverse/constants.js";
 import {getData} from "./Asset";
 // import { FileDrop } from 'react-file-drop';
 // import { makeWbn, makePhysicsBake } from "../webaverse/build";
-import {storageHost, lockHost} from "../webaverse/constants";
+import {Networks, storageHost, lockHost, cardPreviewHost} from "../webaverse/constants";
 import {
   resubmitAsset,
   addNftCollaborator,
@@ -1027,6 +1026,12 @@ const CardDetails = ({
       setFileBrowserOpen(true);
     }
   };
+  const handleRefresh = async e => {
+    const res = await fetch(`${cardPreviewHost}/${id}?w=${500}$ext=${ext}`, {
+      method: 'DELETE',
+    });
+    await res.json();
+  };
   const handleLike = e => {
     setLiked(!liked);
   };
@@ -1180,6 +1185,9 @@ const CardDetails = ({
                     }} */
                   >
                     <div className="card-buttons like">
+                      <div className={`card-button`} onClick={handleRefresh}>
+                        <img src="/refresh.svg" onDragStart={cancelEvent} />
+                      </div>
                       <div className={`card-button ${liked ? 'selected open' : ''}`} onClick={handleLike}>
                         <img className="only-selected" src="/heart_full.svg" onDragStart={cancelEvent} />
                         <img className="only-not-selected" src="/heart_empty.svg" onDragStart={cancelEvent} />

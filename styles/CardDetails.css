@@ -88,7 +88,7 @@
   display: flex;
   height: 100px;
   left: calc(8vw + 30px);
-  bottom: -90px;
+  bottom: 72px;
 }
 .content-preview-3d .iframe-placeholder {
   position: relative;

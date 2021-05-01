@@ -97,7 +97,7 @@ const PagesRoot = ({
             );
             setLoading(false);
         })();
-    }, []);
+    });
     useEffect(() => {
       if (mintMenuOpen && masonryOpen && !masonryOpening) {
         setTimeout(() => {
@@ -110,6 +110,11 @@ const PagesRoot = ({
         setMasonryOpening(false);
       }
     }, [mintMenuOpen, masonryOpening]);
+    useEffect(() => {
+      if (!token && assetSelectedView !== 'cards') {
+        setAssetSelectedView('cards');
+      }
+    }, [token, assetSelectedView]);
     const mintMenuLarge = selectedPage === 3;
 
     // console.log('masonry open', {mintMenuOpen, masonryOpen, masonryOpening});

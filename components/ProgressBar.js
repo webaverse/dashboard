@@ -9,7 +9,7 @@ const ProgressBar = ({
   const [value, setValue] = useState(initialValue);
 
   const _updateMintProgress = () => {
-    if (typeof initialValue === 'number') {
+    if (typeof initialValue !== 'number') {
       let frame = null;
       let startTime = 0;
       const _scheduleFrame = () => {

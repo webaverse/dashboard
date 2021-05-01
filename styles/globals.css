@@ -1437,7 +1437,7 @@ html.hit {
 .actions {
   position: absolute;
   top: 60px;
-  right: 8vw;
+  right: 20px;
   min-width: 150px;
   display: flex;
   margin-bottom: auto;
@@ -1480,6 +1480,9 @@ html.hit {
 .actions .action:hover {
   background-color: #333;
   color: #FFF;
+}
+.asset-page .actions {
+  right: 8vw;
 }
 
 .edit-icon {

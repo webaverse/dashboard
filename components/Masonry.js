@@ -20,6 +20,7 @@ const Masonry = ({
   const [mintProgress, setMintProgress] = useState(0);
   const [focusTokenIndex, setFocusTokenIndex] = useState(0);
   const [loadTokenIndex, setLoadTokenIndex] = useState(0);
+  const [scroll, setScroll] = useState(0);
   
   {
     let frame = null;
@@ -44,6 +45,18 @@ const Masonry = ({
       scroll: false,
     });
   };
+  
+  const _wheel = e => {
+    // e.preventDefault();
+    console.log('got wheel', scroll, e.deltaY, scroll - e.deltaY);
+    setScroll(Math.min(Math.max(scroll - e.deltaY, -Infinity), 0));
+  };
+  useEffect(() => {
+    window.addEventListener('wheel', _wheel);
+    return () => {
+      window.removeEventListener('wheel', _wheel);
+    };
+  }, [scroll]);
   
   /* let listEl = null;
   const onScroll = e => {
@@ -169,7 +182,12 @@ const Masonry = ({
               );
             })()}
           </div>
-          <div className="cards-scroll">
+          <div
+            className="cards-scroll"
+            style={{
+              transform: `translateX(${scroll}px)`,
+            }}
+          >
             {allTokens.map((asset, i) => {
               if (asset.totalSupply === 0) {
                 return;

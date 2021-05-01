@@ -1,34 +1,8 @@
 import React, {Fragment, useState, useEffect} from 'react';
-// import { createPortal } from 'react-dom'
 import {appPreviewHost} from '../webaverse/constants';
 import AssetCardSvg from './CardSvg.js';
 import User from './User.js';
 import ProgressBar from './ProgressBar.js';
-
-/* export const IFrame = ({
-  children,
-  ...props
-}) => {
-  const [contentRef, setContentRef] = useState(null)
-  const mountNode =
-    contentRef?.contentWindow?.document?.body
-
-  return (
-    <iframe {...props} ref={el => {
-      setContentRef(el);
-      el.addEventListener('load', e => {
-        console.log('got load', e);
-        props.onLoad(e);
-      });
-      el.addEventListener('load', err => {
-        props.onError(err);
-        console.log('got load', err);
-      });
-    }}>
-      {mountNode && createPortal(children, mountNode)}
-    </iframe>
-  )
-}; */
 
 const Card3D = props => {
   const {

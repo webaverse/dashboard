@@ -97,7 +97,7 @@ const PagesRoot = ({
             );
             setLoading(false);
         })();
-    });
+    }, []);
     useEffect(() => {
       if (mintMenuOpen && masonryOpen && !masonryOpening) {
         setTimeout(() => {

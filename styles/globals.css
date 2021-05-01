@@ -542,7 +542,6 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  pointer-events: none;
 }
 .iframe-placeholder .h1 {
   margin-bottom: 20px;

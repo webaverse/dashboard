@@ -833,6 +833,33 @@
 .content-preview-3d .card-sub-wrap .assetDetailsOwnedBy .creatorDetails {
   background: transparent;
 }
+.card-sub-wrap .spawn-button {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  color: #AAA;
+  cursor: pointer;
+}
+.card-sub-wrap .spawn-button .video {
+  width: 120px;
+  height: 200px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.card-sub-wrap .spawn-button .label {
+  padding: 5px;
+  font-family: 'FuturaStd-Heavy';
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-align: left;
+  text-transform: uppercase;
+}
+.card-sub-wrap .spawn-button:hover {
+  border-color: #333;
+  color: #333;
+}
 
 .assetDetailsLeftColumn .navbarSwitch {
   position: absolute;

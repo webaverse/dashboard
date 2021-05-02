@@ -1028,6 +1028,7 @@ const CardDetails = ({
     }
   };
   const handleRefresh = async e => {
+    const ext = 'png';
     const res = await fetch(`${cardPreviewHost}/?t=${id}&w=${500}&ext=${ext}`, {
       method: 'DELETE',
     });

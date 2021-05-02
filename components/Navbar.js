@@ -149,13 +149,15 @@ const Navbar = ({
   }
   
   useEffect(() => {
-    if (router.asPath === '/' && !viewSwitchOpen) {
+    const u = new URL(router.asPath, window.location.href);
+    if (u.pathname === '/' && !viewSwitchOpen) {
       setViewSwitchOpen(true);
-    } else if (router.asPath !== '/' && viewSwitchOpen) {
+    } else if (u.pathname !== '/' && viewSwitchOpen) {
       setViewSwitchOpen(false);
     }
   }, [viewSwitchOpen, router.asPath]);
-  const showMintButton = router.asPath === '/' || router.asPath === '/mint';
+  const u = new URL(router.asPath, typeof window !== 'undefined' ? window.location.href : 'http://127.0.0.1/');
+  const showMintButton = u.pathname === '/' || u.pathname === '/mint';
 
   // console.log('got path', router.asPath);
 

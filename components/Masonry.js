@@ -135,8 +135,6 @@ const Masonry = ({
               }
               const {
                 id,
-                isMainnet,
-                isPolygon,
                 name,
                 description,
                 image,
@@ -154,20 +152,18 @@ const Masonry = ({
                 minter,
               } = asset;
               const cardSize = 'small';
-              const props = {
+              let props = {
                 key: id,
                 id,
-                /* isMainnet,
-                isPolygon,
                 assetName: name,
                 description,
                 image,
                 external_url,
                 filename,
-                totalSupply,
-                balance,
-                buyPrice,
-                storeId, */
+                // totalSupply,
+                // balance,
+                // buyPrice,
+                // storeId,
                 hash,
                 ext,
                 ownerAvatarPreview: owner.avatarPreview,

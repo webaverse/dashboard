@@ -356,6 +356,8 @@ const Minter = ({
   setLoading,
   animate,
 }) => {
+  const defaultSelectedView = '3d';
+  
   const {globalState, setGlobalState} = useAppContext();
   const [helpOpen, setHelpOpen] = useState(false);
   const [name, setName] = useState('');
@@ -376,7 +378,7 @@ const Minter = ({
   const [mintError, setMintError] = useState('');
   const [mintMenuOpen, setMintMenuOpen] = useState(!animate);
   const [mintMenuStep, setMintMenuStep] = useState(1);
-  const [selectedView, setSelectedView] = useState('3d');
+  const [selectedView, setSelectedView] = useState(defaultSelectedView);
   
   useEffect(() => {
     if (animate && !mintMenuOpen) {
@@ -505,6 +507,7 @@ const Minter = ({
   const _setSelectedTab = newTab => {
     setSelectedTab(newTab);
     setMintMenuStep(2);
+    setSelectedView(defaultSelectedView);
     handleLoadTemplate(newTab);
   };
   const selectedTabDefaulted = selectedTab || ext || 'image';

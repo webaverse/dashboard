@@ -22,24 +22,18 @@ const ProfileCards = ({profiles}) => {
         return (
           <Link href={url} key={i}>
             <a className="account">
-              {image ?
-                <Clip
-                  src={
-                    image.replace(
-                      /\.[^.]*$/,
-                      '.webm'
-                    )
-                  }
-                  className="profileVideo"
-                  autoPlay={true}
-                  loop={true}
-                  muted={true}
-                />
-              :
-                <div className="profileVideoPlaceholder">
-                  <img className="icon" src="/avatar.svg" />
-                </div>
-              }
+              <Clip
+                src={
+                  image.replace(
+                    /\.[^.]*$/,
+                    '.webm'
+                  )
+                }
+                className="profileVideo"
+                autoPlay={true}
+                loop={true}
+                muted={true}
+              />
               <div className="profileName">{name}</div>
             </a>
           </Link>

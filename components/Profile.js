@@ -198,23 +198,18 @@ const Profile = ({
                 }}
               /> */}
               <div className="profileAvatar">
-                {profile.avatarPreview ?
-                  <Clip
-                    className="profileVideo"
-                    src={
-                      /* `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm` */
-                      profile.avatarPreview.replace(
-                        /\.[^.]*$/,
-                        '.webm'
-                      )
-                    }
-                    loop={true}
-                    autoPlay={true}
-                    muted={true}
-                  />
-                :
-                  <div className="profileVideoPlaceholder" />
-                }
+                <Clip
+                  className="profileVideo"
+                  src={
+                    profile.avatarPreview && profile.avatarPreview.replace(
+                      /\.[^.]*$/,
+                      '.webm'
+                    )
+                  }
+                  loop={true}
+                  autoPlay={true}
+                  muted={true}
+                />
                 <div className="profileLoadout">
                   <div className="profileLoadoutHeader">Wear</div>
                   {

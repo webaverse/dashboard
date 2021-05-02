@@ -2,8 +2,8 @@ import {useState} from 'react';
 
 const Clip = props => {
   const [loaded, setLoaded] = useState(false);
-  const [errored, setErrored] = useState(false);
-  
+  const [errored, setErrored] = useState(!props.src);
+
   return (!errored ?
     <video
       {...props}
@@ -11,6 +11,7 @@ const Clip = props => {
         setLoaded(true);
       }}
       onError={e => {
+        console.log('clip load error', e);
         setLoaded(true);
         setErrored(true);
       }}
@@ -19,7 +20,11 @@ const Clip = props => {
     </video>
   :
     <div className="profileVideoPlaceholder">
-      <img className="icon" src="/error.svg" />
+      {props.src ?
+        <img className="icon" src="/error.svg" />
+      :
+        <img className="icon" src="/avatar.svg" />
+      }
     </div>
   );
 };

@@ -311,7 +311,7 @@ const CardIframe = ({
 }) => {
   if (t || id) {
     const width = w;
-    const height = width / 2.5 * 3.5;
+    const height = Math.floor(width / 2.5 * 3.5);
     let src = `${cardsHost}/?`;
     let first = true;
     const qs = {

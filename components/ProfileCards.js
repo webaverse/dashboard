@@ -2,33 +2,26 @@ import React from "react";
 import Link from "next/link";
 import Clip from './Clip';
 
-const ProfileCards = ({profiles}) => {
+const ProfileCards = ({profiles}) => {  
   return (
     <div className="accounts">
       {profiles.map((item, i) => {
-        const image = item.avatarPreview.replace(/\.[^.]*$/, '.png');
-
-        // console.log('got image', image);
-
         const homeSpaceImage = item.homeSpacePreview || "./defaulthomespace.svg";
-
-        /* if (!image) { // blank card
-          return;
-        } */
 
         const url = "/accounts/" + item.address;
         const name = item.name ? item.name : "Anonymous";
+        
+        const src = item.avatarPreview
+          .replace(
+            /\/[^\/]*\.([^\/]*)$/,
+            '/preview.png'
+          );
 
         return (
           <Link href={url} key={i}>
             <a className="account">
               <Clip
-                src={
-                  image.replace(
-                    /\.[^.]*$/,
-                    '.webm'
-                  )
-                }
+                src={src}
                 className="profileVideo"
                 autoPlay={true}
                 loop={true}

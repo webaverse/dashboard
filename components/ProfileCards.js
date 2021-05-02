@@ -14,7 +14,7 @@ const ProfileCards = ({profiles}) => {
         const src = item.avatarPreview
           .replace(
             /\/[^\/]*\.([^\/]*)$/,
-            '/preview.png'
+            '/preview.webm'
           );
 
         return (

@@ -37,7 +37,7 @@ const ProfileCards = ({profiles}) => {
                 />
               :
                 <div className="clip-error">
-                  <img className="icon" src="/error.svg" />
+                  <img className="icon" src="/avatar.svg" />
                 </div>
               }
               <div className="profileName">{name}</div>

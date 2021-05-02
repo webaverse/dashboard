@@ -22,8 +22,10 @@ const Card3D = props => {
   } = props;
   
   // const [open, setOpen] = useState(false);
-  const [locked, setLocked] = useState(true);
+  const [locked, setLocked] = useState(!open);
   const [loaded, setLoaded] = useState(false);
+  
+  // console.log('card 3d', {open, locked});
 
   const qs = {
     id,
@@ -45,16 +47,14 @@ const Card3D = props => {
     }
   }
   
-  useEffect(() => {
-    if (!open) {
-      if (!locked) {
-        setLocked(true);
-      }
-      if (loaded) {
-        setLoaded(false);
-      }
+  /* useEffect(() => {
+    if (!locked) {
+      setLocked(true);
     }
-  }, [open, locked, loaded]);
+    if (loaded) {
+      setLoaded(false);
+    }
+  }, [locked, loaded]); */
   
   const makeLoaded = () => !loaded ? (
     <div className="progress-bar-wrap">
@@ -62,8 +62,8 @@ const Card3D = props => {
     </div>
   ) : null;
   const makeIframe = () => (<iframe
-    className={`iframe ${loaded ? 'loaded' : ''} ${(open && locked) ? 'locked' : ''}`}
-    src={src}
+    className={`iframe ${loaded ? 'loaded' : ''} ${locked ? 'locked' : ''}`}
+    src={src.replace('app.webaverse.com', 'app.webaverse.com:3001')}
     onLoad={e => {
       console.log('iframe onload', e);
       setLoaded(true);
@@ -88,21 +88,8 @@ const Card3D = props => {
   >
     {cardSize === 'small' ? (
       <Fragment>
-        {!open ? (
-          <div
-            className="iframe-placeholder"
-            onClick={e => {
-              if (locked) {
-                setLocked(false);
-              }
-            }}
-          >Scroll to load</div>
-        ) : (
-          <Fragment>
-            {makeLoaded()}
-            {makeIframe()}
-          </Fragment>
-        )}
+        {makeLoaded()}
+        {makeIframe()}
         <div className="card-sub-wrap">
           <div className="top">
             <div className="name">{assetName}</div>

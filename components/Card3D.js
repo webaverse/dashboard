@@ -69,7 +69,7 @@ const Card3D = props => {
       setLoaded(true);
     }}
     onError={e => {
-      console.warn(e);
+      console.warn('iframe onerror', e);
       setLoaded(true);
     }}
   />);

@@ -30,8 +30,8 @@ const CardRow = ({
                     }
                     const {
                       id,
-                      isMainnet,
-                      isPolygon,
+                      // isMainnet,
+                      // isPolygon,
                       name,
                       description,
                       image,
@@ -41,35 +41,16 @@ const CardRow = ({
                         ext,
                       },
                       external_url,
-                      totalSupply,
-                      balance,
-                      buyPrice,
-                      storeId,
+                      // totalSupply,
+                      // balance,
+                      // buyPrice,
+                      // storeId,
                       owner,
                       minter,
                     } = asset;
-                    const props = {
+                    let props = {
                       key: id,
                       id,
-                      isMainnet,
-                      isPolygon,
-                      assetName: name,
-                      description,
-                      image,
-                      hash,
-                      external_url,
-                      filename,
-                      ext,
-                      totalSupply,
-                      balance,
-                      buyPrice,
-                      storeId,
-                      ownerAvatarPreview: owner.avatarPreview,
-                      ownerUsername: owner.username,
-                      ownerAddress: owner.address,
-                      minterAvatarPreview: minter.avatarPreview,
-                      minterUsername: minter.username,
-                      minterAddress: minter.address,
                       cardSize,
                       // networkType: 'sidechain',
                       tilt: true,
@@ -77,6 +58,24 @@ const CardRow = ({
                         onTokenClick && onTokenClick(asset.id)(e);
                       },
                     };
+                    if (selectedView === 'cards') {
+                      props = {
+                        ...props,
+                        assetName: name,
+                        description,
+                        image,
+                        hash,
+                        external_url,
+                        filename,
+                        ext,
+                        ownerAvatarPreview: owner.avatarPreview,
+                        ownerUsername: owner.username,
+                        ownerAddress: owner.address,
+                        minterAvatarPreview: minter.avatarPreview,
+                        minterUsername: minter.username,
+                        minterAddress: minter.address,
+                      };
+                    }
                     return (
                       <AssetCardSwitch
                         {...props}

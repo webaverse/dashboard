@@ -18,7 +18,7 @@ const Clip = props => {
       <source src={props.src} />
     </video>
   :
-    <div className="clip-error">
+    <div className="profileVideoPlaceholder">
       <img className="icon" src="/error.svg" />
     </div>
   );

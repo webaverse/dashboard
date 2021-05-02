@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Head from 'next/head';
-import {Container, Row} from 'react-grid-system';
+// import {Container, Row} from 'react-grid-system';
 import {useAppContext} from "../libs/contextLib";
 import {getCreators} from "../functions/UIStateFunctions.js";
 import ProfileCards from "../components/ProfileCards";

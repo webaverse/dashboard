@@ -71,7 +71,6 @@ const Profile = ({
       /\/[^\/]*\.([^\/]*)$/,
       '/preview.webm'
     );
-    console.log('got src', src);
 
     return (
         <div className="profileContainer">

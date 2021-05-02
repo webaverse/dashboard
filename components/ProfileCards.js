@@ -25,7 +25,6 @@ const ProfileCards = ({profiles}) => {
               {image ?
                 <Clip
                   src={
-                    /* `https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm` */
                     image.replace(
                       /\.[^.]*$/,
                       '.webm'
@@ -37,9 +36,9 @@ const ProfileCards = ({profiles}) => {
                   muted={true}
                 />
               :
-                <div
-                  className="profileVideoPlaceholder"
-                />
+                <div className="clip-error">
+                  <img className="icon" src="/error.svg" />
+                </div>
               }
               <div className="profileName">{name}</div>
             </a>

@@ -678,6 +678,7 @@ const Minter = ({
                     selectedView={selectedView}
                     open={true}
                     cardSize="large"
+                    nocache={1}
                   />
                 : null}
                 {/* <div className={`iframe-placeholder ${loaded ? 'loaded' : ''}`}>

@@ -5,6 +5,7 @@ import {useAppContext} from "../libs/contextLib";
 import {proofOfAddressMessage} from "../constants/UnlockConstants";
 import {uniquify, getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
 import {cancelEvent} from "../webaverse/util";
+import {cardPreviewHost} from "../webaverse/constants";
 import {setName, setAccountMetadata} from "../functions/UserFunctions";
 import Clip from './Clip';
 import {loginWithMetaMask, getBlockchain} from '../webaverse/blockchain';
@@ -31,14 +32,14 @@ const Profile = ({
     const [editName, setEditName] = useState(false);
     const [editedName, setEditedName] = useState(profileName);
     const [keysOpen, setManageKeysOpen] = useState(false);
+    const [nonce, setNonce] = useState(undefined);
 
     const logout = () => {
         setGlobalState({ ...globalState, logout: "true" });
     };
-
     const handleSuccess = () => {
-        console.log("success");
-        setGlobalState({ ...globalState, refresh: "true" });
+      console.log("success");
+      setGlobalState({ ...globalState, refresh: "true" });
     };
     const handleError = (err) => console.log("error");
     const handleLike = e => {
@@ -55,6 +56,21 @@ const Profile = ({
       setEditName(false);
       
       await setName(editedName, globalState);
+    };    
+    const handleRefresh = async e => {
+      if (profile.avatarPreview) {
+        const res = await fetch(
+          profile.avatarPreview
+            .replace(
+              /\/[^\/]*\.([^\/]*)$/,
+              '/preview.webm'
+            ),
+          {
+            method: 'DELETE',
+          });
+        await res.json();
+        setNonce(Math.floor(Math.random() * 0xFFFFFF));
+      }
     };
     
     let nameInputEl = null;
@@ -66,12 +82,30 @@ const Profile = ({
     useEffect(() => {
       _updateNameInputFocus();
     }, [editName]);
-    
-    const src = profile.avatarPreview && profile.avatarPreview
-      .replace(
-        /\/[^\/]*\.([^\/]*)$/,
-        '/preview.webm'
-      );
+
+    const qs = {
+      nonce,
+    };
+    let src = profile.avatarPreview && profile.avatarPreview;
+    src = src.replace(
+      /\/[^\/]*\.([^\/]*)$/,
+      '/preview.webm'
+    );
+    if (!/\?$/.test(src)) {
+      src += '?';
+    }
+    let first = true;
+    for (const k in qs) {
+      const v = qs[k];
+      if (v !== undefined) {
+        if (first) {
+          first = false;
+        } else {
+          src += '&';
+        }
+        src += `${k}=${v}`;
+      }
+    }
 
     return (
         <div className="profileContainer">
@@ -283,6 +317,9 @@ const Profile = ({
                 </div>
               </div>
               <div className="card-buttons like">
+                <div className={`card-button`} onClick={handleRefresh}>
+                  <img src="/refresh.svg" onDragStart={cancelEvent} />
+                </div>
                 <div className={`card-button ${liked ? 'selected open' : ''}`} onClick={handleLike}>
                   <img className="only-selected" src="/heart_full.svg" onDragStart={cancelEvent} />
                   <img className="only-not-selected" src="/heart_empty.svg" onDragStart={cancelEvent} />

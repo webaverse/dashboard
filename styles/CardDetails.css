@@ -170,6 +170,10 @@
 .asset-overlay .content-preview-2d .image {
   min-height: 424px;
 }
+.slider .content-preview-2d {
+  max-width: calc(100vw - 16vw - 480px);
+  max-height: calc(100vh - 90px - 250px);
+}
 .detailsBlock {
   display: flex;
   align-items: flex-start;

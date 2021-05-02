@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import Head from 'next/head';
 // import {Container, Row} from 'react-grid-system';
 import {useAppContext} from "../libs/contextLib";
@@ -20,6 +20,10 @@ const Accounts = ({data}) => {
       setLoading(false);
     })();
   }, []); */
+  
+  const isSetUp = a => !!a.name && !!a.avatarPreview;
+  const avatarPeople = creatorProfiles.filter(isSetUp);
+  const noAvatarPeople = creatorProfiles.filter(a => !isSetUp(a));
 
   return (
     <div className="accounts-page">
@@ -34,7 +38,11 @@ const Accounts = ({data}) => {
       { loading ?
         <Loader loading={true} />
       :
-        <ProfileCards profiles={creatorProfiles} />
+        <Fragment>
+          <ProfileCards profiles={avatarPeople} />
+          <div className="h1">[unknowns]</div>
+          <ProfileCards profiles={noAvatarPeople} />
+        </Fragment>
       }
     </div>
   )

@@ -11,7 +11,7 @@ const Clip = props => {
         setLoaded(true);
       }}
       onError={e => {
-        console.log('clip load error', e);
+        console.log('clip load error', props.src, e);
         setLoaded(true);
         setErrored(true);
       }}

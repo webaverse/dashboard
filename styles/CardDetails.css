@@ -66,6 +66,9 @@
   width: 100%;
   margin: 70px;
 }
+.slider .content-preview-2d.large {
+  width: calc(100% - 70px * 2);
+}
 .content-preview-2d.clickable,
 .content-preview-3d.clickable,
 .content-preview-live.clickable {
@@ -170,9 +173,9 @@
 .asset-overlay .content-preview-2d .image {
   min-height: 424px;
 }
-.slider .content-preview-2d {
-  max-width: calc(100vw - 16vw - 480px);
-  max-height: calc(100vh - 90px - 250px);
+.slider .content-preview-2d .image {
+  max-width: calc(100% - 70px * 2);
+  max-height: calc(100% - 70px * 2);
 }
 .detailsBlock {
   display: flex;

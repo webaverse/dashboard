@@ -58,7 +58,7 @@ const CardRow = ({
                         onTokenClick && onTokenClick(asset.id)(e);
                       },
                     };
-                    if (selectedView === 'cards') {
+                    if (selectedView !== 'cards') {
                       props = {
                         ...props,
                         assetName: name,

@@ -153,7 +153,9 @@ a {
   transform: scale(1.2);
 } */
 .accounts-page .accounts .account .profileVideo,
-.accounts-page .accounts .account .profileVideoPlaceholder {
+.accounts-page .accounts .account .profileVideoPlaceholder,
+.accounts-page .accounts .account .clip-error
+{
   --size: 200px;
   width: var(--size);
   height: var(--size);
@@ -162,6 +164,17 @@ a {
   background-color: #e0e0e0;
   border-radius: 10px;
 }
+.clip-error {
+  display: flex;
+  background-color: #999;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.2;
+}
+/* .clip-error .icon {
+  filter: invert(47%) sepia(82%) saturate(3685%) hue-rotate(333deg) brightness(100%) contrast(87%);
+} */
 .accounts-page .h1 {
   font-size: 50px;
   font-family: 'MS-Gothic';

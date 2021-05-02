@@ -66,6 +66,12 @@ const Profile = ({
     useEffect(() => {
       _updateNameInputFocus();
     }, [editName]);
+    
+    const src = profile.avatarPreview && profile.avatarPreview.replace(
+      /\/[^\/]*\.([^\/]*)$/,
+      '/preview.webm'
+    );
+    console.log('got src', src);
 
     return (
         <div className="profileContainer">
@@ -200,12 +206,7 @@ const Profile = ({
               <div className="profileAvatar">
                 <Clip
                   className="profileVideo"
-                  src={
-                    profile.avatarPreview && profile.avatarPreview.replace(
-                      /\.[^.]*$/,
-                      '.webm'
-                    )
-                  }
+                  src={src}
                   loop={true}
                   autoPlay={true}
                   muted={true}

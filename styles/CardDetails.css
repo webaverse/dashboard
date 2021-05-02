@@ -174,10 +174,10 @@
 .asset-overlay .content-preview-2d .image {
   min-height: 424px;
 }
-.slider .content-preview-2d .image {
+/* .slider .content-preview-2d .image {
   max-width: 100%;
   max-height: 100%;
-}
+} */
 .detailsBlock {
   display: flex;
   align-items: flex-start;

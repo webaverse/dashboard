@@ -67,8 +67,12 @@
   margin: 70px;
 }
 .slider .content-preview-2d.large {
-  max-width: calc(100% - 70px * 2);
-  max-height: calc(100vh - 312px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 10px * 2);
+  height: calc(100% - 10px * 2);
+  margin: 10px;
 }
 .content-preview-2d.clickable,
 .content-preview-3d.clickable,

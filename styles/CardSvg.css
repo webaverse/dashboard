@@ -30,6 +30,9 @@
 .card-outer {
   cursor: pointer;
 }
+.preview .card-outer {
+  align-self: center;
+}
 .card-outer .back {
   position: absolute;
   top: 0;

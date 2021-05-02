@@ -61,8 +61,8 @@ const Card2D = ({
     <div
       className={`content-preview-2d ${cardSize} ${onClick ? 'clickable' : ''}`}
       onClick={e => {
-          onClick && onClick(e);
-        }}
+        onClick && onClick(e);
+      }}
     >
       <img
         className="image"

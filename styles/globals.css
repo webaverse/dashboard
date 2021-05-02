@@ -162,6 +162,12 @@ a {
   background-color: #e0e0e0;
   border-radius: 10px;
 }
+.accounts-page .h1 {
+  font-size: 50px;
+  font-family: 'MS-Gothic';
+  text-align: left;
+  margin: 30px 0;
+}
 .containerText {
   color: #676370;
 }

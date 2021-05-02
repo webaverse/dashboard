@@ -178,7 +178,7 @@ const Masonry = ({
                 minterAddress: minter.address,
                 cardSize,
                 tilt: true,
-                open: true,
+                // open: true,
                 nonce,
                 selectedView,
                 setSelectedView,

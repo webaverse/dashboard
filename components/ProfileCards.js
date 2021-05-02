@@ -36,7 +36,7 @@ const ProfileCards = ({profiles}) => {
                   muted={true}
                 />
               :
-                <div className="clip-error">
+                <div className="profileVideoPlaceholder">
                   <img className="icon" src="/avatar.svg" />
                 </div>
               }

@@ -153,21 +153,18 @@ a {
   transform: scale(1.2);
 } */
 .accounts-page .accounts .account .profileVideo,
-.accounts-page .accounts .account .profileVideoPlaceholder,
-.accounts-page .accounts .account .clip-error
+.accounts-page .accounts .account .profileVideoPlaceholder
 {
   --size: 200px;
   width: var(--size);
   height: var(--size);
 }
 .accounts-page .accounts .account .profileVideoPlaceholder {
-  background-color: #e0e0e0;
-  border-radius: 10px;
-}
-.clip-error {
-  display: flex;
   background-color: #999;
   border-radius: 10px;
+}
+.profileVideoPlaceholder {
+  display: flex;
   justify-content: center;
   align-items: center;
   opacity: 0.2;

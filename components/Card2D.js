@@ -1,6 +1,7 @@
 import React, {Fragment, useState} from "react";
 // import procgen, {types} from '../webaverse/procgen.js';
 import User from './User';
+import {previewHost} from '../webaverse/constants';
 
 const Card2D = ({
   id,
@@ -42,8 +43,12 @@ const Card2D = ({
   const qs = {
     nonce,
   };
+  let src = image;
   // render gifs as gifs
-  let src = image.replace(/\.gif\/preview\.png$/, '.gif/preview.gif');
+  if (!src) {
+    src = `${previewHost}/${hash}.${ext}/preview.png`
+  }
+  src = src.replace(/\.gif\/preview\.png$/, '.gif/preview.gif');
   let first = true;
   for (const k in qs) {
     const v = qs[k];

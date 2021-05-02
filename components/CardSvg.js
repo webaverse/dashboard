@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {cardPreviewHost} from '../webaverse/constants';
 
 const cardWidth = 500;
 const cardHeight = cardWidth/2.5*3.5;
@@ -32,10 +33,17 @@ const CardSvg = ({
 
     const qs = {
       w: 500,
-      ext: 'jpg',
+      t: id,
+      name: assetName,
+      description,
+      image,
+      hash,
+      ext: 'jpg', // ext here means output content-type, not asset
+      minterUsername,
+      minterAvatarPreview,
       nonce,
     };
-    let src = `https://card-preview.exokit.org/${id}?`;
+    let src = `${cardPreviewHost}?`;
     let first = true;
     for (const k in qs) {
       const v = qs[k];

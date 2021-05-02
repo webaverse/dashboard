@@ -24,6 +24,7 @@ const CardSvg = ({
     tilt,
     open,
     nonce,
+    nocache,
     onClick,
 }) => {
     const [perspective, setPerspective] = useState([0, 0]);
@@ -41,6 +42,7 @@ const CardSvg = ({
       ext: 'jpg', // ext here means output content-type, not asset
       minterUsername,
       minterAvatarPreview,
+      nocache,
       nonce,
     };
     let src = `${cardPreviewHost}?`;

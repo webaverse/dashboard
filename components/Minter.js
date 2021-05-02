@@ -302,14 +302,13 @@ class DragNDrop extends Component {
 const CardIframe = ({
   t,
   w,
-  id,
   name,
   description,
   image,
   minterUsername,
   minterAvatarPreview,
 }) => {
-  if (t || id) {
+  if (t) {
     const width = w;
     const height = Math.floor(width / 2.5 * 3.5);
     let src = `${cardsHost}/?`;
@@ -317,7 +316,6 @@ const CardIframe = ({
     const qs = {
       t,
       w,
-      id,
       name,
       description,
       image,
@@ -669,8 +667,14 @@ const Minter = ({
 
                 {(hash && ext) ?
                   <AssetCardSwitch
+                    id={id}
                     hash={hash}
                     ext={ext}
+                    assetName={name}
+                    description={description}
+                    image={image}
+                    minterUsername={minterUsername}
+                    minterAvatarPreview={minterAvatarPreview}
                     selectedView={selectedView}
                     open={true}
                     cardSize="large"
@@ -693,8 +697,8 @@ const Minter = ({
               {(hash && ext) ?
                 <div className="card-preview">
                   <CardIframe
+                    t={id}
                     w={200}
-                    id={id}
                     name={name}
                     description={description}
                     image={image}
@@ -777,8 +781,8 @@ const Minter = ({
                 <Link href={`/assets/${mintedTokenId}`}>
                   <a className={`item`}>
                     <CardIframe
+                      t={mintedTokenId}
                       w={300}
-                      id={mintedTokenId}
                       name={name}
                       description={description}
                       image={image}

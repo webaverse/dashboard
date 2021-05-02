@@ -67,10 +67,11 @@ const Profile = ({
       _updateNameInputFocus();
     }, [editName]);
     
-    const src = profile.avatarPreview && profile.avatarPreview.replace(
-      /\/[^\/]*\.([^\/]*)$/,
-      '/preview.webm'
-    );
+    const src = profile.avatarPreview && profile.avatarPreview
+      .replace(
+        /\/[^\/]*\.([^\/]*)$/,
+        '/preview.webm'
+      );
 
     return (
         <div className="profileContainer">

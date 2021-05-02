@@ -44,11 +44,11 @@ const Card2D = ({
     nonce,
   };
   let src = image;
-  // render gifs as gifs
-  if (!src) {
-    src = `${previewHost}/${hash}.${ext}/preview.png`
-  }
+  src = `${previewHost}/${hash}.${ext}/preview.png`
   src = src.replace(/\.gif\/preview\.png$/, '.gif/preview.gif');
+  if (!/\?$/.test(src)) {
+    src += '?';
+  }
   let first = true;
   for (const k in qs) {
     const v = qs[k];

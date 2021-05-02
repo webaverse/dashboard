@@ -51,7 +51,7 @@ const AssetPage = ({
         :
           <meta name="twitter:card" content="summary_large_image" />
         }
-        <script type="text/javascript" src="/geometry.js"></script>
+        {/* <script type="text/javascript" src="/geometry.js"></script> */}
       </Head>
       <div className="asset-page">
         <Asset

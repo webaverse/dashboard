@@ -243,7 +243,7 @@
   align-items: center;
 }
 .profileHeader .profileWrap:not(:hover) .profileText.mainName .edit-icon {
-  display: none;
+  opacity: 0;
 }
 .profileHeader .profileText.label {
   font-family: 'FuturaStd-Heavy';

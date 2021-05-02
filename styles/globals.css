@@ -385,7 +385,7 @@ a {
   display: flex;
   width: 100vw;
   margin-top: 90px;
-  min-height: calc(100vh - 90px);
+  min-height: calc(100vh - 90px - 20px);
   padding: 0 8vw;
   padding-top: 20px;
   /* background-image: linear-gradient(0deg, rgb(230, 230, 230) 0%, rgba(230, 230, 230, 0) 100%); */
@@ -685,9 +685,9 @@ a {
   overflow: hidden;
 }
 .preview-background {
-  position: absolute;
-  top: 0;
-  bottom: -74px;
+  position: fixed;
+  top: 90px;
+  bottom: 0;
   right: 0;
   width: 300px;
   background-image: linear-gradient(to right, #FFF, #ddd);

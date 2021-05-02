@@ -9,7 +9,8 @@ import Hero from "../components/Hero";
 import CardRow from "../components/CardRow";
 import CardRowHeader from "../components/CardRowHeader";
 import ProgressBar from "../components/ProgressBar";
-import AssetCard3D from "../components/Card3D";
+// import AssetCard3D from "../components/Card3D";
+import AssetCardSwitch from "../components/CardSwitch";
 import ViewSwitch from "../components/ViewSwitch";
 // import Asset from "../components/Asset";
 import User from "../components/User";
@@ -375,7 +376,7 @@ const Minter = ({
   const [mintError, setMintError] = useState('');
   const [mintMenuOpen, setMintMenuOpen] = useState(!animate);
   const [mintMenuStep, setMintMenuStep] = useState(1);
-  const [selectedView, setSelectedView] = useState('');
+  const [selectedView, setSelectedView] = useState('3d');
   
   useEffect(() => {
     if (animate && !mintMenuOpen) {
@@ -664,9 +665,10 @@ const Minter = ({
                 />
 
                 {(hash && ext) ?
-                  <AssetCard3D
+                  <AssetCardSwitch
                     hash={hash}
                     ext={ext}
+                    selectedView={selectedView}
                     open={true}
                     cardSize="large"
                   />

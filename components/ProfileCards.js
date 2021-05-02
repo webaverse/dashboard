@@ -6,7 +6,6 @@ const ProfileCards = ({profiles}) => {
   return (
     <div className="accounts">
       {profiles.map((item, i) => {
-        // console.log('check item', item);
         const image = item.avatarPreview.replace(/\.[^.]*$/, '.png');
 
         // console.log('got image', image);

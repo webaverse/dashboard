@@ -97,9 +97,10 @@ const Masonry = ({
     };
   }, [dragStart]);
   
-  const allTokens = (avatars || [])
-    .concat(art || [])
-    .concat(models || []);
+  const allTokens = searchResults ||
+    (avatars || [])
+      .concat(art || [])
+      .concat(models || []);
   
   return (loading && !mintMenuOpen) ? (
     <div className="progress-bar-wrap">
@@ -108,13 +109,13 @@ const Masonry = ({
       />
     </div>
   ) : (
-    searchResults ? (
-      <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
-        {/* <CardRowHeader name="Avatars" /> */}
-        <CardRow name="Results" data={searchResults} selectedView={selectedView} cardSize="small" onTokenClick={_handleTokenClick} />
-      </div>
-    ) : (
-      selectedView !== '3d' ? (
+    selectedView !== '3d' ? (
+      searchResults ? (
+        <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
+          {/* <CardRowHeader name="Avatars" /> */}
+          <CardRow name="Results" data={searchResults} selectedView={selectedView} cardSize="small" onTokenClick={_handleTokenClick} />
+        </div>
+      ) : (
         <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
           {/* <CardRowHeader name="Avatars" /> */}
           <CardRow name="Avatars" data={avatars} selectedView={selectedView} cardSize="small" onTokenClick={_handleTokenClick} />
@@ -125,16 +126,87 @@ const Masonry = ({
           {/* <CardRowHeader name="3D Models" /> */}
           <CardRow name="Models" data={models} selectedView={selectedView} cardSize="small" onTokenClick={_handleTokenClick} />
         </div>
-      ) : (
-        <Fragment>
-          <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
-            {(() => {
-              const asset = allTokens[loadTokenIndex];
+      )
+    ) : (
+      <Fragment>
+        <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
+          {(() => {
+            const asset = allTokens[loadTokenIndex];
+            if (asset.totalSupply === 0) {
+              return;
+            }
+            const {
+              id,
+              name,
+              description,
+              image,
+              properties: {
+                hash,
+                filename,
+                ext,
+              },
+              external_url,
+              totalSupply,
+              balance,
+              buyPrice,
+              storeId,
+              owner,
+              minter,
+            } = asset;
+            const cardSize = 'small';
+            let props = {
+              key: id,
+              id,
+              assetName: name,
+              description,
+              image,
+              external_url,
+              filename,
+              // totalSupply,
+              // balance,
+              // buyPrice,
+              // storeId,
+              hash,
+              ext,
+              ownerAvatarPreview: owner.avatarPreview,
+              ownerUsername: owner.username,
+              ownerAddress: owner.address,
+              minterAvatarPreview: minter.avatarPreview,
+              minterUsername: minter.username,
+              minterAddress: minter.address,
+              cardSize,
+              tilt: true,
+              // open: true,
+              nonce,
+              selectedView,
+              setSelectedView,
+              // onClick: _handleTokenClick(id),
+            };
+            return (
+              <AssetCardSwitch
+                {...props}
+              />
+            );
+          })()}
+          <div
+            className="cards-scroll"
+            style={{
+              transform: `translateX(${scroll}px)`,
+            }}
+            onMouseDown={e => {
+              const {clientX, clientY} = e;
+              setDragStart([clientX, clientY]);
+              setDragStartScroll(scroll);
+            }}
+          >
+            {allTokens.map((asset, i) => {
               if (asset.totalSupply === 0) {
                 return;
               }
               const {
                 id,
+                isMainnet,
+                isPolygon,
                 name,
                 description,
                 image,
@@ -151,21 +223,23 @@ const Masonry = ({
                 owner,
                 minter,
               } = asset;
-              const cardSize = 'small';
-              let props = {
+              const cardSize = 'tiny';
+              const props = {
                 key: id,
                 id,
+                isMainnet,
+                isPolygon,
                 assetName: name,
                 description,
                 image,
+                hash,
                 external_url,
                 filename,
-                // totalSupply,
-                // balance,
-                // buyPrice,
-                // storeId,
-                hash,
                 ext,
+                totalSupply,
+                balance,
+                buyPrice,
+                storeId,
                 ownerAvatarPreview: owner.avatarPreview,
                 ownerUsername: owner.username,
                 ownerAddress: owner.address,
@@ -173,100 +247,27 @@ const Masonry = ({
                 minterUsername: minter.username,
                 minterAddress: minter.address,
                 cardSize,
+                // networkType: 'sidechain',
                 tilt: true,
-                // open: true,
-                nonce,
+                open: i === loadTokenIndex,
+                // onClick: _handleTokenClick,
                 selectedView,
                 setSelectedView,
-                // onClick: _handleTokenClick(id),
+                onClick: () => {
+                  if (!dragMoved) {
+                    setLoadTokenIndex(i);
+                  }
+                },
               };
               return (
-                <AssetCardSwitch
+                <AssetCardSvg
                   {...props}
                 />
               );
-            })()}
-            <div
-              className="cards-scroll"
-              style={{
-                transform: `translateX(${scroll}px)`,
-              }}
-              onMouseDown={e => {
-                const {clientX, clientY} = e;
-                setDragStart([clientX, clientY]);
-                setDragStartScroll(scroll);
-              }}
-            >
-              {allTokens.map((asset, i) => {
-                if (asset.totalSupply === 0) {
-                  return;
-                }
-                const {
-                  id,
-                  isMainnet,
-                  isPolygon,
-                  name,
-                  description,
-                  image,
-                  properties: {
-                    hash,
-                    filename,
-                    ext,
-                  },
-                  external_url,
-                  totalSupply,
-                  balance,
-                  buyPrice,
-                  storeId,
-                  owner,
-                  minter,
-                } = asset;
-                const cardSize = 'tiny';
-                const props = {
-                  key: id,
-                  id,
-                  isMainnet,
-                  isPolygon,
-                  assetName: name,
-                  description,
-                  image,
-                  hash,
-                  external_url,
-                  filename,
-                  ext,
-                  totalSupply,
-                  balance,
-                  buyPrice,
-                  storeId,
-                  ownerAvatarPreview: owner.avatarPreview,
-                  ownerUsername: owner.username,
-                  ownerAddress: owner.address,
-                  minterAvatarPreview: minter.avatarPreview,
-                  minterUsername: minter.username,
-                  minterAddress: minter.address,
-                  cardSize,
-                  // networkType: 'sidechain',
-                  tilt: true,
-                  open: i === loadTokenIndex,
-                  // onClick: _handleTokenClick,
-                  selectedView,
-                  setSelectedView,
-                  onClick: () => {
-                    if (!dragMoved) {
-                      setLoadTokenIndex(i);
-                    }
-                  },
-                };
-                return (
-                  <AssetCardSvg
-                    {...props}
-                  />
-                );
-              })}
-            </div>
+            })}
           </div>
-        </Fragment>
-      )
+        </div>
+      </Fragment>
     )
   );
 };

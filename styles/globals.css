@@ -401,9 +401,8 @@ a {
   display: flex;
   width: 100vw;
   margin-top: 90px;
-  min-height: calc(100vh - 90px - 20px);
+  min-height: calc(100vh - 90px);
   padding: 0 8vw;
-  padding-top: 20px;
   /* background-image: linear-gradient(0deg, rgb(230, 230, 230) 0%, rgba(230, 230, 230, 0) 100%); */
   flex: 1;
   flex-direction: column;
@@ -448,7 +447,7 @@ a {
 .slider .main {
   display: flex;
   flex: 1;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 .slider .preview {
   position: relative;
@@ -703,9 +702,9 @@ a {
 .preview-background {
   position: fixed;
   top: 90px;
-  bottom: 0;
   right: 0;
   width: 300px;
+  height: calc(100vh - 90px);
   background-image: linear-gradient(to right, #FFF, #ddd);
   z-index: -1;
 }

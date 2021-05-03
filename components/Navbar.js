@@ -130,23 +130,25 @@ const Navbar = ({
   const qs = parseQuery(router.asPath.match(/(\?.*)$/)?.[1] || '');
   const {q: currentQ} = qs;
   
-  if (currentQ !== undefined && currentQ !== lastQ) {
-    setLastQ(currentQ);
+  useEffect(() => {
+    if (currentQ !== undefined && currentQ !== lastQ) {
+      setLastQ(currentQ);
 
-    if (currentQ) {
-      setQ(currentQ);
-      (async () => {      
-        const res = await fetch(`https://tokens.webaverse.com/search?q=${currentQ}`);
-        const tokens = await res.json();
-        setSearchResults(tokens);
-      })().catch(err => {
-        console.warn(err);
-      });
-    } else {
-      setQ('');
-      setSearchResults(null);
+      if (currentQ) {
+        setQ(currentQ);
+        (async () => {      
+          const res = await fetch(`https://tokens.webaverse.com/search?q=${currentQ}`);
+          const tokens = await res.json();
+          setSearchResults(tokens);
+        })().catch(err => {
+          console.warn(err);
+        });
+      } else {
+        setQ('');
+        setSearchResults(null);
+      }
     }
-  }
+  }, [currentQ, lastQ]);
   
   useEffect(() => {
     const u = new URL(router.asPath, window.location.href);

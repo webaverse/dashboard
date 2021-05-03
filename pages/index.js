@@ -14,7 +14,7 @@ import Masonry from "../components/Masonry";
 // import {FileDrop} from "react-file-drop";
 import {makeWbn, makeBin, makePhysicsBake} from "../webaverse/build";
 import {getExt, schedulePerFrame, cancelEvent} from "../webaverse/util";
-import {storageHost} from "../webaverse/constants";
+import {storageHost, cardScrollViews} from "../webaverse/constants";
 import JSZip from '../webaverse/jszip.js';
 
 class AssetOverlayBackground extends Component {
@@ -143,7 +143,7 @@ const PagesRoot = ({
                 ctaUrl="https://app.webaverse.com"
             /> */}
             <div className={`container ${mintMenuOpen ? 'open' : ''} ${mintMenuLarge ? 'large' : ''} ${token ? 'background' : ''}`}>
-                {selectedView !== '3d' ?
+                {!cardScrollViews.includes(selectedView) ?
                   <div className="streetchain">
                     <div className="bar" />
                   </div>

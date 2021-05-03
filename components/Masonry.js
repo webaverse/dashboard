@@ -5,6 +5,7 @@ import CardRow from './CardRow';
 import ProgressBar from './ProgressBar';
 import AssetCardSvg from './CardSvg';
 import AssetCardSwitch from './CardSwitch';
+import {cardScrollViews} from '../webaverse/constants';
 
 const Masonry = ({
   selectedView,
@@ -109,7 +110,7 @@ const Masonry = ({
       />
     </div>
   ) : (
-    selectedView !== '3d' ? (
+    !cardScrollViews.includes(selectedView) ? (
       searchResults ? (
         <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
           {/* <CardRowHeader name="Avatars" /> */}

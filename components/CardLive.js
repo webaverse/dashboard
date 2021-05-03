@@ -90,17 +90,13 @@ const CardLive = props => {
         {makeIframe()}
         <div className="card-sub-wrap">
           <div className="top">
-            <div className="name">{assetName}</div>
+            {/* <div className="name">{assetName}</div>
             <div className="description">{description}</div>
             <User
               label="owner"
               userName={ownerUsername}
               address={ownerAddress}
               avatarPreview={ownerAvatarPreview}
-            />
-            {/* <AssetCardSvg
-              {...props}
-              tilt={false}
             /> */}
           </div>
           <div className="bottom">

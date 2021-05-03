@@ -88,12 +88,11 @@
 .content-preview-3d,
 .content-preview-live
 {
-  position: relative;
+  position: absolute;
   display: flex;
-  width: calc(100vw - 16vw - 19px);
+  width: 100vw;
   height: calc(100vh - 300px);
-  margin-left: -50px;
-  margin-bottom: 10px;
+  left: calc(-70px - 8vw);
 }
 .cards-scroll {
   position: absolute;
@@ -117,9 +116,7 @@
   flex: 1;
 }
 .content-preview-3d .iframe,
-.content-preview-3d .iframe-placeholder,
-.content-preview-live .iframe,
-.content-preview-live .iframe-placeholder
+.content-preview-3d .iframe-placeholder
 {
   border-radius: 10px;
 }

@@ -96,3 +96,5 @@ export const cardPreviewHost = `https://card-preview.exokit.org`;
 export const lockHost = `https://lock.exokit.org`;
 /* export const appPreviewHost = `https://127.0.0.1:3001/preview.html`;
 export const cardsHost = `http://127.0.0.1:3002`; */
+
+export const cardScrollViews = ['3d', 'game'];

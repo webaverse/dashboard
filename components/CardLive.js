@@ -1,85 +1,125 @@
-import React, {useState} from "react";
+import React, {Fragment, useState, useEffect} from 'react';
+import {appPreviewHost} from '../webaverse/constants';
+import AssetCardSvg from './CardSvg.js';
+import User from './User.js';
+import ProgressBar from './ProgressBar.js';
 
-const Card3D = ({
+const Card3D = props => {
+  const {
     id,
     assetName,
     description,
-    image,
     hash,
-    animation_url,
     ext,
-    totalSupply,
-    minterAvatarPreview,
-    minterUsername,
+    ownerUsername,
+    ownerAddress,
+    ownerAvatarPreview,
+    // loaded,
     cardSize,
-    isMainnet,
-    isPolygon,
-    glow,
-    imageView,
-    // cardSvgSource,
+    open,
+    nonce,
     onClick,
-}) => {
-    const [perspective, setPerspective] = useState([false, false]);
-    const [flip, setFlip] = useState(false);
-    const [transitioning, setTransitioning] = useState(false);
-    const [boundingBox, setBoundingBox] = useState(null);
+  } = props;
   
-    /* let video = false;
-    if (["webm", "mp4"].indexOf(ext) >= 0) {
-        image = animation_url;
-        video = true;
-    } else if (ext === "gif") {
-        image = animation_url;
+  // const [open, setOpen] = useState(false);
+  const [locked, setLocked] = useState(!open);
+  const [loaded, setLoaded] = useState(false);
+  
+  // console.log('card 3d', {open, locked});
+
+  const qs = {
+    id,
+    hash,
+    ext,
+    nonce,
+  };
+  let src = `${appPreviewHost}?`;
+  let first = true;
+  for (const k in qs) {
+    const v = qs[k];
+    if (v !== undefined) {
+      if (first) {
+        first = false;
+      } else {
+        src += '&';
+      }
+      src += `${k}=${v}`;
     }
-
-    let networkIcon;
-    if (isMainnet) {
-        networkIcon = "/icon-ethereum.svg";
-    } else if(isPolygon) {
-        networkIcon = "/icon-polygon.svg";
-    } else {
-        networkIcon = "/icon-webaverse.svg";
+  }
+  
+  /* useEffect(() => {
+    if (!locked) {
+      setLocked(true);
     }
-
-    let extIcon;
-    if (ext.toLowerCase() === "png") {
-        extIcon = "/icon-jpg.svg";
-    } else if (ext.toLowerCase() === "jpg" || ext.toLowerCase() === "jpeg") {
-        extIcon = "/icon-jpg.svg";
-    } else if (ext.toLowerCase() === "vrm") {
-        extIcon = "/icon-vrm.svg";
-    } else if (ext.toLowerCase() === "vox") {
-        extIcon = "/icon-vrm.svg";
-    } else if (ext.toLowerCase() === "wbn") {
-        extIcon = "/icon-vrm.svg";
-    } else if (ext.toLowerCase() === "glb") {
-        extIcon = "/icon-glb.svg";
-    } else if (ext.toLowerCase() === "gif") {
-        extIcon = "/icon-gif.svg";
+    if (loaded) {
+      setLoaded(false);
     }
+  }, [locked, loaded]); */
+  
+  const makeLoaded = () => !loaded ? (
+    <div className="progress-bar-wrap">
+      <ProgressBar />
+    </div>
+  ) : null;
+  const makeIframe = () => (<iframe
+    className={`iframe ${loaded ? 'loaded' : ''} ${locked ? 'locked' : ''}`}
+    src={src}
+    // src={src.replace('app.webaverse.com', 'app.webaverse.com:3001')}
+    onLoad={e => {
+      console.log('iframe onload', e);
+      setLoaded(true);
+    }}
+    onError={e => {
+      console.warn('iframe onerror', e);
+      setLoaded(true);
+    }}
+  />);
+  
+  /* if (open) {
+    console.log('got prop', props);
+  } */
 
-    let rarity;
-    if (totalSupply < 2) {
-        rarity = "unique";
-    } else if (totalSupply < 3) {
-        rarity = "mythic";
-    } else if (totalSupply < 8) {
-        rarity = "legendary";
-    } else if (totalSupply < 15) {
-        rarity = "epic";
-    } else if (totalSupply < 30) {
-        rarity = "rare";
-    } else if (totalSupply < 50) {
-        rarity = "uncommon";
-    } else if (totalSupply > 50) {
-        rarity = "common";
-    } */
-
-    return (
-      <iframe
-        className={`content-preview-live ${onClick ? 'clickable' : ''}`}
-        src={"https://app.webaverse.com/?t=" + id}
-      />
-    );
+  return <div
+    className={`content-preview-3d`}
+    onClick={e => {
+      if (locked) {
+        setLocked(false);
+      }
+    }}
+  >
+    {cardSize === 'small' ? (
+      <Fragment>
+        {makeLoaded()}
+        {makeIframe()}
+        <div className="card-sub-wrap">
+          <div className="top">
+            <div className="name">{assetName}</div>
+            <div className="description">{description}</div>
+            <User
+              label="owner"
+              userName={ownerUsername}
+              address={ownerAddress}
+              avatarPreview={ownerAvatarPreview}
+            />
+            {/* <AssetCardSvg
+              {...props}
+              tilt={false}
+            /> */}
+          </div>
+          <div className="bottom">
+            <div className="spawn-button">
+              <video className="video" src="https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm" muted autoPlay loop />
+              <div className="label">Spawn</div>
+            </div>
+          </div>
+        </div>
+      </Fragment>
+    ) : (
+      <Fragment>
+        {makeLoaded()}
+        {makeIframe()}
+      </Fragment>
+    )}
+  </div>
 };
 export default Card3D;

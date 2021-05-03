@@ -85,7 +85,15 @@
   width: var(--size);
   height: var(--size);
 }
-.content-preview-3d,
+.content-preview-3d
+{
+  position: relative;
+  display: flex;
+  width: calc(100vw - 16vw - 19px);
+  height: calc(100vh - 300px);
+  margin-left: -50px;
+  margin-bottom: 10px;
+}
 .content-preview-live
 {
   position: absolute;

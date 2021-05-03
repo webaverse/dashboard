@@ -77,7 +77,7 @@ const CardLive = props => {
   } */
 
   return <div
-    className={`content-preview-3d`}
+    className={`content-preview-live`}
     onClick={e => {
       if (locked) {
         setLocked(false);

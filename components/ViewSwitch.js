@@ -13,12 +13,17 @@ const ViewSwitch = ({
         <div className={`option ${selectedView === '2d' ? 'selected' : ''}`} onClick={e => {
           setSelectedView('2d');
         }}>
-          2D
+          Images
         </div>
         <div className={`option ${selectedView === '3d' ? 'selected' : ''}`} onClick={e => {
           setSelectedView('3d');
         }}>
-          3D
+          Media
+        </div>
+        <div className={`option ${selectedView === 'game' ? 'selected' : ''}`} onClick={e => {
+          setSelectedView('game');
+        }}>
+          In-Game
         </div>
         {/* <div className={`option ${selectedView === 'live' ? 'selected' : ''}`} onClick={e => {
           setSelectedView('live');

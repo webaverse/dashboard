@@ -1,7 +1,7 @@
 import AssetCardSvg from './CardSvg';
 import AssetCard2D from './Card2D';
 import AssetCard3D from './Card3D';
-// import AssetCardLive from './CardLive';
+import AssetCardLive from './CardLive';
 
 const CardSwitch = (props) => {
   const {selectedView} = props;
@@ -21,11 +21,11 @@ const CardSwitch = (props) => {
         <AssetCard3D {...props} />
       );
     }
-    /* case 'live': {
+    case 'game': {
       return (
         <AssetCardLive {...props} />
       );
-    } */
+    }
     default: {
       return null;
     }

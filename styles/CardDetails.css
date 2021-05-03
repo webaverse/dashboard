@@ -176,10 +176,16 @@
   margin: 70px 0;
   border: 0;
 }
-.content-preview-3d {
+.wrap > .content-preview-3d {
   padding: 2px;
   border: 2px solid #e0e0e0;
   border-radius: 10px;
+}
+.asset-page .content-preview-3d,
+.asset-overlay .content-preview-3d,
+.asset-overlay .content-preview-live,
+.asset-overlay .content-preview-live {
+  margin: 50px 0;
 }
 .content-preview-2d,
 .content-preview-2d.small .image,

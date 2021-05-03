@@ -85,16 +85,20 @@
   width: var(--size);
   height: var(--size);
 }
-.content-preview-3d
+.content-preview-3d,
+.content-preview-live
 {
   position: relative;
   display: flex;
   width: calc(100vw - 16vw - 19px);
   height: calc(100vh - 300px);
+}
+.content-preview-3d
+{
   margin-left: -50px;
   margin-bottom: 10px;
 }
-.content-preview-live
+.wrap > .content-preview-live
 {
   position: absolute;
   display: flex;

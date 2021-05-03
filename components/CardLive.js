@@ -1,10 +1,10 @@
 import React, {Fragment, useState, useEffect} from 'react';
-import {appPreviewHost} from '../webaverse/constants';
+import {appTryHost} from '../webaverse/constants';
 import AssetCardSvg from './CardSvg.js';
 import User from './User.js';
 import ProgressBar from './ProgressBar.js';
 
-const Card3D = props => {
+const CardLive = props => {
   const {
     id,
     assetName,
@@ -28,12 +28,9 @@ const Card3D = props => {
   // console.log('card 3d', {open, locked});
 
   const qs = {
-    id,
-    hash,
-    ext,
-    nonce,
+    t: id,
   };
-  let src = `${appPreviewHost}?`;
+  let src = `${appTryHost}?`;
   let first = true;
   for (const k in qs) {
     const v = qs[k];
@@ -122,4 +119,4 @@ const Card3D = props => {
     )}
   </div>
 };
-export default Card3D;
+export default CardLive;

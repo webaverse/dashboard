@@ -138,7 +138,7 @@ const Masonry = ({
         <div className={`wrap ${mintMenuOpen ? 'open' : ''}`}>
           {(() => {
             const asset = allTokens[loadTokenIndex];
-            if (asset.totalSupply === 0) {
+            if (!asset || asset.totalSupply === 0) {
               return;
             }
             const {

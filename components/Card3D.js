@@ -64,6 +64,7 @@ const Card3D = props => {
   const makeIframe = () => (<iframe
     className={`iframe ${loaded ? 'loaded' : ''} ${locked ? 'locked' : ''}`}
     src={src}
+    allow="xr-spatial-tracking"
     // src={src.replace('app.webaverse.com', 'app.webaverse.com:3001')}
     onLoad={e => {
       console.log('iframe onload', e);

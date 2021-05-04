@@ -131,7 +131,7 @@ const Navbar = ({
   const {q: currentQ} = qs;
   
   useEffect(() => {
-    if (currentQ !== undefined && currentQ !== lastQ) {
+    if (currentQ !== lastQ) {
       setLastQ(currentQ);
 
       if (currentQ) {

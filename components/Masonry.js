@@ -102,6 +102,11 @@ const Masonry = ({
       setScroll(0);
     }
   }, [selectedView, !!searchResults]);
+  useEffect(() => {
+    if (loadTokenIndex !== 0) {
+      setLoadTokenIndex(0);
+    }
+  }, [!!searchResults]);
   
   const allTokens = searchResults ||
     (avatars || [])

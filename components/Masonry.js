@@ -97,6 +97,11 @@ const Masonry = ({
       window.removeEventListener('mouseup', _mouseup);
     };
   }, [dragStart]);
+  useEffect(() => {
+    if (scroll !== 0) {
+      setScroll(0);
+    }
+  }, [selectedView, !!searchResults]);
   
   const allTokens = searchResults ||
     (avatars || [])

@@ -29,6 +29,8 @@ const CardLive = props => {
 
   const qs = {
     t: id,
+    h: hash,
+    e: ext,
   };
   let src = `${appTryHost}?`;
   let first = true;

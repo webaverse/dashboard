@@ -419,6 +419,20 @@ const Minter = ({
     setLoaded(false);
     setHash('');
     setExt('');
+    
+    const startableFileRegexes = [
+      /(?:manifest.json|index\.html)$/,
+      /(?:\.vrm|\.glb|\.vox)$/,
+    ];
+    const _getStartableFileRegexIndex = n => {
+      for (let i = 0; i < startableFileRegexes.length; i++) {
+        const r = startableFileRegexes[i];
+        if (r.test(n)) {
+          return i;
+        }
+      }
+      return Infinity;
+    };
 
     const fileExt = getExt(file.name);
     if (fileExt === 'zip') {
@@ -437,11 +451,16 @@ const Minter = ({
         if (filePredicate(fileName)) {
           fileNames.push(fileName);
           
-          if (/index\.html$/.test(fileName)) {
-            startableFileNames.push(fileName);
+          for (const r of startableFileRegexes) {
+            if (r.test(fileName)) {
+              startableFileNames.push(fileName);
+            }
           }
         }
       }
+      startableFileNames.sort((a, b) => {
+        return _getStartableFileRegexIndex(a) - _getStartableFileRegexIndex(b);
+      });
       
       console.log('got spec', spec);
       

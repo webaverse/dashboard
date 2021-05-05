@@ -406,13 +406,13 @@ const Minter = ({
   }, [animate, mintMenuOpen]);
   
   const handleLoadFile = async file => {
-    if (!file.originalName) {
+    /* if (!file.originalName) {
       debugger;
-    }
+    } */
     const spec = urlToRepoSpec(file.originalName);
     // console.log('load file name', file.name, file.originalName, spec);
     if (!spec) {
-      debugger;
+      console.warn('no spec', file.name, file.originalName, spec);
     }
     
     setLoading(true);

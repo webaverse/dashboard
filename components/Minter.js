@@ -49,20 +49,39 @@ const templates = [
   ['vehicle', '/scooter.svg', null],
 ];
 
-const urlToRepoZipUrl = url => {
+const urlToRepoSpec = url => {
   // console.log('check url', url);
   const u = new URL(url, window.location.href);
-  const match = u.pathname.match(/^\/(.+?)\/(.+?)\/tree\/(.+)(\/.*)?$/);
+  const match = u.pathname.match(/^\/(.+?)\/(.+?)\/tree\/([^\/]+)(\/.*)?$/);
   // console.log('match pathname', [url, u.pathname, match]);
   if (match) {
     const username = match[1]; 
     const reponame = match[2];
     const branchname = match[3];
     const tail = match[4];
-
-    return `https://http-github-com.proxy.exokit.org/${username}/${reponame}/archive/${branchname}.zip`;
+    
+    return {
+      username,
+      reponame,
+      branchname,
+      tail,
+    };
   } else {
     return null;
+  }
+};
+const urlToRepoZipUrl = url => {
+  const spec = urlToRepoSpec(url);
+  if (spec) {
+    const {
+      username,
+      reponame,
+      branchname,
+      tail,
+    } = spec;
+    return  `https://http-github-com.proxy.exokit.org/${username}/${reponame}/archive/${branchname}.zip`;;
+  } else {
+    return spec;
   }
 };
 
@@ -387,7 +406,14 @@ const Minter = ({
   }, [animate, mintMenuOpen]);
   
   const handleLoadFile = async file => {
-    console.log('load file name', file);
+    if (!file.originalName) {
+      debugger;
+    }
+    const spec = urlToRepoSpec(file.originalName);
+    // console.log('load file name', file.name, file.originalName, spec);
+    if (!spec) {
+      debugger;
+    }
     
     setLoading(true);
     setLoaded(false);
@@ -399,59 +425,84 @@ const Minter = ({
       const zip = await JSZip.loadAsync(file);
       
       const fileNames = [];
+      const startableFileNames = [];
       const isDirectoryName = fileName => /\/$/.test(fileName);
-      const filePredicate = fileName => {
-        return /html-three-template/.test(fileName);
-      };
+      const filePredicate = spec ? fileName => {
+        const match = fileName.match(/^([^\/]+)(\/.*)$/);
+        const rootName = match[1];
+        const pathName = match[2];
+        return pathName.startsWith(spec.tail);
+      } : () => true;
       for (const fileName in zip.files) {
-        // const file = zip.files[fileName];
         if (filePredicate(fileName)) {
           fileNames.push(fileName);
+          
+          if (/index\.html$/.test(fileName)) {
+            startableFileNames.push(fileName);
+          }
         }
       }
       
-      const files = await Promise.all(fileNames.map(async fileName => {
-        const file = zip.file(fileName);
-        const b = file && await file.async('blob');
-        return {
-          name: fileName,
-          data: b,
-        };
-      }));
-      console.log('got r', files);
+      console.log('got spec', spec);
       
-      const fd = new FormData();
-      for (const file of files) {
-        const {name} = file;
-        const basename = name.replace(/\/(.*)$/, '$1');
-        if (isDirectoryName(name)) {
-          fd.append(
-            basename,
-            new Blob([], {
-              type: 'application/x-directory',
-            }),
-            name
-          );
-        } else {
-          fd.append(basename, file.data, name);
+      const localFileNames = {};
+      if (startableFileNames.length > 0) {
+        const files = await Promise.all(fileNames.map(async fileName => {
+          const file = zip.file(fileName);
+          
+          const b = file && await file.async('blob');
+          return {
+            name: fileName,
+            data: b,
+          };
+        }));
+        console.log('got r', files);
+        
+        const fd = new FormData();
+        for (const file of files) {
+          const {name} = file;
+          let basename = name
+            .replace(/^[^\/]*\/(.*)$/, '$1')
+            .slice(spec.tail.length);
+          localFileNames[name] = basename;
+          console.log('append', basename, name);
+          if (isDirectoryName(name)) {
+            fd.append(
+              name,
+              new Blob([], {
+                type: 'application/x-directory',
+              }),
+              basename
+            );
+          } else {
+            fd.append(name, file.data, basename);
+          }
         }
+        
+        // console.log('got form data', fd);
+        const r = await axios({
+          method: 'post',
+          url: storageHost,
+          data: fd,
+        });
+        const {data} = r;
+        
+        const startableFileLocalUrls = startableFileNames.map(u => localFileNames[u]);
+        let startFileLocalUrl = startableFileLocalUrls[0]; // `hicetnunc-main/templates/html-three-template`;
+        const newExt = getExt(startFileLocalUrl);
+        if (startFileLocalUrl === 'index.html') {
+          startFileLocalUrl = '';
+        }
+        console.log('got start url', data, localFileNames, startableFileLocalUrls, startFileLocalUrl);
+        const startFile = data.find(e => e.name === startFileLocalUrl);
+        const {name, hash: newHash} = startFile;
+        
+        console.log('got result', startFile, newHash, newExt);
+        setHash(newHash);
+        setExt(newExt);
+      } else {
+        throw new Error('zip does not contain runnable file!');
       }
-      
-      // console.log('got form data', fd);
-      const r = await axios({
-        method: 'post',
-        url: storageHost,
-        data: fd,
-      });
-      const {data} = r;
-      const startUrl = `hicetnunc-main/templates/html-three-template`;
-      const startFile = data.find(e => e.name === startUrl);
-      const {name, hash: newHash} = startFile;
-      const newExt = 'html'; // getExt(name);
-      
-      console.log('got result', startFile, newHash, newExt);
-      setHash(newHash);
-      setExt(newExt);
     } else {
       const r = await axios({
         method: 'post',
@@ -468,7 +519,7 @@ const Minter = ({
     
     setLoading(false);
   };
-  const handleLoadUrl = async url => {
+  const handleLoadUrl = async (url, originalUrl = url) => {
     setLoaded(false);
     setHash('');
     setExt('');
@@ -478,12 +529,13 @@ const Minter = ({
     const repoZipUrl = urlToRepoZipUrl(url);
     if (repoZipUrl) {
       // console.log('load url 2', url);
-      await handleLoadUrl(repoZipUrl);
+      await handleLoadUrl(repoZipUrl, url);
     } else {
       // console.log('load url 3', url);
       const res = await fetch(url);
       const b = await res.blob();
       b.name = url;
+      b.originalName = originalUrl;
       await handleLoadFile(b);
     }
   };
@@ -497,7 +549,7 @@ const Minter = ({
     
     const repoZipUrl = urlToRepoZipUrl(url);
     if (repoZipUrl) {
-      await handleLoadUrl(repoZipUrl);
+      await handleLoadUrl(repoZipUrl, url);
     } else {
       await handleLoadUrl(url);
     }

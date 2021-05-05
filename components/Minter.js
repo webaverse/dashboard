@@ -453,6 +453,7 @@ const Minter = ({
         return pathName.startsWith(spec.tail);
       } : () => true;
       console.log('load file 5');
+      const localFileNames = {};
       for (const fileName in zip.files) {
         if (filePredicate(fileName)) {
           fileNames.push(fileName);
@@ -462,6 +463,11 @@ const Minter = ({
               startableFileNames.push(fileName);
             }
           }
+          
+          let basename = fileName
+            .replace(/^[^\/]*\/(.*)$/, '$1')
+            .slice(spec.tail.length);
+          localFileNames[fileName] = basename;
         }
       }
       console.log('load file 6');
@@ -472,28 +478,41 @@ const Minter = ({
       
       console.log('got spec', spec);
       
-      const localFileNames = {};
       if (startableFileNames.length > 0) {
+        const startableFileLocalUrls = startableFileNames.map(u => localFileNames[u]);
+        console.log('got urls', startableFileLocalUrls);
+        let startFileLocalUrl = startableFileLocalUrls[0]; // `hicetnunc-main/templates/html-three-template`;
+        const newExt = getExt(startFileLocalUrl);
+        if (startFileLocalUrl === 'index.html') {
+          startFileLocalUrl = '';
+        }
+        const startDirectoryUrl = startFileLocalUrl.replace(/^[^\/]*\//, '');
+        
+        console.log('got start url', {localFileNames, startableFileLocalUrls, startFileLocalUrl, startDirectoryUrl});
+        
         console.log('load file 8');
-        const files = await Promise.all(startableFileNames.map(async fileName => {
-          const file = zip.file(fileName);
-          
-          const b = file && await file.async('blob');
-          return {
-            name: fileName,
-            data: b,
-          };
+        let files = await Promise.all(fileNames.map(async fileName => {
+          if (fileName.startsWith(startDirectoryUrl)) {
+            const file = zip.file(fileName);
+            
+            const b = file && await file.async('blob');
+            return {
+              name: fileName,
+              data: b,
+            };
+          } else {
+            return null;
+          }
         }));
+        files = files.filter(f => !!f);
         console.log('load file 9');
         console.log('got r', files);
         
         const fd = new FormData();
+        let hasRootDirectory = false;
         for (const file of files) {
           const {name} = file;
-          let basename = name
-            .replace(/^[^\/]*\/(.*)$/, '$1')
-            .slice(spec.tail.length);
-          localFileNames[name] = basename;
+          const basename = localFileNames[name];
           console.log('append', basename, name);
           if (isDirectoryName(name)) {
             fd.append(
@@ -503,11 +522,16 @@ const Minter = ({
               }),
               basename
             );
+            if (basename === '') {
+              hasRootDirectory = true;
+            }
           } else {
             fd.append(name, file.data, basename);
           }
         }
         console.log('load file 10');
+
+        console.log('got start url', {localFileNames, startableFileLocalUrls, startFileLocalUrl});
         
         // console.log('got form data', fd);
         const r = await axios({
@@ -519,15 +543,15 @@ const Minter = ({
         
         console.log('load file 11');
         
-        const startableFileLocalUrls = startableFileNames.map(u => localFileNames[u]);
-        let startFileLocalUrl = startableFileLocalUrls[0]; // `hicetnunc-main/templates/html-three-template`;
-        const newExt = getExt(startFileLocalUrl);
-        if (startFileLocalUrl === 'index.html') {
-          startFileLocalUrl = '';
-        }
-        console.log('got start url', data, localFileNames, startableFileLocalUrls, startFileLocalUrl);
-        const startFile = data.find(e => e.name === startFileLocalUrl);
+        const _getStartFile = () => data.find(e => e.name === startFileLocalUrl);
+        let startFile = _getStartFile();
         const {name, hash: newHash} = startFile;
+        if (!startFile) {
+          if (startFileLocalUrl === '') {
+          } else {
+            console.warn('could not find start file');
+          }
+        }
         
         console.log('load file 12');
         console.log('got result', startFile, newHash, newExt);

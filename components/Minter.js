@@ -409,6 +409,7 @@ const Minter = ({
     /* if (!file.originalName) {
       debugger;
     } */
+    console.log('load file 1');
     const spec = urlToRepoSpec(file.originalName);
     // console.log('load file name', file.name, file.originalName, spec);
     if (!spec) {
@@ -434,9 +435,13 @@ const Minter = ({
       return Infinity;
     };
 
+    console.log('load file 2');
+
     const fileExt = getExt(file.name);
     if (fileExt === 'zip') {
+      console.log('load file 3');
       const zip = await JSZip.loadAsync(file);
+      console.log('load file 4');
       
       const fileNames = [];
       const startableFileNames = [];
@@ -447,6 +452,7 @@ const Minter = ({
         const pathName = match[2];
         return pathName.startsWith(spec.tail);
       } : () => true;
+      console.log('load file 5');
       for (const fileName in zip.files) {
         if (filePredicate(fileName)) {
           fileNames.push(fileName);
@@ -458,15 +464,18 @@ const Minter = ({
           }
         }
       }
+      console.log('load file 6');
       startableFileNames.sort((a, b) => {
         return _getStartableFileRegexIndex(a) - _getStartableFileRegexIndex(b);
       });
+      console.log('load file 7');
       
       console.log('got spec', spec);
       
       const localFileNames = {};
       if (startableFileNames.length > 0) {
-        const files = await Promise.all(fileNames.map(async fileName => {
+        console.log('load file 8');
+        const files = await Promise.all(startableFileNames.map(async fileName => {
           const file = zip.file(fileName);
           
           const b = file && await file.async('blob');
@@ -475,6 +484,7 @@ const Minter = ({
             data: b,
           };
         }));
+        console.log('load file 9');
         console.log('got r', files);
         
         const fd = new FormData();
@@ -497,6 +507,7 @@ const Minter = ({
             fd.append(name, file.data, basename);
           }
         }
+        console.log('load file 10');
         
         // console.log('got form data', fd);
         const r = await axios({
@@ -505,6 +516,8 @@ const Minter = ({
           data: fd,
         });
         const {data} = r;
+        
+        console.log('load file 11');
         
         const startableFileLocalUrls = startableFileNames.map(u => localFileNames[u]);
         let startFileLocalUrl = startableFileLocalUrls[0]; // `hicetnunc-main/templates/html-three-template`;
@@ -516,9 +529,12 @@ const Minter = ({
         const startFile = data.find(e => e.name === startFileLocalUrl);
         const {name, hash: newHash} = startFile;
         
+        console.log('load file 12');
         console.log('got result', startFile, newHash, newExt);
         setHash(newHash);
         setExt(newExt);
+        
+        console.log('load file 13');
       } else {
         throw new Error('zip does not contain runnable file!');
       }
@@ -543,19 +559,19 @@ const Minter = ({
     setHash('');
     setExt('');
     
-    // console.log('load url 1', url);
-    
     const repoZipUrl = urlToRepoZipUrl(url);
     if (repoZipUrl) {
-      // console.log('load url 2', url);
       await handleLoadUrl(repoZipUrl, url);
     } else {
-      // console.log('load url 3', url);
+      console.log('load url 1', url);
       const res = await fetch(url);
+      console.log('load url 2', url);
       const b = await res.blob();
+      console.log('load url 3', url, b.size);
       b.name = url;
       b.originalName = originalUrl;
       await handleLoadFile(b);
+      console.log('load url 4', url, b.size);
     }
   };
   const handleLoadTemplate = async templateName => {

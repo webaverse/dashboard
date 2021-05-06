@@ -104,10 +104,10 @@ const CardLive = props => {
             /> */}
           </div>
           <div className="bottom">
-            <div className="spawn-button">
+            {/* <div className="spawn-button">
               <video className="video" src="https://preview.exokit.org/[https://webaverse.github.io/assets/sacks3.vrm]/preview.webm" muted autoPlay loop />
               <div className="label">Spawn</div>
-            </div>
+            </div> */}
           </div>
         </div>
       </Fragment>

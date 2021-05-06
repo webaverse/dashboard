@@ -60,6 +60,7 @@ const CardGrid = ({
                       cardSize,
                       networkType: 'sidechain',
                       tilt: true,
+                      draggable: true,
                       onClick: e => {
                         onTokenClick && onTokenClick(asset.id)(e);
                       },

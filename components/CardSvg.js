@@ -23,6 +23,7 @@ const CardSvg = ({
     cardSvgSpec,
     tilt,
     open,
+    draggable,
     nonce,
     nocache,
     onClick,
@@ -218,9 +219,13 @@ const CardSvg = ({
                   src={src}
                   className={`card-svg-inner ${cardSize}`}
                   onDragStart={e => {
-                    e.dataTransfer.setData('application/json', JSON.stringify({
-                      id,
-                    }));
+                    if (draggable) {
+                      e.dataTransfer.setData('application/json', JSON.stringify({
+                        id,
+                      }));
+                    } else {
+                      e.preventDefault();
+                    }
                   }}
                 />
                 {/* <svg

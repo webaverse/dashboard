@@ -52,17 +52,19 @@ const templates = [
 const urlToRepoSpec = url => {
   // console.log('check url', url);
   const u = new URL(url, window.location.href);
-  const match = u.pathname.match(/^\/(.+?)\/(.+?)\/tree\/([^\/]+)(\/.*)?$/);
+  const match = u.pathname.match(/^\/(.+?)\/(.+?)\/(tree|blob)\/([^\/]+)(\/.*)?$/);
   // console.log('match pathname', [url, u.pathname, match]);
   if (match) {
     const username = match[1]; 
     const reponame = match[2];
-    const branchname = match[3];
-    const tail = match[4];
+    const type = match[3];
+    const branchname = match[4];
+    const tail = match[5];
     
     return {
       username,
       reponame,
+      type,
       branchname,
       tail,
     };
@@ -397,6 +399,8 @@ const Minter = ({
   const [mintMenuStep, setMintMenuStep] = useState(1);
   const [selectedView, setSelectedView] = useState(defaultSelectedView);
   
+  console.log('render hash', hash, ext);
+  
   useEffect(() => {
     if (animate && !mintMenuOpen) {
       requestAnimationFrame(() => {
@@ -409,6 +413,7 @@ const Minter = ({
     /* if (!file.originalName) {
       debugger;
     } */
+
     console.log('load file 1');
     const spec = urlToRepoSpec(file.originalName);
     // console.log('load file name', file.name, file.originalName, spec);
@@ -421,36 +426,52 @@ const Minter = ({
     setHash('');
     setExt('');
     
+    let tail = '', tailName = '';
+    if (spec) {
+      if (spec.type === 'tree') {
+        tail = spec.tail;
+        tailName = '';
+      } else {
+        const match = spec.tail.match(/^(.*)\/([^\/\.]*\.[^\/]*)$/, '$1');
+        tail = match[1];
+        tailName = match[2];
+      }
+    }
+    
     const startableFileRegexes = [
+      tailName,
       /(?:manifest.json|index\.html)$/,
-      /(?:\.vrm|\.glb|\.vox)$/,
+      /(?:\.vrm|\.glb|\.vox|\.html)$/,
     ];
     const _getStartableFileRegexIndex = n => {
       for (let i = 0; i < startableFileRegexes.length; i++) {
         const r = startableFileRegexes[i];
-        if (r.test(n)) {
+        if (
+          (typeof r === 'string' && n === r) ||
+          (typeof r === 'object' && r.test(n))
+        ) {
           return i;
         }
       }
       return Infinity;
     };
 
-    console.log('load file 2');
+    console.log('load file 2', {tail, tailName});
 
     const fileExt = getExt(file.name);
     if (fileExt === 'zip') {
       console.log('load file 3');
       const zip = await JSZip.loadAsync(file);
-      console.log('load file 4');
+      console.log('load file 4', zip.files);
       
       const fileNames = [];
       const startableFileNames = [];
       const isDirectoryName = fileName => /\/$/.test(fileName);
-      const filePredicate = spec ? fileName => {
+      const filePredicate = tail ? fileName => {
         const match = fileName.match(/^([^\/]+)(\/.*)$/);
         const rootName = match[1];
         const pathName = match[2];
-        return pathName.startsWith(spec.tail);
+        return pathName.startsWith(tail);
       } : () => true;
       console.log('load file 5');
       const localFileNames = {};
@@ -458,22 +479,20 @@ const Minter = ({
         if (filePredicate(fileName)) {
           fileNames.push(fileName);
           
-          for (const r of startableFileRegexes) {
-            if (r.test(fileName)) {
-              startableFileNames.push(fileName);
-            }
-          }
-          
           let basename = fileName
             .replace(/^[^\/]*\/(.*)$/, '$1')
-            .slice(spec.tail.length);
+            .slice(tail.length);
           localFileNames[fileName] = basename;
+          
+          if (isFinite(_getStartableFileRegexIndex(basename))) {
+            startableFileNames.push(fileName);
+          }
         }
       }
-      console.log('load file 6');
       startableFileNames.sort((a, b) => {
-        return _getStartableFileRegexIndex(a) - _getStartableFileRegexIndex(b);
+        return _getStartableFileRegexIndex(localFileNames[a]) - _getStartableFileRegexIndex(localFileNames[b]);
       });
+      console.log('load file 6', [tailName, localFileNames, Object.keys(zip.files), startableFileNames, _getStartableFileRegexIndex('portal-forest.html')]);
       console.log('load file 7');
       
       console.log('got spec', spec);
@@ -482,11 +501,14 @@ const Minter = ({
         const startableFileLocalUrls = startableFileNames.map(u => localFileNames[u]);
         console.log('got urls', startableFileLocalUrls);
         let startFileLocalUrl = startableFileLocalUrls[0]; // `hicetnunc-main/templates/html-three-template`;
-        const newExt = getExt(startFileLocalUrl);
+        let newExt = getExt(startFileLocalUrl);
         if (startFileLocalUrl === 'index.html') {
           startFileLocalUrl = '';
         }
-        const startDirectoryUrl = startFileLocalUrl.replace(/^[^\/]*\//, '');
+        if (startFileLocalUrl === '') {
+          newExt = 'html';
+        }
+        const startDirectoryUrl = startFileLocalUrl.replace(/^[^\/]*\/?/, '');
         
         console.log('got start url', {localFileNames, startableFileLocalUrls, startFileLocalUrl, startDirectoryUrl});
         
@@ -529,9 +551,7 @@ const Minter = ({
             fd.append(name, file.data, basename);
           }
         }
-        console.log('load file 10');
-
-        console.log('got start url', {localFileNames, startableFileLocalUrls, startFileLocalUrl});
+        console.log('load file 10', {fileNames, startDirectoryUrl, localFileNames, startableFileNames, startableFileLocalUrls, startFileLocalUrl});
         
         // console.log('got form data', fd);
         const r = await axios({
@@ -546,12 +566,12 @@ const Minter = ({
         const _getStartFile = () => data.find(e => e.name === startFileLocalUrl);
         let startFile = _getStartFile();
         const {name, hash: newHash} = startFile;
-        if (!startFile) {
+        /* if (!startFile) {
           if (startFileLocalUrl === '') {
           } else {
             console.warn('could not find start file');
           }
-        }
+        } */
         
         console.log('load file 12');
         console.log('got result', startFile, newHash, newExt);

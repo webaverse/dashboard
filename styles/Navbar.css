@@ -320,12 +320,12 @@
 .navbarTopLevelMenuOption:hover .navbarSubMenuContainer {
   display: block;
 }
-.navbarLinkItem.item {
+/* .navbarLinkItem.item {
   transition: all .3s ease;
 }
 .item:hover {
   color: #c4005d;
-}
+} */
 .navbarSubMenuLinkItem:hover {
   transition: all .3s ease;
   background: #312936;

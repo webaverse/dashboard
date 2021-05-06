@@ -1307,6 +1307,7 @@ input.button[type=button].cancel:hover {
   top: 0;
   right: 0;
   padding: 10px;
+  z-index: 1;
   user-select: none;
 }
 .card-buttons .card-button {

@@ -186,11 +186,15 @@
   border-radius: 10px;
 }
 .asset-page .content-preview-3d,
-.asset-overlay .content-preview-3d,
-.asset-overlay .content-preview-live,
-.asset-overlay .content-preview-live {
+.asset-overlay .content-preview-3d
+{
   margin: 50px 0;
 }
+/* .asset-page .content-preview-live,
+.asset-overlay .content-preview-live
+{
+  margin-top: 50px;
+} */
 .content-preview-2d,
 .content-preview-2d.small .image,
 .content-preview-2d .card-sub-wrap

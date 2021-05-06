@@ -33,6 +33,7 @@ const Profile = ({
     const [editedName, setEditedName] = useState(profileName);
     const [keysOpen, setManageKeysOpen] = useState(false);
     const [nonce, setNonce] = useState(undefined);
+    const [dropState, setDropState] = useState(null);
 
     const logout = () => {
         setGlobalState({ ...globalState, logout: "true" });
@@ -258,14 +259,12 @@ const Profile = ({
                       ['/noun_Seat_2522171.svg', ''],
                     ].map((spec, i) => {
                       const [src, className] = spec;
+                      const key = `wear-${i}`;
                       return (
-                        <div className={`profileLoadoutItem light ${className}`} key={i}>
+                        <div className={`profileLoadoutItem light ${className}`} key={key}>
                           <img
                             src={src}
                             className="profileLoadoutPicture"
-                            onDragStart={e => {
-                              e.preventDefault();
-                            }}
                           />
                         </div>
                       );
@@ -276,39 +275,110 @@ const Profile = ({
                   <div className="profileLoadoutHeader">Loadout</div>
                   {
                     loadout.slice(0, 8).map((item, i) => {
+                        const key = `loadout-${i}`;
                         if (item && item[3]) {
                           // console.log('got item', item);
                           const tokenId = parseInt(item[0], 10);
+                          console.log('check key', {dropState, key});
                           if (!isNaN(tokenId)) {
                             return (
-                              <Link href={`/assets/${tokenId}`} key={i}>
-                                <a className="profileLoadoutItem" key={i}>
+                              <Link
+                                href={`/assets/${tokenId}`}
+                                key={key}
+                              >
+                                <a
+                                  className={`profileLoadoutItem ${dropState === key ? 'drop' : ''}`}
+                                  onDragOver={e => {
+                                    e.preventDefault();
+                                    
+                                    // console.log('got drag over', e);
+                                  }}
+                                  onDrop={e => {
+                                    e.preventDefault();
+                                  
+                                    const s = e.dataTransfer.getData('application/json');
+                                    console.log('got drop', {s});
+                                    setDropState(null);
+                                  }}
+                                  onDragEnter={e => {
+                                    const s = e.dataTransfer.getData('application/json');
+                                    console.log('drag enter', {s});
+                                    setDropState(key);
+                                  }}
+                                  onDragLeave={e => {
+                                    console.log('drag leave');
+                                    setDropState(null);
+                                  }}
+                                >
                                   <img
                                     src={item[3]}
                                     className="profileLoadoutPicture"
-                                    onDragStart={e => {
-                                      e.preventDefault();
-                                    }}
                                   />
                                 </a>
                               </Link>
                             );
                           } else {
                             return (
-                              <a href={item[3]} className="profileLoadoutItem" key={i}>
+                              <a
+                                href={item[3]}
+                                className={`profileLoadoutItem ${dropState === key ? 'drop' : ''}`}
+                                onDragOver={e => {
+                                  e.preventDefault();
+                                
+                                  // console.log('got drag over', e);
+                                }}
+                                onDrop={e => {
+                                  e.preventDefault();
+                                
+                                  const s = e.dataTransfer.getData('application/json');
+                                  console.log('got drop', {s});
+                                  setDropState(null);
+                                }}
+                                onDragEnter={e => {
+                                  const s = e.dataTransfer.getData('application/json');
+                                  console.log('drag enter', {s});
+                                  setDropState(key);
+                                }}
+                                onDragLeave={e => {
+                                  console.log('drag leave');
+                                  setDropState(null);
+                                }}
+                                key={key}
+                              >
                                 <img
                                   src={item[3]}
                                   className="profileLoadoutPicture"
-                                  onDragStart={e => {
-                                    e.preventDefault();
-                                  }}
                                 />
                               </a>
                             ); 
                           }
                         } else {
                           return (
-                            <div className="profileLoadoutItem light" key={i} />
+                            <div
+                              className={`profileLoadoutItem light ${dropState === key ? 'drop' : ''}`}
+                              onDragOver={e => {
+                                e.preventDefault();
+                              
+                                // console.log('got drag over', e);
+                              }}
+                              onDrop={e => {
+                                e.preventDefault();
+                              
+                                const s = e.dataTransfer.getData('application/json');
+                                console.log('got drop', {s});
+                                setDropState(null);
+                              }}
+                              onDragEnter={e => {
+                                const s = e.dataTransfer.getData('application/json');
+                                console.log('drag enter', {s});
+                                setDropState(key);
+                              }}
+                              onDragLeave={e => {
+                                console.log('drag leave');
+                                setDropState(null);
+                              }}
+                              key={key}
+                            />
                           );
                         }
                       

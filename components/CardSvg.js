@@ -217,7 +217,11 @@ const CardSvg = ({
                 <img
                   src={src}
                   className={`card-svg-inner ${cardSize}`}
-                  onDragStart={_cancelDragStart}
+                  onDragStart={e => {
+                    e.dataTransfer.setData('application/json', JSON.stringify({
+                      id,
+                    }));
+                  }}
                 />
                 {/* <svg
                   className="card-svg-inner"

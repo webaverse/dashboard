@@ -175,6 +175,8 @@ const Form = ({
   setDescription,
   quantity,
   setQuantity,
+  transferable,
+  setTransferable,
   file,
   setFile,
   mintMenuStep,
@@ -227,6 +229,21 @@ const Form = ({
       <textarea value={description} onChange={e => {
         setDescription(e.target.value);
       }} placeholder="Description" />
+      <div className="label">Type</div>
+      <div className="fat-radio">
+        <div className="items">
+          <div className={`item left ${!transferable ? 'open' : ''}`} onClick={() => setTransferable(false)}>
+            <img className="icon" src="/locked-box.svg" />
+            <div className="text">Nontransferable</div>
+            <div className="description">Personal token that you can use to show off your stuff.</div>
+          </div>
+          <div className={`item right ${transferable ? 'open' : ''}`} onClick={() => setTransferable(true)}>
+            <img className="icon" src="/trade.svg" />
+            <div className="text">Transferable</div>
+            <div className="description">Economic token that you can trade and sell.</div>
+          </div>
+        </div>
+      </div>
       <div className="label">Source</div>
       <div className="radio">
         <label>
@@ -400,6 +417,7 @@ const Minter = ({
   const [helpOpen, setHelpOpen] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [transferable, setTransferable] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [file, setFile] = useState(null);
   const [url, setUrl] = useState(`https://github.com/hicetnunc2000/hicetnunc/tree/main/templates/html-three-template`);
@@ -981,6 +999,8 @@ const Minter = ({
             setName={setName}
             description={description}
             setDescription={setDescription}
+            transferable={transferable}
+            setTransferable={setTransferable}
             quantity={quantity}
             setQuantity={setQuantity}
             file={file}
@@ -1054,6 +1074,8 @@ const Lhs = ({
   setName,
   description,
   setDescription,
+  transferable,
+  setTransferable,
   quantity,
   setQuantity,
   file,
@@ -1096,6 +1118,8 @@ const Lhs = ({
           setDescription={setDescription}
           quantity={quantity}
           setQuantity={setQuantity}
+          transferable={transferable}
+          setTransferable={setTransferable}
           file={file}
           setFile={setFile}
           mintMenuStep={mintMenuStep}

@@ -270,9 +270,9 @@ const Form = ({
         setMintMenuStep(2);
         setSelectedTab('');
         
-        if (source === 'file') {
+        if (source === 'file' && file) {
           handleLoadFile(file);
-        } else if (source === 'url') {
+        } else if (source === 'url' && url) {
           handleLoadUrl(url);
         }
       }} />

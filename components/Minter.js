@@ -405,7 +405,7 @@ const Minter = ({
   const [mintMenuStep, setMintMenuStep] = useState(1);
   const [selectedView, setSelectedView] = useState(defaultSelectedView);
   
-  console.log('render hash', hash, ext);
+  // console.log('render hash', hash, ext);
   
   useEffect(() => {
     if (animate && !mintMenuOpen) {

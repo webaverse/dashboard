@@ -302,9 +302,7 @@ const Profile = ({
                     loadout.slice(0, 8).map((item, i) => {
                         const key = `loadout-${i}`;
                         if (item && item[3]) {
-                          // console.log('got item', item);
                           const tokenId = parseInt(item[0], 10);
-                          console.log('check key', {dropState, key});
                           if (!isNaN(tokenId)) {
                             return (
                               <Link

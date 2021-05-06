@@ -91,6 +91,9 @@ const FakeCard = ({animate, animationSize, onClick}) => {
   const [translation, setTranslation] = useState([0, 0, 0]);
   const [perspective, setPerspective] = useState([0, 0]);
   const [transitioning, setTransitioning ] = useState(false);
+  const [filter, setFilter] = useState('');
+  const [lastTimestamp, setLastTimestamp] = useState(0);
+  const [lastHue, setLastHue] = useState(0);
   
   const flip = false;
   const tilt = true;
@@ -99,6 +102,8 @@ const FakeCard = ({animate, animationSize, onClick}) => {
   
   {
     let frame = null;
+    let lastHue = 0;
+    let lastTimestamp = 0;
     const _scheduleFrame = () => {
       frame = requestAnimationFrame(_recurse);
     };
@@ -114,6 +119,13 @@ const FakeCard = ({animate, animationSize, onClick}) => {
           Math.sin((Date.now() % 5000) / 5000 * Math.PI * 2) * (animationSize === 'large' ? 0.5 : 1),
           Math.cos((Date.now() % 3000) / 3000 * Math.PI * 2) * (animationSize === 'large' ? 0.2 : 0.5)
         ]);
+        
+        const now = Date.now();
+        const timeDiff = now - lastTimestamp;
+        setFilter(`sepia(10%) hue-rotate(${lastHue}deg)`);
+        lastTimestamp = now;
+        lastHue = (lastHue + timeDiff * 1) % 360;
+        
       }
     };
     schedulePerFrame(() => {
@@ -140,6 +152,7 @@ const FakeCard = ({animate, animationSize, onClick}) => {
             className={`card-svg`}
             style={{
               transform: `translate3D(${translation.map(n => n + 'px').join(', ')}) rotateY(${perspective[0] * 180 * 0.2 + (flip ? -180 : 0)}deg) rotateX(${perspective[1] * 180 * 0.2}deg)`,
+              filter,
             }}
           >
             <img

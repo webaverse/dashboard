@@ -289,6 +289,7 @@ const Profile = ({
                           <img
                             src={src}
                             className="profileLoadoutPicture"
+                            onDragStart={cancelEvent}
                           />
                         </div>
                       );
@@ -312,6 +313,7 @@ const Profile = ({
                               >
                                 <a
                                   className={`profileLoadoutItem ${dropState === key ? 'drop' : ''}`}
+                                  onDragStart={cancelEvent}
                                   onDragOver={e => {
                                     e.preventDefault();
                                     
@@ -346,6 +348,7 @@ const Profile = ({
                               <a
                                 href={item[3]}
                                 className={`profileLoadoutItem ${dropState === key ? 'drop' : ''}`}
+                                onDragStart={cancelEvent}
                                 onDragOver={e => {
                                   e.preventDefault();
                                 

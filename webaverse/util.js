@@ -370,7 +370,7 @@ export const schedulePerFrame = (startFn, endFn) => {
     return () => {
       endFn();
     };
-  });
+  }, []);
 };
 
 export const cancelEvent = e => {

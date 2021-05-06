@@ -261,7 +261,31 @@ const Profile = ({
                       const [src, className] = spec;
                       const key = `wear-${i}`;
                       return (
-                        <div className={`profileLoadoutItem light ${className}`} key={key}>
+                        <div
+                          className={`profileLoadoutItem light ${className} ${dropState === key ? 'drop' : ''}`}
+                          onDragOver={e => {
+                            e.preventDefault();
+                            
+                            // console.log('got drag over', e);
+                          }}
+                          onDrop={e => {
+                            e.preventDefault();
+                          
+                            const s = e.dataTransfer.getData('application/json');
+                            console.log('got drop', {s});
+                            setDropState(null);
+                          }}
+                          onDragEnter={e => {
+                            const s = e.dataTransfer.getData('application/json');
+                            console.log('drag enter', {s});
+                            setDropState(key);
+                          }}
+                          onDragLeave={e => {
+                            console.log('drag leave');
+                            setDropState(null);
+                          }}
+                          key={key}
+                        >
                           <img
                             src={src}
                             className="profileLoadoutPicture"

@@ -195,7 +195,7 @@ const Form = ({
     _updateUrlFocus();
   }, [source]);
   
-  const enabled = (source === 'file' && !!file) || source === 'url';
+  const enabled = (source === 'file' && !!file) || (source === 'url' && !!url);
   
   return (
     <form className={`form`} onSubmit={e => {

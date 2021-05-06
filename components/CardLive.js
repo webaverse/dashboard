@@ -25,7 +25,7 @@ const CardLive = props => {
   const [locked, setLocked] = useState(!open);
   const [loaded, setLoaded] = useState(false);
   
-  // console.log('card 3d', {open, locked});
+  // console.log('card live', {open, locked});
 
   const qs = {
     t: id,

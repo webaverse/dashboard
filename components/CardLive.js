@@ -22,7 +22,7 @@ const CardLive = props => {
   } = props;
   
   // const [open, setOpen] = useState(false);
-  const [locked, setLocked] = useState(!open);
+  // const [locked, setLocked] = useState(!open);
   const [loaded, setLoaded] = useState(false);
   
   // console.log('card live', {open, locked});
@@ -61,7 +61,8 @@ const CardLive = props => {
     </div>
   ) : null;
   const makeIframe = () => (<iframe
-    className={`iframe ${loaded ? 'loaded' : ''} ${locked ? 'locked' : ''}`}
+    // className={`iframe ${loaded ? 'loaded' : ''} ${locked ? 'locked' : ''}`}
+    className={`iframe ${loaded ? 'loaded' : ''}`}
     src={src}
     allow="xr-spatial-tracking"
     // src={src.replace('app.webaverse.com', 'app.webaverse.com:3001')}
@@ -81,11 +82,11 @@ const CardLive = props => {
 
   return <div
     className={`content-preview-live`}
-    onClick={e => {
+    /* onClick={e => {
       if (locked) {
         setLocked(false);
       }
-    }}
+    }} */
   >
     {cardSize === 'small' ? (
       <Fragment>

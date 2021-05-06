@@ -22,7 +22,7 @@ const Card3D = props => {
   } = props;
   
   // const [open, setOpen] = useState(false);
-  const [locked, setLocked] = useState(!open);
+  // const [locked, setLocked] = useState(!open);
   const [loaded, setLoaded] = useState(false);
   
   // console.log('card 3d', {open, locked});
@@ -62,7 +62,8 @@ const Card3D = props => {
     </div>
   ) : null;
   const makeIframe = () => (<iframe
-    className={`iframe ${loaded ? 'loaded' : ''} ${locked ? 'locked' : ''}`}
+    // className={`iframe ${loaded ? 'loaded' : ''} ${locked ? 'locked' : ''}`}
+    className={`iframe ${loaded ? 'loaded' : ''}`}
     src={src}
     allow="xr-spatial-tracking"
     // src={src.replace('app.webaverse.com', 'app.webaverse.com:3001')}
@@ -82,11 +83,11 @@ const Card3D = props => {
 
   return <div
     className={`content-preview-3d`}
-    onClick={e => {
+    /* onClick={e => {
       if (locked) {
         setLocked(false);
       }
-    }}
+    }} */
   >
     {cardSize === 'small' ? (
       <Fragment>

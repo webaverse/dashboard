@@ -174,6 +174,8 @@ const Form = ({
   setSelectedTab,
   handleLoadFile,
   handleLoadUrl,
+  setHash,
+  setExt,
 }) => {
   let nameEl = null;
   const _updateNameFocus = () => {
@@ -195,7 +197,7 @@ const Form = ({
     _updateUrlFocus();
   }, [source]);
   
-  const enabled = (source === 'file' && !!file) || (source === 'url' && !!url);
+  const enabled = (source === 'file' && !!file) || (source === 'url' && !! url);
   
   return (
     <form className={`form`} onSubmit={e => {
@@ -269,12 +271,16 @@ const Form = ({
       <input className={enabled ? '' : 'disabled'} type="button" value="Preview NFT" onChange={e => {}} disabled={!enabled} onClick={e => {
         setMintMenuStep(2);
         setSelectedTab('');
+        setHash('');
+        setExt('');
         
         if (source === 'file' && file) {
           handleLoadFile(file);
         } else if (source === 'url' && url) {
           handleLoadUrl(url);
         }
+        
+        
       }} />
     </form>
   );
@@ -973,7 +979,9 @@ const Minter = ({
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab}
             hash={hash}
+            setHash={setHash}
             ext={ext}
+            setExt={setExt}
             handleLoadFile={handleLoadFile}
             handleLoadUrl={handleLoadUrl}
           />
@@ -1049,7 +1057,9 @@ const Lhs = ({
   selectedTab,
   setSelectedTab,
   hash,
+  setHash,
   ext,
+  setExt,
   handleLoadFile,
   handleLoadUrl,
 }) => {
@@ -1085,6 +1095,8 @@ const Lhs = ({
           setSelectedTab={setSelectedTab}
           handleLoadFile={handleLoadFile}
           handleLoadUrl={handleLoadUrl}
+          setHash={setHash}
+          setExt={setExt}
         />
       </div>
     </div>

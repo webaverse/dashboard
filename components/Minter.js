@@ -565,7 +565,7 @@ const Minter = ({
         
         const _getStartFile = () => data.find(e => e.name === startFileLocalUrl);
         let startFile = _getStartFile();
-        const {name, hash: newHash} = startFile;
+        let {name, hash: newHash} = startFile;
         /* if (!startFile) {
           if (startFileLocalUrl === '') {
           } else {
@@ -573,8 +573,14 @@ const Minter = ({
           }
         } */
         
-        console.log('load file 12');
-        console.log('got result', startFile, newHash, newExt);
+        console.log('load file 12', {data, startFile, newHash, newExt});
+        
+        const rootFile = data.find(f => f.name === '');
+        if (rootFile && name !== '') {
+          newHash = `${rootFile.hash}/${name}`;
+        }
+        
+        console.log('got result', {data, startFile, newHash, newExt});
         setHash(newHash);
         setExt(newExt);
         

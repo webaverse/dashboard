@@ -272,16 +272,19 @@ const Profile = ({
                             e.preventDefault();
                           
                             const s = e.dataTransfer.getData('application/json');
-                            console.log('got drop', {s});
+                            if (s) {
+                              const j = JSON.parse(s);
+                              console.log('got drop', j);
+                            }
                             setDropState(null);
                           }}
                           onDragEnter={e => {
-                            const s = e.dataTransfer.getData('application/json');
-                            console.log('drag enter', {s});
+                            // const s = e.dataTransfer.getData('application/json');
+                            // console.log('drag enter', {s});
                             setDropState(key);
                           }}
                           onDragLeave={e => {
-                            console.log('drag leave');
+                            // console.log('drag leave');
                             setDropState(null);
                           }}
                           key={key}
@@ -321,16 +324,19 @@ const Profile = ({
                                     e.preventDefault();
                                   
                                     const s = e.dataTransfer.getData('application/json');
-                                    console.log('got drop', {s});
+                                    if (s) {
+                                      const j = JSON.parse(s);
+                                      console.log('got drop', j);
+                                    }
                                     setDropState(null);
                                   }}
                                   onDragEnter={e => {
-                                    const s = e.dataTransfer.getData('application/json');
-                                    console.log('drag enter', {s});
+                                    // const s = e.dataTransfer.getData('application/json');
+                                    // console.log('drag enter', {s});
                                     setDropState(key);
                                   }}
                                   onDragLeave={e => {
-                                    console.log('drag leave');
+                                    // console.log('drag leave');
                                     setDropState(null);
                                   }}
                                 >
@@ -356,16 +362,19 @@ const Profile = ({
                                   e.preventDefault();
                                 
                                   const s = e.dataTransfer.getData('application/json');
-                                  console.log('got drop', {s});
+                                  if (s) {
+                                    const j = JSON.parse(s);
+                                    console.log('got drop', j);
+                                  }
                                   setDropState(null);
                                 }}
                                 onDragEnter={e => {
-                                  const s = e.dataTransfer.getData('application/json');
-                                  console.log('drag enter', {s});
+                                  // const s = e.dataTransfer.getData('application/json');
+                                  // console.log('drag enter', {s});
                                   setDropState(key);
                                 }}
                                 onDragLeave={e => {
-                                  console.log('drag leave');
+                                  // console.log('drag leave');
                                   setDropState(null);
                                 }}
                                 key={key}
@@ -390,16 +399,19 @@ const Profile = ({
                                 e.preventDefault();
                               
                                 const s = e.dataTransfer.getData('application/json');
-                                console.log('got drop', {s});
+                                if (s) {
+                                  const j = JSON.parse(s);
+                                  console.log('got drop', j);
+                                }
                                 setDropState(null);
                               }}
                               onDragEnter={e => {
-                                const s = e.dataTransfer.getData('application/json');
-                                console.log('drag enter', {s});
+                                // const s = e.dataTransfer.getData('application/json');
+                                // console.log('drag enter', {s});
                                 setDropState(key);
                               }}
                               onDragLeave={e => {
-                                console.log('drag leave');
+                                // console.log('drag leave');
                                 setDropState(null);
                               }}
                               key={key}

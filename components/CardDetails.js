@@ -474,6 +474,89 @@ const TransferMenu = ({
     </div>
   );
 };
+const BurnMenu = ({
+  id,
+  globalState,
+  /* addToast,
+  handleSuccess,
+  handleError,
+  currentLocation, */
+  onCancel,
+}) => {
+  const doBurn = () => {
+    console.log('burn');
+    onCancel();
+  };
+  
+  return (
+    <div className="drop-menu">
+      <div className="label">Burn token</div>
+      <div className="text">You are about to permanently destroy this NFT.<br/>Are you sure?</div>
+      <div className="buttons">
+        <input type="button" value="Drop" onChange={e => {}} className="button cancel" onClick={doBurn} />
+        <input type="button" value="Cancel" onChange={e => {}} className="button cancel" onClick={onCancel} />
+      </div>
+    </div>
+  );
+  
+  /* const isStuck = /\-stuck$/.test(currentLocation);
+  const networkName = currentLocation.replace(/\-stuck$/, '');
+  const network = Networks[networkName];
+  const {displayName, transferOptions, iconSrc} = network;
+  
+  const [transferOption, setTransferOption] = useState(transferOptions[0]);
+  
+  const doTransfer = async () => {
+    const receipt = await handleDeposit(
+      id,
+      currentLocation,
+      transferOption,
+      globalState,
+      {
+        addToast,
+        handleSuccess,
+        handleError,
+      }
+    );
+    console.log('did transfer', receipt);
+    onCancel();
+  };
+  
+  return (
+    <div className="transfer-menu">
+      <div className="label">Current location</div>
+      <div className="network">
+        <img className="icon" src={network.iconSrc} onDragStart={cancelEvent} />
+        <div className="text">{network.displayName}</div>
+      </div>
+      <div className="label">Transfer to</div>
+      <div className="transfer-options">
+        {transferOptions.map((n, i) => {
+          const network = Networks[n];
+          return (
+            <div
+              className={`transfer-option ${transferOption === n ? 'selected' : ''}`}
+              onClick={e => {
+                setTransferOption(n);
+              }}
+              key={i}
+            >
+              <img className="transfer-icon" src="/chevron-down.svg" onDragStart={cancelEvent} />
+              <div className="network">
+                <img className="icon" src={network.iconSrc} onDragStart={cancelEvent} />
+                <div className="text">{network.displayName}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="buttons">
+        <input type="button" value="Transfer" onChange={e => {}} disabled={!transferOption} className="button ok" onClick={doTransfer} />
+        <input type="button" value="Cancel" onChange={e => {}} className="button cancel" onClick={onCancel} />
+      </div>
+    </div>
+  ); */
+};
 const UnlockableMenu = ({
   id,
   globalState,
@@ -636,6 +719,7 @@ const CardDetails = ({
   const [toggleTradeOpen, setToggleTradeOpen] = useState(false);
   const [toggleResubmitOpen, setToggleResubmitOpen] = useState(false);
   const [toggleTransferOpen, setToggleTransferOpen] = useState(false);
+  const [burnOpen, setBurnOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [owned, setOwned] = useState(false);
 
@@ -1081,6 +1165,15 @@ const CardDetails = ({
   const closeTransferMenu = () => {
     setTransferOpen(false);
   };
+  
+  const openBurnMenu = () => {
+    setBurnOpen(true);
+    setDropdownOpen(false);
+  };
+  const closeBurnMenu = () => {
+    setBurnOpen(false);
+  };
+  
   const handleResubmit = async () => {
     addToast("Retrying NFT chain transfer...", {
       appearance: "info",
@@ -1150,6 +1243,19 @@ const CardDetails = ({
                       handleSuccess={handleSuccess}
                       handleError={handleError}
                       onCancel={closeTransferMenu}
+                    />
+                  </Window>
+                : null}
+                {burnOpen ?
+                  <Window onBackgroundClick={closeBurnMenu}>
+                    <BurnMenu
+                      id={id}
+                      globalState={globalState}
+                      /* currentLocation={currentLocation}
+                      addToast={addToast}
+                      handleSuccess={handleSuccess}
+                      handleError={handleError} */
+                      onCancel={closeBurnMenu}
                     />
                   </Window>
                 : null}
@@ -1308,6 +1414,14 @@ const CardDetails = ({
                         onClick={openTransferMenu}
                       >
                         Transfer to chain...
+                      </a>
+                      
+                      <div className="label">Burn</div>
+                      <a
+                        className="action"
+                        onClick={openBurnMenu}
+                      >
+                        Burn token...
                       </a>
                     </div>
                     {(() => {

@@ -508,7 +508,10 @@ const BurnMenu = ({
       _makeDeadAddress(),
       id
     );
-    console.log('got result 2', result1);
+    console.log('got result 2', result2);
+    
+    const result3 = await setNftMetadata(id, 'name', '', globalState);
+    console.log('got result 3', result3);
     
     onCancel();
   };

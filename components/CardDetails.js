@@ -478,7 +478,7 @@ function buf2hex(buffer) { // buffer is an ArrayBuffer
   return [...new Uint8Array(buffer)].map(x => x.toString(16).padStart(2, '0')).join('');
 }
 const _makeDeadAddress = () => {
-  return '0xdeaddeaddeaddead' + buf2hex(crypto.getRandomValues(new Uint8Array(12)).buffer);
+  return '0xdeaddeaddeaddeaddead' + buf2hex(crypto.getRandomValues(new Uint8Array(12)).buffer);
 };
 const BurnMenu = ({
   id,

@@ -490,11 +490,29 @@ const BurnMenu = ({
   currentLocation, */
   onCancel,
 }) => {
-  const doBurn = () => {
-    console.log('burn');
+  const doBurn = async () => {
+    console.log('burn token', {id, hash});
+
+    const result1 = await runSidechainTransaction(globalState.loginToken.mnemonic)(
+      'NFT',
+      'updateHash',
+      hash,
+      _makeDeadAddress(),
+    );
+    console.log('got result 1', result1);
+    
+    const result2 = await runSidechainTransaction(globalState.loginToken.mnemonic)(
+      'NFT',
+      'transferFrom',
+      globalState.address,
+      _makeDeadAddress(),
+      id
+    );
+    console.log('got result 2', result1);
+    
     onCancel();
   };
-  
+
   return (
     <div className="drop-menu">
       <div className="label">Burn token</div>

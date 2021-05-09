@@ -516,6 +516,8 @@ const BurnMenu = ({
     );
     console.log('got result 3', result3);
     
+    router.push(`/accounts/${globalState.address}`);
+    
     onCancel();
   };
 

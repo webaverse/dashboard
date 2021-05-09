@@ -501,16 +501,19 @@ const BurnMenu = ({
     );
     console.log('got result 1', result1);
     
-    const result2 = await runSidechainTransaction(globalState.loginToken.mnemonic)(
+    const result2 = await Promise.all([
+      setNftMetadata(id, 'name', 'dead', globalState),
+      setNftMetadata(id, 'ext', 'dead', globalState),
+    ]);
+    console.log('got result 2', result2);
+    
+    const result3 = await runSidechainTransaction(globalState.loginToken.mnemonic)(
       'NFT',
       'transferFrom',
       globalState.address,
       _makeDeadAddress(),
       id
     );
-    console.log('got result 2', result2);
-    
-    const result3 = await setNftMetadata(id, 'name', '', globalState);
     console.log('got result 3', result3);
     
     onCancel();

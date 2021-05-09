@@ -482,6 +482,7 @@ const _makeDeadAddress = () => {
 };
 const BurnMenu = ({
   id,
+  hash,
   globalState,
   /* addToast,
   handleSuccess,
@@ -1256,6 +1257,7 @@ const CardDetails = ({
                   <Window onBackgroundClick={closeBurnMenu}>
                     <BurnMenu
                       id={id}
+                      hash={hash}
                       globalState={globalState}
                       /* currentLocation={currentLocation}
                       addToast={addToast}

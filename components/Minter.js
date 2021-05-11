@@ -436,6 +436,22 @@ const Minter = ({
   
   // console.log('render hash', hash, ext);
   
+  const router = useRouter();
+  useEffect(() => {
+    const match = router.asPath.match(/(\?.+)$/);
+    if (match) {
+      const q = parseQuery(match[1]);
+      const {hash, ext} = q;
+      console.log('loaded hash ext', {hash, ext});
+      setLoaded(true);
+      setHash(hash);
+      setExt(ext);
+      setMintMenuStep(2);
+      // const url = `${storageHost}/ipfs/${hash}`;
+      // await handleLoadUrl(url);
+    }
+  }, [router.asPath]);
+  
   useEffect(() => {
     if (animate && !mintMenuOpen) {
       requestAnimationFrame(() => {

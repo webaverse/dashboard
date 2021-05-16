@@ -62,6 +62,30 @@ const ManageKeysMenu = ({
   );
 };
 
+const Search = React.memo(({
+  q,
+  setQ,
+  onEnter,
+}) => {
+  return (
+    <label className="row">
+      <img className="search-image" src="/search.svg" />
+      <input
+        type="text"
+        value={q}
+        onChange={e => {
+          setQ(e.target.value);
+        }}
+        onKeyDown={e => {
+          if (e.which === 13) {
+            onEnter && onEnter(e, {q});
+          }
+        }}
+      />
+    </label>
+  );
+});
+
 const StreetFilters = ({
   q,
   setQ,
@@ -72,21 +96,13 @@ const StreetFilters = ({
   
   return (
     <div className="street-filters">
-      <label className="row">
-        <img className="search-image" src="/search.svg" />
-        <input
-          type="text"
-          value={q}
-          onChange={e => {
-            setQ(e.target.value);
-          }}
-          onKeyDown={e => {
-            if (e.which === 13) {
-              router.push(`/?q=${q}`);
-            }
-          }}
-        />
-      </label>
+      <Search
+        q={q}
+        setQ={setQ}
+        onEnter={(e, {q}) => {
+          router.push(`/?q=${q}`);
+        }}
+      />
       <div className="row">
         <div className="filter-options">
           <div className={`option ${selectedOption === 'image' ? 'selected' : ''}`} onClick={e => setSelectedOption('image')}>

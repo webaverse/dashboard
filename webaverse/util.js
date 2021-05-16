@@ -24,8 +24,10 @@ export function uint8Array2hex(uint8Array) {
   return Array.prototype.map.call(uint8Array, x => ('00' + x.toString(16)).slice(-2)).join('');
 }
 export function getExt(fileName) {
-  const match = fileName.match(/\.([^\.]+)$/);
-  return match && match[1].toLowerCase();
+  const match = fileName
+    .replace(/^[a-z]+:\/\/[^\/]+\//, '')
+    .match(/\.([^\.]+|t\.js|rtf\.js)(?:\?.*)?$/);
+  return match ? match[1].toLowerCase() : '';
 }
 export function downloadFile(file, filename) {
   const blobURL = URL.createObjectURL(file);

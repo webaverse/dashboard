@@ -16,7 +16,7 @@ import {
   runSidechainTransaction,
   loginWithMetaMask,
   switchToPolygon
-} from '../webaverse/blockchain.js'
+} from '../webaverse/blockchain.js';
 
 import {getProfileForCreator} from "../functions/UIStateFunctions";
 import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";

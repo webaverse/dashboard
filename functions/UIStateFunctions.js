@@ -253,7 +253,8 @@ export const getCreators = async () => {
   const { getNetworkName } = await getBlockchain();
   const networkName = getNetworkName();
 
-  const res = await fetch(`https://${networkName}sidechain-accounts.webaverse.com/`);
+  const u = `https://${networkName}sidechain-accounts.webaverse.com/`;
+  const res = await fetch(u);
 
   const creators = await res.json();
 

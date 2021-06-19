@@ -1,53 +1,39 @@
 import React from "react";
 import Link from "next/link";
+import Clip from './Clip';
 
-const ProfileCards = ({profiles}) => {
-  return profiles.map((item, i) => {
-    let url, name;
-    const image = item.image || item.avatarPreview.replace(/\.[^.]*$/, ".png");
+const ProfileCards = ({profiles}) => {  
+  return (
+    <div className="accounts">
+      {profiles.map((item, i) => {
+        const homeSpaceImage = item.homeSpacePreview || "./defaulthomespace.svg";
 
-    const homeSpaceImage = item.homeSpacePreview || "./defaulthomespace.svg";
+        const url = "/accounts/" + item.address;
+        const name = item.name ? item.name : "Anonymous";
+        
+        const src = item.avatarPreview
+          .replace(
+            /\/[^\/]*\.([^\/]*)$/,
+            '/preview.webm'
+          );
 
-    if (!image) { // blank card
-      return;
-    }
-
-    if (/^0x/.test(item.id)) {
-      url = "/accounts/" + item.address;
-      name = item.name ? item.name : "Anonymous";
-    } else if (item.address) {
-      url = "/assets/" + item.id;
-      name = item.name;
-    }
-
-    return (
-      <a
-        key={i}
-        className="content"
-        style={{
-          backgroundImage: `url("${image}")`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center center",
-        }}
-      >
-        <div
-          className="contentBackground"
-          style={{
-            backgroundImage: `url("${homeSpaceImage}")`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center center",
-          }}
-        />
-        <Link href={url}>
-          <div className="content-inner">
-            <h3 className="contentText">{name}</h3>
-          </div>
-        </Link>
-      </a>
-    );
-  });
+        return (
+          <Link href={url} key={i}>
+            <a className="account">
+              <Clip
+                src={src}
+                className="profileVideo"
+                autoPlay={true}
+                loop={true}
+                muted={true}
+              />
+              <div className="profileName">{name}</div>
+            </a>
+          </Link>
+        );
+      })}
+    </div>
+  );
 };
 
 export default ProfileCards;

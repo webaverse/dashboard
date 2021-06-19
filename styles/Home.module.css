@@ -6,7 +6,6 @@
   height: 100vh;
   min-height: 575px;
   width: 100%;
-  color: #fff;
   margin-bottom: 0;
   display: flex;
   flex-flow: column nowrap;
@@ -26,7 +25,6 @@
   font-style: normal;
   line-height: 1.13;
   letter-spacing: normal;
-  text-shadow: 0 0 0.1em rgba(0,0,0,.5);
 }
 .heroContainer .heroCopy p.primary {
   font-size: 28px;
@@ -78,8 +76,6 @@
   bottom: 0;
   width: 100%;
   height: 100%;
-  -webkit-filter: blur(5px);
-  filter: blur(5px);
   opacity: .2;
   z-index: -9999;
 }

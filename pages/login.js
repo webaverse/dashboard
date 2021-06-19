@@ -1,18 +1,36 @@
-import React, { useEffect, useState } from 'react'
+import React, {Fragment, Component, useEffect, useState} from 'react'
 import { useRouter } from 'next/router';
 import { useAppContext } from "../libs/contextLib";
-import { parseQuery } from "../functions/Functions";
 import storage from "../functions/Storage";
+import {parseQuery} from "../webaverse/util";
 import { loginWithPrivateKey, pullUser, getBalance } from "../functions/UIStateFunctions.js";
 import { discordOauthUrl } from '../webaverse/constants.js';
 import bip39 from '../libs/bip39.js';
 import Loader from "../components/Loader";
 
+class Input extends Component {
+  componentDidMount(){
+    this.input.focus();
+  }
+  render() {
+    return(
+      <input 
+        ref={input => { this.input = input; }} 
+        {...this.props}
+      />
+    );
+  }
+}
+
 const Login = () => {
   const {globalState, setGlobalState} = useAppContext();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [loginStep, setLoginStep] = useState(0);
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
+  const [useForm, setUseForm] = useState(false);
 
   const loginWithKey = (key, play, realmId) => {
     // console.log('loginWithKey 1');
@@ -50,7 +68,9 @@ const Login = () => {
         }
       }
 
-      await storage.set("loginToken", { mnemonic: key });
+      await storage.set('loginToken', {
+        mnemonic: key,
+      });
       if (realmId != "") {
         window.location.href = "https://app.webaverse.com/?r=room-" + realmId;
       } else {
@@ -69,69 +89,151 @@ const Login = () => {
       
       // console.log('setInitialState 5');
 
-      setGlobalState({ balance, loginProcessed: true, login: "true", ...newState });
+      setGlobalState({ balance, loaded: true, ...newState });
       // console.log('setInitialState 6');
       router.push("/accounts/" + state.address);
       // console.log('setInitialState 7');
     }
   }
 
-  useEffect(async () => {
-    const code = new URLSearchParams(window.location.search).get("code") || "";
-    const id = new URLSearchParams(window.location.search).get("id") || "";
-    const play = new URLSearchParams(window.location.search).get("play") || false;
-    const realmId = new URLSearchParams(window.location.search).get("realmId") || "";
-    const arrivingFromTwitter = new URLSearchParams(window.location.search).get("twitter") || false;
+  {
+    const {
+      error,
+      error_description,
+      code,
+      id,
+      play,
+      realmId,
+      twitter: arrivingFromTwitter,
+    } = typeof window !== 'undefined' ? parseQuery(window.location.search) : {};
 
-    // console.log('effect 1');
+    useEffect(async () => {
+      // console.log('effect 1');
 
-    if (code || id || play) {
-      // console.log('effect 2');
-      try {
-        const res = await fetch(
-          arrivingFromTwitter ?
-          `https://login.exokit.org/?twittercode=${code}&twitterid=${id}` :
-          `https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
-        // console.log('effect 3');
-        if (res.status !== 200) {
-          throw "Login did not work, got response: " + res.status;
-        }
-        // console.log('effect 4');
-        const j = await res.json();
-        // console.log('effect 5');
-        const {mnemonic} = j;
-        if (mnemonic) {
-          // console.log('effect 6');
-          loginWithKey(mnemonic, play, realmId);
+      if (!loading) {
+        setLoading(true);
+        
+        setUseForm(!(error || error_description) && !(code || id || play));
+        
+        if (error || error_description) {
+          // router.push('/');
+          setError(error + '\n' + error_description);
+        } else if (code || id || play) {
+          // console.log('effect 2');
+          try {
+            const res = await fetch(
+              arrivingFromTwitter ?
+              `https://login.exokit.org/?twittercode=${code}&twitterid=${id}` :
+              `https://login.exokit.org/?discordcode=${code}&discordid=${id}`, {method: 'POST'});
+            // console.log('effect 3');
+            if (res.status !== 200) {
+              throw "Login did not work, got response: " + res.status;
+            }
+            // console.log('effect 4');
+            const j = await res.json();
+            // console.log('effect 5');
+            const {mnemonic} = j;
+            if (mnemonic) {
+              // console.log('effect 6');
+              loginWithKey(mnemonic, play, realmId);
+            } else {
+              console.warn('no mnemonic returned from api');
+            }
+          } catch (err) {
+            console.warn(err);
+            setError(err);
+          }
+        } else if (globalState.loginToken) {
+          router.push('/');
         } else {
-          console.warn('no mnemonic returned from api');
+          setLoginStep(1);
         }
-      } catch (err) {
-        console.warn(err);
-        setError(err);
+      }
+    }, [globalState.loginToken]);
+  }
+  
+  let emailEl = null; 
+  let codeEl = null; 
+  const submit = async () => {
+    console.log('got form submit', {loginStep, name, code});
+          
+    if (loginStep === 1 && emailEl && emailEl.checkValidity()) {
+      setLoginStep(loginStep + 1);
+      
+      const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}`, {
+        method: 'POST',
+      });
+      if (res.ok) {
+        const j = await res.json(); 
+        
+        // console.log('got j', j);
+      } else {
+        console.warn('failed to request code');
+      }
+    } else if (loginStep === 2 && codeEl && codeEl.checkValidity()) {
+      const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`, {
+        method: 'POST',
+      });
+      if (res.ok) {
+        const j = await res.json();
+        const {mnemonic} = j;
+        
+        // console.log('got result', j);
+        
+        await loginWithKey(mnemonic, false, null);
+      } else {
+        console.warn('failed to log in with code');
       }
     } else {
-      // router.push('/');
+      console.warn('unknown login step');
     }
-    setLoading(false);
-  }, []);
+  };
 
   return (
-    <>
-      {[
-        error && (<div key="error">
-          {error}
-        </div>),
-        loading && (<div key="loading">
-          <Loader loading={loading} />
-        </div>),
-        !loading && (<div className="container" key="buttonContainer">
-          <a className="button" href={discordOauthUrl}>
-            Login With Discord
-          </a>
-        </div>)
-      ]}
-    </>
+    <div className="login-page">
+      {useForm ? (
+        <form className="login-page-form" onSubmit={async e => {
+          e.preventDefault();
+          
+          submit();
+        }} >
+          {loginStep === 1 ?
+            <Fragment>
+              <div className="h1">Log in</div>
+              <div className="label">Email</div>
+              <Input type="email" value={email} placeholder="your@email.com" required={true} onChange={e => {
+                setEmail(e.target.value);
+              }} ref={el => {
+                emailEl = el;
+              }} />
+            </Fragment>
+          :
+            <Fragment>
+              <div className="h1">Check your email</div>
+              <div className="label">Verification code</div>
+              <Input type="password" value={code} placeholder="123456" required={true} onChange={e => {
+                setCode(e.target.value);
+              }} ref={el => {
+                codeEl = el;
+              }} />
+            </Fragment>
+          }
+          <input className="button" type="button" value="Submit" onChange={e => {}} disabled={(() => {
+            return !(
+              (loginStep === 1 && email) ||
+              (loginStep === 2 && code)
+            );
+          })()} onClick={submit} />
+        </form>
+      ) : (
+        error ?
+          <div className="login-page-error">
+            {error}
+          </div>
+        :
+          <div className="login-page-placeholder">Logging you in...</div>
+      )}
+    </div>
   )
 }
 export default Login;

@@ -1,0 +1,150 @@
+.card-outer {
+  position: relative;
+  perspective-origin: 50% 50%;
+  perspective: 1000px;
+  user-select: none;
+}
+.card-svg-inner.small {
+  --size: 200px;
+  width: var(--size);
+  height: calc(var(--size) * 3.5 / 2.5);
+}
+.card-svg-inner.tiny {
+  --size: 100px;
+  width: var(--size);
+  height: calc(var(--size) * 3.5 / 2.5);
+}
+.card-wrap {
+  position: relative;
+  margin: 15px;
+}
+.cards-scroll .card-wrap.open .card-svg {
+  transform: translateY(-20px) !important;
+}
+.card-svg,
+.card-outer .back
+{
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.card-outer {
+  cursor: pointer;
+}
+.preview .card-outer {
+  align-self: center;
+}
+.card-outer .back {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+.card-outer .back img {
+  width: 100%;
+  height: 100%;
+}
+.card-wrap:not(:hover) .card-svg,
+.card-wrap:not(:hover) .card-outer .back,
+.card-wrap.transitioning .card-svg,
+.card-wrap.transitioning .back {
+  transition: transform 0.3s ease-out;
+}
+.card-glossy {
+  position: absolute;
+  top: -15px;
+  bottom: -15px;
+  left: -15px;
+  right: -15px;
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.3) 70%,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(255, 255, 255, 0) 90%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.card-svg-inner {
+  --size: 300px;
+  width: var(--size);
+  height: calc(var(--size) * 3.5 / 2.5);
+  /* backface-visibility: hidden; */
+  --rarity-handmade-light: #f1f1f1;
+  --rarity-handmade-light-rgb: 241,241,241;
+  --rarity-handmade-dark: #bbbbbb;
+  --rarity-handmade-dark-rgb: 187,187,187;
+  --rarity-common-light: #cacaca;
+  --rarity-common-light-rgb: 202,202,202;
+  --rarity-common-dark: #7b7b7b;
+  --rarity-common-dark-rgb: 123,123,123;
+  --rarity-uncommon-light: #80cf3f;
+  --rarity-uncommon-light-rgb: 128,207,63;
+  --rarity-uncommon-dark: #3a7913;
+  --rarity-uncommon-dark-rgb: 58,121,19;
+  --rarity-rare-light: #2fd5e8;
+  --rarity-rare-light-rgb: 47,213,232;
+  --rarity-rare-dark: #1258a2;
+  --rarity-rare-dark-rgb: 18,88,162;
+  --rarity-epic-light: #bd3ffa;
+  --rarity-epic-light-rgb: 189,63,250;
+  --rarity-epic-dark: #460d7f;
+  --rarity-epic-dark-rgb: 70,13,127;
+  --rarity-legendary-light: #fdae53;
+  --rarity-legendary-light-rgb: 253,174,83;
+  --rarity-legendary-dark: #ff7605;
+  --rarity-legendary-dark-rgb: 255,118,5;
+  --rarity-mythic-light: #fcdd79;
+  --rarity-mythic-light-rgb: 252,221,121;
+  --rarity-mythic-dark: #dca01e;
+  --rarity-mythic-dark-rgb: 220,160,30;
+  --rarity-red-light: #b22222;
+  --rarity-red-light-rgb: 178,34,34;
+  --rarity-red-dark: #7d0b0b;
+  --rarity-red-dark-rgb: 125,11,11;
+  --rarity-darkpurple-dark: #7C0959;
+  --rarity-darkpurple-dark-rgb: 124,9,89;
+  --rarity-darkpurple-light: #CC52BB;
+  --rarity-darkpurple-light-rgb: 204,82,187;
+  --rarity-dcgray-dark: #2F4154;
+  --rarity-dcgray-dark-rgb: 47,65,84;
+  --rarity-dcgray-light: #697D99;
+  --rarity-dcgray-light-rgb: 105,125,153;
+  --rarity-stargray-dark: #31312e;
+  --rarity-stargray-dark-rgb: 49,49,46;
+  --rarity-stargray-light: #ffff00;
+  --rarity-stargray-light-rgb: 255,255,0;
+  --rarity-frozenblue-dark: #5AA3C8;
+  --rarity-frozenblue-dark-rgb: 90,163,200;
+  --rarity-frozenblue-light: #9dd7fe;
+  --rarity-frozenblue-light-rgb: 157,215,254;
+  --rarity-lavared-dark: #760F1E;
+  --rarity-lavared-dark-rgb: 118,15,30;
+  --rarity-lavared-light: #FF5104;
+  --rarity-lavared-light-rgb: 255,81,4;
+  --rarity-black: #151515;
+  --rarity-black-rgb: 21,21,21;
+  --rarity-white: #FFFFFF;
+  --rarity-white-rgb: 255,255,255;
+  --rarity-slurpblue-dark: #2996B6;
+  --rarity-slurpblue-dark-rgb: 41,150,182;
+  --rarity-slurpblue-light: #15BFE7;
+  --rarity-slurpblue-light-rgb: 21,191,231;
+  --rarity-iconblue: #008B8B;
+  --rarity-iconblue-rgb: 0,139,139;
+  --rarity-gaming-dark: #352b9d;
+  --rarity-gaming-dark-rgb: 53,43,157;
+  --rarity-gaming-light: #4236c4;
+  --rarity-gaming-light-rgb: 66,54,196;
+  --rarity-exotic-light: #23eec4;
+  --rarity-exotic-light-rgb: 35,238,196;
+  --rarity-exotic-dark: #567cc9;
+  --rarity-exotic-dark-rgb: 86,124,201;
+}

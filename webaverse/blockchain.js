@@ -4,6 +4,7 @@ import hdkeySpec from '../libs/hdkey.js';
 const hdkey = hdkeySpec.default;
 import ethereumJsTx from '../libs/ethereumjs-tx.js';
 import { makePromise } from './util.js';
+import storage from '../functions/Storage.js';
 import { infuraKey, polygonVigilKey } from '../constants/ApiKeys.js';
 import { storageHost, web3MainnetSidechainEndpoint, web3TestnetSidechainEndpoint, Networks } from './constants.js';
 const { Transaction, Common } = ethereumJsTx;
@@ -305,7 +306,7 @@ const blockchainChainIds = {
 };
 
 const ensureMetamaskChain = async networkName => {
-  console.log('ensure metamask chain', networkName, !!web3[networkName]);
+  // console.log('ensure metamask chain', networkName, !!web3[networkName]);
   if (!web3[networkName].injected) {
     const injectedWeb3 = (() => {
       for (const networkName in web3) {
@@ -326,6 +327,48 @@ const ensureMetamaskChain = async networkName => {
   }
 };
 
+const switchToSidechain = async () => {
+  await ethereum.enable();
+  await ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+          chainId: "0x53A",
+          chainName: "Webaverse sidechain",
+          rpcUrls: ['https://mainnetsidechain.exokit.org',],
+          iconUrls: ['https://app.webaverse.com/assets/logo-flat.png'],
+          blockExplorerUrls: ['https://webaverse.com/activity'],
+          nativeCurrency: {
+            name: 'Silk',
+            symbol: 'SILK',
+            decimals: 18,
+          },
+      }],
+  });
+};
+const switchToPolygon = async () => {
+  await ethereum.enable();
+  await ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+          chainId: "0x89",
+          chainName: "Matic network",
+          rpcUrls: ['https://rpc-mainnet.maticvigil.com/',],
+          iconUrls: ['https://docs.matic.network/img/logo.svg'],
+          blockExplorerUrls: ['https://explorer-mainnet.maticvigil.com'],
+          nativeCurrency: {
+            name: 'Matic',
+            symbol: 'MATIC',
+            decimals: 18,
+          },
+      }],
+  });
+};
+const logout = async () => {
+  await storage.remove('loginToken');
+  // window.storage = storage;
+  window.location.href = '/';
+};
+
 export {
   getBlockchain,
   runSidechainTransaction,
@@ -335,4 +378,7 @@ export {
   loginWithMetaMask,
   blockchainChainIds,
   ensureMetamaskChain,
+  switchToSidechain,
+  switchToPolygon,
+  logout,
 };

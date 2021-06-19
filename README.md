@@ -50,7 +50,7 @@
 
 ### Generate trading cards
 
-There is a minting interface that will generate a unique trading card representation for your NFT.
+Generate a unique trading card representation for every NFT
 
 ![](https://i.imgur.com/vvAix1q.jpg)
 

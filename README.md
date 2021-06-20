@@ -43,9 +43,13 @@
   - Set to be transferable or non-transferable (redistribution not allowed)
   - Set a fee and preview the asset before minting (spam control)
 - View a dashboard of what the community has been creating
-  - Change views from cards, images, and live previews
+  - Change views from cards, images, and live 3D previews
+- Asset pages with buttons to interact with NFTs to:
+  - Apply asset as avatar or add to loadout
+  - Transfer to other blockchains (ETH / Polygon)
+  - Add unlockables and file storage
 - User profile pages with avatars and custom loadouts
-- Top down map of the current current season with interactive parcel links
+- Top down map of the current season with interactive parcel links
 
 
 ### Generate trading cards

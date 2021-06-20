@@ -54,16 +54,16 @@
 
 ### Generate trading cards
 
-Generate a unique trading card representation for every NFT
+Generate a unique trading card representation for every NFT with RNG elements and battle stats.
 
 ![](https://i.imgur.com/vvAix1q.jpg)
 
 
-## Deployment
+## Development
 
 https://nextjs.org/docs/deployment
 
 
 ## Contributing
 
-Contributions are welcome please see [CONTRIBUTING.md](https://github.com/webaverse/docs/blob/master/CONTRIBUTING.md) for additional information.
+Contributions are welcome please see [CONTRIBUTING.md](https://github.com/webaverse/docs/blob/master/CONTRIBUTING.md) for additional information. Open issues are listed [here](https://github.com/webaverse/app/issues?q=Fe%3A+is%3Aissue+is%3Aopen+).

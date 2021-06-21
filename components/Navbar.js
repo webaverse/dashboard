@@ -226,7 +226,7 @@ const Navbar = ({
                 <Link href="/map"><a className={`item ${router.asPath === '/map' ? 'selected' : ''}`}>Map</a></Link>
                 <Link href="https://app.webaverse.com/"><a className={`item ${router.asPath === '/play' ? 'selected' : ''}`}>Play</a></Link>
                 <Link href="https://docs.webaverse.com/"><a className={`item ${router.asPath === '/docs' ? 'selected' : ''}`}>Docs</a></Link>
-                <a className={`item`} target="_blank" href="https://www.notion.so/webaverse/Webaverse-is-Hiring-8fb49c069c2f450f93ebb911149f21bd">Hiring</a>
+                <a className={`item`} target="_blank" href="https://www.notion.so/webaverse/Webaverse-is-Hiring-8fb49c069c2f450f93ebb911149f21bd">Careers</a>
               </div>
               {viewSwitchOpen ?
                 <ViewSwitch

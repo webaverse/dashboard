@@ -70,6 +70,8 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: row;
 }
 .lastSection .botBtnContainer .botBtn{
     margin-top: 0px;
@@ -80,13 +82,15 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    fill: #fff;
 }
 .lastSection .botBtnContainer .botBtn p{
     font-size: 20px;
     font-weight: 600;
     color: #fff;
     margin: 0;
+    margin-left: 20px;
+}
+.lastSection .botBtnContainer .botBtn:nth-child(2){
     margin-left: 20px;
 }
 
@@ -110,6 +114,9 @@
     .botContainer .subline{
         font-size: 18px;
     }
+    .lastSection .headline{
+        text-align: center;
+    }
 }
 
 @media (min-width: 300px) and (max-width: 600px) {
@@ -130,8 +137,14 @@
     }
     .botContainer .botBtnContainer{
         justify-content: center;
+        flex-direction: column;
+        margin-top: 24px;
     }
     .lastSection{
         padding: 32px;
+    }
+    .lastSection .botBtnContainer .botBtn:nth-child(2){
+        margin-left: 0px;
+        margin-top: 20px;
     }
 }

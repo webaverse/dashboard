@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Container, Row, Col } from 'react-grid-system'
 import discord from '../public/discordlogo.svg'
 import discordWhite from '../public/disW.svg'
+import repo from '../public/repo.svg'
 
 import styles from '../styles/Discordbot.module.css'
 
@@ -14,10 +15,10 @@ export default function discordBot() {
         <Row style={{ alignItems: 'center' }}>
           <Col sm={6}>
             <div className={styles.botContainer}>
-              <p className={styles.tagline}><span>BOOST</span> your discord server with Webaverse Bot!</p>
-              <p className={styles.subline}>Start your server's meme economy with Discord's favorite virtual world bot and create a fun and inviting community</p>
+              <p className={styles.tagline}><span>BOOST</span> your Discord community</p>
+              <p className={styles.subline} style={{ maxWidth: 400 }}>Build a meme economy in your server with a CLI to Web3</p>
               <div className={styles.botBtnContainer}>
-                <a className={styles.botBtn} href="">
+                <a className={styles.botBtn} href="https://discord.com/oauth2/authorize?client_id=758956702669209611&permissions=0&scope=bot">
                   <Image src={discord} className={styles.discordLogo} width={30} height={30} />
                   <p>INVITE NOW</p>
                 </a>
@@ -37,7 +38,7 @@ export default function discordBot() {
           <Col sm={6}>
             <div className={styles.botContainer}>
               <p className={styles.tagline}><span>VIRTUAL WORLD ECONOMY</span> at your finger tips</p>
-              <p className={styles.subline}>There’s no user setup required, anybody in the server the bot is invited to, will be connected automatically to the Ethereum sidechain</p>
+              <p className={styles.subline}>There's no initial wallet setup required, everyone in the server will have an Ethereum address generated for them.</p>
             </div>
           </Col>
         </Row>
@@ -63,7 +64,7 @@ export default function discordBot() {
           <Col sm={6}>
             <div className={styles.botContainer}>
               <p className={styles.tagline}>Create and transfer <span>Nfts</span> with simple commands</p>
-              <p className={styles.subline}>Minting anything from a image, gif, 3d models, avatars, and more! will automatically upload and pin it to IPFS</p>
+              <p className={styles.subline}>Mint anything from images, 3D models, avatars, and more! The files automatically upload and pin to IPFS.</p>
             </div>
           </Col>
         </Row>
@@ -72,8 +73,8 @@ export default function discordBot() {
         <Row style={{ alignItems: 'center' }}>
           <Col sm={6}>
             <div className={styles.botContainer}>
-              <p className={styles.tagline}>Create <span>Trading Cards</span> or <span>Metaverse Nfts</span></p>
-              <p className={styles.subline}>Every NFT minted on Webaverse gets a trading card format version and can be sent across discord servers</p>
+              <p className={styles.tagline}>Create <span>Trading Cards</span> for <span>Metaverse Nfts</span></p>
+              <p className={styles.subline}>Every NFT minted gets a trading card generated with randomized battle stats.</p>
             </div>
           </Col>
           <Col sm={6}>
@@ -96,11 +97,15 @@ export default function discordBot() {
       </Container>
       <Container className={styles.botContainer}>
         <div className={styles.lastSection}>
-          <p className={styles.headline}>Boost up your Discord server</p>
+          <p className={styles.headline}>Upgrade your Discord server today</p>
           <div className={styles.botBtnContainer}>
-            <a className={styles.botBtn} href="">
+            <a className={styles.botBtn} href="https://discord.com/oauth2/authorize?client_id=758956702669209611&permissions=0&scope=bot">
               <Image src={discordWhite} className={styles.discordLogo} width={30} height={30} />
               <p>INVITE NOW</p>
+            </a>
+            <a href="https://github.com/webaverse/ethereum-bot" className={styles.botBtn}>
+              <Image src={repo} width={30} height={30} />
+              <p>GITHUB REPO</p>
             </a>
           </div>
         </div>  

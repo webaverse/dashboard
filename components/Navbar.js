@@ -106,16 +106,16 @@ const StreetFilters = ({
       <div className="row">
         <div className="filter-options">
           <div className={`option ${selectedOption === 'image' ? 'selected' : ''}`} onClick={e => setSelectedOption('image')}>
-            <img className="option-image" src="/image.svg" />
+            <img className="option-image" title="Filter images" alt="Filter images" src="/image.svg" />
           </div>
           <div className={`option ${selectedOption === 'video' ? 'selected' : ''}`} onClick={e => setSelectedOption('video')}>
-            <img className="option-image" src="/video.svg" />
+            <img className="option-image" title="Filter videos"  alt="Filter videos" src="/video.svg" />
           </div>
           <div className={`option ${selectedOption === 'audio' ? 'selected' : ''}`} onClick={e => setSelectedOption('audio')}>
-            <img className="option-image" src="/audio.svg" />
+            <img className="option-image" title="Filter audio" alt="Filter audio" src="/audio.svg" />
           </div>
           <div className={`option ${selectedOption === 'avatar' ? 'selected' : ''}`} onClick={e => setSelectedOption('avatar')}>
-            <img className="option-image" src="/avatar.svg" />
+            <img className="option-image" title="Filter avatars" alt="Filter avatars" src="/avatar.svg" />
           </div>
         </div>
       </div>

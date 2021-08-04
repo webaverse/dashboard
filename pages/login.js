@@ -157,7 +157,7 @@ const Login = () => {
   const submit = async () => {
     console.log('got form submit', {loginStep, name, code});
           
-    if (loginStep === 1 && emailEl && emailEl.checkValidity()) {
+    if (loginStep === 1 && emailEl.input && emailEl.input.checkValidity()) {
       setLoginStep(loginStep + 1);
       
       const res = await fetch(`https://login.exokit.org/?email=${encodeURIComponent(email)}`, {

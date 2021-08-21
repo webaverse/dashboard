@@ -10,7 +10,14 @@ import Link from "next/link";
 import User from "./User";
 import FileInput from "./FileInput";
 import ViewSwitch from "./ViewSwitch";
-import {getBlockchain, runSidechainTransaction, loginWithMetaMask} from "../webaverse/blockchain.js";
+
+import {
+  getBlockchain,
+  runSidechainTransaction,
+  loginWithMetaMask,
+  switchToPolygon
+} from '../webaverse/blockchain.js';
+
 import {getProfileForCreator} from "../functions/UIStateFunctions";
 import {getAddressProofs, getAddressesFromProofs} from "../functions/Functions";
 import {getData} from "./Asset";
@@ -1215,6 +1222,7 @@ const CardDetails = ({
     
     try {
       const networkName = currentLocation.replace(/\-stuck$/, '');
+      await switchToPolygon();
       const metamaskAddress = await loginWithMetaMask();
       await resubmitAsset(
         networkName,
